@@ -1,0 +1,4 @@
+
+<Project Header="Project 'STM8-128-EVAL_Demo'" Path=".\STM8-128-EVAL_Demo.rprj" Project="Yes" AsyncBuild="" OutputFile="" sate="98" ActiveApp="STM8-128-EVAL_Demo" >
+	<ApplicationBuild Header="STM8-128-EVAL_Demo" Extern=".\STM8-128-EVAL_Demo.rapp" Path=".\STM8-128-EVAL_Demo.rapp" AsyncBuild="" OutputFile=".\Debug\STM8-128-EVAL_Demo.aof" sate="96" />
+</Project>
