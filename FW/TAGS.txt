@@ -302,7 +302,6 @@ BS_jmpBoot	drv\fat32\pff.c	320;"	macro	file:
 BTR1	stm8s_stdperiph_driver\inc\stm8s.h	2289;"	member	struct:__anon13::__anon14::__anon20
 BTR2	stm8s_stdperiph_driver\inc\stm8s.h	2290;"	member	struct:__anon13::__anon14::__anon20
 BUFFER_SZ_IN_BYTES	drv\adc\adc.h	22;"	macro
-BUFFER_SZ_IN_WORD	drv\adc\adc.c	24;"	macro	file:
 BYTE	drv\fat32\pff.h	38;"	typedef
 BYTE	drv\fat32\pff.h	44;"	typedef
 BYTE_0	stm8s_stdperiph_driver\inc\stm8s.h	2792;"	macro
@@ -1185,9 +1184,8 @@ GPIO_struct	stm8s_stdperiph_driver\inc\stm8s.h	257;"	struct
 GTR	stm8s_stdperiph_driver\inc\stm8s.h	1770;"	member	struct:UART1_struct
 GTR	stm8s_stdperiph_driver\inc\stm8s.h	1869;"	member	struct:UART2_struct
 GTR	stm8s_stdperiph_driver\inc\stm8s.h	2068;"	member	struct:UART4_struct
-GetChannelNo	drv\adc\adc.c	205;"	function	file:	signature:(void)
-GetChannelNo	drv\adc\adc.c	54;"	prototype	file:	signature:(void)
-GetNxtFileName	main.c	299;"	function	signature:(char * fname)
+GetChannelNo	drv\adc\adc.c	179;"	function	file:	signature:(void)
+GetChannelNo	drv\adc\adc.c	53;"	prototype	file:	signature:(void)
 HSE_VALUE	stm8s_stdperiph_driver\inc\stm8s.h	109;"	macro
 HSE_VALUE	stm8s_stdperiph_driver\inc\stm8s.h	111;"	macro
 HSIDivFactor	stm8s_stdperiph_driver\src\stm8s_clk.c	48;"	variable
@@ -1369,17 +1367,17 @@ IER	stm8s_stdperiph_driver\inc\stm8s.h	2173;"	member	struct:__anon13
 IER	stm8s_stdperiph_driver\inc\stm8s.h	610;"	member	struct:TIM1_struct
 IER	stm8s_stdperiph_driver\inc\stm8s.h	823;"	member	struct:TIM2_struct
 IER	stm8s_stdperiph_driver\inc\stm8s.h	947;"	member	struct:TIM3_struct
-INC	drv\adc\adc.c	43;"	macro	file:
+INC	drv\adc\adc.c	42;"	macro	file:
 INPUT_FREQ_TIM1_FOR_ADC	loggerconf.h	32;"	macro
-INT16_C	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	97;"	macro
-INT16_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	50;"	macro
-INT16_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	47;"	macro
-INT32_C	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	98;"	macro
-INT32_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	51;"	macro
-INT32_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	48;"	macro
-INT8_C	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	96;"	macro
-INT8_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	49;"	macro
-INT8_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	46;"	macro
+INT16_C	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	99;"	macro
+INT16_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	52;"	macro
+INT16_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	49;"	macro
+INT32_C	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	100;"	macro
+INT32_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	53;"	macro
+INT32_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	50;"	macro
+INT8_C	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	98;"	macro
+INT8_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	51;"	macro
+INT8_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	48;"	macro
 INTERRUPT	stm8s_stdperiph_driver\inc\stm8s.h	2762;"	macro
 INTERRUPT	stm8s_stdperiph_driver\inc\stm8s.h	2764;"	macro
 INTERRUPT_HANDLER	stm8s_stdperiph_driver\inc\stm8s.h	2740;"	macro
@@ -1388,23 +1386,23 @@ INTERRUPT_HANDLER	stm8s_stdperiph_driver\inc\stm8s.h	2752;"	macro
 INTERRUPT_HANDLER_TRAP	stm8s_stdperiph_driver\inc\stm8s.h	2741;"	macro
 INTERRUPT_HANDLER_TRAP	stm8s_stdperiph_driver\inc\stm8s.h	2746;"	macro
 INTERRUPT_HANDLER_TRAP	stm8s_stdperiph_driver\inc\stm8s.h	2755;"	macro
-INTMAX_C	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	104;"	macro
-INTMAX_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	91;"	macro
-INTMAX_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	90;"	macro
-INTPTR_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	83;"	macro
-INTPTR_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	82;"	macro
-INT_FAST16_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	74;"	macro
-INT_FAST16_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	71;"	macro
-INT_FAST32_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	75;"	macro
-INT_FAST32_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	72;"	macro
-INT_FAST8_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	73;"	macro
-INT_FAST8_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	70;"	macro
-INT_LEAST16_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	62;"	macro
-INT_LEAST16_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	59;"	macro
-INT_LEAST32_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	63;"	macro
-INT_LEAST32_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	60;"	macro
-INT_LEAST8_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	61;"	macro
-INT_LEAST8_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	58;"	macro
+INTMAX_C	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	106;"	macro
+INTMAX_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	93;"	macro
+INTMAX_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	92;"	macro
+INTPTR_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	85;"	macro
+INTPTR_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	84;"	macro
+INT_FAST16_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	76;"	macro
+INT_FAST16_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	73;"	macro
+INT_FAST32_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	77;"	macro
+INT_FAST32_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	74;"	macro
+INT_FAST8_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	75;"	macro
+INT_FAST8_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	72;"	macro
+INT_LEAST16_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	64;"	macro
+INT_LEAST16_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	61;"	macro
+INT_LEAST32_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	65;"	macro
+INT_LEAST32_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	62;"	macro
+INT_LEAST8_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	63;"	macro
+INT_LEAST8_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	60;"	macro
 IN_RAM	stm8s_stdperiph_driver\inc\stm8s.h	171;"	macro
 IN_RAM	stm8s_stdperiph_driver\inc\stm8s.h	173;"	macro
 IN_RAM	stm8s_stdperiph_driver\inc\stm8s.h	175;"	macro
@@ -1761,8 +1759,10 @@ NO_BUFF_PER_BLK	loggerconf.h	26;"	macro
 NO_ERR	loggerconf.h	51;"	enumerator	enum:error_t
 NSAC	drv\sd\mmcsd.h	99;"	member	struct:__anon6
 NULL	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdlib.h	13;"	macro
-NextChannel	drv\adc\adc.c	182;"	function	file:	signature:(void)
-NextChannel	drv\adc\adc.c	53;"	prototype	file:	signature:(void)
+NextByte	drv\adc\adc.c	124;"	function	file:
+NextByte	drv\adc\adc.c	51;"	prototype	file:
+NextChannel	drv\adc\adc.c	156;"	function	file:	signature:(void)
+NextChannel	drv\adc\adc.c	52;"	prototype	file:	signature:(void)
 NonHandledInterrupt	stm8_interrupt_vector.c	13;"	function	signature:(void)
 OARH	stm8s_stdperiph_driver\inc\stm8s.h	1326;"	member	struct:I2C_struct
 OARL	stm8s_stdperiph_driver\inc\stm8s.h	1325;"	member	struct:I2C_struct
@@ -1809,8 +1809,8 @@ PSCR	stm8s_stdperiph_driver\inc\stm8s.h	956;"	member	struct:TIM3_struct
 PSCRH	stm8s_stdperiph_driver\inc\stm8s.h	622;"	member	struct:TIM1_struct
 PSCRL	stm8s_stdperiph_driver\inc\stm8s.h	623;"	member	struct:TIM1_struct
 PSR	stm8s_stdperiph_driver\inc\stm8s.h	2175;"	member	struct:__anon13
-PTRDIFF_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	86;"	macro
-PTRDIFF_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	85;"	macro
+PTRDIFF_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	88;"	macro
+PTRDIFF_MIN	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	87;"	macro
 PUKR	stm8s_stdperiph_driver\inc\stm8s.h	1516;"	member	struct:FLASH_struct
 Page	stm8s_stdperiph_driver\inc\stm8s.h	2319;"	member	struct:__anon13	typeref:union:__anon13::__anon14
 PartBlockRead	drv\sd\mmcsd.h	103;"	member	struct:__anon6
@@ -3438,21 +3438,21 @@ UART4_TypeDef	stm8s_stdperiph_driver\inc\stm8s.h	2071;"	typedef	typeref:struct:U
 UART4_struct	stm8s_stdperiph_driver\inc\stm8s.h	2056;"	struct
 UINT	drv\fat32\pff.h	37;"	typedef
 UINT	drv\fat32\pff.h	43;"	typedef
-UINT16_C	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	101;"	macro
-UINT16_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	53;"	macro
-UINT32_C	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	102;"	macro
-UINT32_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	54;"	macro
-UINT8_C	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	100;"	macro
-UINT8_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	52;"	macro
-UINTMAX_C	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	105;"	macro
-UINTMAX_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	92;"	macro
-UINTPTR_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	84;"	macro
-UINT_FAST16_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	77;"	macro
-UINT_FAST32_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	78;"	macro
-UINT_FAST8_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	76;"	macro
-UINT_LEAST16_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	65;"	macro
-UINT_LEAST32_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	66;"	macro
-UINT_LEAST8_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	64;"	macro
+UINT16_C	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	103;"	macro
+UINT16_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	55;"	macro
+UINT32_C	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	104;"	macro
+UINT32_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	56;"	macro
+UINT8_C	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	102;"	macro
+UINT8_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	54;"	macro
+UINTMAX_C	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	107;"	macro
+UINTMAX_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	94;"	macro
+UINTPTR_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	86;"	macro
+UINT_FAST16_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	79;"	macro
+UINT_FAST32_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	80;"	macro
+UINT_FAST8_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	78;"	macro
+UINT_LEAST16_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	67;"	macro
+UINT_LEAST32_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	68;"	macro
+UINT_LEAST8_MAX	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	66;"	macro
 UNUSED	stm8s_stdperiph_driver\inc\stm8s.h	2797;"	macro
 USE_FULL_ASSERT	stm8s_conf.h	90;"	macro
 USE_STDPERIPH_DRIVER	stm8s_stdperiph_driver\inc\stm8s.h	96;"	macro
@@ -3548,7 +3548,6 @@ __DLY_H__	app\clktick\dly.h	13;"	macro
 __I	stm8s_stdperiph_driver\inc\stm8s.h	207;"	macro
 __IO	stm8s_stdperiph_driver\inc\stm8s.h	209;"	macro
 __MODSL0__	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\modsl0.h	8;"	macro
-__MODSL__	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\modsl.h	8;"	macro
 __O	stm8s_stdperiph_driver\inc\stm8s.h	208;"	macro
 __SIZE_T__	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdlib.h	17;"	macro
 __STDBOOL	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdbool.h	5;"	macro
@@ -3579,6 +3578,7 @@ __STM8S_TIM2_H	stm8s_stdperiph_driver\inc\stm8s_tim2.h	30;"	macro
 __STM8S_TIM4_H	stm8s_stdperiph_driver\inc\stm8s_tim4.h	30;"	macro
 __STM8S_UART1_H	stm8s_stdperiph_driver\inc\stm8s_uart1.h	30;"	macro
 __STM8S_WWDG_H	stm8s_stdperiph_driver\inc\stm8s_wwdg.h	30;"	macro
+__TYPES__	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	10;"	macro
 __WCHAR_T__	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdlib.h	22;"	macro
 __bool_true_false_are_defined	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdbool.h	11;"	macro
 _checkcrc16	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdlib.h	59;"	prototype	signature:(void)
@@ -3592,11 +3592,11 @@ _stext	stm8_interrupt_vector.c	21;"	prototype	file:
 _vectab	stm8_interrupt_vector.c	25;"	variable
 abort	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdlib.h	63;"	macro
 abs	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdlib.h	36;"	prototype	signature:(int i)
-adcBuffer0	drv\adc\adc.c	34;"	variable
-adcBuffer1	drv\adc\adc.c	35;"	variable
-adcInit	drv\adc\adc.c	91;"	function	signature:( void )
+adcBuffer0	drv\adc\adc.c	33;"	variable
+adcBuffer1	drv\adc\adc.c	34;"	variable
+adcInit	drv\adc\adc.c	90;"	function	signature:( void )
 adcInit	drv\adc\adc.h	41;"	prototype	signature:( void )
-adcIsr	drv\adc\adc.c	226;"	function	signature:(void)
+adcIsr	drv\adc\adc.c	246;"	function	signature:(void)
 adcIsr	drv\adc\adc.h	42;"	prototype	signature:(void)
 adcIsr	stm8_interrupt_vector.c	22;"	prototype	file:
 assert_failed	main.c	460;"	function	signature:(uint8_t* file, uint32_t line)
@@ -3609,7 +3609,7 @@ atol	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdlib.h	39;"	prot
 blkCnt	main.c	37;"	variable	file:
 bool	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdbool.h	7;"	macro
 bool	stm8s_stdperiph_driver\inc\stm8s.h	223;"	typedef	typeref:enum:__anon9
-buffer_rdy	drv\adc\adc.c	27;"	variable
+buffer_rdy	drv\adc\adc.c	26;"	variable
 calloc	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdlib.h	40;"	prototype	signature:(unsigned int nelem, unsigned int elsize)
 cfg	main.c	63;"	variable	file:
 cfg_t	loggerconf.h	80;"	typedef	typeref:struct:__anon142
@@ -3618,7 +3618,7 @@ check_fs	drv\fat32\pff.c	783;"	function	file:	signature:( BYTE *buf, DWORD sect 
 clkInit	main.c	432;"	function	signature:( void )
 clust	drv\fat32\pff.h	86;"	member	struct:__anon3
 clust2sect	drv\fat32\pff.c	479;"	function	file:	signature:( CLUST clst )
-cnter	drv\adc\adc.c	41;"	variable	file:
+cnter	drv\adc\adc.c	40;"	variable	file:
 create_name	drv\fat32\pff.c	651;"	function	file:	signature:( DIR *dj, const char **path )
 csize	drv\fat32\pff.h	64;"	member	struct:__anon2
 curr_clust	drv\fat32\pff.h	74;"	member	struct:__anon2
@@ -3677,21 +3677,21 @@ halt	stm8s_stdperiph_driver\inc\stm8s.h	2715;"	macro
 halt	stm8s_stdperiph_driver\inc\stm8s.h	2724;"	macro
 halt	stm8s_stdperiph_driver\inc\stm8s.h	2734;"	macro
 index	drv\fat32\pff.h	83;"	member	struct:__anon3
-int16_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	10;"	typedef
-int32_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	11;"	typedef
-int8_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	9;"	typedef
-int_fast16_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	28;"	typedef
-int_fast32_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	29;"	typedef
-int_fast8_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	27;"	typedef
-int_least16_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	19;"	typedef
-int_least32_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	20;"	typedef
-int_least8_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	18;"	typedef
+int16_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	12;"	typedef
+int32_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	13;"	typedef
+int8_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	11;"	typedef
+int_fast16_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	30;"	typedef
+int_fast32_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	31;"	typedef
+int_fast8_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	29;"	typedef
+int_least16_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	21;"	typedef
+int_least32_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	22;"	typedef
+int_least8_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	20;"	typedef
 interrupt_handler	stm8_interrupt_vector.c	10;"	member	struct:interrupt_vector	file:
 interrupt_handler_t	stm8_interrupt_vector.c	6;"	typedef	file:
 interrupt_instruction	stm8_interrupt_vector.c	9;"	member	struct:interrupt_vector	file:
 interrupt_vector	stm8_interrupt_vector.c	8;"	struct	file:
-intmax_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	41;"	typedef
-intptr_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	36;"	typedef
+intmax_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	43;"	typedef
+intptr_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	38;"	typedef
 isFullResultion	loggerconf.h	79;"	member	struct:__anon142
 isqrt	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdlib.h	53;"	prototype	signature:(unsigned int)
 labs	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdlib.h	44;"	prototype	signature:(long l)
@@ -3709,14 +3709,12 @@ mem_cmp	drv\fat32\pff.c	417;"	function	file:	signature:(const void* dst, const v
 mem_set	drv\fat32\pff.c	411;"	function	file:	signature:(void* dst, int val, int cnt)
 n_fatent	drv\fat32\pff.h	67;"	member	struct:__anon2
 n_rootdir	drv\fat32\pff.h	66;"	member	struct:__anon2
-nextWord	drv\adc\adc.c	150;"	function	file:
-nextWord	drv\adc\adc.c	52;"	prototype	file:
 nop	stm8s_stdperiph_driver\inc\stm8s.h	2712;"	macro
 nop	stm8s_stdperiph_driver\inc\stm8s.h	2721;"	macro
 nop	stm8s_stdperiph_driver\inc\stm8s.h	2731;"	macro
 org_clust	drv\fat32\pff.h	73;"	member	struct:__anon2
-pCurrBuffer	drv\adc\adc.c	45;"	variable	file:
-pCurrWord	drv\adc\adc.c	47;"	variable	file:
+pCurrBuffer	drv\adc\adc.c	44;"	variable	file:
+pCurrByte	drv\adc\adc.c	46;"	variable	file:
 pad1	drv\fat32\pff.h	65;"	member	struct:__anon2
 pf_lseek	drv\fat32\pff.c	1055;"	function	signature:( DWORD ofs )
 pf_lseek	drv\fat32\pff.h	125;"	prototype	signature:(DWORD ofs)
@@ -3763,7 +3761,7 @@ sysTickInit	app\clktick\dly.h	36;"	prototype	signature:( void )
 systemTickIsr	app\clktick\dly.c	97;"	function	signature:(void)
 systemTickIsr	app\clktick\dly.h	38;"	prototype	signature:(void)
 systemTickIsr	stm8_interrupt_vector.c	23;"	prototype	file:
-tim1Init	drv\adc\adc.c	66;"	function	file:	signature:( void )
+tim1Init	drv\adc\adc.c	65;"	function	file:	signature:( void )
 tim4Init	app\clktick\dly.c	39;"	prototype	file:	signature:( void )
 tim4Init	app\clktick\dly.c	59;"	function	file:	signature:( void )
 trap	stm8s_stdperiph_driver\inc\stm8s.h	2713;"	macro
@@ -3773,17 +3771,17 @@ true	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdbool.h	9;"	macr
 u16	stm8s_stdperiph_driver\inc\stm8s.h	219;"	typedef
 u32	stm8s_stdperiph_driver\inc\stm8s.h	218;"	typedef
 u8	stm8s_stdperiph_driver\inc\stm8s.h	220;"	typedef
-uint16_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	13;"	typedef
-uint32_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	14;"	typedef
-uint8_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	12;"	typedef
-uint_fast16_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	31;"	typedef
-uint_fast32_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	32;"	typedef
-uint_fast8_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	30;"	typedef
-uint_least16_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	22;"	typedef
-uint_least32_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	23;"	typedef
-uint_least8_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	21;"	typedef
-uintmax_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	42;"	typedef
-uintptr_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	37;"	typedef
+uint16_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	15;"	typedef
+uint32_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	16;"	typedef
+uint8_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	14;"	typedef
+uint_fast16_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	33;"	typedef
+uint_fast32_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	34;"	typedef
+uint_fast8_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	32;"	typedef
+uint_least16_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	24;"	typedef
+uint_least32_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	25;"	typedef
+uint_least8_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	23;"	typedef
+uintmax_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	44;"	typedef
+uintptr_t	c:\program files (x86)\cosmic\fse_compilers\cxstm8\hstm8\stdint.h	39;"	typedef
 wfi	stm8s_stdperiph_driver\inc\stm8s.h	2714;"	macro
 wfi	stm8s_stdperiph_driver\inc\stm8s.h	2723;"	macro
 wfi	stm8s_stdperiph_driver\inc\stm8s.h	2733;"	macro

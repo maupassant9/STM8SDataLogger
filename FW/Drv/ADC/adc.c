@@ -21,7 +21,6 @@
 /********************************************
 * External Variables 
 ********************************************/
-#define BUFFER_SZ_IN_WORD BUFFER_SZ_IN_BYTES/2
 //buffer ready for read? 
 // bit(n) = 1: buffer n is ready
 @tiny volatile uint8_t buffer_rdy; 
@@ -31,8 +30,8 @@ extern cfg_t loggerCfg;
 //  ----------------------- -----------------------
 // |        Buffer0        |         Buffer1       |
 //  ----------------------- -----------------------
-uint16_t adcBuffer0[BUFFER_SZ_IN_WORD];
-uint16_t adcBuffer1[BUFFER_SZ_IN_WORD];
+uint16_t adcBuffer0[BUFFER_SZ_IN_BYTES/2];
+uint16_t adcBuffer1[BUFFER_SZ_IN_BYTES/2];
 //uint16_t adcBuffer2[BUFFER_SZ_IN_WORD];
 
 /********************************************
@@ -40,18 +39,16 @@ uint16_t adcBuffer1[BUFFER_SZ_IN_WORD];
 ********************************************/
 @tiny static uint16_t cnter;  //offset for bufferX
 //a round cnter for ADC data buffer
-#define INC(n) (n = (n == (BUFFER_SZ_IN_WORD -1))?0:(n+1)) 
+#define INC(n) (n = (n == (BUFFER_SZ_IN_BYTES -1))?0:(n+1)) 
 //current pointer to the current buffer
-static uint16_t * pCurrBuffer;
-//current pointer to the current writing word in buffer
-static uint16_t * pCurrWord;
-
+static uint8_t * pCurrBuffer;
+//current pointer to the current writing byte in buffer
 static uint8_t * pCurrByte;
 
 /********************************************
 * Internal Function Declaration 
 ********************************************/
-static void nextWord();
+static void NextByte();
 static uint8_t NextChannel(void);
 static uint8_t GetChannelNo(void);
 /********************************************
@@ -93,8 +90,8 @@ static void tim1Init( void )
 void adcInit( void )
 {
     cnter = 0x00;
-    pCurrBuffer = adcBuffer0;
-		pCurrWord = adcBuffer0;
+    pCurrBuffer = (uint8_t *)adcBuffer0;
+		pCurrByte = (uint8_t *)adcBuffer0;
     buffer_rdy = 0x00; //nenhum buffers are ready
     //Power on the ADC1, adc_clk = 4 MHz
     ADC1->CR1 = 0x20;
@@ -102,7 +99,7 @@ void adcInit( void )
     //1. Channel Selection: AIN0 - AIIN6 Scan mode
     ADC1->CSR = NextChannel()|ADC1_CSR_EOCIE;
     //2. External trigger from tim1 (TRGO), right aligned and single mode
-    ADC1->CR2 = (ADC1_CR2_EXTTRIG | ADC1_CR2_ALIGN);
+    ADC1->CR2 = (loggerCfg.isFullResultion<<3)|ADC1_CR2_EXTTRIG;//(ADC1_CR2_EXTTRIG | ADC1_CR2_ALIGN);
     //3. Enable data buffer
     ADC1->CR3 = ADC1_CR3_DBUF;
     //4. Diable Schmitt trigger disable high
@@ -114,7 +111,7 @@ void adcInit( void )
 }
 
 /*------------------------------------------------ 
-* nextWord 
+* nextByte 
 * Descriptions here. 
 * Paras:
 *  >> : 
@@ -124,23 +121,23 @@ void adcInit( void )
 * Change Records: 
 *  >> (29/Mar/2020): Create the function 
 *----------------------------------------------*/
-static void nextWord()
+static void NextByte()
 {
     INC(cnter);
 
     if(cnter == 0){ //an overflow occurred
         //pCurrWord = nextBuffer();
-			if(pCurrBuffer == adcBuffer0) {
+			if(pCurrBuffer == (uint8_t *)adcBuffer0) {
         RELEASE_BUFF_FOR_RD(0);
-				pCurrBuffer = adcBuffer1;
-        pCurrWord = adcBuffer1;
+				pCurrBuffer = (uint8_t *)adcBuffer1;
+        pCurrByte = (uint8_t *)adcBuffer1;
 			} else {
 				RELEASE_BUFF_FOR_RD(1);
-				pCurrBuffer = adcBuffer0;
-				pCurrWord =  adcBuffer0;
+				pCurrBuffer = (uint8_t *)adcBuffer0;
+				pCurrByte =  (uint8_t *)adcBuffer0;
 			}
     } else {
-        pCurrWord = &pCurrBuffer[cnter];
+        pCurrByte = &pCurrBuffer[cnter];
     }
 }
 
@@ -252,11 +249,12 @@ static uint8_t GetChannelNo(void){
 		uint8_t currChannel;
 		//get the data from current channel
 		currChannel = NextChannel();
-		
-    tmp = ADC1->DRL;
-		*pCurrWord = ADC1->DRH;
-		*pCurrWord = tmp + ((*pCurrWord)<<8);
-    nextWord();
+		if(loggerCfg.isFullResultion){
+			*pCurrByte = ADC1->DRL;
+			NextByte();
+		}
+		*pCurrByte = ADC1->DRH;
+    NextByte();
 		//clear flag
 		//ADC1->CR1 &= ADC1_CR1_ADON;
 		//ADC1->CSR &= ~ADC1_CSR_EOC;
