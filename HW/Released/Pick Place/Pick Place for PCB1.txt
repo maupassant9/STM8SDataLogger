@@ -1,0 +1,46 @@
+Designator Footprint               Mid X         Mid Y         Ref X         Ref Y         Pad X         Pad Y TB      Rotation Comment        
+
+*1         PCB-5n16zmdo33ly3n5be8x4-1     1537.5mil       2200mil       1535mil       1500mil       1535mil       1500mil  T         90.00 TE Connectivity 282841-8
+C1         0805_SMD_CAP      2008.622mil       1290mil       2010mil       1290mil   2043.622mil       1290mil  T          0.00 Cap            
+C6         0805_SMD_CAP      1906.378mil       2945mil       1905mil       2945mil   1871.378mil       2945mil  T        180.00 Cap            
+C8         0805_SMD_CAP          2095mil   2221.378mil       2095mil       2220mil       2095mil   2186.378mil  T        270.00 Cap            
+C9         0805_SMD_CAP          1770mil   2221.378mil       1770mil       2220mil       1770mil   2186.378mil  T        270.00 Cap            
+C11        0805_SMD_CAP       2013.75mil   2221.378mil    2013.75mil       2220mil    2013.75mil   2186.378mil  T        270.00 Cap            
+C7         0805_SMD_CAP       1851.25mil   2221.378mil    1851.25mil       2220mil    1851.25mil   2186.378mil  T        270.00 Cap            
+C10        0805_SMD_CAP        1932.5mil   2221.378mil     1932.5mil       2220mil     1932.5mil   2186.378mil  T        270.00 Cap            
+C2         0805_SMD_CAP      1676.378mil       1150mil       1675mil       1150mil   1641.378mil       1150mil  T        180.00 Cap            
+C3         0805_SMD_CAP      1676.378mil       1080mil       1675mil       1080mil   1641.378mil       1080mil  T        180.00 Cap            
+C4         0805_SMD_CAP          1615mil   1301.378mil       1615mil       1300mil       1615mil   1266.378mil  T        270.00 Cap            
+C5         0805_SMD_CAP          1690mil   1301.378mil       1690mil       1300mil       1690mil   1266.378mil  T        270.00 Cap            
+CON1       PCB-2328464-1         2005mil   1114.681mil       2005mil       1160mil   1953.819mil       1167mil  T        360.00 Molex 0473460001
+D4         PCB-i0lu3ywj2mjd0tfwcgvk-1     2326.5mil   2934.999mil     2331.5mil   2934.999mil     2376.5mil   2934.999mil  T        180.00 Avago HLMP-1700
+D6         PCB-i0lu3ywj2mjd0tfwcgvk-1     2326.5mil   1571.363mil     2331.5mil   1571.363mil     2376.5mil   1571.363mil  T        180.00 Avago HLMP-1700
+D12        PCB-i0lu3ywj2mjd0tfwcgvk-1     2326.5mil   1912.273mil     2331.5mil   1912.273mil     2376.5mil   1912.273mil  T        180.00 Avago HLMP-1700
+D7         PCB-i0lu3ywj2mjd0tfwcgvk-1     2326.5mil       1400mil     2321.5mil       1400mil     2276.5mil       1400mil  T        360.00 Avago HLMP-1700
+D11        PCB-i0lu3ywj2mjd0tfwcgvk-1     2326.5mil    2594.09mil     2331.5mil    2594.09mil     2376.5mil    2594.09mil  T        180.00 Avago HLMP-1700
+D9         PCB-i0lu3ywj2mjd0tfwcgvk-1     2326.5mil       1740mil     2321.5mil       1740mil     2276.5mil       1740mil  T        360.00 Avago HLMP-1700
+D8         PCB-i0lu3ywj2mjd0tfwcgvk-1     2326.5mil   2082.721mil     2331.5mil   2082.721mil     2376.5mil   2082.721mil  T        180.00 Avago HLMP-1700
+D5         PCB-i0lu3ywj2mjd0tfwcgvk-1     2326.5mil       1060mil     2331.5mil       1060mil     2376.5mil       1060mil  T        180.00 Avago HLMP-1700
+D10        PCB-i0lu3ywj2mjd0tfwcgvk-1     2326.5mil    2423.63mil     2321.5mil    2423.63mil     2276.5mil    2423.63mil  T        360.00 Avago HLMP-1700
+D3         PCB-i0lu3ywj2mjd0tfwcgvk-1     2326.5mil   2253.175mil     2321.5mil   2253.175mil     2276.5mil   2253.175mil  T        360.00 Avago HLMP-1700
+D2         PCB-i0lu3ywj2mjd0tfwcgvk-1     2326.5mil       1230mil     2321.5mil       1230mil     2276.5mil       1230mil  T        360.00 Avago HLMP-1700
+D1         PCB-i0lu3ywj2mjd0tfwcgvk-1     2326.5mil       2765mil     2321.5mil       2765mil     2276.5mil       2765mil  T        360.00 Avago HLMP-1700
+J1         PCB-vkgeqjtjqx6hhmcxuagx-1       1745mil       1620mil       1745mil       1520mil       1745mil       1520mil  T         90.00 Sensor Temperatura - Final
+R2         RESC2013X70X40LL20T20       1835mil       2865mil       1835mil       2865mil   1804.488mil       2865mil  T        360.00 100 Ohms       
+R3         RESC2013X70X40LL20T20       1835mil       2785mil       1835mil       2785mil   1804.488mil       2785mil  T        360.00 100 Ohms       
+R4         RESC2013X70X40LL20T20       1960mil       2865mil       1960mil       2865mil   1990.512mil       2865mil  T        180.00 100 Ohms       
+R5         RESC2013X70X40LL20T20       1960mil       2785mil       1960mil       2785mil   1990.512mil       2785mil  T        180.00 100 Ohms       
+R11        RESC2013X70X40LL20T20       2155mil       2705mil       2155mil       2705mil   2124.488mil       2705mil  T        360.00 100 Ohms       
+R13        RESC2013X70X40LL20T20       2155mil   2611.667mil       2155mil   2611.667mil   2124.488mil   2611.667mil  T          0.00 100 Ohms       
+R15        RESC2013X70X40LL20T20       2155mil   2528.333mil       2155mil   2528.333mil   2124.488mil   2528.333mil  T          0.00 100 Ohms       
+R10        RESC2013X70X40LL20T20       2155mil       2445mil       2155mil       2445mil   2124.488mil       2445mil  T        360.00 100 Ohms       
+R12        RESC2013X70X40LL20T20       1765mil       1395mil       1765mil       1395mil   1734.488mil       1395mil  T        360.00 100 Ohms       
+R16        RESC2013X70X40LL20T20       2000mil       1850mil       2000mil       1850mil   1969.488mil       1850mil  T          0.00 100 Ohms       
+R14        RESC2013X70X40LL20T20       1755mil       1815mil       1755mil       1815mil   1785.512mil       1815mil  T        180.00 100 Ohms       
+R9         RESC2013X70X40LL20T20       1535mil       1300mil       1535mil       1300mil       1535mil   1269.488mil  T         90.00 1 Ohms         
+SW1        PCB-gaic1pl4705ifv3nefaq-1   2056.417mil   1547.047mil       2145mil       1675mil       2145mil       1675mil  T        270.00 TE Connectivity / AMP 1825910-6
+U2         PCB-3782863-1         1935mil       2495mil       1935mil       2495mil   1819.842mil   2361.142mil  T         90.00 STMicroelectronics STM8S003F3P6
+U1         MP04A_N               1605mil       1180mil       1605mil       1180mil   1719.173mil   1270.551mil  B        180.00 ams AMS1117-3.3
+X1         PCB-e07cv7eyfg1wxdj7ioop-1       1955mil       2730mil       1955mil       2730mil   2077.539mil    2943.09mil  B        360.00 Molex 1040310811
+Y1         HC49                  1920mil       2045mil       1920mil       2045mil   2016.063mil       2045mil  T        180.00 Fox Electronics FOXSLF/080-20
+
