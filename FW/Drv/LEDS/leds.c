@@ -151,3 +151,16 @@ static void TurnLed(uint8_t ledId, uint8_t state){
         gpioPortNeg->DDR &= ~gpioPinNeg;
     }
 }
+
+
+uint8_t GetLedState(uint8_t ledID)
+{
+    return (ledsState & (1 << ledID))?1:0;
+}
+
+
+void SetLedState(uint8_t ledID, uint8_t state)
+{
+    if(state) ledsState |= (1 << ledID);
+    else ledsState &= ~(1 << ledID); 
+}

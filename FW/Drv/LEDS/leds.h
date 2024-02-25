@@ -95,7 +95,7 @@
 //////////////////////////////////////////
 //         LED Control Micro            //
 //////////////////////////////////////////
-//Only support less than 32 leds supported here.//
+//Only less than 32 leds supported here.//
 #define NUM_OF_LEDS 12
 
 #define LED_ANODE_TABLE {LED0_ANODE_PIN_PORT,LED0_ANODE_PIN,\
@@ -120,9 +120,9 @@
                         LED6_CATHODE_PIN_PORT,LED6_CATHODE_PIN,\
                         LED7_CATHODE_PIN_PORT,LED7_CATHODE_PIN,\
                         LED8_CATHODE_PIN_PORT,LED8_CATHODE_PIN,\
-												LED9_CATHODE_PIN_PORT,LED9_CATHODE_PIN,\
-												LED10_CATHODE_PIN_PORT,LED10_CATHODE_PIN,\
-												LED11_CATHODE_PIN_PORT,LED11_CATHODE_PIN}
+                        LED9_CATHODE_PIN_PORT,LED9_CATHODE_PIN,\
+                        LED10_CATHODE_PIN_PORT,LED10_CATHODE_PIN,\
+                        LED11_CATHODE_PIN_PORT,LED11_CATHODE_PIN}
 ///////         DO not Modify below        //////////////////
 /////////////////////////////////////////////////////////////
 #define LED_ON_STATE 0x01
@@ -166,7 +166,7 @@
 * Change Records: 
 *  >> (05/Apr/2020): Create the function 
 *----------------------------------------------*/ 
-#define LED_ON(LED_NO) leds_state |= (0x01 << LED_NO)
+#define LED_ON(LED_NO) (leds_state |= (0x01 << LED_NO))
 /*------------------------------------------------ 
 * LED_OFF 
 * Usage: turn off the virtual led
@@ -177,7 +177,7 @@
 * Change Records: 
 *  >> (05/Apr/2020): Create the function 
 *----------------------------------------------*/ 
-#define LED_OFF(LED_NO) leds_state &= ~(0x01 << LED_NO)
+#define LED_OFF(LED_NO) (leds_state &= ~(0x01 << LED_NO))
 
 
 /*------------------------------------------------ 
@@ -191,7 +191,7 @@
 * Change Records: 
 *  >> (05/Apr/2020): Create the function 
 *----------------------------------------------*/ 
-#define GET_LED_STATE(LED_NO) leds_state &(0x01 << LED_NO)
+#define GET_LED_STATE(LED_NO) (leds_state &(0x01 << LED_NO))
 
 /*------------------------------------------------ 
 * LedsInit 
@@ -217,6 +217,7 @@ void LedsInit( void );
 *----------------------------------------------*/ 
 void updateLedState( void );
 
-
+uint8_t GetLedState(uint8_t ledID);
+void SetLedState(uint8_t ledID, uint8_t state);
 
 #endif

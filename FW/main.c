@@ -22,7 +22,7 @@
 #include "Drv/FAT32/diskio.h"
 #include "Drv/ADC/adc.h"
 #include "dly.h"
-#include "led.h"
+#include "leds.h"
 #include <stdbool.h>
 #include "loggerconf.h"
 
@@ -103,7 +103,8 @@ void main( void )
 	//Init the hardware
 	/////////////////////
 	clkInit();
-	LedInit();
+	//LedInit();
+	LedsInit();
 	sysTickInit();
 	
 	//Enable global Interrupt
@@ -125,7 +126,7 @@ void main( void )
 		//show user that the system initialize ok.
 		for(i = 0; i < 10; i++) {
 			LED_TOGGLE();
-			dly(10000);
+			dly(1000);
 		}
 	
 		//init the cnters
@@ -216,7 +217,7 @@ void main( void )
 				break;
 			default: break;
 		}
-	} 
+	}
 }
 
 /*------------------------------------------------ 

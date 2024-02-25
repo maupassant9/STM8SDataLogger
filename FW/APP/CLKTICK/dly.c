@@ -99,13 +99,15 @@ void dly(uint32_t dt)
 	sysTick++;
 	TIM4->SR1 = ~TIM4_SR1_UIF;
 	
-	if(ledFreqInTick != 0){
+	UpdateLeds();
+
+	// if(ledFreqInTick != 0){
 		
-		if(ledNxtToggle == sysTick){
-			ledNxtToggle = sysTick + ledFreqInTick;
-			LED_TOGGLE();
-		}
-	}
+	// 	if(ledNxtToggle == sysTick){
+	// 		ledNxtToggle = sysTick + ledFreqInTick;
+	// 		LED_TOGGLE();
+	// 	}
+	// }
 }
 
 
