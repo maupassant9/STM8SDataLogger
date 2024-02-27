@@ -1,0 +1,50 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 1.
+Hexadecimal [24-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =  002710 L
+    .__.ABS.                                                    =  000000 G
+    .__.CPU.                                                    =  000000 L
+    .__.H$L.                                                    =  000001 L
+  1 _FatFs                                                         000000 R
+    __divulong                                                     ****** GX
+    __mullong                                                      ****** GX
+  9 _check_fs                                                      000581 R
+  9 _clust2sect                                                    000190 R
+  9 _create_name                                                   000447 R
+  9 _dir_find                                                      0003C6 R
+  9 _dir_next                                                      0002BD R
+  9 _dir_rewind                                                    000237 R
+    _disk_initialize                                               ****** GX
+    _disk_readp                                                    ****** GX
+    _disk_writep                                                   ****** GX
+  9 _follow_path                                                   0004E2 R
+  9 _get_clust                                                     000202 R
+  9 _get_fat                                                       0000E9 R
+  9 _ld_dword                                                      000016 R
+  9 _ld_word                                                       000000 R
+  9 _mem_cmp                                                       0000A5 R
+  9 _mem_set                                                       00008A R
+  9 _pf_mount                                                      0005D8 GR
+  9 _pf_open                                                       000826 GR
+  9 _pf_read                                                       0008B7 GR
+  9 _pf_write                                                      000AA5 GR
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 2.
+Hexadecimal [24-Bits]
+
+Area Table
+
+   0 _CODE                                      size      0   flags    0
+   1 DATA                                       size      2   flags    0
+   2 INITIALIZED                                size      0   flags    0
+   3 DABS                                       size      0   flags    8
+   4 HOME                                       size      0   flags    0
+   5 GSINIT                                     size      0   flags    0
+   6 GSFINAL                                    size      0   flags    0
+   7 CONST                                      size      0   flags    0
+   8 INITIALIZER                                size      0   flags    0
+   9 CODE                                       size    D14   flags    0
+   A CABS                                       size      0   flags    8
+

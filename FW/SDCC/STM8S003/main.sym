@@ -1,0 +1,89 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 1.
+Hexadecimal [24-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =  002710 L
+    .__.ABS.                                                    =  000000 G
+    .__.CPU.                                                    =  000000 L
+    .__.H$L.                                                    =  000001 L
+    _ADC1_IRQHandler                                               ****** GX
+    _AWU_IRQHandler                                                ****** GX
+    _CLK_IRQHandler                                                ****** GX
+  A _ConvertFileName                                               0001BF R
+    _EEPROM_EEC_IRQHandler                                         ****** GX
+    _EXTI_PORTA_IRQHandler                                         ****** GX
+    _EXTI_PORTB_IRQHandler                                         ****** GX
+    _EXTI_PORTC_IRQHandler                                         ****** GX
+    _EXTI_PORTD_IRQHandler                                         ****** GX
+    _EXTI_PORTE_IRQHandler                                         ****** GX
+  A _GetCfg                                                        000238 R
+  A _GetNxtFileName                                                000122 R
+    _I2C_IRQHandler                                                ****** GX
+  A _IsValidCfgBuf                                                 00033B R
+    _LedMatrixInit                                                 ****** GX
+    _SPI_IRQHandler                                                ****** GX
+    _SetLedMode                                                    ****** GX
+    _TIM1_CAP_COM_IRQHandler                                       ****** GX
+    _TIM1_UPD_OVF_TRG_BRK_IRQHandler                               ****** GX
+    _TIM2_CAP_COM_IRQHandler                                       ****** GX
+    _TIM2_UPD_OVF_BRK_IRQHandler                                   ****** GX
+    _TIM4_UPD_OVF_IRQHandler                                       ****** GX
+    _TLI_IRQHandler                                                ****** GX
+    _TRAP_IRQHandler                                               ****** GX
+    _UART1_RX_IRQHandler                                           ****** GX
+    _UART1_TX_IRQHandler                                           ****** GX
+  A _Wr2SD                                                         000069 R
+  8 ___str_0                                                       000000 R
+  5 __interrupt_vect                                               000000 R
+    __mulint                                                       ****** GX
+  6 __sdcc_init_data                                               000000 R
+  5 __sdcc_program_startup                                         00006C R
+  3 __start__stack                                                 000000 R
+  9 __xinit__blkCnt                                                000000 R
+  9 __xinit__fileBlkCnt                                            000001 R
+  9 __xinit__fileNoCnt                                             000005 R
+    _adcBuffer0                                                    ****** GX
+    _adcBuffer1                                                    ****** GX
+  A _assert_failed                                                 000371 GR
+  2 _blkCnt                                                        000000 R
+    _buffer_rdy                                                    ****** GX
+  1 _cfg                                                           000000 R
+  A _clkInit                                                       000360 R
+    _dly                                                           ****** GX
+  2 _fileBlkCnt                                                    000001 R
+  2 _fileNoCnt                                                     000005 R
+  1 _loggerCfg                                                     00000D GR
+  A _main                                                          000000 GR
+    _pf_write                                                      ****** GX
+    _sysTickInit                                                   ****** GX
+    l_DATA                                                         ****** GX
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 2.
+Hexadecimal [24-Bits]
+
+Symbol Table
+
+    l_INITIALIZER                                                  ****** GX
+    s_DATA                                                         ****** GX
+    s_GSINIT                                                       ****** GX
+    s_INITIALIZED                                                  ****** GX
+    s_INITIALIZER                                                  ****** GX
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 3.
+Hexadecimal [24-Bits]
+
+Area Table
+
+   0 _CODE                                      size      0   flags    0
+   1 DATA                                       size     1C   flags    0
+   2 INITIALIZED                                size      7   flags    0
+   3 SSEG                                       size      1   flags    0
+   4 DABS                                       size      0   flags    8
+   5 HOME                                       size     6F   flags    0
+   6 GSINIT                                     size     1A   flags    0
+   7 GSFINAL                                    size      3   flags    0
+   8 CONST                                      size      4   flags    0
+   9 INITIALIZER                                size      7   flags    0
+   A CODE                                       size    374   flags    0
+   B CABS                                       size      0   flags    8
+

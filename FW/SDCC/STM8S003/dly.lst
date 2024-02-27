@@ -1,0 +1,131 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 4.1.0 #12072 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module dly
+                                      6 	.optsdcc -mstm8
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _UpdateLeds
+                                     12 	.globl _sysTick
+                                     13 	.globl _sysTickInit
+                                     14 	.globl _dly
+                                     15 	.globl _systemTickIsr
+                                     16 ;--------------------------------------------------------
+                                     17 ; ram data
+                                     18 ;--------------------------------------------------------
+                                     19 	.area DATA
+      000000                         20 _sysTick::
+      000000                         21 	.ds 4
+                                     22 ;--------------------------------------------------------
+                                     23 ; ram data
+                                     24 ;--------------------------------------------------------
+                                     25 	.area INITIALIZED
+                                     26 ;--------------------------------------------------------
+                                     27 ; absolute external ram data
+                                     28 ;--------------------------------------------------------
+                                     29 	.area DABS (ABS)
+                                     30 
+                                     31 ; default segment ordering for linker
+                                     32 	.area HOME
+                                     33 	.area GSINIT
+                                     34 	.area GSFINAL
+                                     35 	.area CONST
+                                     36 	.area INITIALIZER
+                                     37 	.area CODE
+                                     38 
+                                     39 ;--------------------------------------------------------
+                                     40 ; global & static initialisations
+                                     41 ;--------------------------------------------------------
+                                     42 	.area HOME
+                                     43 	.area GSINIT
+                                     44 	.area GSFINAL
+                                     45 	.area GSINIT
+                                     46 ;--------------------------------------------------------
+                                     47 ; Home
+                                     48 ;--------------------------------------------------------
+                                     49 	.area HOME
+                                     50 	.area HOME
+                                     51 ;--------------------------------------------------------
+                                     52 ; code
+                                     53 ;--------------------------------------------------------
+                                     54 	.area CODE
+                                     55 ;	../src/dly.c: 44: void sysTickInit( void )
+                                     56 ;	-----------------------------------------
+                                     57 ;	 function sysTickInit
+                                     58 ;	-----------------------------------------
+      000000                         59 _sysTickInit:
+                                     60 ;	../src/dly.c: 46: sysTick = 0;
+      000000 5F               [ 1]   61 	clrw	x
+      000001 CFu00u02         [ 2]   62 	ldw	_sysTick+2, x
+      000004 CFu00u00         [ 2]   63 	ldw	_sysTick+0, x
+                                     64 ;	../src/dly.c: 47: tim4Init();
+                                     65 ;	../src/dly.c: 48: }
+      000007 CCr00r0A         [ 2]   66 	jp	_tim4Init
+                                     67 ;	../src/dly.c: 59: static void tim4Init( void )
+                                     68 ;	-----------------------------------------
+                                     69 ;	 function tim4Init
+                                     70 ;	-----------------------------------------
+      00000A                         71 _tim4Init:
+                                     72 ;	../src/dly.c: 61: TIM4->PSCR = TIM4_PRESCALER_64; //tim_clk = 250K, time_resolution = 4us
+      00000A 35 06 53 47      [ 1]   73 	mov	0x5347+0, #0x06
+                                     74 ;	../src/dly.c: 62: TIM4->CR1 = (TIM4_CR1_ARPE);
+      00000E 35 80 53 40      [ 1]   75 	mov	0x5340+0, #0x80
+                                     76 ;	../src/dly.c: 63: TIM4->IER = TIM4_IER_UIE;
+      000012 35 01 53 43      [ 1]   77 	mov	0x5343+0, #0x01
+                                     78 ;	../src/dly.c: 64: TIM4->ARR = TIMER_VALUE_FOR_SYSTICK;
+      000016 35 19 53 48      [ 1]   79 	mov	0x5348+0, #0x19
+                                     80 ;	../src/dly.c: 65: TIM4->CR1 |= TIM4_CR1_CEN;
+      00001A 72 10 53 40      [ 1]   81 	bset	21312, #0
+                                     82 ;	../src/dly.c: 66: }
+      00001E 81               [ 4]   83 	ret
+                                     84 ;	../src/dly.c: 79: void dly(uint32_t dt)
+                                     85 ;	-----------------------------------------
+                                     86 ;	 function dly
+                                     87 ;	-----------------------------------------
+      00001F                         88 _dly:
+                                     89 ;	../src/dly.c: 81: uint32_t destSysTick = sysTick+dt;
+      00001F 90 CEu00u02      [ 2]   90 	ldw	y, _sysTick+2
+      000023 72 F9 05         [ 2]   91 	addw	y, (0x05, sp)
+      000026 CEu00u00         [ 2]   92 	ldw	x, _sysTick+0
+      000029 24 01            [ 1]   93 	jrnc	00111$
+      00002B 5C               [ 1]   94 	incw	x
+      00002C                         95 00111$:
+      00002C 72 FB 03         [ 2]   96 	addw	x, (0x03, sp)
+                                     97 ;	../src/dly.c: 82: while(destSysTick!=sysTick);
+      00002F                         98 00101$:
+      00002F 90 C3u00u02      [ 2]   99 	cpw	y, _sysTick+2
+      000033 26 FA            [ 1]  100 	jrne	00101$
+      000035 C3u00u00         [ 2]  101 	cpw	x, _sysTick+0
+      000038 26 F5            [ 1]  102 	jrne	00101$
+      00003A 81               [ 4]  103 	ret
+      00003B 20 F2            [ 2]  104 	jra	00101$
+                                    105 ;	../src/dly.c: 83: }
+      00003D 81               [ 4]  106 	ret
+                                    107 ;	../src/dly.c: 97: void systemTickIsr (void)
+                                    108 ;	-----------------------------------------
+                                    109 ;	 function systemTickIsr
+                                    110 ;	-----------------------------------------
+      00003E                        111 _systemTickIsr:
+                                    112 ;	../src/dly.c: 99: sysTick++;
+      00003E CEu00u02         [ 2]  113 	ldw	x, _sysTick+2
+      000041 90 CEu00u00      [ 2]  114 	ldw	y, _sysTick+0
+      000045 5C               [ 1]  115 	incw	x
+      000046 26 02            [ 1]  116 	jrne	00103$
+      000048 90 5C            [ 1]  117 	incw	y
+      00004A                        118 00103$:
+      00004A CFu00u02         [ 2]  119 	ldw	_sysTick+2, x
+      00004D 90 CFu00u00      [ 2]  120 	ldw	_sysTick+0, y
+                                    121 ;	../src/dly.c: 100: TIM4->SR1 &= ~TIM4_SR1_UIF;
+      000051 C6 53 44         [ 1]  122 	ld	a, 0x5344
+      000054 A4 FE            [ 1]  123 	and	a, #0xfe
+      000056 C7 53 44         [ 1]  124 	ld	0x5344, a
+                                    125 ;	../src/dly.c: 101: UpdateLeds();
+                                    126 ;	../src/dly.c: 102: }
+      000059 CCr00r00         [ 2]  127 	jp	_UpdateLeds
+                                    128 	.area CODE
+                                    129 	.area CONST
+                                    130 	.area INITIALIZER
+                                    131 	.area CABS (ABS)

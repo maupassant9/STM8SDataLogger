@@ -1,0 +1,20 @@
+-muwx
+-i ./STM8S003/STM8S003.hex
+-b HOME = 0x8000
+-b DATA = 0x0001
+-k /usr/libexec/sdcc/../share/sdcc/lib/stm8
+-k /usr/share/sdcc/lib/stm8
+-l stm8
+-l stm8
+STM8S003/adc.rel
+STM8S003/button.rel
+STM8S003/diskio.rel
+STM8S003/dly.rel
+STM8S003/led_matrix.rel
+STM8S003/leds.rel
+STM8S003/main.rel
+STM8S003/mmcsd.rel
+STM8S003/pff.rel
+STM8S003/stm8s_it.rel
+
+-e

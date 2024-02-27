@@ -1,0 +1,2304 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 4.1.0 #12072 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module pff
+                                      6 	.optsdcc -mstm8
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _disk_writep
+                                     12 	.globl _disk_readp
+                                     13 	.globl _disk_initialize
+                                     14 	.globl _pf_mount
+                                     15 	.globl _pf_open
+                                     16 	.globl _pf_read
+                                     17 	.globl _pf_write
+                                     18 ;--------------------------------------------------------
+                                     19 ; ram data
+                                     20 ;--------------------------------------------------------
+                                     21 	.area DATA
+      000000                         22 _FatFs:
+      000000                         23 	.ds 2
+                                     24 ;--------------------------------------------------------
+                                     25 ; ram data
+                                     26 ;--------------------------------------------------------
+                                     27 	.area INITIALIZED
+                                     28 ;--------------------------------------------------------
+                                     29 ; absolute external ram data
+                                     30 ;--------------------------------------------------------
+                                     31 	.area DABS (ABS)
+                                     32 
+                                     33 ; default segment ordering for linker
+                                     34 	.area HOME
+                                     35 	.area GSINIT
+                                     36 	.area GSFINAL
+                                     37 	.area CONST
+                                     38 	.area INITIALIZER
+                                     39 	.area CODE
+                                     40 
+                                     41 ;--------------------------------------------------------
+                                     42 ; global & static initialisations
+                                     43 ;--------------------------------------------------------
+                                     44 	.area HOME
+                                     45 	.area GSINIT
+                                     46 	.area GSFINAL
+                                     47 	.area GSINIT
+                                     48 ;--------------------------------------------------------
+                                     49 ; Home
+                                     50 ;--------------------------------------------------------
+                                     51 	.area HOME
+                                     52 	.area HOME
+                                     53 ;--------------------------------------------------------
+                                     54 ; code
+                                     55 ;--------------------------------------------------------
+                                     56 	.area CODE
+                                     57 ;	../src/pff.c: 384: static WORD ld_word (const BYTE* ptr)	/*	 Load a 2-byte little-endian word */
+                                     58 ;	-----------------------------------------
+                                     59 ;	 function ld_word
+                                     60 ;	-----------------------------------------
+      000000                         61 _ld_word:
+      000000 89               [ 2]   62 	pushw	x
+                                     63 ;	../src/pff.c: 388: rv = ptr[1];
+      000001 1E 05            [ 2]   64 	ldw	x, (0x05, sp)
+      000003 E6 01            [ 1]   65 	ld	a, (0x1, x)
+                                     66 ;	../src/pff.c: 389: rv = rv << 8 | ptr[0];
+      000005 6B 01            [ 1]   67 	ld	(0x01, sp), a
+      000007 0F 02            [ 1]   68 	clr	(0x02, sp)
+      000009 1E 05            [ 2]   69 	ldw	x, (0x05, sp)
+      00000B F6               [ 1]   70 	ld	a, (x)
+      00000C 5F               [ 1]   71 	clrw	x
+      00000D 1A 02            [ 1]   72 	or	a, (0x02, sp)
+      00000F 02               [ 1]   73 	rlwa	x
+      000010 1A 01            [ 1]   74 	or	a, (0x01, sp)
+                                     75 ;	../src/pff.c: 390: return rv;
+      000012 95               [ 1]   76 	ld	xh, a
+                                     77 ;	../src/pff.c: 391: }
+      000013 5B 02            [ 2]   78 	addw	sp, #2
+      000015 81               [ 4]   79 	ret
+                                     80 ;	../src/pff.c: 393: static DWORD ld_dword (const BYTE* ptr)	/* Load a 4-byte little-endian word */
+                                     81 ;	-----------------------------------------
+                                     82 ;	 function ld_dword
+                                     83 ;	-----------------------------------------
+      000016                         84 _ld_dword:
+      000016 52 08            [ 2]   85 	sub	sp, #8
+                                     86 ;	../src/pff.c: 397: rv = ptr[3];
+      000018 1E 0B            [ 2]   87 	ldw	x, (0x0b, sp)
+      00001A E6 03            [ 1]   88 	ld	a, (0x3, x)
+      00001C 5F               [ 1]   89 	clrw	x
+      00001D 90 5F            [ 1]   90 	clrw	y
+      00001F 97               [ 1]   91 	ld	xl, a
+                                     92 ;	../src/pff.c: 398: rv = rv << 8 | ptr[2];
+      000020 1F 02            [ 2]   93 	ldw	(0x02, sp), x
+      000022 0F 04            [ 1]   94 	clr	(0x04, sp)
+      000024 1E 0B            [ 2]   95 	ldw	x, (0x0b, sp)
+      000026 E6 02            [ 1]   96 	ld	a, (0x2, x)
+      000028 0F 07            [ 1]   97 	clr	(0x07, sp)
+      00002A 5F               [ 1]   98 	clrw	x
+      00002B 0F 05            [ 1]   99 	clr	(0x05, sp)
+      00002D 1A 04            [ 1]  100 	or	a, (0x04, sp)
+      00002F 95               [ 1]  101 	ld	xh, a
+      000030 7B 03            [ 1]  102 	ld	a, (0x03, sp)
+      000032 1A 07            [ 1]  103 	or	a, (0x07, sp)
+      000034 90 95            [ 1]  104 	ld	yh, a
+      000036 89               [ 2]  105 	pushw	x
+      000037 7B 04            [ 1]  106 	ld	a, (0x04, sp)
+      000039 1A 02            [ 1]  107 	or	a, (2, sp)
+      00003B 85               [ 2]  108 	popw	x
+      00003C 97               [ 1]  109 	ld	xl, a
+      00003D 90 9F            [ 1]  110 	ld	a, yl
+      00003F 1A 05            [ 1]  111 	or	a, (0x05, sp)
+      000041 01               [ 1]  112 	rrwa	x
+                                    113 ;	../src/pff.c: 399: rv = rv << 8 | ptr[1];
+      000042 6B 01            [ 1]  114 	ld	(0x01, sp), a
+      000044 61               [ 1]  115 	exg	a, yl
+      000045 9F               [ 1]  116 	ld	a, xl
+      000046 61               [ 1]  117 	exg	a, yl
+      000047 0F 04            [ 1]  118 	clr	(0x04, sp)
+      000049 1E 0B            [ 2]  119 	ldw	x, (0x0b, sp)
+      00004B E6 01            [ 1]  120 	ld	a, (0x1, x)
+      00004D 5F               [ 1]  121 	clrw	x
+      00004E 0F 06            [ 1]  122 	clr	(0x06, sp)
+      000050 0F 05            [ 1]  123 	clr	(0x05, sp)
+      000052 1A 04            [ 1]  124 	or	a, (0x04, sp)
+      000054 97               [ 1]  125 	ld	xl, a
+      000055 89               [ 2]  126 	pushw	x
+      000056 90 9F            [ 1]  127 	ld	a, yl
+      000058 1A 01            [ 1]  128 	or	a, (1, sp)
+      00005A 85               [ 2]  129 	popw	x
+      00005B 95               [ 1]  130 	ld	xh, a
+      00005C 90 9E            [ 1]  131 	ld	a, yh
+      00005E 1A 06            [ 1]  132 	or	a, (0x06, sp)
+      000060 90 97            [ 1]  133 	ld	yl, a
+                                    134 ;	../src/pff.c: 400: rv = rv << 8 | ptr[0];
+      000062 1F 02            [ 2]  135 	ldw	(0x02, sp), x
+      000064 0F 04            [ 1]  136 	clr	(0x04, sp)
+      000066 1E 0B            [ 2]  137 	ldw	x, (0x0b, sp)
+      000068 F6               [ 1]  138 	ld	a, (x)
+      000069 0F 07            [ 1]  139 	clr	(0x07, sp)
+      00006B 5F               [ 1]  140 	clrw	x
+      00006C 0F 05            [ 1]  141 	clr	(0x05, sp)
+      00006E 1A 04            [ 1]  142 	or	a, (0x04, sp)
+      000070 95               [ 1]  143 	ld	xh, a
+      000071 7B 03            [ 1]  144 	ld	a, (0x03, sp)
+      000073 1A 07            [ 1]  145 	or	a, (0x07, sp)
+      000075 90 95            [ 1]  146 	ld	yh, a
+      000077 89               [ 2]  147 	pushw	x
+      000078 7B 04            [ 1]  148 	ld	a, (0x04, sp)
+      00007A 1A 02            [ 1]  149 	or	a, (2, sp)
+      00007C 85               [ 2]  150 	popw	x
+      00007D 97               [ 1]  151 	ld	xl, a
+      00007E 90 9F            [ 1]  152 	ld	a, yl
+      000080 1A 05            [ 1]  153 	or	a, (0x05, sp)
+      000082 61               [ 1]  154 	exg	a, yl
+      000083 9E               [ 1]  155 	ld	a, xh
+      000084 61               [ 1]  156 	exg	a, yl
+      000085 95               [ 1]  157 	ld	xh, a
+                                    158 ;	../src/pff.c: 401: return rv;
+      000086 51               [ 1]  159 	exgw	x, y
+                                    160 ;	../src/pff.c: 402: }
+      000087 5B 08            [ 2]  161 	addw	sp, #8
+      000089 81               [ 4]  162 	ret
+                                    163 ;	../src/pff.c: 411: static void mem_set (void* dst, int val, int cnt) {
+                                    164 ;	-----------------------------------------
+                                    165 ;	 function mem_set
+                                    166 ;	-----------------------------------------
+      00008A                        167 _mem_set:
+      00008A 89               [ 2]  168 	pushw	x
+                                    169 ;	../src/pff.c: 412: char *d = (char*)dst;
+      00008B 1E 05            [ 2]  170 	ldw	x, (0x05, sp)
+                                    171 ;	../src/pff.c: 413: while (cnt--) *d++ = (char)val;
+      00008D 1F 01            [ 2]  172 	ldw	(0x01, sp), x
+      00008F 16 09            [ 2]  173 	ldw	y, (0x09, sp)
+      000091                        174 00101$:
+      000091 93               [ 1]  175 	ldw	x, y
+      000092 90 5A            [ 2]  176 	decw	y
+      000094 5D               [ 2]  177 	tnzw	x
+      000095 27 0C            [ 1]  178 	jreq	00104$
+      000097 7B 08            [ 1]  179 	ld	a, (0x08, sp)
+      000099 1E 01            [ 2]  180 	ldw	x, (0x01, sp)
+      00009B F7               [ 1]  181 	ld	(x), a
+      00009C 1E 01            [ 2]  182 	ldw	x, (0x01, sp)
+      00009E 5C               [ 1]  183 	incw	x
+      00009F 1F 01            [ 2]  184 	ldw	(0x01, sp), x
+      0000A1 20 EE            [ 2]  185 	jra	00101$
+      0000A3                        186 00104$:
+                                    187 ;	../src/pff.c: 414: }
+      0000A3 85               [ 2]  188 	popw	x
+      0000A4 81               [ 4]  189 	ret
+                                    190 ;	../src/pff.c: 417: static int mem_cmp (const void* dst, const void* src, int cnt) {
+                                    191 ;	-----------------------------------------
+                                    192 ;	 function mem_cmp
+                                    193 ;	-----------------------------------------
+      0000A5                        194 _mem_cmp:
+      0000A5 52 0A            [ 2]  195 	sub	sp, #10
+                                    196 ;	../src/pff.c: 418: const char *d = (const char *)dst, *s = (const char *)src;
+      0000A7 16 0D            [ 2]  197 	ldw	y, (0x0d, sp)
+      0000A9 1E 0F            [ 2]  198 	ldw	x, (0x0f, sp)
+                                    199 ;	../src/pff.c: 419: int r = 0;
+      0000AB 0F 02            [ 1]  200 	clr	(0x02, sp)
+      0000AD 0F 01            [ 1]  201 	clr	(0x01, sp)
+                                    202 ;	../src/pff.c: 420: while (cnt-- && (r = *d++ - *s++) == 0) ;
+      0000AF 17 05            [ 2]  203 	ldw	(0x05, sp), y
+      0000B1 1F 07            [ 2]  204 	ldw	(0x07, sp), x
+      0000B3 16 11            [ 2]  205 	ldw	y, (0x11, sp)
+      0000B5 17 09            [ 2]  206 	ldw	(0x09, sp), y
+      0000B7                        207 00102$:
+      0000B7 16 09            [ 2]  208 	ldw	y, (0x09, sp)
+      0000B9 17 03            [ 2]  209 	ldw	(0x03, sp), y
+      0000BB 1E 09            [ 2]  210 	ldw	x, (0x09, sp)
+      0000BD 5A               [ 2]  211 	decw	x
+      0000BE 1F 09            [ 2]  212 	ldw	(0x09, sp), x
+      0000C0 1E 03            [ 2]  213 	ldw	x, (0x03, sp)
+      0000C2 27 20            [ 1]  214 	jreq	00104$
+      0000C4 1E 05            [ 2]  215 	ldw	x, (0x05, sp)
+      0000C6 F6               [ 1]  216 	ld	a, (x)
+      0000C7 1E 05            [ 2]  217 	ldw	x, (0x05, sp)
+      0000C9 5C               [ 1]  218 	incw	x
+      0000CA 1F 05            [ 2]  219 	ldw	(0x05, sp), x
+      0000CC 5F               [ 1]  220 	clrw	x
+      0000CD 97               [ 1]  221 	ld	xl, a
+      0000CE 16 07            [ 2]  222 	ldw	y, (0x07, sp)
+      0000D0 90 F6            [ 1]  223 	ld	a, (y)
+      0000D2 16 07            [ 2]  224 	ldw	y, (0x07, sp)
+      0000D4 90 5C            [ 1]  225 	incw	y
+      0000D6 17 07            [ 2]  226 	ldw	(0x07, sp), y
+      0000D8 6B 04            [ 1]  227 	ld	(0x04, sp), a
+      0000DA 0F 03            [ 1]  228 	clr	(0x03, sp)
+      0000DC 72 F0 03         [ 2]  229 	subw	x, (0x03, sp)
+      0000DF 1F 01            [ 2]  230 	ldw	(0x01, sp), x
+      0000E1 5D               [ 2]  231 	tnzw	x
+      0000E2 27 D3            [ 1]  232 	jreq	00102$
+      0000E4                        233 00104$:
+                                    234 ;	../src/pff.c: 421: return r;
+      0000E4 1E 01            [ 2]  235 	ldw	x, (0x01, sp)
+                                    236 ;	../src/pff.c: 422: }
+      0000E6 5B 0A            [ 2]  237 	addw	sp, #10
+      0000E8 81               [ 4]  238 	ret
+                                    239 ;	../src/pff.c: 430: static CLUST get_fat (	/* 1:IO error, Else:Cluster status */
+                                    240 ;	-----------------------------------------
+                                    241 ;	 function get_fat
+                                    242 ;	-----------------------------------------
+      0000E9                        243 _get_fat:
+      0000E9 52 12            [ 2]  244 	sub	sp, #18
+                                    245 ;	../src/pff.c: 435: FATFS *fs = FatFs;
+      0000EB 90 CEu00u00      [ 2]  246 	ldw	y, _FatFs+0
+                                    247 ;	../src/pff.c: 440: if (clst < 2 || clst >= fs->n_fatent) return 1;	/* Range check */
+      0000EF 1E 17            [ 2]  248 	ldw	x, (0x17, sp)
+      0000F1 A3 00 02         [ 2]  249 	cpw	x, #0x0002
+      0000F4 7B 16            [ 1]  250 	ld	a, (0x16, sp)
+      0000F6 A2 00            [ 1]  251 	sbc	a, #0x00
+      0000F8 7B 15            [ 1]  252 	ld	a, (0x15, sp)
+      0000FA A2 00            [ 1]  253 	sbc	a, #0x00
+      0000FC 25 1B            [ 1]  254 	jrc	00101$
+      0000FE 93               [ 1]  255 	ldw	x, y
+      0000FF E6 09            [ 1]  256 	ld	a, (0x9, x)
+      000101 6B 12            [ 1]  257 	ld	(0x12, sp), a
+      000103 E6 08            [ 1]  258 	ld	a, (0x8, x)
+      000105 6B 11            [ 1]  259 	ld	(0x11, sp), a
+      000107 EE 06            [ 2]  260 	ldw	x, (0x6, x)
+      000109 1F 0F            [ 2]  261 	ldw	(0x0f, sp), x
+      00010B 1E 17            [ 2]  262 	ldw	x, (0x17, sp)
+      00010D 13 11            [ 2]  263 	cpw	x, (0x11, sp)
+      00010F 7B 16            [ 1]  264 	ld	a, (0x16, sp)
+      000111 12 10            [ 1]  265 	sbc	a, (0x10, sp)
+      000113 7B 15            [ 1]  266 	ld	a, (0x15, sp)
+      000115 12 0F            [ 1]  267 	sbc	a, (0x0f, sp)
+      000117 25 06            [ 1]  268 	jrc	00102$
+      000119                        269 00101$:
+      000119 5F               [ 1]  270 	clrw	x
+      00011A 5C               [ 1]  271 	incw	x
+      00011B 90 5F            [ 1]  272 	clrw	y
+      00011D 20 6E            [ 2]  273 	jra	00108$
+      00011F                        274 00102$:
+                                    275 ;	../src/pff.c: 442: switch (fs->fs_type) {
+      00011F 90 F6            [ 1]  276 	ld	a, (y)
+      000121 A1 03            [ 1]  277 	cp	a, #0x03
+      000123 26 64            [ 1]  278 	jrne	00107$
+                                    279 ;	../src/pff.c: 464: if (disk_readp(buf, fs->fatbase + clst / 128, ((UINT)clst % 128) * 4, 4)) break;
+      000125 1E 17            [ 2]  280 	ldw	x, (0x17, sp)
+      000127 9F               [ 1]  281 	ld	a, xl
+      000128 A4 7F            [ 1]  282 	and	a, #0x7f
+      00012A 97               [ 1]  283 	ld	xl, a
+      00012B 4F               [ 1]  284 	clr	a
+      00012C 95               [ 1]  285 	ld	xh, a
+      00012D 58               [ 2]  286 	sllw	x
+      00012E 58               [ 2]  287 	sllw	x
+      00012F 1F 05            [ 2]  288 	ldw	(0x05, sp), x
+      000131 93               [ 1]  289 	ldw	x, y
+      000132 E6 0D            [ 1]  290 	ld	a, (0xd, x)
+      000134 6B 0A            [ 1]  291 	ld	(0x0a, sp), a
+      000136 E6 0C            [ 1]  292 	ld	a, (0xc, x)
+      000138 EE 0A            [ 2]  293 	ldw	x, (0xa, x)
+      00013A 1F 07            [ 2]  294 	ldw	(0x07, sp), x
+      00013C 1E 17            [ 2]  295 	ldw	x, (0x17, sp)
+      00013E 16 15            [ 2]  296 	ldw	y, (0x15, sp)
+      000140 88               [ 1]  297 	push	a
+      000141 4F               [ 1]  298 	clr	a
+      000142 90 01            [ 1]  299 	rrwa	y
+      000144 01               [ 1]  300 	rrwa	x
+      000145 48               [ 1]  301 	sll	a
+      000146 59               [ 2]  302 	rlcw	x
+      000147 90 59            [ 2]  303 	rlcw	y
+      000149 84               [ 1]  304 	pop	a
+      00014A 1F 0D            [ 2]  305 	ldw	(0x0d, sp), x
+      00014C 95               [ 1]  306 	ld	xh, a
+      00014D 41               [ 1]  307 	exg	a, xl
+      00014E 7B 0A            [ 1]  308 	ld	a, (0x0a, sp)
+      000150 41               [ 1]  309 	exg	a, xl
+      000151 72 FB 0D         [ 2]  310 	addw	x, (0x0d, sp)
+      000154 90 9F            [ 1]  311 	ld	a, yl
+      000156 19 08            [ 1]  312 	adc	a, (0x08, sp)
+      000158 6B 10            [ 1]  313 	ld	(0x10, sp), a
+      00015A 90 9E            [ 1]  314 	ld	a, yh
+      00015C 19 07            [ 1]  315 	adc	a, (0x07, sp)
+      00015E 6B 0F            [ 1]  316 	ld	(0x0f, sp), a
+      000160 4B 04            [ 1]  317 	push	#0x04
+      000162 4B 00            [ 1]  318 	push	#0x00
+      000164 16 07            [ 2]  319 	ldw	y, (0x07, sp)
+      000166 90 89            [ 2]  320 	pushw	y
+      000168 89               [ 2]  321 	pushw	x
+      000169 1E 15            [ 2]  322 	ldw	x, (0x15, sp)
+      00016B 89               [ 2]  323 	pushw	x
+      00016C 96               [ 1]  324 	ldw	x, sp
+      00016D 1C 00 09         [ 2]  325 	addw	x, #9
+      000170 89               [ 2]  326 	pushw	x
+      000171 CDr00r00         [ 4]  327 	call	_disk_readp
+      000174 5B 0A            [ 2]  328 	addw	sp, #10
+      000176 4D               [ 1]  329 	tnz	a
+      000177 26 10            [ 1]  330 	jrne	00107$
+                                    331 ;	../src/pff.c: 465: return ld_dword(buf) & 0x0FFFFFFF;
+      000179 96               [ 1]  332 	ldw	x, sp
+      00017A 5C               [ 1]  333 	incw	x
+      00017B 89               [ 2]  334 	pushw	x
+      00017C CDr00r16         [ 4]  335 	call	_ld_dword
+      00017F 5B 02            [ 2]  336 	addw	sp, #2
+      000181 90 9E            [ 1]  337 	ld	a, yh
+      000183 A4 0F            [ 1]  338 	and	a, #0x0f
+      000185 90 95            [ 1]  339 	ld	yh, a
+      000187 20 04            [ 2]  340 	jra	00108$
+                                    341 ;	../src/pff.c: 467: }
+      000189                        342 00107$:
+                                    343 ;	../src/pff.c: 469: return 1;	/* An error occured at the disk I/O layer */
+      000189 5F               [ 1]  344 	clrw	x
+      00018A 5C               [ 1]  345 	incw	x
+      00018B 90 5F            [ 1]  346 	clrw	y
+      00018D                        347 00108$:
+                                    348 ;	../src/pff.c: 470: }
+      00018D 5B 12            [ 2]  349 	addw	sp, #18
+      00018F 81               [ 4]  350 	ret
+                                    351 ;	../src/pff.c: 479: static DWORD clust2sect (	/* !=0: Sector number, 0: Failed - invalid cluster# */
+                                    352 ;	-----------------------------------------
+                                    353 ;	 function clust2sect
+                                    354 ;	-----------------------------------------
+      000190                        355 _clust2sect:
+      000190 52 08            [ 2]  356 	sub	sp, #8
+                                    357 ;	../src/pff.c: 483: FATFS *fs = FatFs;
+      000192 CEu00u00         [ 2]  358 	ldw	x, _FatFs+0
+      000195 1F 07            [ 2]  359 	ldw	(0x07, sp), x
+                                    360 ;	../src/pff.c: 486: clst -= 2;
+      000197 1E 0D            [ 2]  361 	ldw	x, (0x0d, sp)
+      000199 1D 00 02         [ 2]  362 	subw	x, #0x0002
+      00019C 16 0B            [ 2]  363 	ldw	y, (0x0b, sp)
+      00019E 24 02            [ 1]  364 	jrnc	00110$
+      0001A0 90 5A            [ 2]  365 	decw	y
+      0001A2                        366 00110$:
+      0001A2 1F 0D            [ 2]  367 	ldw	(0x0d, sp), x
+      0001A4 17 0B            [ 2]  368 	ldw	(0x0b, sp), y
+                                    369 ;	../src/pff.c: 487: if (clst >= (fs->n_fatent - 2)) return 0;		/* Invalid cluster# */
+      0001A6 1E 07            [ 2]  370 	ldw	x, (0x07, sp)
+      0001A8 90 93            [ 1]  371 	ldw	y, x
+      0001AA 90 EE 08         [ 2]  372 	ldw	y, (0x8, y)
+      0001AD EE 06            [ 2]  373 	ldw	x, (0x6, x)
+      0001AF 72 A2 00 02      [ 2]  374 	subw	y, #0x0002
+      0001B3 17 05            [ 2]  375 	ldw	(0x05, sp), y
+      0001B5 24 01            [ 1]  376 	jrnc	00111$
+      0001B7 5A               [ 2]  377 	decw	x
+      0001B8                        378 00111$:
+      0001B8 1F 03            [ 2]  379 	ldw	(0x03, sp), x
+      0001BA 1E 0D            [ 2]  380 	ldw	x, (0x0d, sp)
+      0001BC 13 05            [ 2]  381 	cpw	x, (0x05, sp)
+      0001BE 7B 0C            [ 1]  382 	ld	a, (0x0c, sp)
+      0001C0 12 04            [ 1]  383 	sbc	a, (0x04, sp)
+      0001C2 7B 0B            [ 1]  384 	ld	a, (0x0b, sp)
+      0001C4 12 03            [ 1]  385 	sbc	a, (0x03, sp)
+      0001C6 25 05            [ 1]  386 	jrc	00102$
+      0001C8 5F               [ 1]  387 	clrw	x
+      0001C9 90 5F            [ 1]  388 	clrw	y
+      0001CB 20 32            [ 2]  389 	jra	00103$
+      0001CD                        390 00102$:
+                                    391 ;	../src/pff.c: 488: return (DWORD)clst * fs->csize + fs->database;
+      0001CD 1E 07            [ 2]  392 	ldw	x, (0x07, sp)
+      0001CF E6 02            [ 1]  393 	ld	a, (0x2, x)
+      0001D1 5F               [ 1]  394 	clrw	x
+      0001D2 97               [ 1]  395 	ld	xl, a
+      0001D3 90 5F            [ 1]  396 	clrw	y
+      0001D5 89               [ 2]  397 	pushw	x
+      0001D6 90 89            [ 2]  398 	pushw	y
+      0001D8 1E 11            [ 2]  399 	ldw	x, (0x11, sp)
+      0001DA 89               [ 2]  400 	pushw	x
+      0001DB 1E 11            [ 2]  401 	ldw	x, (0x11, sp)
+      0001DD 89               [ 2]  402 	pushw	x
+      0001DE CDr00r00         [ 4]  403 	call	__mullong
+      0001E1 5B 08            [ 2]  404 	addw	sp, #8
+      0001E3 1F 03            [ 2]  405 	ldw	(0x03, sp), x
+      0001E5 17 01            [ 2]  406 	ldw	(0x01, sp), y
+      0001E7 1E 07            [ 2]  407 	ldw	x, (0x07, sp)
+      0001E9 90 93            [ 1]  408 	ldw	y, x
+      0001EB 90 EE 14         [ 2]  409 	ldw	y, (0x14, y)
+      0001EE EE 12            [ 2]  410 	ldw	x, (0x12, x)
+      0001F0 1F 05            [ 2]  411 	ldw	(0x05, sp), x
+      0001F2 93               [ 1]  412 	ldw	x, y
+      0001F3 72 FB 03         [ 2]  413 	addw	x, (0x03, sp)
+      0001F6 16 05            [ 2]  414 	ldw	y, (0x05, sp)
+      0001F8 24 02            [ 1]  415 	jrnc	00113$
+      0001FA 90 5C            [ 1]  416 	incw	y
+      0001FC                        417 00113$:
+      0001FC 72 F9 01         [ 2]  418 	addw	y, (0x01, sp)
+      0001FF                        419 00103$:
+                                    420 ;	../src/pff.c: 489: }
+      0001FF 5B 08            [ 2]  421 	addw	sp, #8
+      000201 81               [ 4]  422 	ret
+                                    423 ;	../src/pff.c: 492: static CLUST get_clust (
+                                    424 ;	-----------------------------------------
+                                    425 ;	 function get_clust
+                                    426 ;	-----------------------------------------
+      000202                        427 _get_clust:
+      000202 52 04            [ 2]  428 	sub	sp, #4
+                                    429 ;	../src/pff.c: 501: clst = ld_word(dir+DIR_FstClusHI);
+      000204 1E 07            [ 2]  430 	ldw	x, (0x07, sp)
+      000206 1C 00 14         [ 2]  431 	addw	x, #0x0014
+      000209 89               [ 2]  432 	pushw	x
+      00020A CDr00r00         [ 4]  433 	call	_ld_word
+      00020D 5B 02            [ 2]  434 	addw	sp, #2
+      00020F 51               [ 1]  435 	exgw	x, y
+                                    436 ;	../src/pff.c: 502: clst <<= 16;
+      000210 5F               [ 1]  437 	clrw	x
+      000211 1F 03            [ 2]  438 	ldw	(0x03, sp), x
+      000213 17 01            [ 2]  439 	ldw	(0x01, sp), y
+                                    440 ;	../src/pff.c: 504: clst |= ld_word(dir+DIR_FstClusLO);
+      000215 1E 07            [ 2]  441 	ldw	x, (0x07, sp)
+      000217 1C 00 1A         [ 2]  442 	addw	x, #0x001a
+      00021A 89               [ 2]  443 	pushw	x
+      00021B CDr00r00         [ 4]  444 	call	_ld_word
+      00021E 5B 02            [ 2]  445 	addw	sp, #2
+      000220 4F               [ 1]  446 	clr	a
+      000221 90 5F            [ 1]  447 	clrw	y
+      000223 1A 02            [ 1]  448 	or	a, (0x02, sp)
+      000225 90 97            [ 1]  449 	ld	yl, a
+      000227 9F               [ 1]  450 	ld	a, xl
+      000228 1A 04            [ 1]  451 	or	a, (0x04, sp)
+      00022A 02               [ 1]  452 	rlwa	x
+      00022B 1A 03            [ 1]  453 	or	a, (0x03, sp)
+      00022D 95               [ 1]  454 	ld	xh, a
+      00022E 90 9E            [ 1]  455 	ld	a, yh
+      000230 1A 01            [ 1]  456 	or	a, (0x01, sp)
+                                    457 ;	../src/pff.c: 506: return clst;
+      000232 90 95            [ 1]  458 	ld	yh, a
+                                    459 ;	../src/pff.c: 507: }
+      000234 5B 04            [ 2]  460 	addw	sp, #4
+      000236 81               [ 4]  461 	ret
+                                    462 ;	../src/pff.c: 514: static FRESULT dir_rewind (
+                                    463 ;	-----------------------------------------
+                                    464 ;	 function dir_rewind
+                                    465 ;	-----------------------------------------
+      000237                        466 _dir_rewind:
+      000237 52 0C            [ 2]  467 	sub	sp, #12
+                                    468 ;	../src/pff.c: 519: FATFS *fs = FatFs;
+      000239 CEu00u00         [ 2]  469 	ldw	x, _FatFs+0
+      00023C 1F 07            [ 2]  470 	ldw	(0x07, sp), x
+                                    471 ;	../src/pff.c: 522: dj->index = 0;
+      00023E 16 0F            [ 2]  472 	ldw	y, (0x0f, sp)
+      000240 17 05            [ 2]  473 	ldw	(0x05, sp), y
+      000242 93               [ 1]  474 	ldw	x, y
+      000243 6F 01            [ 1]  475 	clr	(0x1, x)
+      000245 7F               [ 1]  476 	clr	(x)
+                                    477 ;	../src/pff.c: 523: clst = dj->sclust;
+      000246 1E 05            [ 2]  478 	ldw	x, (0x05, sp)
+      000248 90 93            [ 1]  479 	ldw	y, x
+      00024A 90 EE 06         [ 2]  480 	ldw	y, (0x6, y)
+      00024D EE 04            [ 2]  481 	ldw	x, (0x4, x)
+      00024F 17 0B            [ 2]  482 	ldw	(0x0b, sp), y
+      000251 1F 09            [ 2]  483 	ldw	(0x09, sp), x
+                                    484 ;	../src/pff.c: 524: if (clst == 1 || clst >= fs->n_fatent) {	/* Check start cluster range */
+      000253 1E 0B            [ 2]  485 	ldw	x, (0x0b, sp)
+      000255 5A               [ 2]  486 	decw	x
+      000256 26 04            [ 1]  487 	jrne	00129$
+      000258 1E 09            [ 2]  488 	ldw	x, (0x09, sp)
+      00025A 27 1B            [ 1]  489 	jreq	00101$
+      00025C                        490 00129$:
+      00025C 1E 07            [ 2]  491 	ldw	x, (0x07, sp)
+      00025E 90 93            [ 1]  492 	ldw	y, x
+      000260 90 EE 08         [ 2]  493 	ldw	y, (0x8, y)
+      000263 17 03            [ 2]  494 	ldw	(0x03, sp), y
+      000265 EE 06            [ 2]  495 	ldw	x, (0x6, x)
+      000267 1F 01            [ 2]  496 	ldw	(0x01, sp), x
+      000269 1E 0B            [ 2]  497 	ldw	x, (0x0b, sp)
+      00026B 13 03            [ 2]  498 	cpw	x, (0x03, sp)
+      00026D 7B 0A            [ 1]  499 	ld	a, (0x0a, sp)
+      00026F 12 02            [ 1]  500 	sbc	a, (0x02, sp)
+      000271 7B 09            [ 1]  501 	ld	a, (0x09, sp)
+      000273 12 01            [ 1]  502 	sbc	a, (0x01, sp)
+      000275 25 04            [ 1]  503 	jrc	00106$
+      000277                        504 00101$:
+                                    505 ;	../src/pff.c: 525: return FR_DISK_ERR;
+      000277 A6 01            [ 1]  506 	ld	a, #0x01
+      000279 20 3F            [ 2]  507 	jra	00109$
+                                    508 ;	../src/pff.c: 527: if (PF_FS_FAT32 && !clst && (_FS_32ONLY || fs->fs_type == FS_FAT32)) {	/* Replace cluster# 0 with root cluster# if in FAT32 */
+      00027B                        509 00106$:
+      00027B 1E 0B            [ 2]  510 	ldw	x, (0x0b, sp)
+      00027D 26 11            [ 1]  511 	jrne	00105$
+      00027F 1E 09            [ 2]  512 	ldw	x, (0x09, sp)
+      000281 26 0D            [ 1]  513 	jrne	00105$
+                                    514 ;	../src/pff.c: 528: clst = (CLUST)fs->dirbase;
+      000283 1E 07            [ 2]  515 	ldw	x, (0x07, sp)
+      000285 90 93            [ 1]  516 	ldw	y, x
+      000287 90 EE 10         [ 2]  517 	ldw	y, (0x10, y)
+      00028A 17 0B            [ 2]  518 	ldw	(0x0b, sp), y
+      00028C EE 0E            [ 2]  519 	ldw	x, (0xe, x)
+      00028E 1F 09            [ 2]  520 	ldw	(0x09, sp), x
+      000290                        521 00105$:
+                                    522 ;	../src/pff.c: 530: dj->clust = clst;						/* Current cluster */
+      000290 1E 05            [ 2]  523 	ldw	x, (0x05, sp)
+      000292 1C 00 08         [ 2]  524 	addw	x, #0x0008
+      000295 16 0B            [ 2]  525 	ldw	y, (0x0b, sp)
+      000297 EF 02            [ 2]  526 	ldw	(0x2, x), y
+      000299 16 09            [ 2]  527 	ldw	y, (0x09, sp)
+      00029B FF               [ 2]  528 	ldw	(x), y
+                                    529 ;	../src/pff.c: 531: dj->sect = (_FS_32ONLY || clst) ? clust2sect(clst) : fs->dirbase;	/* Current sector */
+      00029C 1E 05            [ 2]  530 	ldw	x, (0x05, sp)
+      00029E 1C 00 0C         [ 2]  531 	addw	x, #0x000c
+      0002A1 1F 07            [ 2]  532 	ldw	(0x07, sp), x
+      0002A3 1E 0B            [ 2]  533 	ldw	x, (0x0b, sp)
+      0002A5 89               [ 2]  534 	pushw	x
+      0002A6 1E 0B            [ 2]  535 	ldw	x, (0x0b, sp)
+      0002A8 89               [ 2]  536 	pushw	x
+      0002A9 CDr01r90         [ 4]  537 	call	_clust2sect
+      0002AC 5B 04            [ 2]  538 	addw	sp, #4
+      0002AE 17 09            [ 2]  539 	ldw	(0x09, sp), y
+      0002B0 16 07            [ 2]  540 	ldw	y, (0x07, sp)
+      0002B2 90 EF 02         [ 2]  541 	ldw	(0x2, y), x
+      0002B5 1E 09            [ 2]  542 	ldw	x, (0x09, sp)
+      0002B7 90 FF            [ 2]  543 	ldw	(y), x
+                                    544 ;	../src/pff.c: 533: return FR_OK;	/* Seek succeeded */
+      0002B9 4F               [ 1]  545 	clr	a
+      0002BA                        546 00109$:
+                                    547 ;	../src/pff.c: 534: }
+      0002BA 5B 0C            [ 2]  548 	addw	sp, #12
+      0002BC 81               [ 4]  549 	ret
+                                    550 ;	../src/pff.c: 543: static FRESULT dir_next (	/* FR_OK:Succeeded, FR_NO_FILE:End of table */
+                                    551 ;	-----------------------------------------
+                                    552 ;	 function dir_next
+                                    553 ;	-----------------------------------------
+      0002BD                        554 _dir_next:
+      0002BD 52 14            [ 2]  555 	sub	sp, #20
+                                    556 ;	../src/pff.c: 549: FATFS *fs = FatFs;
+      0002BF CEu00u00         [ 2]  557 	ldw	x, _FatFs+0
+      0002C2 1F 05            [ 2]  558 	ldw	(0x05, sp), x
+                                    559 ;	../src/pff.c: 552: i = dj->index + 1;
+      0002C4 16 17            [ 2]  560 	ldw	y, (0x17, sp)
+      0002C6 17 07            [ 2]  561 	ldw	(0x07, sp), y
+      0002C8 93               [ 1]  562 	ldw	x, y
+      0002C9 FE               [ 2]  563 	ldw	x, (x)
+      0002CA 5C               [ 1]  564 	incw	x
+                                    565 ;	../src/pff.c: 553: if (!i || !dj->sect) return FR_NO_FILE;	/* Report EOT when index has reached 65535 */
+      0002CB 1F 09            [ 2]  566 	ldw	(0x09, sp), x
+      0002CD 27 19            [ 1]  567 	jreq	00101$
+      0002CF 1E 07            [ 2]  568 	ldw	x, (0x07, sp)
+      0002D1 1C 00 0C         [ 2]  569 	addw	x, #0x000c
+      0002D4 1F 0B            [ 2]  570 	ldw	(0x0b, sp), x
+      0002D6 90 93            [ 1]  571 	ldw	y, x
+      0002D8 90 EE 02         [ 2]  572 	ldw	y, (0x2, y)
+      0002DB 17 03            [ 2]  573 	ldw	(0x03, sp), y
+      0002DD FE               [ 2]  574 	ldw	x, (x)
+      0002DE 1F 01            [ 2]  575 	ldw	(0x01, sp), x
+      0002E0 1E 03            [ 2]  576 	ldw	x, (0x03, sp)
+      0002E2 26 09            [ 1]  577 	jrne	00102$
+      0002E4 1E 01            [ 2]  578 	ldw	x, (0x01, sp)
+      0002E6 26 05            [ 1]  579 	jrne	00102$
+      0002E8                        580 00101$:
+      0002E8 A6 03            [ 1]  581 	ld	a, #0x03
+      0002EA CCr03rC3         [ 2]  582 	jp	00117$
+      0002ED                        583 00102$:
+                                    584 ;	../src/pff.c: 555: if (!(i % 16)) {		/* Sector changed? */
+      0002ED 16 09            [ 2]  585 	ldw	y, (0x09, sp)
+      0002EF 17 13            [ 2]  586 	ldw	(0x13, sp), y
+      0002F1 7B 14            [ 1]  587 	ld	a, (0x14, sp)
+      0002F3 A5 0F            [ 1]  588 	bcp	a, #0x0f
+      0002F5 27 03            [ 1]  589 	jreq	00157$
+      0002F7 CCr03rBD         [ 2]  590 	jp	00116$
+      0002FA                        591 00157$:
+                                    592 ;	../src/pff.c: 556: dj->sect++;			/* Next sector */
+      0002FA 7B 04            [ 1]  593 	ld	a, (0x04, sp)
+      0002FC AB 01            [ 1]  594 	add	a, #0x01
+      0002FE 88               [ 1]  595 	push	a
+      0002FF 7B 04            [ 1]  596 	ld	a, (0x04, sp)
+      000301 A9 00            [ 1]  597 	adc	a, #0x00
+      000303 6B 12            [ 1]  598 	ld	(0x12, sp), a
+      000305 16 02            [ 2]  599 	ldw	y, (0x02, sp)
+      000307 24 02            [ 1]  600 	jrnc	00158$
+      000309 90 5C            [ 1]  601 	incw	y
+      00030B                        602 00158$:
+      00030B 84               [ 1]  603 	pop	a
+      00030C 1E 0B            [ 2]  604 	ldw	x, (0x0b, sp)
+      00030E E7 03            [ 1]  605 	ld	(0x3, x), a
+      000310 7B 11            [ 1]  606 	ld	a, (0x11, sp)
+      000312 E7 02            [ 1]  607 	ld	(0x2, x), a
+      000314 FF               [ 2]  608 	ldw	(x), y
+                                    609 ;	../src/pff.c: 558: if (dj->clust == 0) {	/* Static table */
+      000315 1E 07            [ 2]  610 	ldw	x, (0x07, sp)
+      000317 1C 00 08         [ 2]  611 	addw	x, #0x0008
+      00031A 1F 0D            [ 2]  612 	ldw	(0x0d, sp), x
+      00031C 90 93            [ 1]  613 	ldw	y, x
+      00031E 90 EE 02         [ 2]  614 	ldw	y, (0x2, y)
+      000321 FE               [ 2]  615 	ldw	x, (x)
+      000322 1F 0F            [ 2]  616 	ldw	(0x0f, sp), x
+      000324 90 5D            [ 2]  617 	tnzw	y
+      000326 26 18            [ 1]  618 	jrne	00113$
+      000328 1E 0F            [ 2]  619 	ldw	x, (0x0f, sp)
+      00032A 26 14            [ 1]  620 	jrne	00113$
+                                    621 ;	../src/pff.c: 559: if (i >= fs->n_rootdir) return FR_NO_FILE;	/* Report EOT when end of table */
+      00032C 1E 05            [ 2]  622 	ldw	x, (0x05, sp)
+      00032E EE 04            [ 2]  623 	ldw	x, (0x4, x)
+      000330 1F 13            [ 2]  624 	ldw	(0x13, sp), x
+      000332 1E 09            [ 2]  625 	ldw	x, (0x09, sp)
+      000334 13 13            [ 2]  626 	cpw	x, (0x13, sp)
+      000336 24 03            [ 1]  627 	jrnc	00161$
+      000338 CCr03rBD         [ 2]  628 	jp	00116$
+      00033B                        629 00161$:
+      00033B A6 03            [ 1]  630 	ld	a, #0x03
+      00033D CCr03rC3         [ 2]  631 	jp	00117$
+      000340                        632 00113$:
+                                    633 ;	../src/pff.c: 562: if (((i / 16) & (fs->csize - 1)) == 0) {	/* Cluster changed? */
+      000340 04 13            [ 1]  634 	srl	(0x13, sp)
+      000342 06 14            [ 1]  635 	rrc	(0x14, sp)
+      000344 04 13            [ 1]  636 	srl	(0x13, sp)
+      000346 06 14            [ 1]  637 	rrc	(0x14, sp)
+      000348 04 13            [ 1]  638 	srl	(0x13, sp)
+      00034A 06 14            [ 1]  639 	rrc	(0x14, sp)
+      00034C 04 13            [ 1]  640 	srl	(0x13, sp)
+      00034E 06 14            [ 1]  641 	rrc	(0x14, sp)
+      000350 1E 05            [ 2]  642 	ldw	x, (0x05, sp)
+      000352 E6 02            [ 1]  643 	ld	a, (0x2, x)
+      000354 5F               [ 1]  644 	clrw	x
+      000355 97               [ 1]  645 	ld	xl, a
+      000356 5A               [ 2]  646 	decw	x
+      000357 9F               [ 1]  647 	ld	a, xl
+      000358 14 14            [ 1]  648 	and	a, (0x14, sp)
+      00035A 02               [ 1]  649 	rlwa	x
+      00035B 14 13            [ 1]  650 	and	a, (0x13, sp)
+      00035D 95               [ 1]  651 	ld	xh, a
+      00035E 5D               [ 2]  652 	tnzw	x
+      00035F 26 5C            [ 1]  653 	jrne	00116$
+                                    654 ;	../src/pff.c: 563: clst = get_fat(dj->clust);		/* Get next cluster */
+      000361 90 89            [ 2]  655 	pushw	y
+      000363 1E 11            [ 2]  656 	ldw	x, (0x11, sp)
+      000365 89               [ 2]  657 	pushw	x
+      000366 CDr00rE9         [ 4]  658 	call	_get_fat
+      000369 5B 04            [ 2]  659 	addw	sp, #4
+      00036B 1F 13            [ 2]  660 	ldw	(0x13, sp), x
+      00036D 17 11            [ 2]  661 	ldw	(0x11, sp), y
+                                    662 ;	../src/pff.c: 564: if (clst <= 1) return FR_DISK_ERR;
+      00036F 5F               [ 1]  663 	clrw	x
+      000370 5C               [ 1]  664 	incw	x
+      000371 13 13            [ 2]  665 	cpw	x, (0x13, sp)
+      000373 4F               [ 1]  666 	clr	a
+      000374 12 12            [ 1]  667 	sbc	a, (0x12, sp)
+      000376 4F               [ 1]  668 	clr	a
+      000377 12 11            [ 1]  669 	sbc	a, (0x11, sp)
+      000379 25 04            [ 1]  670 	jrc	00107$
+      00037B A6 01            [ 1]  671 	ld	a, #0x01
+      00037D 20 44            [ 2]  672 	jra	00117$
+      00037F                        673 00107$:
+                                    674 ;	../src/pff.c: 565: if (clst >= fs->n_fatent) return FR_NO_FILE;	/* Report EOT when it reached end of dynamic table */
+      00037F 1E 05            [ 2]  675 	ldw	x, (0x05, sp)
+      000381 90 93            [ 1]  676 	ldw	y, x
+      000383 90 EE 08         [ 2]  677 	ldw	y, (0x8, y)
+      000386 17 05            [ 2]  678 	ldw	(0x05, sp), y
+      000388 EE 06            [ 2]  679 	ldw	x, (0x6, x)
+      00038A 1F 03            [ 2]  680 	ldw	(0x03, sp), x
+      00038C 1E 13            [ 2]  681 	ldw	x, (0x13, sp)
+      00038E 13 05            [ 2]  682 	cpw	x, (0x05, sp)
+      000390 7B 12            [ 1]  683 	ld	a, (0x12, sp)
+      000392 12 04            [ 1]  684 	sbc	a, (0x04, sp)
+      000394 7B 11            [ 1]  685 	ld	a, (0x11, sp)
+      000396 12 03            [ 1]  686 	sbc	a, (0x03, sp)
+      000398 25 04            [ 1]  687 	jrc	00109$
+      00039A A6 03            [ 1]  688 	ld	a, #0x03
+      00039C 20 25            [ 2]  689 	jra	00117$
+      00039E                        690 00109$:
+                                    691 ;	../src/pff.c: 566: dj->clust = clst;				/* Initialize data for new cluster */
+      00039E 1E 0D            [ 2]  692 	ldw	x, (0x0d, sp)
+      0003A0 16 13            [ 2]  693 	ldw	y, (0x13, sp)
+      0003A2 EF 02            [ 2]  694 	ldw	(0x2, x), y
+      0003A4 16 11            [ 2]  695 	ldw	y, (0x11, sp)
+      0003A6 FF               [ 2]  696 	ldw	(x), y
+                                    697 ;	../src/pff.c: 567: dj->sect = clust2sect(clst);
+      0003A7 1E 13            [ 2]  698 	ldw	x, (0x13, sp)
+      0003A9 89               [ 2]  699 	pushw	x
+      0003AA 1E 13            [ 2]  700 	ldw	x, (0x13, sp)
+      0003AC 89               [ 2]  701 	pushw	x
+      0003AD CDr01r90         [ 4]  702 	call	_clust2sect
+      0003B0 5B 04            [ 2]  703 	addw	sp, #4
+      0003B2 17 11            [ 2]  704 	ldw	(0x11, sp), y
+      0003B4 16 0B            [ 2]  705 	ldw	y, (0x0b, sp)
+      0003B6 90 EF 02         [ 2]  706 	ldw	(0x2, y), x
+      0003B9 1E 11            [ 2]  707 	ldw	x, (0x11, sp)
+      0003BB 90 FF            [ 2]  708 	ldw	(y), x
+      0003BD                        709 00116$:
+                                    710 ;	../src/pff.c: 572: dj->index = i;
+      0003BD 1E 07            [ 2]  711 	ldw	x, (0x07, sp)
+      0003BF 16 09            [ 2]  712 	ldw	y, (0x09, sp)
+      0003C1 FF               [ 2]  713 	ldw	(x), y
+                                    714 ;	../src/pff.c: 574: return FR_OK;
+      0003C2 4F               [ 1]  715 	clr	a
+      0003C3                        716 00117$:
+                                    717 ;	../src/pff.c: 575: }
+      0003C3 5B 14            [ 2]  718 	addw	sp, #20
+      0003C5 81               [ 4]  719 	ret
+                                    720 ;	../src/pff.c: 584: static FRESULT dir_find (
+                                    721 ;	-----------------------------------------
+                                    722 ;	 function dir_find
+                                    723 ;	-----------------------------------------
+      0003C6                        724 _dir_find:
+      0003C6 52 07            [ 2]  725 	sub	sp, #7
+                                    726 ;	../src/pff.c: 593: res = dir_rewind(dj);			/* Rewind directory object */
+      0003C8 1E 0A            [ 2]  727 	ldw	x, (0x0a, sp)
+      0003CA 89               [ 2]  728 	pushw	x
+      0003CB CDr02r37         [ 4]  729 	call	_dir_rewind
+      0003CE 85               [ 2]  730 	popw	x
+                                    731 ;	../src/pff.c: 594: if (res != FR_OK) return res;
+      0003CF 4D               [ 1]  732 	tnz	a
+                                    733 ;	../src/pff.c: 596: do {
+      0003D0 26 72            [ 1]  734 	jrne	00113$
+      0003D2 16 0A            [ 2]  735 	ldw	y, (0x0a, sp)
+      0003D4 17 03            [ 2]  736 	ldw	(0x03, sp), y
+      0003D6 17 05            [ 2]  737 	ldw	(0x05, sp), y
+      0003D8                        738 00110$:
+                                    739 ;	../src/pff.c: 597: res = disk_readp(dir, dj->sect, (dj->index % 16) * 32, 32)	/* Read an entry */
+      0003D8 1E 03            [ 2]  740 	ldw	x, (0x03, sp)
+      0003DA FE               [ 2]  741 	ldw	x, (x)
+      0003DB 9F               [ 1]  742 	ld	a, xl
+      0003DC A4 0F            [ 1]  743 	and	a, #0x0f
+      0003DE 97               [ 1]  744 	ld	xl, a
+      0003DF 4F               [ 1]  745 	clr	a
+      0003E0 95               [ 1]  746 	ld	xh, a
+      0003E1 58               [ 2]  747 	sllw	x
+      0003E2 58               [ 2]  748 	sllw	x
+      0003E3 58               [ 2]  749 	sllw	x
+      0003E4 58               [ 2]  750 	sllw	x
+      0003E5 58               [ 2]  751 	sllw	x
+      0003E6 1F 01            [ 2]  752 	ldw	(0x01, sp), x
+      0003E8 1E 05            [ 2]  753 	ldw	x, (0x05, sp)
+      0003EA 90 93            [ 1]  754 	ldw	y, x
+      0003EC 90 EE 0E         [ 2]  755 	ldw	y, (0xe, y)
+      0003EF EE 0C            [ 2]  756 	ldw	x, (0xc, x)
+      0003F1 4B 20            [ 1]  757 	push	#0x20
+      0003F3 4B 00            [ 1]  758 	push	#0x00
+      0003F5 7B 04            [ 1]  759 	ld	a, (0x04, sp)
+      0003F7 88               [ 1]  760 	push	a
+      0003F8 7B 04            [ 1]  761 	ld	a, (0x04, sp)
+      0003FA 88               [ 1]  762 	push	a
+      0003FB 90 89            [ 2]  763 	pushw	y
+      0003FD 89               [ 2]  764 	pushw	x
+      0003FE 1E 14            [ 2]  765 	ldw	x, (0x14, sp)
+      000400 89               [ 2]  766 	pushw	x
+      000401 CDr00r00         [ 4]  767 	call	_disk_readp
+      000404 5B 0A            [ 2]  768 	addw	sp, #10
+      000406 4D               [ 1]  769 	tnz	a
+      000407 27 03            [ 1]  770 	jreq	00115$
+                                    771 ;	../src/pff.c: 598: ? FR_DISK_ERR : FR_OK;
+      000409 A6 01            [ 1]  772 	ld	a, #0x01
+      00040B 21                     773 	.byte 0x21
+      00040C                        774 00115$:
+      00040C 4F               [ 1]  775 	clr	a
+      00040D                        776 00116$:
+                                    777 ;	../src/pff.c: 599: if (res != FR_OK) break;
+      00040D 6B 07            [ 1]  778 	ld	(0x07, sp), a
+      00040F 26 31            [ 1]  779 	jrne	00112$
+                                    780 ;	../src/pff.c: 600: c = dir[DIR_Name];	/* First character */
+      000411 1E 0C            [ 2]  781 	ldw	x, (0x0c, sp)
+                                    782 ;	../src/pff.c: 601: if (c == 0) { res = FR_NO_FILE; break; }	/* Reached to end of table */
+      000413 F6               [ 1]  783 	ld	a, (x)
+      000414 26 06            [ 1]  784 	jrne	00106$
+      000416 A6 03            [ 1]  785 	ld	a, #0x03
+      000418 6B 07            [ 1]  786 	ld	(0x07, sp), a
+      00041A 20 26            [ 2]  787 	jra	00112$
+      00041C                        788 00106$:
+                                    789 ;	../src/pff.c: 602: if (!(dir[DIR_Attr] & AM_VOL) && !mem_cmp(dir, dj->fn, 11)) break;	/* Is it a valid entry? */
+      00041C E6 0B            [ 1]  790 	ld	a, (0xb, x)
+      00041E A5 08            [ 1]  791 	bcp	a, #0x08
+      000420 26 15            [ 1]  792 	jrne	00108$
+      000422 1E 03            [ 2]  793 	ldw	x, (0x03, sp)
+      000424 EE 02            [ 2]  794 	ldw	x, (0x2, x)
+      000426 16 0C            [ 2]  795 	ldw	y, (0x0c, sp)
+      000428 4B 0B            [ 1]  796 	push	#0x0b
+      00042A 4B 00            [ 1]  797 	push	#0x00
+      00042C 89               [ 2]  798 	pushw	x
+      00042D 90 89            [ 2]  799 	pushw	y
+      00042F CDr00rA5         [ 4]  800 	call	_mem_cmp
+      000432 5B 06            [ 2]  801 	addw	sp, #6
+      000434 5D               [ 2]  802 	tnzw	x
+      000435 27 0B            [ 1]  803 	jreq	00112$
+      000437                        804 00108$:
+                                    805 ;	../src/pff.c: 603: res = dir_next(dj);					/* Next entry */
+      000437 1E 03            [ 2]  806 	ldw	x, (0x03, sp)
+      000439 89               [ 2]  807 	pushw	x
+      00043A CDr02rBD         [ 4]  808 	call	_dir_next
+      00043D 85               [ 2]  809 	popw	x
+                                    810 ;	../src/pff.c: 604: } while (res == FR_OK);
+      00043E 6B 07            [ 1]  811 	ld	(0x07, sp), a
+      000440 27 96            [ 1]  812 	jreq	00110$
+      000442                        813 00112$:
+                                    814 ;	../src/pff.c: 606: return res;
+      000442 7B 07            [ 1]  815 	ld	a, (0x07, sp)
+      000444                        816 00113$:
+                                    817 ;	../src/pff.c: 607: }
+      000444 5B 07            [ 2]  818 	addw	sp, #7
+      000446 81               [ 4]  819 	ret
+                                    820 ;	../src/pff.c: 651: static FRESULT create_name (
+                                    821 ;	-----------------------------------------
+                                    822 ;	 function create_name
+                                    823 ;	-----------------------------------------
+      000447                        824 _create_name:
+      000447 52 09            [ 2]  825 	sub	sp, #9
+                                    826 ;	../src/pff.c: 663: sfn = dj->fn;
+      000449 1E 0C            [ 2]  827 	ldw	x, (0x0c, sp)
+      00044B EE 02            [ 2]  828 	ldw	x, (0x2, x)
+                                    829 ;	../src/pff.c: 664: mem_set(sfn, ' ', 11);
+      00044D 1F 01            [ 2]  830 	ldw	(0x01, sp), x
+      00044F 4B 0B            [ 1]  831 	push	#0x0b
+      000451 4B 00            [ 1]  832 	push	#0x00
+      000453 4B 20            [ 1]  833 	push	#0x20
+      000455 4B 00            [ 1]  834 	push	#0x00
+      000457 89               [ 2]  835 	pushw	x
+      000458 CDr00r8A         [ 4]  836 	call	_mem_set
+      00045B 5B 06            [ 2]  837 	addw	sp, #6
+                                    838 ;	../src/pff.c: 665: si = i = 0; ni = 8;
+      00045D 0F 08            [ 1]  839 	clr	(0x08, sp)
+      00045F A6 08            [ 1]  840 	ld	a, #0x08
+      000461 6B 03            [ 1]  841 	ld	(0x03, sp), a
+                                    842 ;	../src/pff.c: 666: p = *path;
+      000463 16 0E            [ 2]  843 	ldw	y, (0x0e, sp)
+      000465 93               [ 1]  844 	ldw	x, y
+      000466 FE               [ 2]  845 	ldw	x, (x)
+      000467 1F 04            [ 2]  846 	ldw	(0x04, sp), x
+      000469 0F 09            [ 1]  847 	clr	(0x09, sp)
+      00046B                        848 00120$:
+                                    849 ;	../src/pff.c: 668: c = p[si++];
+      00046B 5F               [ 1]  850 	clrw	x
+      00046C 7B 09            [ 1]  851 	ld	a, (0x09, sp)
+      00046E 97               [ 1]  852 	ld	xl, a
+      00046F 72 FB 04         [ 2]  853 	addw	x, (0x04, sp)
+      000472 0C 09            [ 1]  854 	inc	(0x09, sp)
+      000474 F6               [ 1]  855 	ld	a, (x)
+                                    856 ;	../src/pff.c: 669: if (c <= ' ' || c == '/') break;	/* Break on end of segment */
+      000475 6B 06            [ 1]  857 	ld	(0x06, sp), a
+      000477 A1 20            [ 1]  858 	cp	a, #0x20
+      000479 22 04            [ 1]  859 	jrugt	00161$
+      00047B 0F 07            [ 1]  860 	clr	(0x07, sp)
+      00047D 20 04            [ 2]  861 	jra	00162$
+      00047F                        862 00161$:
+      00047F A6 01            [ 1]  863 	ld	a, #0x01
+      000481 6B 07            [ 1]  864 	ld	(0x07, sp), a
+      000483                        865 00162$:
+      000483 0D 07            [ 1]  866 	tnz	(0x07, sp)
+      000485 27 3D            [ 1]  867 	jreq	00119$
+      000487 7B 06            [ 1]  868 	ld	a, (0x06, sp)
+      000489 A1 2F            [ 1]  869 	cp	a, #0x2f
+      00048B 27 37            [ 1]  870 	jreq	00119$
+                                    871 ;	../src/pff.c: 670: if (c == '.' || i >= ni) {
+      00048D 7B 06            [ 1]  872 	ld	a, (0x06, sp)
+      00048F A0 2E            [ 1]  873 	sub	a, #0x2e
+      000491 26 02            [ 1]  874 	jrne	00168$
+      000493 4C               [ 1]  875 	inc	a
+      000494 21                     876 	.byte 0x21
+      000495                        877 00168$:
+      000495 4F               [ 1]  878 	clr	a
+      000496                        879 00169$:
+      000496 4D               [ 1]  880 	tnz	a
+      000497 26 08            [ 1]  881 	jrne	00107$
+      000499 88               [ 1]  882 	push	a
+      00049A 7B 09            [ 1]  883 	ld	a, (0x09, sp)
+      00049C 11 04            [ 1]  884 	cp	a, (0x04, sp)
+      00049E 84               [ 1]  885 	pop	a
+      00049F 25 15            [ 1]  886 	jrc	00111$
+      0004A1                        887 00107$:
+                                    888 ;	../src/pff.c: 671: if (ni != 8 || c != '.') break;
+      0004A1 88               [ 1]  889 	push	a
+      0004A2 7B 04            [ 1]  890 	ld	a, (0x04, sp)
+      0004A4 A1 08            [ 1]  891 	cp	a, #0x08
+      0004A6 84               [ 1]  892 	pop	a
+      0004A7 26 1B            [ 1]  893 	jrne	00119$
+      0004A9 4D               [ 1]  894 	tnz	a
+      0004AA 27 18            [ 1]  895 	jreq	00119$
+                                    896 ;	../src/pff.c: 672: i = 8; ni = 11;
+      0004AC A6 08            [ 1]  897 	ld	a, #0x08
+      0004AE 6B 08            [ 1]  898 	ld	(0x08, sp), a
+      0004B0 A6 0B            [ 1]  899 	ld	a, #0x0b
+      0004B2 6B 03            [ 1]  900 	ld	(0x03, sp), a
+                                    901 ;	../src/pff.c: 673: continue;
+      0004B4 20 B5            [ 2]  902 	jra	00120$
+                                    903 ;	../src/pff.c: 683: if (PF_USE_LCC && IsLower(c)) c -= 0x20;	/* toupper */
+      0004B6                        904 00111$:
+                                    905 ;	../src/pff.c: 684: sfn[i++] = c;
+      0004B6 7B 08            [ 1]  906 	ld	a, (0x08, sp)
+      0004B8 0C 08            [ 1]  907 	inc	(0x08, sp)
+      0004BA 5F               [ 1]  908 	clrw	x
+      0004BB 97               [ 1]  909 	ld	xl, a
+      0004BC 72 FB 01         [ 2]  910 	addw	x, (0x01, sp)
+      0004BF 7B 06            [ 1]  911 	ld	a, (0x06, sp)
+      0004C1 F7               [ 1]  912 	ld	(x), a
+      0004C2 20 A7            [ 2]  913 	jra	00120$
+      0004C4                        914 00119$:
+                                    915 ;	../src/pff.c: 687: *path = &p[si];						/* Rerurn pointer to the next segment */
+      0004C4 5F               [ 1]  916 	clrw	x
+      0004C5 7B 09            [ 1]  917 	ld	a, (0x09, sp)
+      0004C7 97               [ 1]  918 	ld	xl, a
+      0004C8 72 FB 04         [ 2]  919 	addw	x, (0x04, sp)
+      0004CB 90 FF            [ 2]  920 	ldw	(y), x
+                                    921 ;	../src/pff.c: 689: sfn[11] = (c <= ' ') ? 1 : 0;		/* Set last segment flag if end of path */
+      0004CD 16 01            [ 2]  922 	ldw	y, (0x01, sp)
+      0004CF 72 A9 00 0B      [ 2]  923 	addw	y, #0x000b
+      0004D3 0D 07            [ 1]  924 	tnz	(0x07, sp)
+      0004D5 26 03            [ 1]  925 	jrne	00123$
+      0004D7 5F               [ 1]  926 	clrw	x
+      0004D8 5C               [ 1]  927 	incw	x
+      0004D9 21                     928 	.byte 0x21
+      0004DA                        929 00123$:
+      0004DA 5F               [ 1]  930 	clrw	x
+      0004DB                        931 00124$:
+      0004DB 9F               [ 1]  932 	ld	a, xl
+      0004DC 90 F7            [ 1]  933 	ld	(y), a
+                                    934 ;	../src/pff.c: 691: return FR_OK;
+      0004DE 4F               [ 1]  935 	clr	a
+                                    936 ;	../src/pff.c: 692: }
+      0004DF 5B 09            [ 2]  937 	addw	sp, #9
+      0004E1 81               [ 4]  938 	ret
+                                    939 ;	../src/pff.c: 742: static FRESULT follow_path (	/* FR_OK(0): successful, !=0: error code */
+                                    940 ;	-----------------------------------------
+                                    941 ;	 function follow_path
+                                    942 ;	-----------------------------------------
+      0004E2                        943 _follow_path:
+      0004E2 52 0E            [ 2]  944 	sub	sp, #14
+                                    945 ;	../src/pff.c: 751: while (*path == ' ') path++;		/* Strip leading spaces */
+      0004E4 16 15            [ 2]  946 	ldw	y, (0x15, sp)
+      0004E6                        947 00101$:
+      0004E6 90 F6            [ 1]  948 	ld	a, (y)
+      0004E8 93               [ 1]  949 	ldw	x, y
+      0004E9 5C               [ 1]  950 	incw	x
+      0004EA A1 20            [ 1]  951 	cp	a, #0x20
+      0004EC 26 06            [ 1]  952 	jrne	00131$
+      0004EE 90 93            [ 1]  953 	ldw	y, x
+      0004F0 1F 15            [ 2]  954 	ldw	(0x15, sp), x
+      0004F2 20 F2            [ 2]  955 	jra	00101$
+      0004F4                        956 00131$:
+      0004F4 17 15            [ 2]  957 	ldw	(0x15, sp), y
+                                    958 ;	../src/pff.c: 752: if (*path == '/') path++;			/* Strip heading separator if exist */
+      0004F6 A1 2F            [ 1]  959 	cp	a, #0x2f
+      0004F8 26 02            [ 1]  960 	jrne	00105$
+      0004FA 1F 15            [ 2]  961 	ldw	(0x15, sp), x
+      0004FC                        962 00105$:
+                                    963 ;	../src/pff.c: 753: dj->sclust = 0;						/* Set start directory (always root dir) */
+      0004FC 16 11            [ 2]  964 	ldw	y, (0x11, sp)
+      0004FE 17 01            [ 2]  965 	ldw	(0x01, sp), y
+      000500 93               [ 1]  966 	ldw	x, y
+      000501 1C 00 04         [ 2]  967 	addw	x, #0x0004
+      000504 90 5F            [ 1]  968 	clrw	y
+      000506 EF 02            [ 2]  969 	ldw	(0x2, x), y
+      000508 FF               [ 2]  970 	ldw	(x), y
+                                    971 ;	../src/pff.c: 755: if ((BYTE)*path < ' ') {			/* Null path means the root directory */
+      000509 1E 15            [ 2]  972 	ldw	x, (0x15, sp)
+      00050B F6               [ 1]  973 	ld	a, (x)
+      00050C A1 20            [ 1]  974 	cp	a, #0x20
+      00050E 24 0E            [ 1]  975 	jrnc	00130$
+                                    976 ;	../src/pff.c: 756: res = dir_rewind(dj);
+      000510 1E 01            [ 2]  977 	ldw	x, (0x01, sp)
+      000512 89               [ 2]  978 	pushw	x
+      000513 CDr02r37         [ 4]  979 	call	_dir_rewind
+      000516 85               [ 2]  980 	popw	x
+      000517 6B 0E            [ 1]  981 	ld	(0x0e, sp), a
+                                    982 ;	../src/pff.c: 757: dir[0] = 0;
+      000519 1E 13            [ 2]  983 	ldw	x, (0x13, sp)
+      00051B 7F               [ 1]  984 	clr	(x)
+      00051C 20 5E            [ 2]  985 	jra	00117$
+      00051E                        986 00130$:
+      00051E 16 01            [ 2]  987 	ldw	y, (0x01, sp)
+      000520 17 03            [ 2]  988 	ldw	(0x03, sp), y
+      000522 16 13            [ 2]  989 	ldw	y, (0x13, sp)
+      000524 17 05            [ 2]  990 	ldw	(0x05, sp), y
+      000526 16 01            [ 2]  991 	ldw	y, (0x01, sp)
+      000528 17 07            [ 2]  992 	ldw	(0x07, sp), y
+      00052A                        993 00118$:
+                                    994 ;	../src/pff.c: 761: res = create_name(dj, &path);	/* Get a segment */
+      00052A 96               [ 1]  995 	ldw	x, sp
+      00052B 1C 00 15         [ 2]  996 	addw	x, #21
+      00052E 89               [ 2]  997 	pushw	x
+      00052F 1E 03            [ 2]  998 	ldw	x, (0x03, sp)
+      000531 89               [ 2]  999 	pushw	x
+      000532 CDr04r47         [ 4] 1000 	call	_create_name
+      000535 5B 04            [ 2] 1001 	addw	sp, #4
+                                   1002 ;	../src/pff.c: 762: if (res != FR_OK) break;
+      000537 6B 0E            [ 1] 1003 	ld	(0x0e, sp), a
+      000539 26 41            [ 1] 1004 	jrne	00117$
+                                   1005 ;	../src/pff.c: 763: res = dir_find(dj, dir);		/* Find it */
+      00053B 1E 13            [ 2] 1006 	ldw	x, (0x13, sp)
+      00053D 89               [ 2] 1007 	pushw	x
+      00053E 1E 03            [ 2] 1008 	ldw	x, (0x03, sp)
+      000540 89               [ 2] 1009 	pushw	x
+      000541 CDr03rC6         [ 4] 1010 	call	_dir_find
+      000544 5B 04            [ 2] 1011 	addw	sp, #4
+                                   1012 ;	../src/pff.c: 764: if (res != FR_OK) break;		/* Could not find the object */
+      000546 6B 0E            [ 1] 1013 	ld	(0x0e, sp), a
+      000548 26 32            [ 1] 1014 	jrne	00117$
+                                   1015 ;	../src/pff.c: 765: if (dj->fn[11]) break;			/* Last segment match. Function completed. */
+      00054A 1E 03            [ 2] 1016 	ldw	x, (0x03, sp)
+      00054C EE 02            [ 2] 1017 	ldw	x, (0x2, x)
+      00054E E6 0B            [ 1] 1018 	ld	a, (0xb, x)
+      000550 26 2A            [ 1] 1019 	jrne	00117$
+                                   1020 ;	../src/pff.c: 766: if (!(dir[DIR_Attr] & AM_DIR)) { /* Cannot follow path because it is a file */
+      000552 1E 05            [ 2] 1021 	ldw	x, (0x05, sp)
+      000554 E6 0B            [ 1] 1022 	ld	a, (0xb, x)
+      000556 A5 10            [ 1] 1023 	bcp	a, #0x10
+      000558 26 06            [ 1] 1024 	jrne	00113$
+                                   1025 ;	../src/pff.c: 767: res = FR_NO_FILE; break;
+      00055A A6 03            [ 1] 1026 	ld	a, #0x03
+      00055C 6B 0E            [ 1] 1027 	ld	(0x0e, sp), a
+      00055E 20 1C            [ 2] 1028 	jra	00117$
+      000560                       1029 00113$:
+                                   1030 ;	../src/pff.c: 769: dj->sclust = get_clust(dir);	/* Follow next */
+      000560 1E 07            [ 2] 1031 	ldw	x, (0x07, sp)
+      000562 1C 00 04         [ 2] 1032 	addw	x, #0x0004
+      000565 1F 09            [ 2] 1033 	ldw	(0x09, sp), x
+      000567 1E 13            [ 2] 1034 	ldw	x, (0x13, sp)
+      000569 89               [ 2] 1035 	pushw	x
+      00056A CDr02r02         [ 4] 1036 	call	_get_clust
+      00056D 5B 02            [ 2] 1037 	addw	sp, #2
+      00056F 17 0B            [ 2] 1038 	ldw	(0x0b, sp), y
+      000571 16 09            [ 2] 1039 	ldw	y, (0x09, sp)
+      000573 90 EF 02         [ 2] 1040 	ldw	(0x2, y), x
+      000576 1E 0B            [ 2] 1041 	ldw	x, (0x0b, sp)
+      000578 90 FF            [ 2] 1042 	ldw	(y), x
+      00057A 20 AE            [ 2] 1043 	jra	00118$
+      00057C                       1044 00117$:
+                                   1045 ;	../src/pff.c: 773: return res;
+      00057C 7B 0E            [ 1] 1046 	ld	a, (0x0e, sp)
+                                   1047 ;	../src/pff.c: 774: }
+      00057E 5B 0E            [ 2] 1048 	addw	sp, #14
+      000580 81               [ 4] 1049 	ret
+                                   1050 ;	../src/pff.c: 783: static BYTE check_fs (	/* 0:The FAT boot record, 1:Valid boot record but not an FAT, 2:Not a boot record, 3:Error */
+                                   1051 ;	-----------------------------------------
+                                   1052 ;	 function check_fs
+                                   1053 ;	-----------------------------------------
+      000581                       1054 _check_fs:
+                                   1055 ;	../src/pff.c: 788: if (disk_readp(buf, sect, 510, 2)) {	/* Read the boot record */
+      000581 4B 02            [ 1] 1056 	push	#0x02
+      000583 4B 00            [ 1] 1057 	push	#0x00
+      000585 4B FE            [ 1] 1058 	push	#0xfe
+      000587 4B 01            [ 1] 1059 	push	#0x01
+      000589 1E 0B            [ 2] 1060 	ldw	x, (0x0b, sp)
+      00058B 89               [ 2] 1061 	pushw	x
+      00058C 1E 0B            [ 2] 1062 	ldw	x, (0x0b, sp)
+      00058E 89               [ 2] 1063 	pushw	x
+      00058F 1E 0B            [ 2] 1064 	ldw	x, (0x0b, sp)
+      000591 89               [ 2] 1065 	pushw	x
+      000592 CDr00r00         [ 4] 1066 	call	_disk_readp
+      000595 5B 0A            [ 2] 1067 	addw	sp, #10
+      000597 4D               [ 1] 1068 	tnz	a
+      000598 27 03            [ 1] 1069 	jreq	00102$
+                                   1070 ;	../src/pff.c: 789: return 3;
+      00059A A6 03            [ 1] 1071 	ld	a, #0x03
+      00059C 81               [ 4] 1072 	ret
+      00059D                       1073 00102$:
+                                   1074 ;	../src/pff.c: 791: if (ld_word(buf) != 0xAA55) {			/* Check record signature */
+      00059D 1E 03            [ 2] 1075 	ldw	x, (0x03, sp)
+      00059F 89               [ 2] 1076 	pushw	x
+      0005A0 CDr00r00         [ 4] 1077 	call	_ld_word
+      0005A3 5B 02            [ 2] 1078 	addw	sp, #2
+      0005A5 A3 AA 55         [ 2] 1079 	cpw	x, #0xaa55
+      0005A8 27 03            [ 1] 1080 	jreq	00111$
+                                   1081 ;	../src/pff.c: 792: return 2;
+      0005AA A6 02            [ 1] 1082 	ld	a, #0x02
+      0005AC 81               [ 4] 1083 	ret
+                                   1084 ;	../src/pff.c: 798: if (PF_FS_FAT32 && !disk_readp(buf, sect, BS_FilSysType32, 2) && ld_word(buf) == 0x4146) {	/* Check FAT32 */
+      0005AD                       1085 00111$:
+      0005AD 4B 02            [ 1] 1086 	push	#0x02
+      0005AF 4B 00            [ 1] 1087 	push	#0x00
+      0005B1 4B 52            [ 1] 1088 	push	#0x52
+      0005B3 4B 00            [ 1] 1089 	push	#0x00
+      0005B5 1E 0B            [ 2] 1090 	ldw	x, (0x0b, sp)
+      0005B7 89               [ 2] 1091 	pushw	x
+      0005B8 1E 0B            [ 2] 1092 	ldw	x, (0x0b, sp)
+      0005BA 89               [ 2] 1093 	pushw	x
+      0005BB 1E 0B            [ 2] 1094 	ldw	x, (0x0b, sp)
+      0005BD 89               [ 2] 1095 	pushw	x
+      0005BE CDr00r00         [ 4] 1096 	call	_disk_readp
+      0005C1 5B 0A            [ 2] 1097 	addw	sp, #10
+      0005C3 4D               [ 1] 1098 	tnz	a
+      0005C4 26 0F            [ 1] 1099 	jrne	00110$
+      0005C6 1E 03            [ 2] 1100 	ldw	x, (0x03, sp)
+      0005C8 89               [ 2] 1101 	pushw	x
+      0005C9 CDr00r00         [ 4] 1102 	call	_ld_word
+      0005CC 5B 02            [ 2] 1103 	addw	sp, #2
+      0005CE A3 41 46         [ 2] 1104 	cpw	x, #0x4146
+      0005D1 26 02            [ 1] 1105 	jrne	00110$
+                                   1106 ;	../src/pff.c: 799: return 0;
+      0005D3 4F               [ 1] 1107 	clr	a
+      0005D4 81               [ 4] 1108 	ret
+      0005D5                       1109 00110$:
+                                   1110 ;	../src/pff.c: 801: return 1;
+      0005D5 A6 01            [ 1] 1111 	ld	a, #0x01
+                                   1112 ;	../src/pff.c: 802: }
+      0005D7 81               [ 4] 1113 	ret
+                                   1114 ;	../src/pff.c: 819: FRESULT pf_mount (
+                                   1115 ;	-----------------------------------------
+                                   1116 ;	 function pf_mount
+                                   1117 ;	-----------------------------------------
+      0005D8                       1118 _pf_mount:
+      0005D8 52 3C            [ 2] 1119 	sub	sp, #60
+                                   1120 ;	../src/pff.c: 827: FatFs = 0;
+      0005DA 5F               [ 1] 1121 	clrw	x
+      0005DB CFu00u00         [ 2] 1122 	ldw	_FatFs+0, x
+                                   1123 ;	../src/pff.c: 829: if (disk_initialize() & STA_NOINIT) {	/* Check if the drive is ready or not */
+      0005DE CDr00r00         [ 4] 1124 	call	_disk_initialize
+      0005E1 44               [ 1] 1125 	srl	a
+      0005E2 24 05            [ 1] 1126 	jrnc	00102$
+                                   1127 ;	../src/pff.c: 830: return FR_NOT_READY;
+      0005E4 A6 02            [ 1] 1128 	ld	a, #0x02
+      0005E6 CCr08r23         [ 2] 1129 	jp	00137$
+      0005E9                       1130 00102$:
+                                   1131 ;	../src/pff.c: 834: bsect = 0;
+      0005E9 5F               [ 1] 1132 	clrw	x
+      0005EA 1F 33            [ 2] 1133 	ldw	(0x33, sp), x
+      0005EC 1F 31            [ 2] 1134 	ldw	(0x31, sp), x
+                                   1135 ;	../src/pff.c: 835: fmt = check_fs(buf, bsect);			/* Check sector 0 as an SFD format */
+      0005EE 5F               [ 1] 1136 	clrw	x
+      0005EF 89               [ 2] 1137 	pushw	x
+      0005F0 5F               [ 1] 1138 	clrw	x
+      0005F1 89               [ 2] 1139 	pushw	x
+      0005F2 96               [ 1] 1140 	ldw	x, sp
+      0005F3 1C 00 05         [ 2] 1141 	addw	x, #5
+      0005F6 89               [ 2] 1142 	pushw	x
+      0005F7 CDr05r81         [ 4] 1143 	call	_check_fs
+      0005FA 5B 06            [ 2] 1144 	addw	sp, #6
+      0005FC 6B 3C            [ 1] 1145 	ld	(0x3c, sp), a
+                                   1146 ;	../src/pff.c: 841: if (buf[4]) {					/* Is the partition existing? */
+      0005FE 96               [ 1] 1147 	ldw	x, sp
+      0005FF 1C 00 05         [ 2] 1148 	addw	x, #5
+      000602 1F 39            [ 2] 1149 	ldw	(0x39, sp), x
+                                   1150 ;	../src/pff.c: 836: if (fmt == 1) {						/* Not an FAT boot record, it may be FDISK format */
+      000604 7B 3C            [ 1] 1151 	ld	a, (0x3c, sp)
+      000606 4A               [ 1] 1152 	dec	a
+      000607 26 44            [ 1] 1153 	jrne	00109$
+                                   1154 ;	../src/pff.c: 838: if (disk_readp(buf, bsect, MBR_Table, 16)) {	/* 1st partition entry */
+      000609 4B 10            [ 1] 1155 	push	#0x10
+      00060B 4B 00            [ 1] 1156 	push	#0x00
+      00060D 4B BE            [ 1] 1157 	push	#0xbe
+      00060F 4B 01            [ 1] 1158 	push	#0x01
+      000611 5F               [ 1] 1159 	clrw	x
+      000612 89               [ 2] 1160 	pushw	x
+      000613 5F               [ 1] 1161 	clrw	x
+      000614 89               [ 2] 1162 	pushw	x
+      000615 96               [ 1] 1163 	ldw	x, sp
+      000616 1C 00 09         [ 2] 1164 	addw	x, #9
+      000619 89               [ 2] 1165 	pushw	x
+      00061A CDr00r00         [ 4] 1166 	call	_disk_readp
+      00061D 5B 0A            [ 2] 1167 	addw	sp, #10
+      00061F 4D               [ 1] 1168 	tnz	a
+      000620 27 06            [ 1] 1169 	jreq	00106$
+                                   1170 ;	../src/pff.c: 839: fmt = 3;
+      000622 A6 03            [ 1] 1171 	ld	a, #0x03
+      000624 6B 3C            [ 1] 1172 	ld	(0x3c, sp), a
+      000626 20 25            [ 2] 1173 	jra	00109$
+      000628                       1174 00106$:
+                                   1175 ;	../src/pff.c: 841: if (buf[4]) {					/* Is the partition existing? */
+      000628 1E 39            [ 2] 1176 	ldw	x, (0x39, sp)
+      00062A F6               [ 1] 1177 	ld	a, (x)
+      00062B 27 20            [ 1] 1178 	jreq	00109$
+                                   1179 ;	../src/pff.c: 842: bsect = ld_dword(&buf[8]);	/* Partition offset in LBA */
+      00062D 96               [ 1] 1180 	ldw	x, sp
+      00062E 1C 00 09         [ 2] 1181 	addw	x, #9
+      000631 89               [ 2] 1182 	pushw	x
+      000632 CDr00r16         [ 4] 1183 	call	_ld_dword
+      000635 5B 02            [ 2] 1184 	addw	sp, #2
+      000637 1F 33            [ 2] 1185 	ldw	(0x33, sp), x
+      000639 17 31            [ 2] 1186 	ldw	(0x31, sp), y
+                                   1187 ;	../src/pff.c: 843: fmt = check_fs(buf, bsect);	/* Check the partition */
+      00063B 1E 33            [ 2] 1188 	ldw	x, (0x33, sp)
+      00063D 89               [ 2] 1189 	pushw	x
+      00063E 1E 33            [ 2] 1190 	ldw	x, (0x33, sp)
+      000640 89               [ 2] 1191 	pushw	x
+      000641 96               [ 1] 1192 	ldw	x, sp
+      000642 1C 00 05         [ 2] 1193 	addw	x, #5
+      000645 89               [ 2] 1194 	pushw	x
+      000646 CDr05r81         [ 4] 1195 	call	_check_fs
+      000649 5B 06            [ 2] 1196 	addw	sp, #6
+      00064B 6B 3C            [ 1] 1197 	ld	(0x3c, sp), a
+      00064D                       1198 00109$:
+                                   1199 ;	../src/pff.c: 847: if (fmt == 3) return FR_DISK_ERR;
+      00064D 7B 3C            [ 1] 1200 	ld	a, (0x3c, sp)
+      00064F A1 03            [ 1] 1201 	cp	a, #0x03
+      000651 26 05            [ 1] 1202 	jrne	00111$
+      000653 A6 01            [ 1] 1203 	ld	a, #0x01
+      000655 CCr08r23         [ 2] 1204 	jp	00137$
+      000658                       1205 00111$:
+                                   1206 ;	../src/pff.c: 848: if (fmt) return FR_NO_FILESYSTEM;	/* No valid FAT patition is found */
+      000658 0D 3C            [ 1] 1207 	tnz	(0x3c, sp)
+      00065A 27 05            [ 1] 1208 	jreq	00113$
+      00065C A6 06            [ 1] 1209 	ld	a, #0x06
+      00065E CCr08r23         [ 2] 1210 	jp	00137$
+      000661                       1211 00113$:
+                                   1212 ;	../src/pff.c: 851: if (disk_readp(buf, bsect, 13, sizeof (buf))) return FR_DISK_ERR;
+      000661 4B 24            [ 1] 1213 	push	#0x24
+      000663 4B 00            [ 1] 1214 	push	#0x00
+      000665 4B 0D            [ 1] 1215 	push	#0x0d
+      000667 4B 00            [ 1] 1216 	push	#0x00
+      000669 1E 37            [ 2] 1217 	ldw	x, (0x37, sp)
+      00066B 89               [ 2] 1218 	pushw	x
+      00066C 1E 37            [ 2] 1219 	ldw	x, (0x37, sp)
+      00066E 89               [ 2] 1220 	pushw	x
+      00066F 96               [ 1] 1221 	ldw	x, sp
+      000670 1C 00 09         [ 2] 1222 	addw	x, #9
+      000673 89               [ 2] 1223 	pushw	x
+      000674 CDr00r00         [ 4] 1224 	call	_disk_readp
+      000677 5B 0A            [ 2] 1225 	addw	sp, #10
+      000679 4D               [ 1] 1226 	tnz	a
+      00067A 27 05            [ 1] 1227 	jreq	00115$
+      00067C A6 01            [ 1] 1228 	ld	a, #0x01
+      00067E CCr08r23         [ 2] 1229 	jp	00137$
+      000681                       1230 00115$:
+                                   1231 ;	../src/pff.c: 853: fsize = ld_word(buf+BPB_FATSz16-13);				/* Number of sectors per FAT */
+      000681 96               [ 1] 1232 	ldw	x, sp
+      000682 1C 00 0A         [ 2] 1233 	addw	x, #10
+      000685 89               [ 2] 1234 	pushw	x
+      000686 CDr00r00         [ 4] 1235 	call	_ld_word
+      000689 5B 02            [ 2] 1236 	addw	sp, #2
+      00068B 90 5F            [ 1] 1237 	clrw	y
+      00068D 1F 37            [ 2] 1238 	ldw	(0x37, sp), x
+      00068F 17 35            [ 2] 1239 	ldw	(0x35, sp), y
+                                   1240 ;	../src/pff.c: 854: if (!fsize) fsize = ld_dword(buf+BPB_FATSz32-13);
+      000691 1E 37            [ 2] 1241 	ldw	x, (0x37, sp)
+      000693 26 12            [ 1] 1242 	jrne	00117$
+      000695 1E 35            [ 2] 1243 	ldw	x, (0x35, sp)
+      000697 26 0E            [ 1] 1244 	jrne	00117$
+      000699 96               [ 1] 1245 	ldw	x, sp
+      00069A 1C 00 18         [ 2] 1246 	addw	x, #24
+      00069D 89               [ 2] 1247 	pushw	x
+      00069E CDr00r16         [ 4] 1248 	call	_ld_dword
+      0006A1 5B 02            [ 2] 1249 	addw	sp, #2
+      0006A3 1F 37            [ 2] 1250 	ldw	(0x37, sp), x
+      0006A5 17 35            [ 2] 1251 	ldw	(0x35, sp), y
+      0006A7                       1252 00117$:
+                                   1253 ;	../src/pff.c: 856: fsize *= buf[BPB_NumFATs-13];						/* Number of sectors in FAT area */
+      0006A7 7B 04            [ 1] 1254 	ld	a, (0x04, sp)
+      0006A9 5F               [ 1] 1255 	clrw	x
+      0006AA 97               [ 1] 1256 	ld	xl, a
+      0006AB 90 5F            [ 1] 1257 	clrw	y
+      0006AD 89               [ 2] 1258 	pushw	x
+      0006AE 90 89            [ 2] 1259 	pushw	y
+      0006B0 1E 3B            [ 2] 1260 	ldw	x, (0x3b, sp)
+      0006B2 89               [ 2] 1261 	pushw	x
+      0006B3 1E 3B            [ 2] 1262 	ldw	x, (0x3b, sp)
+      0006B5 89               [ 2] 1263 	pushw	x
+      0006B6 CDr00r00         [ 4] 1264 	call	__mullong
+      0006B9 5B 08            [ 2] 1265 	addw	sp, #8
+      0006BB 1F 27            [ 2] 1266 	ldw	(0x27, sp), x
+      0006BD 17 25            [ 2] 1267 	ldw	(0x25, sp), y
+                                   1268 ;	../src/pff.c: 857: fs->fatbase = bsect + ld_word(buf+BPB_RsvdSecCnt-13); /* FAT start sector (lba) */
+      0006BF 16 3F            [ 2] 1269 	ldw	y, (0x3f, sp)
+      0006C1 17 29            [ 2] 1270 	ldw	(0x29, sp), y
+      0006C3 93               [ 1] 1271 	ldw	x, y
+      0006C4 1C 00 0A         [ 2] 1272 	addw	x, #0x000a
+      0006C7 1F 2B            [ 2] 1273 	ldw	(0x2b, sp), x
+      0006C9 96               [ 1] 1274 	ldw	x, sp
+      0006CA 5C               [ 1] 1275 	incw	x
+      0006CB 5C               [ 1] 1276 	incw	x
+      0006CC 1F 3B            [ 2] 1277 	ldw	(0x3b, sp), x
+      0006CE 89               [ 2] 1278 	pushw	x
+      0006CF CDr00r00         [ 4] 1279 	call	_ld_word
+      0006D2 5B 02            [ 2] 1280 	addw	sp, #2
+      0006D4 51               [ 1] 1281 	exgw	x, y
+      0006D5 4F               [ 1] 1282 	clr	a
+      0006D6 5F               [ 1] 1283 	clrw	x
+      0006D7 72 F9 33         [ 2] 1284 	addw	y, (0x33, sp)
+      0006DA 19 32            [ 1] 1285 	adc	a, (0x32, sp)
+      0006DC 6B 36            [ 1] 1286 	ld	(0x36, sp), a
+      0006DE 9E               [ 1] 1287 	ld	a, xh
+      0006DF 19 31            [ 1] 1288 	adc	a, (0x31, sp)
+      0006E1 6B 35            [ 1] 1289 	ld	(0x35, sp), a
+      0006E3 1E 2B            [ 2] 1290 	ldw	x, (0x2b, sp)
+      0006E5 EF 02            [ 2] 1291 	ldw	(0x2, x), y
+      0006E7 16 35            [ 2] 1292 	ldw	y, (0x35, sp)
+      0006E9 FF               [ 2] 1293 	ldw	(x), y
+                                   1294 ;	../src/pff.c: 858: fs->csize = buf[BPB_SecPerClus-13];					/* Number of sectors per cluster */
+      0006EA 1E 29            [ 2] 1295 	ldw	x, (0x29, sp)
+      0006EC 5C               [ 1] 1296 	incw	x
+      0006ED 5C               [ 1] 1297 	incw	x
+      0006EE 1F 2D            [ 2] 1298 	ldw	(0x2d, sp), x
+      0006F0 7B 01            [ 1] 1299 	ld	a, (0x01, sp)
+      0006F2 1E 2D            [ 2] 1300 	ldw	x, (0x2d, sp)
+      0006F4 F7               [ 1] 1301 	ld	(x), a
+                                   1302 ;	../src/pff.c: 859: fs->n_rootdir = ld_word(buf+BPB_RootEntCnt-13);		/* Nmuber of root directory entries */
+      0006F5 1E 29            [ 2] 1303 	ldw	x, (0x29, sp)
+      0006F7 1C 00 04         [ 2] 1304 	addw	x, #0x0004
+      0006FA 1F 2F            [ 2] 1305 	ldw	(0x2f, sp), x
+      0006FC 1E 39            [ 2] 1306 	ldw	x, (0x39, sp)
+      0006FE 89               [ 2] 1307 	pushw	x
+      0006FF CDr00r00         [ 4] 1308 	call	_ld_word
+      000702 5B 02            [ 2] 1309 	addw	sp, #2
+      000704 16 2F            [ 2] 1310 	ldw	y, (0x2f, sp)
+      000706 90 FF            [ 2] 1311 	ldw	(y), x
+                                   1312 ;	../src/pff.c: 860: tsect = ld_word(buf+BPB_TotSec16-13);				/* Number of sectors on the file system */
+      000708 96               [ 1] 1313 	ldw	x, sp
+      000709 1C 00 07         [ 2] 1314 	addw	x, #7
+      00070C 89               [ 2] 1315 	pushw	x
+      00070D CDr00r00         [ 4] 1316 	call	_ld_word
+      000710 5B 02            [ 2] 1317 	addw	sp, #2
+      000712 90 5F            [ 1] 1318 	clrw	y
+      000714 1F 37            [ 2] 1319 	ldw	(0x37, sp), x
+      000716 17 35            [ 2] 1320 	ldw	(0x35, sp), y
+                                   1321 ;	../src/pff.c: 861: if (!tsect) tsect = ld_dword(buf+BPB_TotSec32-13);
+      000718 5D               [ 2] 1322 	tnzw	x
+      000719 26 12            [ 1] 1323 	jrne	00119$
+      00071B 90 5D            [ 2] 1324 	tnzw	y
+      00071D 26 0E            [ 1] 1325 	jrne	00119$
+      00071F 96               [ 1] 1326 	ldw	x, sp
+      000720 1C 00 14         [ 2] 1327 	addw	x, #20
+      000723 89               [ 2] 1328 	pushw	x
+      000724 CDr00r16         [ 4] 1329 	call	_ld_dword
+      000727 5B 02            [ 2] 1330 	addw	sp, #2
+      000729 1F 37            [ 2] 1331 	ldw	(0x37, sp), x
+      00072B 17 35            [ 2] 1332 	ldw	(0x35, sp), y
+      00072D                       1333 00119$:
+                                   1334 ;	../src/pff.c: 863: - ld_word(buf+BPB_RsvdSecCnt-13) - fsize - fs->n_rootdir / 16
+      00072D 1E 3B            [ 2] 1335 	ldw	x, (0x3b, sp)
+      00072F 89               [ 2] 1336 	pushw	x
+      000730 CDr00r00         [ 4] 1337 	call	_ld_word
+      000733 5B 02            [ 2] 1338 	addw	sp, #2
+      000735 1F 3B            [ 2] 1339 	ldw	(0x3b, sp), x
+      000737 0F 3A            [ 1] 1340 	clr	(0x3a, sp)
+      000739 0F 39            [ 1] 1341 	clr	(0x39, sp)
+      00073B 16 37            [ 2] 1342 	ldw	y, (0x37, sp)
+      00073D 72 F2 3B         [ 2] 1343 	subw	y, (0x3b, sp)
+      000740 7B 36            [ 1] 1344 	ld	a, (0x36, sp)
+      000742 12 3A            [ 1] 1345 	sbc	a, (0x3a, sp)
+      000744 88               [ 1] 1346 	push	a
+      000745 7B 36            [ 1] 1347 	ld	a, (0x36, sp)
+      000747 12 3A            [ 1] 1348 	sbc	a, (0x3a, sp)
+      000749 97               [ 1] 1349 	ld	xl, a
+      00074A 84               [ 1] 1350 	pop	a
+      00074B 72 F2 27         [ 2] 1351 	subw	y, (0x27, sp)
+      00074E 12 26            [ 1] 1352 	sbc	a, (0x26, sp)
+      000750 6B 32            [ 1] 1353 	ld	(0x32, sp), a
+      000752 9F               [ 1] 1354 	ld	a, xl
+      000753 12 25            [ 1] 1355 	sbc	a, (0x25, sp)
+      000755 1E 2F            [ 2] 1356 	ldw	x, (0x2f, sp)
+      000757 FE               [ 2] 1357 	ldw	x, (x)
+      000758 54               [ 2] 1358 	srlw	x
+      000759 54               [ 2] 1359 	srlw	x
+      00075A 54               [ 2] 1360 	srlw	x
+      00075B 54               [ 2] 1361 	srlw	x
+      00075C 1F 37            [ 2] 1362 	ldw	(0x37, sp), x
+      00075E 5F               [ 1] 1363 	clrw	x
+      00075F 0F 35            [ 1] 1364 	clr	(0x35, sp)
+      000761 72 F2 37         [ 2] 1365 	subw	y, (0x37, sp)
+      000764 17 3B            [ 2] 1366 	ldw	(0x3b, sp), y
+      000766 88               [ 1] 1367 	push	a
+      000767 7B 33            [ 1] 1368 	ld	a, (0x33, sp)
+      000769 89               [ 2] 1369 	pushw	x
+      00076A 12 02            [ 1] 1370 	sbc	a, (2, sp)
+      00076C 85               [ 2] 1371 	popw	x
+      00076D 6B 3B            [ 1] 1372 	ld	(0x3b, sp), a
+      00076F 84               [ 1] 1373 	pop	a
+      000770 12 35            [ 1] 1374 	sbc	a, (0x35, sp)
+      000772 6B 39            [ 1] 1375 	ld	(0x39, sp), a
+                                   1376 ;	../src/pff.c: 864: ) / fs->csize + 2;
+      000774 1E 2D            [ 2] 1377 	ldw	x, (0x2d, sp)
+      000776 F6               [ 1] 1378 	ld	a, (x)
+      000777 5F               [ 1] 1379 	clrw	x
+      000778 97               [ 1] 1380 	ld	xl, a
+      000779 90 5F            [ 1] 1381 	clrw	y
+      00077B 89               [ 2] 1382 	pushw	x
+      00077C 90 89            [ 2] 1383 	pushw	y
+      00077E 1E 3F            [ 2] 1384 	ldw	x, (0x3f, sp)
+      000780 89               [ 2] 1385 	pushw	x
+      000781 1E 3F            [ 2] 1386 	ldw	x, (0x3f, sp)
+      000783 89               [ 2] 1387 	pushw	x
+      000784 CDr00r00         [ 4] 1388 	call	__divulong
+      000787 5B 08            [ 2] 1389 	addw	sp, #8
+      000789 17 39            [ 2] 1390 	ldw	(0x39, sp), y
+      00078B 1C 00 02         [ 2] 1391 	addw	x, #0x0002
+      00078E 51               [ 1] 1392 	exgw	x, y
+      00078F 1E 39            [ 2] 1393 	ldw	x, (0x39, sp)
+      000791 24 01            [ 1] 1394 	jrnc	00209$
+      000793 5C               [ 1] 1395 	incw	x
+      000794                       1396 00209$:
+      000794 1F 39            [ 2] 1397 	ldw	(0x39, sp), x
+                                   1398 ;	../src/pff.c: 865: fs->n_fatent = (CLUST)mclst;
+      000796 1E 29            [ 2] 1399 	ldw	x, (0x29, sp)
+      000798 1C 00 06         [ 2] 1400 	addw	x, #0x0006
+      00079B EF 02            [ 2] 1401 	ldw	(0x2, x), y
+      00079D 7B 3A            [ 1] 1402 	ld	a, (0x3a, sp)
+      00079F E7 01            [ 1] 1403 	ld	(0x1, x), a
+      0007A1 7B 39            [ 1] 1404 	ld	a, (0x39, sp)
+      0007A3 F7               [ 1] 1405 	ld	(x), a
+                                   1406 ;	../src/pff.c: 867: fmt = 0;							/* Determine the FAT sub type */
+      0007A4 4F               [ 1] 1407 	clr	a
+                                   1408 ;	../src/pff.c: 870: if (PF_FS_FAT32 && mclst >= 0xFFF7) fmt = FS_FAT32;
+      0007A5 90 A3 FF F7      [ 2] 1409 	cpw	y, #0xfff7
+      0007A9 88               [ 1] 1410 	push	a
+      0007AA 7B 3B            [ 1] 1411 	ld	a, (0x3b, sp)
+      0007AC A2 00            [ 1] 1412 	sbc	a, #0x00
+      0007AE 7B 3A            [ 1] 1413 	ld	a, (0x3a, sp)
+      0007B0 A2 00            [ 1] 1414 	sbc	a, #0x00
+      0007B2 84               [ 1] 1415 	pop	a
+      0007B3 25 02            [ 1] 1416 	jrc	00128$
+      0007B5 A6 03            [ 1] 1417 	ld	a, #0x03
+      0007B7                       1418 00128$:
+                                   1419 ;	../src/pff.c: 871: if (!fmt) return FR_NO_FILESYSTEM;
+      0007B7 4D               [ 1] 1420 	tnz	a
+      0007B8 26 04            [ 1] 1421 	jrne	00131$
+      0007BA A6 06            [ 1] 1422 	ld	a, #0x06
+      0007BC 20 65            [ 2] 1423 	jra	00137$
+      0007BE                       1424 00131$:
+                                   1425 ;	../src/pff.c: 872: fs->fs_type = fmt;
+      0007BE 1E 29            [ 2] 1426 	ldw	x, (0x29, sp)
+      0007C0 F7               [ 1] 1427 	ld	(x), a
+                                   1428 ;	../src/pff.c: 875: fs->dirbase = ld_dword(buf+(BPB_RootClus-13));	/* Root directory start cluster */
+      0007C1 1E 29            [ 2] 1429 	ldw	x, (0x29, sp)
+      0007C3 1C 00 0E         [ 2] 1430 	addw	x, #0x000e
+      0007C6 1F 37            [ 2] 1431 	ldw	(0x37, sp), x
+      0007C8 96               [ 1] 1432 	ldw	x, sp
+      0007C9 1C 00 20         [ 2] 1433 	addw	x, #32
+      0007CC 89               [ 2] 1434 	pushw	x
+      0007CD CDr00r16         [ 4] 1435 	call	_ld_dword
+      0007D0 5B 02            [ 2] 1436 	addw	sp, #2
+      0007D2 17 39            [ 2] 1437 	ldw	(0x39, sp), y
+      0007D4 16 37            [ 2] 1438 	ldw	y, (0x37, sp)
+      0007D6 90 EF 02         [ 2] 1439 	ldw	(0x2, y), x
+      0007D9 1E 39            [ 2] 1440 	ldw	x, (0x39, sp)
+      0007DB 90 FF            [ 2] 1441 	ldw	(y), x
+                                   1442 ;	../src/pff.c: 879: fs->database = fs->fatbase + fsize + fs->n_rootdir / 16;	/* Data start sector (lba) */
+      0007DD 1E 29            [ 2] 1443 	ldw	x, (0x29, sp)
+      0007DF 1C 00 12         [ 2] 1444 	addw	x, #0x0012
+      0007E2 1F 3B            [ 2] 1445 	ldw	(0x3b, sp), x
+      0007E4 1E 2B            [ 2] 1446 	ldw	x, (0x2b, sp)
+      0007E6 90 93            [ 1] 1447 	ldw	y, x
+      0007E8 90 EE 02         [ 2] 1448 	ldw	y, (0x2, y)
+      0007EB FE               [ 2] 1449 	ldw	x, (x)
+      0007EC 72 F9 27         [ 2] 1450 	addw	y, (0x27, sp)
+      0007EF 17 39            [ 2] 1451 	ldw	(0x39, sp), y
+      0007F1 9F               [ 1] 1452 	ld	a, xl
+      0007F2 19 26            [ 1] 1453 	adc	a, (0x26, sp)
+      0007F4 6B 38            [ 1] 1454 	ld	(0x38, sp), a
+      0007F6 9E               [ 1] 1455 	ld	a, xh
+      0007F7 19 25            [ 1] 1456 	adc	a, (0x25, sp)
+      0007F9 1E 2F            [ 2] 1457 	ldw	x, (0x2f, sp)
+      0007FB FE               [ 2] 1458 	ldw	x, (x)
+      0007FC 54               [ 2] 1459 	srlw	x
+      0007FD 54               [ 2] 1460 	srlw	x
+      0007FE 54               [ 2] 1461 	srlw	x
+      0007FF 54               [ 2] 1462 	srlw	x
+      000800 51               [ 1] 1463 	exgw	x, y
+      000801 5F               [ 1] 1464 	clrw	x
+      000802 0F 2F            [ 1] 1465 	clr	(0x2f, sp)
+      000804 72 F9 39         [ 2] 1466 	addw	y, (0x39, sp)
+      000807 88               [ 1] 1467 	push	a
+      000808 9F               [ 1] 1468 	ld	a, xl
+      000809 19 39            [ 1] 1469 	adc	a, (0x39, sp)
+      00080B 6B 35            [ 1] 1470 	ld	(0x35, sp), a
+      00080D 84               [ 1] 1471 	pop	a
+      00080E 19 2F            [ 1] 1472 	adc	a, (0x2f, sp)
+      000810 6B 33            [ 1] 1473 	ld	(0x33, sp), a
+      000812 1E 3B            [ 2] 1474 	ldw	x, (0x3b, sp)
+      000814 EF 02            [ 2] 1475 	ldw	(0x2, x), y
+      000816 16 33            [ 2] 1476 	ldw	y, (0x33, sp)
+      000818 FF               [ 2] 1477 	ldw	(x), y
+                                   1478 ;	../src/pff.c: 881: fs->flag = 0;
+      000819 1E 29            [ 2] 1479 	ldw	x, (0x29, sp)
+      00081B 5C               [ 1] 1480 	incw	x
+      00081C 7F               [ 1] 1481 	clr	(x)
+                                   1482 ;	../src/pff.c: 882: FatFs = fs;
+      00081D 1E 29            [ 2] 1483 	ldw	x, (0x29, sp)
+      00081F CFu00u00         [ 2] 1484 	ldw	_FatFs+0, x
+                                   1485 ;	../src/pff.c: 884: return FR_OK;
+      000822 4F               [ 1] 1486 	clr	a
+      000823                       1487 00137$:
+                                   1488 ;	../src/pff.c: 885: }
+      000823 5B 3C            [ 2] 1489 	addw	sp, #60
+      000825 81               [ 4] 1490 	ret
+                                   1491 ;	../src/pff.c: 894: FRESULT pf_open (
+                                   1492 ;	-----------------------------------------
+                                   1493 ;	 function pf_open
+                                   1494 ;	-----------------------------------------
+      000826                       1495 _pf_open:
+      000826 52 46            [ 2] 1496 	sub	sp, #70
+                                   1497 ;	../src/pff.c: 901: FATFS *fs = FatFs;
+      000828 CEu00u00         [ 2] 1498 	ldw	x, _FatFs+0
+                                   1499 ;	../src/pff.c: 904: if (!fs) return FR_NOT_ENABLED;		/* Check file system */
+      00082B 1F 3D            [ 2] 1500 	ldw	(0x3d, sp), x
+      00082D 26 05            [ 1] 1501 	jrne	00102$
+      00082F A6 05            [ 1] 1502 	ld	a, #0x05
+      000831 CCr08rB4         [ 2] 1503 	jp	00108$
+      000834                       1504 00102$:
+                                   1505 ;	../src/pff.c: 906: fs->flag = 0;
+      000834 1E 3D            [ 2] 1506 	ldw	x, (0x3d, sp)
+      000836 5C               [ 1] 1507 	incw	x
+      000837 1F 3F            [ 2] 1508 	ldw	(0x3f, sp), x
+      000839 7F               [ 1] 1509 	clr	(x)
+                                   1510 ;	../src/pff.c: 907: dj.fn = sp;
+      00083A 96               [ 1] 1511 	ldw	x, sp
+      00083B 1C 00 03         [ 2] 1512 	addw	x, #3
+      00083E 90 96            [ 1] 1513 	ldw	y, sp
+      000840 72 A9 00 11      [ 2] 1514 	addw	y, #17
+      000844 FF               [ 2] 1515 	ldw	(x), y
+                                   1516 ;	../src/pff.c: 908: res = follow_path(&dj, dir, path);	/* Follow the file path */
+      000845 1E 49            [ 2] 1517 	ldw	x, (0x49, sp)
+      000847 89               [ 2] 1518 	pushw	x
+      000848 96               [ 1] 1519 	ldw	x, sp
+      000849 1C 00 1F         [ 2] 1520 	addw	x, #31
+      00084C 89               [ 2] 1521 	pushw	x
+      00084D 96               [ 1] 1522 	ldw	x, sp
+      00084E 1C 00 05         [ 2] 1523 	addw	x, #5
+      000851 89               [ 2] 1524 	pushw	x
+      000852 CDr04rE2         [ 4] 1525 	call	_follow_path
+      000855 5B 06            [ 2] 1526 	addw	sp, #6
+      000857 97               [ 1] 1527 	ld	xl, a
+                                   1528 ;	../src/pff.c: 909: if (res != FR_OK) return res;		/* Follow failed */
+      000858 4D               [ 1] 1529 	tnz	a
+      000859 27 03            [ 1] 1530 	jreq	00104$
+      00085B 9F               [ 1] 1531 	ld	a, xl
+      00085C 20 56            [ 2] 1532 	jra	00108$
+      00085E                       1533 00104$:
+                                   1534 ;	../src/pff.c: 910: if (!dir[0] || (dir[DIR_Attr] & AM_DIR)) return FR_NO_FILE;	/* It is a directory */
+      00085E 7B 1D            [ 1] 1535 	ld	a, (0x1d, sp)
+      000860 27 06            [ 1] 1536 	jreq	00105$
+      000862 7B 28            [ 1] 1537 	ld	a, (0x28, sp)
+      000864 A5 10            [ 1] 1538 	bcp	a, #0x10
+      000866 27 04            [ 1] 1539 	jreq	00106$
+      000868                       1540 00105$:
+      000868 A6 03            [ 1] 1541 	ld	a, #0x03
+      00086A 20 48            [ 2] 1542 	jra	00108$
+      00086C                       1543 00106$:
+                                   1544 ;	../src/pff.c: 912: fs->org_clust = get_clust(dir);		/* File start cluster */
+      00086C 1E 3D            [ 2] 1545 	ldw	x, (0x3d, sp)
+      00086E 1C 00 1E         [ 2] 1546 	addw	x, #0x001e
+      000871 1F 41            [ 2] 1547 	ldw	(0x41, sp), x
+      000873 96               [ 1] 1548 	ldw	x, sp
+      000874 1C 00 1D         [ 2] 1549 	addw	x, #29
+      000877 89               [ 2] 1550 	pushw	x
+      000878 CDr02r02         [ 4] 1551 	call	_get_clust
+      00087B 5B 02            [ 2] 1552 	addw	sp, #2
+      00087D 17 43            [ 2] 1553 	ldw	(0x43, sp), y
+      00087F 16 41            [ 2] 1554 	ldw	y, (0x41, sp)
+      000881 90 EF 02         [ 2] 1555 	ldw	(0x2, y), x
+      000884 1E 43            [ 2] 1556 	ldw	x, (0x43, sp)
+      000886 90 FF            [ 2] 1557 	ldw	(y), x
+                                   1558 ;	../src/pff.c: 913: fs->fsize = ld_dword(dir+DIR_FileSize);	/* File size */
+      000888 1E 3D            [ 2] 1559 	ldw	x, (0x3d, sp)
+      00088A 1C 00 1A         [ 2] 1560 	addw	x, #0x001a
+      00088D 1F 41            [ 2] 1561 	ldw	(0x41, sp), x
+      00088F 96               [ 1] 1562 	ldw	x, sp
+      000890 1C 00 39         [ 2] 1563 	addw	x, #57
+      000893 89               [ 2] 1564 	pushw	x
+      000894 CDr00r16         [ 4] 1565 	call	_ld_dword
+      000897 5B 02            [ 2] 1566 	addw	sp, #2
+      000899 17 43            [ 2] 1567 	ldw	(0x43, sp), y
+      00089B 16 41            [ 2] 1568 	ldw	y, (0x41, sp)
+      00089D 90 EF 02         [ 2] 1569 	ldw	(0x2, y), x
+      0008A0 1E 43            [ 2] 1570 	ldw	x, (0x43, sp)
+      0008A2 90 FF            [ 2] 1571 	ldw	(y), x
+                                   1572 ;	../src/pff.c: 914: fs->fptr = 0;						/* File pointer */
+      0008A4 1E 3D            [ 2] 1573 	ldw	x, (0x3d, sp)
+      0008A6 1C 00 16         [ 2] 1574 	addw	x, #0x0016
+      0008A9 90 5F            [ 1] 1575 	clrw	y
+      0008AB EF 02            [ 2] 1576 	ldw	(0x2, x), y
+      0008AD FF               [ 2] 1577 	ldw	(x), y
+                                   1578 ;	../src/pff.c: 915: fs->flag = FA_OPENED;
+      0008AE 1E 3F            [ 2] 1579 	ldw	x, (0x3f, sp)
+      0008B0 A6 01            [ 1] 1580 	ld	a, #0x01
+      0008B2 F7               [ 1] 1581 	ld	(x), a
+                                   1582 ;	../src/pff.c: 917: return FR_OK;
+      0008B3 4F               [ 1] 1583 	clr	a
+      0008B4                       1584 00108$:
+                                   1585 ;	../src/pff.c: 918: }
+      0008B4 5B 46            [ 2] 1586 	addw	sp, #70
+      0008B6 81               [ 4] 1587 	ret
+                                   1588 ;	../src/pff.c: 928: FRESULT pf_read (
+                                   1589 ;	-----------------------------------------
+                                   1590 ;	 function pf_read
+                                   1591 ;	-----------------------------------------
+      0008B7                       1592 _pf_read:
+      0008B7 52 1A            [ 2] 1593 	sub	sp, #26
+                                   1594 ;	../src/pff.c: 938: BYTE cs, *rbuff = buff;
+      0008B9 1E 1D            [ 2] 1595 	ldw	x, (0x1d, sp)
+      0008BB 1F 01            [ 2] 1596 	ldw	(0x01, sp), x
+                                   1597 ;	../src/pff.c: 939: FATFS *fs = FatFs;
+      0008BD CEu00u00         [ 2] 1598 	ldw	x, _FatFs+0
+      0008C0 1F 19            [ 2] 1599 	ldw	(0x19, sp), x
+                                   1600 ;	../src/pff.c: 942: *br = 0;
+      0008C2 16 21            [ 2] 1601 	ldw	y, (0x21, sp)
+      0008C4 17 03            [ 2] 1602 	ldw	(0x03, sp), y
+      0008C6 93               [ 1] 1603 	ldw	x, y
+      0008C7 6F 01            [ 1] 1604 	clr	(0x1, x)
+      0008C9 7F               [ 1] 1605 	clr	(x)
+                                   1606 ;	../src/pff.c: 943: if (!fs) return FR_NOT_ENABLED;		/* Check file system */
+      0008CA 1E 19            [ 2] 1607 	ldw	x, (0x19, sp)
+      0008CC 26 05            [ 1] 1608 	jrne	00102$
+      0008CE A6 05            [ 1] 1609 	ld	a, #0x05
+      0008D0 CCr0ArA2         [ 2] 1610 	jp	00127$
+      0008D3                       1611 00102$:
+                                   1612 ;	../src/pff.c: 944: if (!(fs->flag & FA_OPENED)) return FR_NOT_OPENED;	/* Check if opened */
+      0008D3 1E 19            [ 2] 1613 	ldw	x, (0x19, sp)
+      0008D5 5C               [ 1] 1614 	incw	x
+      0008D6 1F 05            [ 2] 1615 	ldw	(0x05, sp), x
+      0008D8 F6               [ 1] 1616 	ld	a, (x)
+      0008D9 44               [ 1] 1617 	srl	a
+      0008DA 25 05            [ 1] 1618 	jrc	00104$
+      0008DC A6 04            [ 1] 1619 	ld	a, #0x04
+      0008DE CCr0ArA2         [ 2] 1620 	jp	00127$
+      0008E1                       1621 00104$:
+                                   1622 ;	../src/pff.c: 946: remain = fs->fsize - fs->fptr;
+      0008E1 1E 19            [ 2] 1623 	ldw	x, (0x19, sp)
+      0008E3 90 93            [ 1] 1624 	ldw	y, x
+      0008E5 90 EE 1C         [ 2] 1625 	ldw	y, (0x1c, y)
+      0008E8 EE 1A            [ 2] 1626 	ldw	x, (0x1a, x)
+      0008EA 1F 11            [ 2] 1627 	ldw	(0x11, sp), x
+      0008EC 1E 19            [ 2] 1628 	ldw	x, (0x19, sp)
+      0008EE 1C 00 16         [ 2] 1629 	addw	x, #0x0016
+      0008F1 1F 07            [ 2] 1630 	ldw	(0x07, sp), x
+      0008F3 E6 03            [ 1] 1631 	ld	a, (0x3, x)
+      0008F5 6B 18            [ 1] 1632 	ld	(0x18, sp), a
+      0008F7 E6 02            [ 1] 1633 	ld	a, (0x2, x)
+      0008F9 6B 17            [ 1] 1634 	ld	(0x17, sp), a
+      0008FB FE               [ 2] 1635 	ldw	x, (x)
+      0008FC 72 F2 17         [ 2] 1636 	subw	y, (0x17, sp)
+      0008FF 7B 12            [ 1] 1637 	ld	a, (0x12, sp)
+      000901 89               [ 2] 1638 	pushw	x
+      000902 12 02            [ 1] 1639 	sbc	a, (2, sp)
+      000904 85               [ 2] 1640 	popw	x
+      000905 97               [ 1] 1641 	ld	xl, a
+      000906 7B 11            [ 1] 1642 	ld	a, (0x11, sp)
+      000908 89               [ 2] 1643 	pushw	x
+      000909 12 01            [ 1] 1644 	sbc	a, (1, sp)
+      00090B 85               [ 2] 1645 	popw	x
+      00090C 17 13            [ 2] 1646 	ldw	(0x13, sp), y
+      00090E 95               [ 1] 1647 	ld	xh, a
+                                   1648 ;	../src/pff.c: 947: if (btr > remain) btr = (UINT)remain;			/* Truncate btr by remaining bytes */
+      00090F 16 1F            [ 2] 1649 	ldw	y, (0x1f, sp)
+      000911 17 17            [ 2] 1650 	ldw	(0x17, sp), y
+      000913 0F 16            [ 1] 1651 	clr	(0x16, sp)
+      000915 0F 15            [ 1] 1652 	clr	(0x15, sp)
+      000917 7B 14            [ 1] 1653 	ld	a, (0x14, sp)
+      000919 11 18            [ 1] 1654 	cp	a, (0x18, sp)
+      00091B 7B 13            [ 1] 1655 	ld	a, (0x13, sp)
+      00091D 12 17            [ 1] 1656 	sbc	a, (0x17, sp)
+      00091F 9F               [ 1] 1657 	ld	a, xl
+      000920 12 16            [ 1] 1658 	sbc	a, (0x16, sp)
+      000922 9E               [ 1] 1659 	ld	a, xh
+      000923 12 15            [ 1] 1660 	sbc	a, (0x15, sp)
+      000925 24 04            [ 1] 1661 	jrnc	00140$
+      000927 1E 13            [ 2] 1662 	ldw	x, (0x13, sp)
+      000929 1F 1F            [ 2] 1663 	ldw	(0x1f, sp), x
+                                   1664 ;	../src/pff.c: 949: while (btr)	{									/* Repeat until all data transferred */
+      00092B                       1665 00140$:
+      00092B 1E 19            [ 2] 1666 	ldw	x, (0x19, sp)
+      00092D 1C 00 22         [ 2] 1667 	addw	x, #0x0022
+      000930 1F 09            [ 2] 1668 	ldw	(0x09, sp), x
+      000932 16 19            [ 2] 1669 	ldw	y, (0x19, sp)
+      000934 17 0B            [ 2] 1670 	ldw	(0x0b, sp), y
+      000936 16 19            [ 2] 1671 	ldw	y, (0x19, sp)
+      000938 17 0D            [ 2] 1672 	ldw	(0x0d, sp), y
+      00093A 1E 19            [ 2] 1673 	ldw	x, (0x19, sp)
+      00093C 1C 00 26         [ 2] 1674 	addw	x, #0x0026
+      00093F 1F 0F            [ 2] 1675 	ldw	(0x0f, sp), x
+      000941                       1676 00124$:
+      000941 1E 1F            [ 2] 1677 	ldw	x, (0x1f, sp)
+      000943 26 03            [ 1] 1678 	jrne	00197$
+      000945 CCr0ArA1         [ 2] 1679 	jp	00126$
+      000948                       1680 00197$:
+                                   1681 ;	../src/pff.c: 950: if ((fs->fptr % 512) == 0) {				/* On the sector boundary? */
+      000948 1E 07            [ 2] 1682 	ldw	x, (0x07, sp)
+      00094A 90 93            [ 1] 1683 	ldw	y, x
+      00094C 90 EE 02         [ 2] 1684 	ldw	y, (0x2, y)
+      00094F 17 13            [ 2] 1685 	ldw	(0x13, sp), y
+      000951 FE               [ 2] 1686 	ldw	x, (x)
+      000952 1F 11            [ 2] 1687 	ldw	(0x11, sp), x
+      000954 7B 14            [ 1] 1688 	ld	a, (0x14, sp)
+      000956 6B 1A            [ 1] 1689 	ld	(0x1a, sp), a
+      000958 7B 13            [ 1] 1690 	ld	a, (0x13, sp)
+      00095A A4 01            [ 1] 1691 	and	a, #0x01
+      00095C 6B 19            [ 1] 1692 	ld	(0x19, sp), a
+      00095E 5F               [ 1] 1693 	clrw	x
+      00095F 1F 17            [ 2] 1694 	ldw	(0x17, sp), x
+      000961 1E 19            [ 2] 1695 	ldw	x, (0x19, sp)
+      000963 26 04            [ 1] 1696 	jrne	00198$
+      000965 1E 17            [ 2] 1697 	ldw	x, (0x17, sp)
+      000967 27 03            [ 1] 1698 	jreq	00199$
+      000969                       1699 00198$:
+      000969 CCr0Ar18         [ 2] 1700 	jp	00117$
+      00096C                       1701 00199$:
+                                   1702 ;	../src/pff.c: 951: cs = (BYTE)(fs->fptr / 512 & (fs->csize - 1));	/* Sector offset in the cluster */
+      00096C 16 12            [ 2] 1703 	ldw	y, (0x12, sp)
+      00096E 17 17            [ 2] 1704 	ldw	(0x17, sp), y
+      000970 7B 11            [ 1] 1705 	ld	a, (0x11, sp)
+      000972 6B 16            [ 1] 1706 	ld	(0x16, sp), a
+      000974 0F 15            [ 1] 1707 	clr	(0x15, sp)
+      000976 04 16            [ 1] 1708 	srl	(0x16, sp)
+      000978 06 17            [ 1] 1709 	rrc	(0x17, sp)
+      00097A 06 18            [ 1] 1710 	rrc	(0x18, sp)
+      00097C 1E 0D            [ 2] 1711 	ldw	x, (0x0d, sp)
+      00097E E6 02            [ 1] 1712 	ld	a, (0x2, x)
+      000980 6B 1A            [ 1] 1713 	ld	(0x1a, sp), a
+      000982 0A 1A            [ 1] 1714 	dec	(0x1a, sp)
+      000984 7B 1A            [ 1] 1715 	ld	a, (0x1a, sp)
+      000986 6B 19            [ 1] 1716 	ld	(0x19, sp), a
+      000988 7B 18            [ 1] 1717 	ld	a, (0x18, sp)
+      00098A 6B 1A            [ 1] 1718 	ld	(0x1a, sp), a
+      00098C 14 19            [ 1] 1719 	and	a, (0x19, sp)
+                                   1720 ;	../src/pff.c: 952: if (!cs) {								/* On the cluster boundary? */
+      00098E 6B 1A            [ 1] 1721 	ld	(0x1a, sp), a
+      000990 26 48            [ 1] 1722 	jrne	00113$
+                                   1723 ;	../src/pff.c: 953: if (fs->fptr == 0) {				/* On the top of the file? */
+      000992 1E 13            [ 2] 1724 	ldw	x, (0x13, sp)
+      000994 26 13            [ 1] 1725 	jrne	00108$
+      000996 1E 11            [ 2] 1726 	ldw	x, (0x11, sp)
+      000998 26 0F            [ 1] 1727 	jrne	00108$
+                                   1728 ;	../src/pff.c: 954: clst = fs->org_clust;
+      00099A 1E 0B            [ 2] 1729 	ldw	x, (0x0b, sp)
+      00099C 90 93            [ 1] 1730 	ldw	y, x
+      00099E 90 EE 20         [ 2] 1731 	ldw	y, (0x20, y)
+      0009A1 EE 1E            [ 2] 1732 	ldw	x, (0x1e, x)
+      0009A3 17 18            [ 2] 1733 	ldw	(0x18, sp), y
+      0009A5 1F 16            [ 2] 1734 	ldw	(0x16, sp), x
+      0009A7 20 14            [ 2] 1735 	jra	00109$
+      0009A9                       1736 00108$:
+                                   1737 ;	../src/pff.c: 956: clst = get_fat(fs->curr_clust);
+      0009A9 1E 09            [ 2] 1738 	ldw	x, (0x09, sp)
+      0009AB 90 93            [ 1] 1739 	ldw	y, x
+      0009AD 90 EE 02         [ 2] 1740 	ldw	y, (0x2, y)
+      0009B0 FE               [ 2] 1741 	ldw	x, (x)
+      0009B1 90 89            [ 2] 1742 	pushw	y
+      0009B3 89               [ 2] 1743 	pushw	x
+      0009B4 CDr00rE9         [ 4] 1744 	call	_get_fat
+      0009B7 5B 04            [ 2] 1745 	addw	sp, #4
+      0009B9 17 16            [ 2] 1746 	ldw	(0x16, sp), y
+      0009BB 1F 18            [ 2] 1747 	ldw	(0x18, sp), x
+      0009BD                       1748 00109$:
+                                   1749 ;	../src/pff.c: 958: if (clst <= 1) ABORT(FR_DISK_ERR);
+      0009BD 5F               [ 1] 1750 	clrw	x
+      0009BE 5C               [ 1] 1751 	incw	x
+      0009BF 13 18            [ 2] 1752 	cpw	x, (0x18, sp)
+      0009C1 4F               [ 1] 1753 	clr	a
+      0009C2 12 17            [ 1] 1754 	sbc	a, (0x17, sp)
+      0009C4 4F               [ 1] 1755 	clr	a
+      0009C5 12 16            [ 1] 1756 	sbc	a, (0x16, sp)
+      0009C7 25 08            [ 1] 1757 	jrc	00111$
+      0009C9 1E 05            [ 2] 1758 	ldw	x, (0x05, sp)
+      0009CB 7F               [ 1] 1759 	clr	(x)
+      0009CC A6 01            [ 1] 1760 	ld	a, #0x01
+      0009CE CCr0ArA2         [ 2] 1761 	jp	00127$
+      0009D1                       1762 00111$:
+                                   1763 ;	../src/pff.c: 959: fs->curr_clust = clst;				/* Update current cluster */
+      0009D1 1E 09            [ 2] 1764 	ldw	x, (0x09, sp)
+      0009D3 16 18            [ 2] 1765 	ldw	y, (0x18, sp)
+      0009D5 EF 02            [ 2] 1766 	ldw	(0x2, x), y
+      0009D7 16 16            [ 2] 1767 	ldw	y, (0x16, sp)
+      0009D9 FF               [ 2] 1768 	ldw	(x), y
+      0009DA                       1769 00113$:
+                                   1770 ;	../src/pff.c: 961: sect = clust2sect(fs->curr_clust);		/* Get current sector */
+      0009DA 1E 09            [ 2] 1771 	ldw	x, (0x09, sp)
+      0009DC 90 93            [ 1] 1772 	ldw	y, x
+      0009DE 90 EE 02         [ 2] 1773 	ldw	y, (0x2, y)
+      0009E1 FE               [ 2] 1774 	ldw	x, (x)
+      0009E2 90 89            [ 2] 1775 	pushw	y
+      0009E4 89               [ 2] 1776 	pushw	x
+      0009E5 CDr01r90         [ 4] 1777 	call	_clust2sect
+      0009E8 5B 04            [ 2] 1778 	addw	sp, #4
+      0009EA 1F 18            [ 2] 1779 	ldw	(0x18, sp), x
+      0009EC 17 16            [ 2] 1780 	ldw	(0x16, sp), y
+                                   1781 ;	../src/pff.c: 962: if (!sect) ABORT(FR_DISK_ERR);
+      0009EE 5D               [ 2] 1782 	tnzw	x
+      0009EF 26 0C            [ 1] 1783 	jrne	00115$
+      0009F1 90 5D            [ 2] 1784 	tnzw	y
+      0009F3 26 08            [ 1] 1785 	jrne	00115$
+      0009F5 1E 05            [ 2] 1786 	ldw	x, (0x05, sp)
+      0009F7 7F               [ 1] 1787 	clr	(x)
+      0009F8 A6 01            [ 1] 1788 	ld	a, #0x01
+      0009FA CCr0ArA2         [ 2] 1789 	jp	00127$
+      0009FD                       1790 00115$:
+                                   1791 ;	../src/pff.c: 963: fs->dsect = sect + cs;
+      0009FD 7B 1A            [ 1] 1792 	ld	a, (0x1a, sp)
+      0009FF 90 5F            [ 1] 1793 	clrw	y
+      000A01 5F               [ 1] 1794 	clrw	x
+      000A02 90 97            [ 1] 1795 	ld	yl, a
+      000A04 72 F9 18         [ 2] 1796 	addw	y, (0x18, sp)
+      000A07 9F               [ 1] 1797 	ld	a, xl
+      000A08 19 17            [ 1] 1798 	adc	a, (0x17, sp)
+      000A0A 6B 13            [ 1] 1799 	ld	(0x13, sp), a
+      000A0C 9E               [ 1] 1800 	ld	a, xh
+      000A0D 19 16            [ 1] 1801 	adc	a, (0x16, sp)
+      000A0F 6B 12            [ 1] 1802 	ld	(0x12, sp), a
+      000A11 1E 0F            [ 2] 1803 	ldw	x, (0x0f, sp)
+      000A13 EF 02            [ 2] 1804 	ldw	(0x2, x), y
+      000A15 16 12            [ 2] 1805 	ldw	y, (0x12, sp)
+      000A17 FF               [ 2] 1806 	ldw	(x), y
+      000A18                       1807 00117$:
+                                   1808 ;	../src/pff.c: 946: remain = fs->fsize - fs->fptr;
+      000A18 1E 07            [ 2] 1809 	ldw	x, (0x07, sp)
+      000A1A EE 02            [ 2] 1810 	ldw	x, (0x2, x)
+                                   1811 ;	../src/pff.c: 965: rcnt = 512 - (UINT)fs->fptr % 512;			/* Get partial sector data from sector buffer */
+      000A1C 9F               [ 1] 1812 	ld	a, xl
+      000A1D 6B 16            [ 1] 1813 	ld	(0x16, sp), a
+      000A1F 9E               [ 1] 1814 	ld	a, xh
+      000A20 A4 01            [ 1] 1815 	and	a, #0x01
+      000A22 6B 15            [ 1] 1816 	ld	(0x15, sp), a
+      000A24 5F               [ 1] 1817 	clrw	x
+      000A25 A6 02            [ 1] 1818 	ld	a, #0x02
+      000A27 95               [ 1] 1819 	ld	xh, a
+      000A28 72 F0 15         [ 2] 1820 	subw	x, (0x15, sp)
+                                   1821 ;	../src/pff.c: 966: if (rcnt > btr) rcnt = btr;
+      000A2B 1F 11            [ 2] 1822 	ldw	(0x11, sp), x
+      000A2D 13 1F            [ 2] 1823 	cpw	x, (0x1f, sp)
+      000A2F 23 04            [ 2] 1824 	jrule	00119$
+      000A31 16 1F            [ 2] 1825 	ldw	y, (0x1f, sp)
+      000A33 17 11            [ 2] 1826 	ldw	(0x11, sp), y
+      000A35                       1827 00119$:
+                                   1828 ;	../src/pff.c: 967: dr = disk_readp(rbuff, fs->dsect, (UINT)fs->fptr % 512, rcnt);
+      000A35 1E 0F            [ 2] 1829 	ldw	x, (0x0f, sp)
+      000A37 90 93            [ 1] 1830 	ldw	y, x
+      000A39 90 EE 02         [ 2] 1831 	ldw	y, (0x2, y)
+      000A3C FE               [ 2] 1832 	ldw	x, (x)
+      000A3D 1F 17            [ 2] 1833 	ldw	(0x17, sp), x
+      000A3F 1E 11            [ 2] 1834 	ldw	x, (0x11, sp)
+      000A41 89               [ 2] 1835 	pushw	x
+      000A42 1E 17            [ 2] 1836 	ldw	x, (0x17, sp)
+      000A44 89               [ 2] 1837 	pushw	x
+      000A45 90 89            [ 2] 1838 	pushw	y
+      000A47 1E 1D            [ 2] 1839 	ldw	x, (0x1d, sp)
+      000A49 89               [ 2] 1840 	pushw	x
+      000A4A 1E 09            [ 2] 1841 	ldw	x, (0x09, sp)
+      000A4C 89               [ 2] 1842 	pushw	x
+      000A4D CDr00r00         [ 4] 1843 	call	_disk_readp
+      000A50 5B 0A            [ 2] 1844 	addw	sp, #10
+                                   1845 ;	../src/pff.c: 968: if (dr) ABORT(FR_DISK_ERR);
+      000A52 4D               [ 1] 1846 	tnz	a
+      000A53 27 07            [ 1] 1847 	jreq	00121$
+      000A55 1E 05            [ 2] 1848 	ldw	x, (0x05, sp)
+      000A57 7F               [ 1] 1849 	clr	(x)
+      000A58 A6 01            [ 1] 1850 	ld	a, #0x01
+      000A5A 20 46            [ 2] 1851 	jra	00127$
+      000A5C                       1852 00121$:
+                                   1853 ;	../src/pff.c: 969: fs->fptr += rcnt;							/* Advances file read pointer */
+      000A5C 1E 07            [ 2] 1854 	ldw	x, (0x07, sp)
+      000A5E 90 93            [ 1] 1855 	ldw	y, x
+      000A60 90 EE 02         [ 2] 1856 	ldw	y, (0x2, y)
+      000A63 17 15            [ 2] 1857 	ldw	(0x15, sp), y
+      000A65 FE               [ 2] 1858 	ldw	x, (x)
+      000A66 1F 13            [ 2] 1859 	ldw	(0x13, sp), x
+      000A68 16 11            [ 2] 1860 	ldw	y, (0x11, sp)
+      000A6A 4F               [ 1] 1861 	clr	a
+      000A6B 5F               [ 1] 1862 	clrw	x
+      000A6C 72 F9 15         [ 2] 1863 	addw	y, (0x15, sp)
+      000A6F 19 14            [ 1] 1864 	adc	a, (0x14, sp)
+      000A71 6B 18            [ 1] 1865 	ld	(0x18, sp), a
+      000A73 9F               [ 1] 1866 	ld	a, xl
+      000A74 19 13            [ 1] 1867 	adc	a, (0x13, sp)
+      000A76 6B 17            [ 1] 1868 	ld	(0x17, sp), a
+      000A78 1E 07            [ 2] 1869 	ldw	x, (0x07, sp)
+      000A7A EF 02            [ 2] 1870 	ldw	(0x2, x), y
+      000A7C 16 17            [ 2] 1871 	ldw	y, (0x17, sp)
+      000A7E FF               [ 2] 1872 	ldw	(x), y
+                                   1873 ;	../src/pff.c: 970: btr -= rcnt; *br += rcnt;					/* Update read counter */
+      000A7F 1E 1F            [ 2] 1874 	ldw	x, (0x1f, sp)
+      000A81 72 F0 11         [ 2] 1875 	subw	x, (0x11, sp)
+      000A84 1F 1F            [ 2] 1876 	ldw	(0x1f, sp), x
+      000A86 1E 03            [ 2] 1877 	ldw	x, (0x03, sp)
+      000A88 FE               [ 2] 1878 	ldw	x, (x)
+      000A89 72 FB 11         [ 2] 1879 	addw	x, (0x11, sp)
+      000A8C 16 03            [ 2] 1880 	ldw	y, (0x03, sp)
+      000A8E 90 FF            [ 2] 1881 	ldw	(y), x
+                                   1882 ;	../src/pff.c: 971: if (rbuff) rbuff += rcnt;					/* Advances the data pointer if destination is memory */
+      000A90 1E 01            [ 2] 1883 	ldw	x, (0x01, sp)
+      000A92 26 03            [ 1] 1884 	jrne	00208$
+      000A94 CCr09r41         [ 2] 1885 	jp	00124$
+      000A97                       1886 00208$:
+      000A97 1E 01            [ 2] 1887 	ldw	x, (0x01, sp)
+      000A99 72 FB 11         [ 2] 1888 	addw	x, (0x11, sp)
+      000A9C 1F 01            [ 2] 1889 	ldw	(0x01, sp), x
+      000A9E CCr09r41         [ 2] 1890 	jp	00124$
+      000AA1                       1891 00126$:
+                                   1892 ;	../src/pff.c: 974: return FR_OK;
+      000AA1 4F               [ 1] 1893 	clr	a
+      000AA2                       1894 00127$:
+                                   1895 ;	../src/pff.c: 975: }
+      000AA2 5B 1A            [ 2] 1896 	addw	sp, #26
+      000AA4 81               [ 4] 1897 	ret
+                                   1898 ;	../src/pff.c: 985: FRESULT pf_write (
+                                   1899 ;	-----------------------------------------
+                                   1900 ;	 function pf_write
+                                   1901 ;	-----------------------------------------
+      000AA5                       1902 _pf_write:
+      000AA5 52 1C            [ 2] 1903 	sub	sp, #28
+                                   1904 ;	../src/pff.c: 993: const BYTE *p = buff;
+      000AA7 1E 1F            [ 2] 1905 	ldw	x, (0x1f, sp)
+      000AA9 1F 05            [ 2] 1906 	ldw	(0x05, sp), x
+                                   1907 ;	../src/pff.c: 996: FATFS *fs = FatFs;
+      000AAB CEu00u00         [ 2] 1908 	ldw	x, _FatFs+0
+      000AAE 1F 07            [ 2] 1909 	ldw	(0x07, sp), x
+                                   1910 ;	../src/pff.c: 999: *bw = 0;
+      000AB0 16 23            [ 2] 1911 	ldw	y, (0x23, sp)
+      000AB2 17 09            [ 2] 1912 	ldw	(0x09, sp), y
+      000AB4 93               [ 1] 1913 	ldw	x, y
+      000AB5 6F 01            [ 1] 1914 	clr	(0x1, x)
+      000AB7 7F               [ 1] 1915 	clr	(x)
+                                   1916 ;	../src/pff.c: 1000: if (!fs) return FR_NOT_ENABLED;		/* Check file system */
+      000AB8 1E 07            [ 2] 1917 	ldw	x, (0x07, sp)
+      000ABA 26 05            [ 1] 1918 	jrne	00102$
+      000ABC A6 05            [ 1] 1919 	ld	a, #0x05
+      000ABE CCr0Dr11         [ 2] 1920 	jp	00139$
+      000AC1                       1921 00102$:
+                                   1922 ;	../src/pff.c: 1001: if (!(fs->flag & FA_OPENED)) return FR_NOT_OPENED;	/* Check if opened */
+      000AC1 1E 07            [ 2] 1923 	ldw	x, (0x07, sp)
+      000AC3 5C               [ 1] 1924 	incw	x
+      000AC4 1F 0B            [ 2] 1925 	ldw	(0x0b, sp), x
+      000AC6 F6               [ 1] 1926 	ld	a, (x)
+      000AC7 A5 01            [ 1] 1927 	bcp	a, #0x01
+      000AC9 26 05            [ 1] 1928 	jrne	00104$
+      000ACB A6 04            [ 1] 1929 	ld	a, #0x04
+      000ACD CCr0Dr11         [ 2] 1930 	jp	00139$
+      000AD0                       1931 00104$:
+                                   1932 ;	../src/pff.c: 1004: if ((fs->flag & FA__WIP) && disk_writep(0, 0)) ABORT(FR_DISK_ERR);
+      000AD0 A4 40            [ 1] 1933 	and	a, #0x40
+      000AD2 6B 1C            [ 1] 1934 	ld	(0x1c, sp), a
+      000AD4 0F 1B            [ 1] 1935 	clr	(0x1b, sp)
+                                   1936 ;	../src/pff.c: 1003: if (!btw) {		/* Finalize request */
+      000AD6 1E 21            [ 2] 1937 	ldw	x, (0x21, sp)
+      000AD8 26 26            [ 1] 1938 	jrne	00111$
+                                   1939 ;	../src/pff.c: 1004: if ((fs->flag & FA__WIP) && disk_writep(0, 0)) ABORT(FR_DISK_ERR);
+      000ADA 1E 1B            [ 2] 1940 	ldw	x, (0x1b, sp)
+      000ADC 27 16            [ 1] 1941 	jreq	00106$
+      000ADE 5F               [ 1] 1942 	clrw	x
+      000ADF 89               [ 2] 1943 	pushw	x
+      000AE0 5F               [ 1] 1944 	clrw	x
+      000AE1 89               [ 2] 1945 	pushw	x
+      000AE2 5F               [ 1] 1946 	clrw	x
+      000AE3 89               [ 2] 1947 	pushw	x
+      000AE4 CDr00r00         [ 4] 1948 	call	_disk_writep
+      000AE7 5B 06            [ 2] 1949 	addw	sp, #6
+      000AE9 4D               [ 1] 1950 	tnz	a
+      000AEA 27 08            [ 1] 1951 	jreq	00106$
+      000AEC 1E 0B            [ 2] 1952 	ldw	x, (0x0b, sp)
+      000AEE 7F               [ 1] 1953 	clr	(x)
+      000AEF A6 01            [ 1] 1954 	ld	a, #0x01
+      000AF1 CCr0Dr11         [ 2] 1955 	jp	00139$
+      000AF4                       1956 00106$:
+                                   1957 ;	../src/pff.c: 1005: fs->flag &= ~FA__WIP;
+      000AF4 1E 0B            [ 2] 1958 	ldw	x, (0x0b, sp)
+      000AF6 F6               [ 1] 1959 	ld	a, (x)
+      000AF7 A4 BF            [ 1] 1960 	and	a, #0xbf
+      000AF9 1E 0B            [ 2] 1961 	ldw	x, (0x0b, sp)
+      000AFB F7               [ 1] 1962 	ld	(x), a
+                                   1963 ;	../src/pff.c: 1006: return FR_OK;
+      000AFC 4F               [ 1] 1964 	clr	a
+      000AFD CCr0Dr11         [ 2] 1965 	jp	00139$
+      000B00                       1966 00111$:
+                                   1967 ;	../src/pff.c: 1009: fs->fptr &= 0xFFFFFE00;
+      000B00 1E 07            [ 2] 1968 	ldw	x, (0x07, sp)
+      000B02 1C 00 16         [ 2] 1969 	addw	x, #0x0016
+      000B05 1F 13            [ 2] 1970 	ldw	(0x13, sp), x
+                                   1971 ;	../src/pff.c: 1008: if (!(fs->flag & FA__WIP)) {	/* Round-down fptr to the sector boundary */
+      000B07 1E 1B            [ 2] 1972 	ldw	x, (0x1b, sp)
+      000B09 26 1A            [ 1] 1973 	jrne	00112$
+                                   1974 ;	../src/pff.c: 1009: fs->fptr &= 0xFFFFFE00;
+      000B0B 1E 13            [ 2] 1975 	ldw	x, (0x13, sp)
+      000B0D E6 02            [ 1] 1976 	ld	a, (0x2, x)
+      000B0F FE               [ 2] 1977 	ldw	x, (x)
+      000B10 A4 FE            [ 1] 1978 	and	a, #0xfe
+      000B12 90 95            [ 1] 1979 	ld	yh, a
+      000B14 4F               [ 1] 1980 	clr	a
+      000B15 90 97            [ 1] 1981 	ld	yl, a
+      000B17 02               [ 1] 1982 	rlwa	x
+      000B18 6B 19            [ 1] 1983 	ld	(0x19, sp), a
+      000B1A 01               [ 1] 1984 	rrwa	x
+      000B1B 9F               [ 1] 1985 	ld	a, xl
+      000B1C 1E 13            [ 2] 1986 	ldw	x, (0x13, sp)
+      000B1E EF 02            [ 2] 1987 	ldw	(0x2, x), y
+      000B20 E7 01            [ 1] 1988 	ld	(0x1, x), a
+      000B22 7B 19            [ 1] 1989 	ld	a, (0x19, sp)
+      000B24 F7               [ 1] 1990 	ld	(x), a
+      000B25                       1991 00112$:
+                                   1992 ;	../src/pff.c: 1012: remain = fs->fsize - fs->fptr;
+      000B25 1E 07            [ 2] 1993 	ldw	x, (0x07, sp)
+      000B27 90 93            [ 1] 1994 	ldw	y, x
+      000B29 90 EE 1C         [ 2] 1995 	ldw	y, (0x1c, y)
+      000B2C EE 1A            [ 2] 1996 	ldw	x, (0x1a, x)
+      000B2E 1F 15            [ 2] 1997 	ldw	(0x15, sp), x
+      000B30 1E 13            [ 2] 1998 	ldw	x, (0x13, sp)
+      000B32 1F 0D            [ 2] 1999 	ldw	(0x0d, sp), x
+      000B34 1E 13            [ 2] 2000 	ldw	x, (0x13, sp)
+      000B36 E6 03            [ 1] 2001 	ld	a, (0x3, x)
+      000B38 6B 1C            [ 1] 2002 	ld	(0x1c, sp), a
+      000B3A E6 02            [ 1] 2003 	ld	a, (0x2, x)
+      000B3C 6B 1B            [ 1] 2004 	ld	(0x1b, sp), a
+      000B3E FE               [ 2] 2005 	ldw	x, (x)
+      000B3F 1F 19            [ 2] 2006 	ldw	(0x19, sp), x
+      000B41 72 F2 1B         [ 2] 2007 	subw	y, (0x1b, sp)
+      000B44 7B 16            [ 1] 2008 	ld	a, (0x16, sp)
+      000B46 12 1A            [ 1] 2009 	sbc	a, (0x1a, sp)
+      000B48 97               [ 1] 2010 	ld	xl, a
+      000B49 7B 15            [ 1] 2011 	ld	a, (0x15, sp)
+      000B4B 12 19            [ 1] 2012 	sbc	a, (0x19, sp)
+      000B4D 17 17            [ 2] 2013 	ldw	(0x17, sp), y
+      000B4F 95               [ 1] 2014 	ld	xh, a
+                                   2015 ;	../src/pff.c: 1013: if (btw > remain) btw = (UINT)remain;			/* Truncate btw by remaining bytes */
+      000B50 16 21            [ 2] 2016 	ldw	y, (0x21, sp)
+      000B52 17 1B            [ 2] 2017 	ldw	(0x1b, sp), y
+      000B54 0F 1A            [ 1] 2018 	clr	(0x1a, sp)
+      000B56 0F 19            [ 1] 2019 	clr	(0x19, sp)
+      000B58 7B 18            [ 1] 2020 	ld	a, (0x18, sp)
+      000B5A 11 1C            [ 1] 2021 	cp	a, (0x1c, sp)
+      000B5C 7B 17            [ 1] 2022 	ld	a, (0x17, sp)
+      000B5E 12 1B            [ 1] 2023 	sbc	a, (0x1b, sp)
+      000B60 9F               [ 1] 2024 	ld	a, xl
+      000B61 12 1A            [ 1] 2025 	sbc	a, (0x1a, sp)
+      000B63 9E               [ 1] 2026 	ld	a, xh
+      000B64 12 19            [ 1] 2027 	sbc	a, (0x19, sp)
+      000B66 24 04            [ 1] 2028 	jrnc	00157$
+      000B68 1E 17            [ 2] 2029 	ldw	x, (0x17, sp)
+      000B6A 1F 21            [ 2] 2030 	ldw	(0x21, sp), x
+                                   2031 ;	../src/pff.c: 1015: while (btw)	{									/* Repeat until all data transferred */
+      000B6C                       2032 00157$:
+      000B6C 1E 07            [ 2] 2033 	ldw	x, (0x07, sp)
+      000B6E 1C 00 22         [ 2] 2034 	addw	x, #0x0022
+      000B71 1F 0F            [ 2] 2035 	ldw	(0x0f, sp), x
+      000B73 16 07            [ 2] 2036 	ldw	y, (0x07, sp)
+      000B75 17 11            [ 2] 2037 	ldw	(0x11, sp), y
+      000B77 16 07            [ 2] 2038 	ldw	y, (0x07, sp)
+      000B79 17 13            [ 2] 2039 	ldw	(0x13, sp), y
+      000B7B                       2040 00136$:
+      000B7B 1E 21            [ 2] 2041 	ldw	x, (0x21, sp)
+      000B7D 26 03            [ 1] 2042 	jrne	00243$
+      000B7F CCr0Dr10         [ 2] 2043 	jp	00138$
+      000B82                       2044 00243$:
+                                   2045 ;	../src/pff.c: 1016: if ((UINT)fs->fptr % 512 == 0) {			/* On the sector boundary? */
+      000B82 1E 0D            [ 2] 2046 	ldw	x, (0x0d, sp)
+      000B84 90 93            [ 1] 2047 	ldw	y, x
+      000B86 90 EE 02         [ 2] 2048 	ldw	y, (0x2, y)
+      000B89 17 1A            [ 2] 2049 	ldw	(0x1a, sp), y
+      000B8B FE               [ 2] 2050 	ldw	x, (x)
+      000B8C 1F 18            [ 2] 2051 	ldw	(0x18, sp), x
+      000B8E 1E 1A            [ 2] 2052 	ldw	x, (0x1a, sp)
+      000B90 9E               [ 1] 2053 	ld	a, xh
+      000B91 A4 01            [ 1] 2054 	and	a, #0x01
+      000B93 95               [ 1] 2055 	ld	xh, a
+      000B94 5D               [ 2] 2056 	tnzw	x
+      000B95 27 03            [ 1] 2057 	jreq	00244$
+      000B97 CCr0Cr61         [ 2] 2058 	jp	00127$
+      000B9A                       2059 00244$:
+                                   2060 ;	../src/pff.c: 1017: cs = (BYTE)(fs->fptr / 512 & (fs->csize - 1));	/* Sector offset in the cluster */
+      000B9A 7B 18            [ 1] 2061 	ld	a, (0x18, sp)
+      000B9C 6B 02            [ 1] 2062 	ld	(0x02, sp), a
+      000B9E 1E 19            [ 2] 2063 	ldw	x, (0x19, sp)
+      000BA0 0F 01            [ 1] 2064 	clr	(0x01, sp)
+      000BA2 04 02            [ 1] 2065 	srl	(0x02, sp)
+      000BA4 56               [ 2] 2066 	rrcw	x
+      000BA5 16 13            [ 2] 2067 	ldw	y, (0x13, sp)
+      000BA7 90 E6 02         [ 1] 2068 	ld	a, (0x2, y)
+      000BAA 4A               [ 1] 2069 	dec	a
+      000BAB 89               [ 2] 2070 	pushw	x
+      000BAC 14 02            [ 1] 2071 	and	a, (2, sp)
+      000BAE 85               [ 2] 2072 	popw	x
+                                   2073 ;	../src/pff.c: 1018: if (!cs) {								/* On the cluster boundary? */
+      000BAF 6B 1C            [ 1] 2074 	ld	(0x1c, sp), a
+      000BB1 26 48            [ 1] 2075 	jrne	00121$
+                                   2076 ;	../src/pff.c: 1019: if (fs->fptr == 0) {				/* On the top of the file? */
+      000BB3 1E 1A            [ 2] 2077 	ldw	x, (0x1a, sp)
+      000BB5 26 13            [ 1] 2078 	jrne	00116$
+      000BB7 1E 18            [ 2] 2079 	ldw	x, (0x18, sp)
+      000BB9 26 0F            [ 1] 2080 	jrne	00116$
+                                   2081 ;	../src/pff.c: 1020: clst = fs->org_clust;
+      000BBB 1E 11            [ 2] 2082 	ldw	x, (0x11, sp)
+      000BBD 90 93            [ 1] 2083 	ldw	y, x
+      000BBF 90 EE 20         [ 2] 2084 	ldw	y, (0x20, y)
+      000BC2 EE 1E            [ 2] 2085 	ldw	x, (0x1e, x)
+      000BC4 17 1A            [ 2] 2086 	ldw	(0x1a, sp), y
+      000BC6 1F 18            [ 2] 2087 	ldw	(0x18, sp), x
+      000BC8 20 14            [ 2] 2088 	jra	00117$
+      000BCA                       2089 00116$:
+                                   2090 ;	../src/pff.c: 1022: clst = get_fat(fs->curr_clust);
+      000BCA 1E 0F            [ 2] 2091 	ldw	x, (0x0f, sp)
+      000BCC 90 93            [ 1] 2092 	ldw	y, x
+      000BCE 90 EE 02         [ 2] 2093 	ldw	y, (0x2, y)
+      000BD1 FE               [ 2] 2094 	ldw	x, (x)
+      000BD2 90 89            [ 2] 2095 	pushw	y
+      000BD4 89               [ 2] 2096 	pushw	x
+      000BD5 CDr00rE9         [ 4] 2097 	call	_get_fat
+      000BD8 5B 04            [ 2] 2098 	addw	sp, #4
+      000BDA 17 18            [ 2] 2099 	ldw	(0x18, sp), y
+      000BDC 1F 1A            [ 2] 2100 	ldw	(0x1a, sp), x
+      000BDE                       2101 00117$:
+                                   2102 ;	../src/pff.c: 1024: if (clst <= 1) ABORT(FR_DISK_ERR);
+      000BDE 5F               [ 1] 2103 	clrw	x
+      000BDF 5C               [ 1] 2104 	incw	x
+      000BE0 13 1A            [ 2] 2105 	cpw	x, (0x1a, sp)
+      000BE2 4F               [ 1] 2106 	clr	a
+      000BE3 12 19            [ 1] 2107 	sbc	a, (0x19, sp)
+      000BE5 4F               [ 1] 2108 	clr	a
+      000BE6 12 18            [ 1] 2109 	sbc	a, (0x18, sp)
+      000BE8 25 08            [ 1] 2110 	jrc	00119$
+      000BEA 1E 0B            [ 2] 2111 	ldw	x, (0x0b, sp)
+      000BEC 7F               [ 1] 2112 	clr	(x)
+      000BED A6 01            [ 1] 2113 	ld	a, #0x01
+      000BEF CCr0Dr11         [ 2] 2114 	jp	00139$
+      000BF2                       2115 00119$:
+                                   2116 ;	../src/pff.c: 1025: fs->curr_clust = clst;				/* Update current cluster */
+      000BF2 1E 0F            [ 2] 2117 	ldw	x, (0x0f, sp)
+      000BF4 16 1A            [ 2] 2118 	ldw	y, (0x1a, sp)
+      000BF6 EF 02            [ 2] 2119 	ldw	(0x2, x), y
+      000BF8 16 18            [ 2] 2120 	ldw	y, (0x18, sp)
+      000BFA FF               [ 2] 2121 	ldw	(x), y
+      000BFB                       2122 00121$:
+                                   2123 ;	../src/pff.c: 1027: sect = clust2sect(fs->curr_clust);		/* Get current sector */
+      000BFB 1E 0F            [ 2] 2124 	ldw	x, (0x0f, sp)
+      000BFD 90 93            [ 1] 2125 	ldw	y, x
+      000BFF 90 EE 02         [ 2] 2126 	ldw	y, (0x2, y)
+      000C02 FE               [ 2] 2127 	ldw	x, (x)
+      000C03 90 89            [ 2] 2128 	pushw	y
+      000C05 89               [ 2] 2129 	pushw	x
+      000C06 CDr01r90         [ 4] 2130 	call	_clust2sect
+      000C09 5B 04            [ 2] 2131 	addw	sp, #4
+      000C0B 1F 03            [ 2] 2132 	ldw	(0x03, sp), x
+      000C0D 17 01            [ 2] 2133 	ldw	(0x01, sp), y
+                                   2134 ;	../src/pff.c: 1028: if (!sect) ABORT(FR_DISK_ERR);
+      000C0F 5D               [ 2] 2135 	tnzw	x
+      000C10 26 0C            [ 1] 2136 	jrne	00123$
+      000C12 90 5D            [ 2] 2137 	tnzw	y
+      000C14 26 08            [ 1] 2138 	jrne	00123$
+      000C16 1E 0B            [ 2] 2139 	ldw	x, (0x0b, sp)
+      000C18 7F               [ 1] 2140 	clr	(x)
+      000C19 A6 01            [ 1] 2141 	ld	a, #0x01
+      000C1B CCr0Dr11         [ 2] 2142 	jp	00139$
+      000C1E                       2143 00123$:
+                                   2144 ;	../src/pff.c: 1029: fs->dsect = sect + cs;
+      000C1E 1E 07            [ 2] 2145 	ldw	x, (0x07, sp)
+      000C20 1C 00 26         [ 2] 2146 	addw	x, #0x0026
+      000C23 90 5F            [ 1] 2147 	clrw	y
+      000C25 7B 1C            [ 1] 2148 	ld	a, (0x1c, sp)
+      000C27 90 97            [ 1] 2149 	ld	yl, a
+      000C29 4F               [ 1] 2150 	clr	a
+      000C2A 0F 15            [ 1] 2151 	clr	(0x15, sp)
+      000C2C 72 F9 03         [ 2] 2152 	addw	y, (0x03, sp)
+      000C2F 19 02            [ 1] 2153 	adc	a, (0x02, sp)
+      000C31 6B 1A            [ 1] 2154 	ld	(0x1a, sp), a
+      000C33 7B 15            [ 1] 2155 	ld	a, (0x15, sp)
+      000C35 19 01            [ 1] 2156 	adc	a, (0x01, sp)
+      000C37 6B 19            [ 1] 2157 	ld	(0x19, sp), a
+      000C39 EF 02            [ 2] 2158 	ldw	(0x2, x), y
+      000C3B 7B 1A            [ 1] 2159 	ld	a, (0x1a, sp)
+      000C3D E7 01            [ 1] 2160 	ld	(0x1, x), a
+      000C3F 7B 19            [ 1] 2161 	ld	a, (0x19, sp)
+      000C41 F7               [ 1] 2162 	ld	(x), a
+                                   2163 ;	../src/pff.c: 1030: if (disk_writep(0, fs->dsect)) ABORT(FR_DISK_ERR);	/* Initiate a sector write operation */
+      000C42 90 89            [ 2] 2164 	pushw	y
+      000C44 1E 1B            [ 2] 2165 	ldw	x, (0x1b, sp)
+      000C46 89               [ 2] 2166 	pushw	x
+      000C47 5F               [ 1] 2167 	clrw	x
+      000C48 89               [ 2] 2168 	pushw	x
+      000C49 CDr00r00         [ 4] 2169 	call	_disk_writep
+      000C4C 5B 06            [ 2] 2170 	addw	sp, #6
+      000C4E 4D               [ 1] 2171 	tnz	a
+      000C4F 27 08            [ 1] 2172 	jreq	00125$
+      000C51 1E 0B            [ 2] 2173 	ldw	x, (0x0b, sp)
+      000C53 7F               [ 1] 2174 	clr	(x)
+      000C54 A6 01            [ 1] 2175 	ld	a, #0x01
+      000C56 CCr0Dr11         [ 2] 2176 	jp	00139$
+      000C59                       2177 00125$:
+                                   2178 ;	../src/pff.c: 1031: fs->flag |= FA__WIP;
+      000C59 1E 0B            [ 2] 2179 	ldw	x, (0x0b, sp)
+      000C5B F6               [ 1] 2180 	ld	a, (x)
+      000C5C AA 40            [ 1] 2181 	or	a, #0x40
+      000C5E 1E 0B            [ 2] 2182 	ldw	x, (0x0b, sp)
+      000C60 F7               [ 1] 2183 	ld	(x), a
+      000C61                       2184 00127$:
+                                   2185 ;	../src/pff.c: 1033: wcnt = 512 - (UINT)fs->fptr % 512;			/* Number of bytes to write to the sector */
+      000C61 1E 0D            [ 2] 2186 	ldw	x, (0x0d, sp)
+      000C63 EE 02            [ 2] 2187 	ldw	x, (0x2, x)
+      000C65 9E               [ 1] 2188 	ld	a, xh
+      000C66 A4 01            [ 1] 2189 	and	a, #0x01
+      000C68 6B 1B            [ 1] 2190 	ld	(0x1b, sp), a
+      000C6A 9F               [ 1] 2191 	ld	a, xl
+      000C6B 40               [ 1] 2192 	neg	a
+      000C6C 97               [ 1] 2193 	ld	xl, a
+      000C6D A6 02            [ 1] 2194 	ld	a, #0x02
+      000C6F 12 1B            [ 1] 2195 	sbc	a, (0x1b, sp)
+      000C71 95               [ 1] 2196 	ld	xh, a
+                                   2197 ;	../src/pff.c: 1034: if (wcnt > btw) wcnt = btw;
+      000C72 1F 15            [ 2] 2198 	ldw	(0x15, sp), x
+      000C74 13 21            [ 2] 2199 	cpw	x, (0x21, sp)
+      000C76 23 04            [ 2] 2200 	jrule	00129$
+      000C78 16 21            [ 2] 2201 	ldw	y, (0x21, sp)
+      000C7A 17 15            [ 2] 2202 	ldw	(0x15, sp), y
+      000C7C                       2203 00129$:
+                                   2204 ;	../src/pff.c: 1035: if (disk_writep(p, wcnt)) ABORT(FR_DISK_ERR);	/* Send data to the sector */
+      000C7C 16 15            [ 2] 2205 	ldw	y, (0x15, sp)
+      000C7E 17 03            [ 2] 2206 	ldw	(0x03, sp), y
+      000C80 0F 02            [ 1] 2207 	clr	(0x02, sp)
+      000C82 0F 01            [ 1] 2208 	clr	(0x01, sp)
+      000C84 1E 03            [ 2] 2209 	ldw	x, (0x03, sp)
+      000C86 89               [ 2] 2210 	pushw	x
+      000C87 1E 03            [ 2] 2211 	ldw	x, (0x03, sp)
+      000C89 89               [ 2] 2212 	pushw	x
+      000C8A 1E 09            [ 2] 2213 	ldw	x, (0x09, sp)
+      000C8C 89               [ 2] 2214 	pushw	x
+      000C8D CDr00r00         [ 4] 2215 	call	_disk_writep
+      000C90 5B 06            [ 2] 2216 	addw	sp, #6
+      000C92 4D               [ 1] 2217 	tnz	a
+      000C93 27 07            [ 1] 2218 	jreq	00131$
+      000C95 1E 0B            [ 2] 2219 	ldw	x, (0x0b, sp)
+      000C97 7F               [ 1] 2220 	clr	(x)
+      000C98 A6 01            [ 1] 2221 	ld	a, #0x01
+      000C9A 20 75            [ 2] 2222 	jra	00139$
+      000C9C                       2223 00131$:
+                                   2224 ;	../src/pff.c: 1036: fs->fptr += wcnt; p += wcnt;				/* Update pointers and counters */
+      000C9C 1E 0D            [ 2] 2225 	ldw	x, (0x0d, sp)
+      000C9E 90 93            [ 1] 2226 	ldw	y, x
+      000CA0 90 EE 02         [ 2] 2227 	ldw	y, (0x2, y)
+      000CA3 E6 01            [ 1] 2228 	ld	a, (0x1, x)
+      000CA5 88               [ 1] 2229 	push	a
+      000CA6 F6               [ 1] 2230 	ld	a, (x)
+      000CA7 97               [ 1] 2231 	ld	xl, a
+      000CA8 84               [ 1] 2232 	pop	a
+      000CA9 72 F9 03         [ 2] 2233 	addw	y, (0x03, sp)
+      000CAC 17 19            [ 2] 2234 	ldw	(0x19, sp), y
+      000CAE 19 02            [ 1] 2235 	adc	a, (0x02, sp)
+      000CB0 6B 18            [ 1] 2236 	ld	(0x18, sp), a
+      000CB2 9F               [ 1] 2237 	ld	a, xl
+      000CB3 19 01            [ 1] 2238 	adc	a, (0x01, sp)
+      000CB5 6B 17            [ 1] 2239 	ld	(0x17, sp), a
+      000CB7 1E 0D            [ 2] 2240 	ldw	x, (0x0d, sp)
+      000CB9 16 19            [ 2] 2241 	ldw	y, (0x19, sp)
+      000CBB EF 02            [ 2] 2242 	ldw	(0x2, x), y
+      000CBD 16 17            [ 2] 2243 	ldw	y, (0x17, sp)
+      000CBF FF               [ 2] 2244 	ldw	(x), y
+      000CC0 1E 05            [ 2] 2245 	ldw	x, (0x05, sp)
+      000CC2 72 FB 15         [ 2] 2246 	addw	x, (0x15, sp)
+      000CC5 1F 05            [ 2] 2247 	ldw	(0x05, sp), x
+                                   2248 ;	../src/pff.c: 1037: btw -= wcnt; *bw += wcnt;
+      000CC7 1E 21            [ 2] 2249 	ldw	x, (0x21, sp)
+      000CC9 72 F0 15         [ 2] 2250 	subw	x, (0x15, sp)
+      000CCC 1F 21            [ 2] 2251 	ldw	(0x21, sp), x
+      000CCE 1E 09            [ 2] 2252 	ldw	x, (0x09, sp)
+      000CD0 FE               [ 2] 2253 	ldw	x, (x)
+      000CD1 72 FB 15         [ 2] 2254 	addw	x, (0x15, sp)
+      000CD4 1F 1B            [ 2] 2255 	ldw	(0x1b, sp), x
+      000CD6 1E 09            [ 2] 2256 	ldw	x, (0x09, sp)
+      000CD8 16 1B            [ 2] 2257 	ldw	y, (0x1b, sp)
+      000CDA FF               [ 2] 2258 	ldw	(x), y
+                                   2259 ;	../src/pff.c: 1038: if ((UINT)fs->fptr % 512 == 0) {
+      000CDB 16 19            [ 2] 2260 	ldw	y, (0x19, sp)
+      000CDD 17 1B            [ 2] 2261 	ldw	(0x1b, sp), y
+      000CDF 7B 1C            [ 1] 2262 	ld	a, (0x1c, sp)
+      000CE1 6B 1A            [ 1] 2263 	ld	(0x1a, sp), a
+      000CE3 7B 1B            [ 1] 2264 	ld	a, (0x1b, sp)
+      000CE5 A4 01            [ 1] 2265 	and	a, #0x01
+      000CE7 6B 19            [ 1] 2266 	ld	(0x19, sp), a
+      000CE9 1E 19            [ 2] 2267 	ldw	x, (0x19, sp)
+      000CEB 27 03            [ 1] 2268 	jreq	00254$
+      000CED CCr0Br7B         [ 2] 2269 	jp	00136$
+      000CF0                       2270 00254$:
+                                   2271 ;	../src/pff.c: 1039: if (disk_writep(0, 0)) ABORT(FR_DISK_ERR);	/* Finalize the currtent secter write operation */
+      000CF0 5F               [ 1] 2272 	clrw	x
+      000CF1 89               [ 2] 2273 	pushw	x
+      000CF2 5F               [ 1] 2274 	clrw	x
+      000CF3 89               [ 2] 2275 	pushw	x
+      000CF4 5F               [ 1] 2276 	clrw	x
+      000CF5 89               [ 2] 2277 	pushw	x
+      000CF6 CDr00r00         [ 4] 2278 	call	_disk_writep
+      000CF9 5B 06            [ 2] 2279 	addw	sp, #6
+      000CFB 4D               [ 1] 2280 	tnz	a
+      000CFC 27 07            [ 1] 2281 	jreq	00133$
+      000CFE 1E 0B            [ 2] 2282 	ldw	x, (0x0b, sp)
+      000D00 7F               [ 1] 2283 	clr	(x)
+      000D01 A6 01            [ 1] 2284 	ld	a, #0x01
+      000D03 20 0C            [ 2] 2285 	jra	00139$
+      000D05                       2286 00133$:
+                                   2287 ;	../src/pff.c: 1040: fs->flag &= ~FA__WIP;
+      000D05 1E 0B            [ 2] 2288 	ldw	x, (0x0b, sp)
+      000D07 F6               [ 1] 2289 	ld	a, (x)
+      000D08 A4 BF            [ 1] 2290 	and	a, #0xbf
+      000D0A 1E 0B            [ 2] 2291 	ldw	x, (0x0b, sp)
+      000D0C F7               [ 1] 2292 	ld	(x), a
+      000D0D CCr0Br7B         [ 2] 2293 	jp	00136$
+      000D10                       2294 00138$:
+                                   2295 ;	../src/pff.c: 1044: return FR_OK;
+      000D10 4F               [ 1] 2296 	clr	a
+      000D11                       2297 00139$:
+                                   2298 ;	../src/pff.c: 1045: }
+      000D11 5B 1C            [ 2] 2299 	addw	sp, #28
+      000D13 81               [ 4] 2300 	ret
+                                   2301 	.area CODE
+                                   2302 	.area CONST
+                                   2303 	.area INITIALIZER
+                                   2304 	.area CABS (ABS)
