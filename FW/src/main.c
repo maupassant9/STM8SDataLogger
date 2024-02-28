@@ -25,6 +25,7 @@
 #include "led_matrix.h"
 #include <stdbool.h>
 #include "loggerConf.h"
+#include "stm8s_gpio.h"
 
 /********************************************
 * Internal Types and Variables 
@@ -113,6 +114,14 @@ void main( void )
 	//Enable global Interrupt
 	enableInterrupts();
 	
+	// GPIOA->ODR |= GPIO_PIN_3;
+	// GPIOC->ODR &= ~GPIO_PIN_3;
+	// GPIOA->DDR |= GPIO_PIN_3;
+	// GPIOC->DDR |= GPIO_PIN_3;
+	// GPIOA->CR1 |= GPIO_PIN_3;
+	// GPIOC->CR1 |= GPIO_PIN_3;
+	// dly(10000);
+
 	//led show
 	for(i = 0; i < NUM_OF_LEDS; i++){
 		SetLedMode(i, LED_ON);

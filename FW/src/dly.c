@@ -97,7 +97,7 @@ void dly(uint32_t dt)
 void systemTickIsr (void)
 {
 	sysTick++;
-	TIM4->SR1 &= ~TIM4_SR1_UIF;
+	TIM4->SR1 = ~TIM4_SR1_UIF;
 	UpdateLeds();
 }
 

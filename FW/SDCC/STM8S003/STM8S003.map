@@ -24,14 +24,14 @@ Area                                    Addr        Size        Decimal Bytes (A
      0000006F  l_HOME                          
      00000262  l_DATA                          
      00000263  s_INITIALIZED                   
-     00001AD9  l_CODE                          
+     00001B18  l_CODE                          
      00008000  s_HOME                          
      0000806F  s_GSINIT                        
      0000809F  s_GSFINAL                       
      000080A2  s_CONST                         
      00008106  s_INITIALIZER                   
      0000810D  s_CODE                          
-     00009BE6  s_SSEG                          
+     00009C25  s_SSEG                          
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
 Hexadecimal  [32-Bits]
@@ -110,7 +110,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CODE                                0000810D    00001AD9 =        6873. bytes (REL,CON)
+CODE                                0000810D    00001B18 =        6936. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -122,69 +122,69 @@ CODE                                0000810D    00001AD9 =        6873. bytes (R
      0000849A  _sysTickInit                       dly
      000084B9  _dly                               dly
      000084D8  _systemTickIsr                     dly
-     000084F6  _LedMatrixInit                     led_matrix
-     000084F9  _SetLedMode                        led_matrix
-     000085CE  _UpdateLeds                        led_matrix
-     0000863F  _LedsInit                          leds
-     00008656  _UpdateLedState                    leds
-     000086A4  _SetLedRaw                         leds
-     00008726  _GetLedState                       leds
-     00008749  _SetLedState                       leds
-     00008777  _main                              main
-     00008AE8  _assert_failed                     main
-     00008AEB  _SD_Init                           mmcsd
-     00008B1F  _SD_Detect                         mmcsd
-     00008B27  _SD_SendCmd                        mmcsd
-     00008B83  _SD_GetDataResponse                mmcsd
-     00008BDD  _SD_GetResponse                    mmcsd
-     00008C0B  _SD_GetResponseVal                 mmcsd
-     00008C55  _SD_GoIdleState                    mmcsd
-     00008D84  _SD_WriteByte                      mmcsd
-     00008D94  _SD_ReadByte                       mmcsd
-     00008DA2  _SD_LowLevel_Init                  mmcsd
-     0000939F  _pf_mount                          pff
-     000095ED  _pf_open                           pff
-     0000967E  _pf_read                           pff
-     0000986C  _pf_write                          pff
-     00009ADB  _TRAP_IRQHandler                   stm8s_it
-     00009ADC  _TLI_IRQHandler                    stm8s_it
-     00009ADD  _AWU_IRQHandler                    stm8s_it
-     00009ADE  _CLK_IRQHandler                    stm8s_it
-     00009ADF  _EXTI_PORTA_IRQHandler             stm8s_it
-     00009AE0  _EXTI_PORTB_IRQHandler             stm8s_it
-     00009AE1  _EXTI_PORTC_IRQHandler             stm8s_it
-     00009AE2  _EXTI_PORTD_IRQHandler             stm8s_it
-     00009AE3  _EXTI_PORTE_IRQHandler             stm8s_it
-     00009AE4  _SPI_IRQHandler                    stm8s_it
-     00009AE5  _TIM1_UPD_OVF_TRG_BRK_IRQHandler   stm8s_it
-     00009AE6  _TIM1_CAP_COM_IRQHandler           stm8s_it
-     00009AE7  _TIM2_UPD_OVF_BRK_IRQHandler       stm8s_it
-     00009AE8  _TIM2_CAP_COM_IRQHandler           stm8s_it
-     00009AE9  _UART1_TX_IRQHandler               stm8s_it
-     00009AEA  _UART1_RX_IRQHandler               stm8s_it
-     00009AEB  _I2C_IRQHandler                    stm8s_it
-     00009AEC  _ADC1_IRQHandler                   stm8s_it
+     000084F2  _LedMatrixInit                     led_matrix
+     000084F5  _SetLedMode                        led_matrix
+     000085CA  _UpdateLeds                        led_matrix
+     0000863B  _LedsInit                          leds
+     00008652  _UpdateLedState                    leds
+     000086A0  _SetLedRaw                         leds
+     00008765  _GetLedState                       leds
+     00008788  _SetLedState                       leds
+     000087B6  _main                              main
+     00008B27  _assert_failed                     main
+     00008B2A  _SD_Init                           mmcsd
+     00008B5E  _SD_Detect                         mmcsd
+     00008B66  _SD_SendCmd                        mmcsd
+     00008BC2  _SD_GetDataResponse                mmcsd
+     00008C1C  _SD_GetResponse                    mmcsd
+     00008C4A  _SD_GetResponseVal                 mmcsd
+     00008C94  _SD_GoIdleState                    mmcsd
+     00008DC3  _SD_WriteByte                      mmcsd
+     00008DD3  _SD_ReadByte                       mmcsd
+     00008DE1  _SD_LowLevel_Init                  mmcsd
+     000093DE  _pf_mount                          pff
+     0000962C  _pf_open                           pff
+     000096BD  _pf_read                           pff
+     000098AB  _pf_write                          pff
+     00009B1A  _TRAP_IRQHandler                   stm8s_it
+     00009B1B  _TLI_IRQHandler                    stm8s_it
+     00009B1C  _AWU_IRQHandler                    stm8s_it
+     00009B1D  _CLK_IRQHandler                    stm8s_it
+     00009B1E  _EXTI_PORTA_IRQHandler             stm8s_it
+     00009B1F  _EXTI_PORTB_IRQHandler             stm8s_it
+     00009B20  _EXTI_PORTC_IRQHandler             stm8s_it
+     00009B21  _EXTI_PORTD_IRQHandler             stm8s_it
+     00009B22  _EXTI_PORTE_IRQHandler             stm8s_it
+     00009B23  _SPI_IRQHandler                    stm8s_it
+     00009B24  _TIM1_UPD_OVF_TRG_BRK_IRQHandler   stm8s_it
+     00009B25  _TIM1_CAP_COM_IRQHandler           stm8s_it
+     00009B26  _TIM2_UPD_OVF_BRK_IRQHandler       stm8s_it
+     00009B27  _TIM2_CAP_COM_IRQHandler           stm8s_it
+     00009B28  _UART1_TX_IRQHandler               stm8s_it
+     00009B29  _UART1_RX_IRQHandler               stm8s_it
+     00009B2A  _I2C_IRQHandler                    stm8s_it
+     00009B2B  _ADC1_IRQHandler                   stm8s_it
 ASxxxx Linker V03.00 + NoICE + sdld,  page 10.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CODE                                0000810D    00001AD9 =        6873. bytes (REL,CON)
+CODE                                0000810D    00001B18 =        6936. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00009AF1  _TIM4_UPD_OVF_IRQHandler           stm8s_it
-     00009AF6  _EEPROM_EEC_IRQHandler             stm8s_it
-     00009AF7  __mulint                           
-     00009B10  __divulong                         
-     00009B6A  __mullong                          
+     00009B30  _TIM4_UPD_OVF_IRQHandler           stm8s_it
+     00009B35  _EEPROM_EEC_IRQHandler             stm8s_it
+     00009B36  __mulint                           
+     00009B4F  __divulong                         
+     00009BA9  __mullong                          
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 11.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-SSEG                                00009BE6    00000001 =           1. bytes (REL,CON)
+SSEG                                00009C25    00000001 =           1. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------

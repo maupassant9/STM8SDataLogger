@@ -77,7 +77,7 @@ void SetLedMode(uint8_t ledID, enum led_mode_t mode)
 
 	switch(mode){
 	case LED_ON:
-	case LED_OFF: led_ticks[ledID] = 0; SetLedRaw(ledID, mode);break;
+	case LED_OFF: led_ticks[ledID] = 0; SetLedState(ledID, mode);break;
 	case LED_TOGGLE_SLOW: 
 		nxtTick = sysTick + LED_TOGGLE_SLOW_TICK;
 		if(nxtTick) nxtTick = 2;

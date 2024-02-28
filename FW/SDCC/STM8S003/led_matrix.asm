@@ -10,7 +10,6 @@
 ;--------------------------------------------------------
 	.globl _SetLedState
 	.globl _GetLedState
-	.globl _SetLedRaw
 	.globl _UpdateLedState
 	.globl _LedsInit
 	.globl _led_ticks
@@ -97,7 +96,7 @@ _SetLedMode:
 	jreq	00172$
 	jp	00113$
 00172$:
-;	../src/led_matrix.c: 80: case LED_OFF: led_ticks[ledID] = 0; SetLedRaw(ledID, mode);break;
+;	../src/led_matrix.c: 80: case LED_OFF: led_ticks[ledID] = 0; SetLedState(ledID, mode);break;
 00106$:
 	clrw	x
 	ld	a, (0x0c, sp)
@@ -112,7 +111,7 @@ _SetLedMode:
 	push	a
 	ld	a, (0x0d, sp)
 	push	a
-	call	_SetLedRaw
+	call	_SetLedState
 	popw	x
 	jp	00113$
 ;	../src/led_matrix.c: 81: case LED_TOGGLE_SLOW: 

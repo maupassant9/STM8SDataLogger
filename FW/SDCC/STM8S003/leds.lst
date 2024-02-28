@@ -160,27 +160,27 @@
                                     160 ;	 function SetLedRaw
                                     161 ;	-----------------------------------------
       000065                        162 _SetLedRaw:
-      000065 52 0B            [ 2]  163 	sub	sp, #11
+      000065 52 10            [ 2]  163 	sub	sp, #16
                                     164 ;	../src/leds.c: 132: ledId = ledId << 2;
-      000067 7B 0E            [ 1]  165 	ld	a, (0x0e, sp)
+      000067 7B 13            [ 1]  165 	ld	a, (0x13, sp)
       000069 48               [ 1]  166 	sll	a
       00006A 48               [ 1]  167 	sll	a
-      00006B 6B 0E            [ 1]  168 	ld	(0x0e, sp), a
+      00006B 6B 13            [ 1]  168 	ld	(0x13, sp), a
                                     169 ;	../src/leds.c: 134: GPIO_TypeDef * gpioPortPos = (GPIO_TypeDef * )leds_anode[ledId];
       00006D 5F               [ 1]  170 	clrw	x
-      00006E 7B 0E            [ 1]  171 	ld	a, (0x0e, sp)
+      00006E 7B 13            [ 1]  171 	ld	a, (0x13, sp)
       000070 97               [ 1]  172 	ld	xl, a
       000071 58               [ 2]  173 	sllw	x
       000072 90 93            [ 1]  174 	ldw	y, x
       000074 DEu00u00         [ 2]  175 	ldw	x, (_leds_anode+0, x)
-      000077 1F 03            [ 2]  176 	ldw	(0x03, sp), x
+      000077 1F 02            [ 2]  176 	ldw	(0x02, sp), x
                                     177 ;	../src/leds.c: 135: GPIO_TypeDef * gpioPortNeg = (GPIO_TypeDef *) leds_cathode[ledId];
       000079 93               [ 1]  178 	ldw	x, y
       00007A 1Cr00r30         [ 2]  179 	addw	x, #(_leds_cathode+0)
       00007D FE               [ 2]  180 	ldw	x, (x)
-      00007E 1F 05            [ 2]  181 	ldw	(0x05, sp), x
+      00007E 1F 04            [ 2]  181 	ldw	(0x04, sp), x
                                     182 ;	../src/leds.c: 136: ADDR_BANK_T gpioPinPos = leds_anode[ledId+1];
-      000080 7B 0E            [ 1]  183 	ld	a, (0x0e, sp)
+      000080 7B 13            [ 1]  183 	ld	a, (0x13, sp)
       000082 4C               [ 1]  184 	inc	a
       000083 97               [ 1]  185 	ld	xl, a
       000084 49               [ 1]  186 	rlc	a
@@ -189,202 +189,251 @@
       000088 95               [ 1]  189 	ld	xh, a
       000089 58               [ 2]  190 	sllw	x
       00008A 90 93            [ 1]  191 	ldw	y, x
-      00008C DEu00u00         [ 2]  192 	ldw	x, (_leds_anode+0, x)
-      00008F 1F 01            [ 2]  193 	ldw	(0x01, sp), x
-                                    194 ;	../src/leds.c: 137: ADDR_BANK_T gpioPinNeg = leds_cathode[ledId+1];
-      000091 93               [ 1]  195 	ldw	x, y
-      000092 DEu00u30         [ 2]  196 	ldw	x, (_leds_cathode+0, x)
-      000095 9F               [ 1]  197 	ld	a, xl
-                                    198 ;	../src/leds.c: 142: gpioPortNeg->ODR &= ~(gpioPinNeg);
-      000096 6B 07            [ 1]  199 	ld	(0x07, sp), a
-                                    200 ;	../src/leds.c: 144: gpioPortPos->DDR |= gpioPinPos;
-      000098 1E 03            [ 2]  201 	ldw	x, (0x03, sp)
-      00009A 5C               [ 1]  202 	incw	x
-      00009B 5C               [ 1]  203 	incw	x
-                                    204 ;	../src/leds.c: 145: gpioPortNeg->DDR |= gpioPinNeg;
-      00009C 16 05            [ 2]  205 	ldw	y, (0x05, sp)
-      00009E 90 5C            [ 1]  206 	incw	y
-      0000A0 90 5C            [ 1]  207 	incw	y
-      0000A2 17 08            [ 2]  208 	ldw	(0x08, sp), y
-                                    209 ;	../src/leds.c: 141: gpioPortPos->ODR |= (gpioPinPos);
-      0000A4 7B 02            [ 1]  210 	ld	a, (0x02, sp)
-      0000A6 6B 0A            [ 1]  211 	ld	(0x0a, sp), a
-                                    212 ;	../src/leds.c: 142: gpioPortNeg->ODR &= ~(gpioPinNeg);
-      0000A8 7B 07            [ 1]  213 	ld	a, (0x07, sp)
-      0000AA 43               [ 1]  214 	cpl	a
-      0000AB 6B 0B            [ 1]  215 	ld	(0x0b, sp), a
-                                    216 ;	../src/leds.c: 139: if(state) //turn on
-      0000AD 0D 0F            [ 1]  217 	tnz	(0x0f, sp)
-      0000AF 27 22            [ 1]  218 	jreq	00102$
-                                    219 ;	../src/leds.c: 141: gpioPortPos->ODR |= (gpioPinPos);
-      0000B1 16 03            [ 2]  220 	ldw	y, (0x03, sp)
-      0000B3 90 F6            [ 1]  221 	ld	a, (y)
-      0000B5 1A 0A            [ 1]  222 	or	a, (0x0a, sp)
-      0000B7 16 03            [ 2]  223 	ldw	y, (0x03, sp)
-      0000B9 90 F7            [ 1]  224 	ld	(y), a
+      00008C 90 DEu00u00      [ 2]  192 	ldw	y, (_leds_anode+0, y)
+                                    193 ;	../src/leds.c: 137: ADDR_BANK_T gpioPinNeg = leds_cathode[ledId+1];
+      000090 DEu00u30         [ 2]  194 	ldw	x, (_leds_cathode+0, x)
+      000093 1F 0F            [ 2]  195 	ldw	(0x0f, sp), x
+                                    196 ;	../src/leds.c: 141: gpioPortPos->ODR |= (gpioPinPos);
+      000095 1E 02            [ 2]  197 	ldw	x, (0x02, sp)
+      000097 F6               [ 1]  198 	ld	a, (x)
+      000098 6B 06            [ 1]  199 	ld	(0x06, sp), a
+                                    200 ;	../src/leds.c: 142: gpioPortNeg->ODR &= ~(gpioPinNeg);
+      00009A 7B 10            [ 1]  201 	ld	a, (0x10, sp)
+      00009C 6B 01            [ 1]  202 	ld	(0x01, sp), a
+                                    203 ;	../src/leds.c: 144: gpioPortPos->DDR |= gpioPinPos;
+      00009E 1E 02            [ 2]  204 	ldw	x, (0x02, sp)
+      0000A0 5C               [ 1]  205 	incw	x
+      0000A1 5C               [ 1]  206 	incw	x
+      0000A2 1F 07            [ 2]  207 	ldw	(0x07, sp), x
+                                    208 ;	../src/leds.c: 145: gpioPortNeg->DDR |= gpioPinNeg;
+      0000A4 1E 04            [ 2]  209 	ldw	x, (0x04, sp)
+      0000A6 5C               [ 1]  210 	incw	x
+      0000A7 5C               [ 1]  211 	incw	x
+      0000A8 1F 09            [ 2]  212 	ldw	(0x09, sp), x
+                                    213 ;	../src/leds.c: 146: gpioPortPos->CR1 |= gpioPinPos;
+      0000AA 1E 02            [ 2]  214 	ldw	x, (0x02, sp)
+      0000AC 1C 00 03         [ 2]  215 	addw	x, #0x0003
+      0000AF 1F 0B            [ 2]  216 	ldw	(0x0b, sp), x
+                                    217 ;	../src/leds.c: 147: gpioPortNeg->CR1 |= gpioPinNeg;
+      0000B1 1E 04            [ 2]  218 	ldw	x, (0x04, sp)
+      0000B3 1C 00 03         [ 2]  219 	addw	x, #0x0003
+      0000B6 1F 0D            [ 2]  220 	ldw	(0x0d, sp), x
+                                    221 ;	../src/leds.c: 141: gpioPortPos->ODR |= (gpioPinPos);
+      0000B8 61               [ 1]  222 	exg	a, yl
+      0000B9 6B 10            [ 1]  223 	ld	(0x10, sp), a
+      0000BB 61               [ 1]  224 	exg	a, yl
                                     225 ;	../src/leds.c: 142: gpioPortNeg->ODR &= ~(gpioPinNeg);
-      0000BB 16 05            [ 2]  226 	ldw	y, (0x05, sp)
-      0000BD 90 F6            [ 1]  227 	ld	a, (y)
-      0000BF 14 0B            [ 1]  228 	and	a, (0x0b, sp)
-      0000C1 16 05            [ 2]  229 	ldw	y, (0x05, sp)
-      0000C3 90 F7            [ 1]  230 	ld	(y), a
-                                    231 ;	../src/leds.c: 144: gpioPortPos->DDR |= gpioPinPos;
-      0000C5 F6               [ 1]  232 	ld	a, (x)
-      0000C6 1A 0A            [ 1]  233 	or	a, (0x0a, sp)
-      0000C8 F7               [ 1]  234 	ld	(x), a
-                                    235 ;	../src/leds.c: 145: gpioPortNeg->DDR |= gpioPinNeg;
-      0000C9 1E 08            [ 2]  236 	ldw	x, (0x08, sp)
-      0000CB F6               [ 1]  237 	ld	a, (x)
-      0000CC 1A 07            [ 1]  238 	or	a, (0x07, sp)
-      0000CE 1E 08            [ 2]  239 	ldw	x, (0x08, sp)
-      0000D0 F7               [ 1]  240 	ld	(x), a
-      0000D1 20 11            [ 2]  241 	jra	00104$
-      0000D3                        242 00102$:
-                                    243 ;	../src/leds.c: 149: gpioPortPos->DDR &= ~gpioPinPos;
-      0000D3 F6               [ 1]  244 	ld	a, (x)
-      0000D4 6B 07            [ 1]  245 	ld	(0x07, sp), a
-      0000D6 7B 0A            [ 1]  246 	ld	a, (0x0a, sp)
-      0000D8 43               [ 1]  247 	cpl	a
-      0000D9 14 07            [ 1]  248 	and	a, (0x07, sp)
-      0000DB F7               [ 1]  249 	ld	(x), a
-                                    250 ;	../src/leds.c: 150: gpioPortNeg->DDR &= ~gpioPinNeg;
-      0000DC 1E 08            [ 2]  251 	ldw	x, (0x08, sp)
-      0000DE F6               [ 1]  252 	ld	a, (x)
-      0000DF 14 0B            [ 1]  253 	and	a, (0x0b, sp)
-      0000E1 1E 08            [ 2]  254 	ldw	x, (0x08, sp)
-      0000E3 F7               [ 1]  255 	ld	(x), a
-      0000E4                        256 00104$:
-                                    257 ;	../src/leds.c: 152: }
-      0000E4 5B 0B            [ 2]  258 	addw	sp, #11
-      0000E6 81               [ 4]  259 	ret
-                                    260 ;	../src/leds.c: 155: uint8_t GetLedState(uint8_t ledID)
-                                    261 ;	-----------------------------------------
-                                    262 ;	 function GetLedState
-                                    263 ;	-----------------------------------------
-      0000E7                        264 _GetLedState:
-      0000E7 89               [ 2]  265 	pushw	x
-                                    266 ;	../src/leds.c: 157: return (ledsState & (1 << ledID))?1:0;
-      0000E8 7B 05            [ 1]  267 	ld	a, (0x05, sp)
-      0000EA 5F               [ 1]  268 	clrw	x
-      0000EB 5C               [ 1]  269 	incw	x
-      0000EC 4D               [ 1]  270 	tnz	a
-      0000ED 27 04            [ 1]  271 	jreq	00111$
-      0000EF                        272 00110$:
-      0000EF 58               [ 2]  273 	sllw	x
-      0000F0 4A               [ 1]  274 	dec	a
-      0000F1 26 FC            [ 1]  275 	jrne	00110$
-      0000F3                        276 00111$:
-      0000F3 90 CEu00u00      [ 2]  277 	ldw	y, _ledsState+0
-      0000F7 17 01            [ 2]  278 	ldw	(0x01, sp), y
-      0000F9 9F               [ 1]  279 	ld	a, xl
-      0000FA 14 02            [ 1]  280 	and	a, (0x02, sp)
-      0000FC 02               [ 1]  281 	rlwa	x
-      0000FD 14 01            [ 1]  282 	and	a, (0x01, sp)
-      0000FF 95               [ 1]  283 	ld	xh, a
-      000100 5D               [ 2]  284 	tnzw	x
-      000101 27 03            [ 1]  285 	jreq	00103$
-      000103 5F               [ 1]  286 	clrw	x
-      000104 5C               [ 1]  287 	incw	x
-      000105 21                     288 	.byte 0x21
-      000106                        289 00103$:
-      000106 5F               [ 1]  290 	clrw	x
-      000107                        291 00104$:
-      000107 9F               [ 1]  292 	ld	a, xl
-                                    293 ;	../src/leds.c: 158: }
-      000108 85               [ 2]  294 	popw	x
-      000109 81               [ 4]  295 	ret
-                                    296 ;	../src/leds.c: 161: void SetLedState(uint8_t ledID, uint8_t state)
-                                    297 ;	-----------------------------------------
-                                    298 ;	 function SetLedState
-                                    299 ;	-----------------------------------------
-      00010A                        300 _SetLedState:
-      00010A 89               [ 2]  301 	pushw	x
-                                    302 ;	../src/leds.c: 163: if(state) ledsState |= (1 << ledID);
-      00010B 7B 05            [ 1]  303 	ld	a, (0x05, sp)
-      00010D CEu00u00         [ 2]  304 	ldw	x, _ledsState+0
-      000110 1F 01            [ 2]  305 	ldw	(0x01, sp), x
-      000112 5F               [ 1]  306 	clrw	x
-      000113 5C               [ 1]  307 	incw	x
-      000114 4D               [ 1]  308 	tnz	a
-      000115 27 04            [ 1]  309 	jreq	00112$
-      000117                        310 00111$:
-      000117 58               [ 2]  311 	sllw	x
-      000118 4A               [ 1]  312 	dec	a
-      000119 26 FC            [ 1]  313 	jrne	00111$
-      00011B                        314 00112$:
-      00011B 0D 06            [ 1]  315 	tnz	(0x06, sp)
-      00011D 27 0C            [ 1]  316 	jreq	00102$
-      00011F 9F               [ 1]  317 	ld	a, xl
-      000120 1A 02            [ 1]  318 	or	a, (0x02, sp)
-      000122 02               [ 1]  319 	rlwa	x
-      000123 1A 01            [ 1]  320 	or	a, (0x01, sp)
-      000125 95               [ 1]  321 	ld	xh, a
-      000126 CFu00u00         [ 2]  322 	ldw	_ledsState+0, x
-      000129 20 0B            [ 2]  323 	jra	00104$
-      00012B                        324 00102$:
-                                    325 ;	../src/leds.c: 164: else ledsState &= ~(1 << ledID); 
-      00012B 53               [ 2]  326 	cplw	x
-      00012C 9F               [ 1]  327 	ld	a, xl
-      00012D 14 02            [ 1]  328 	and	a, (0x02, sp)
-      00012F 02               [ 1]  329 	rlwa	x
-      000130 14 01            [ 1]  330 	and	a, (0x01, sp)
-      000132 95               [ 1]  331 	ld	xh, a
-      000133 CFu00u00         [ 2]  332 	ldw	_ledsState+0, x
-      000136                        333 00104$:
-                                    334 ;	../src/leds.c: 165: }
-      000136 85               [ 2]  335 	popw	x
-      000137 81               [ 4]  336 	ret
-                                    337 	.area CODE
-                                    338 	.area CONST
-      000000                        339 _leds_anode:
-      000000 50 00                  340 	.dw #0x5000
-      000002 00 08                  341 	.dw #0x0008
-      000004 50 0A                  342 	.dw #0x500a
-      000006 00 08                  343 	.dw #0x0008
-      000008 50 00                  344 	.dw #0x5000
-      00000A 00 08                  345 	.dw #0x0008
-      00000C 50 05                  346 	.dw #0x5005
-      00000E 00 10                  347 	.dw #0x0010
-      000010 50 0A                  348 	.dw #0x500a
-      000012 00 08                  349 	.dw #0x0008
-      000014 50 05                  350 	.dw #0x5005
-      000016 00 10                  351 	.dw #0x0010
-      000018 50 05                  352 	.dw #0x5005
-      00001A 00 20                  353 	.dw #0x0020
-      00001C 50 00                  354 	.dw #0x5000
-      00001E 00 08                  355 	.dw #0x0008
-      000020 50 05                  356 	.dw #0x5005
-      000022 00 20                  357 	.dw #0x0020
-      000024 50 0A                  358 	.dw #0x500a
-      000026 00 08                  359 	.dw #0x0008
-      000028 50 05                  360 	.dw #0x5005
-      00002A 00 10                  361 	.dw #0x0010
-      00002C 50 05                  362 	.dw #0x5005
-      00002E 00 20                  363 	.dw #0x0020
-      000030                        364 _leds_cathode:
-      000030 50 0A                  365 	.dw #0x500a
-      000032 00 08                  366 	.dw #0x0008
-      000034 50 00                  367 	.dw #0x5000
-      000036 00 08                  368 	.dw #0x0008
-      000038 50 05                  369 	.dw #0x5005
-      00003A 00 10                  370 	.dw #0x0010
-      00003C 50 00                  371 	.dw #0x5000
-      00003E 00 08                  372 	.dw #0x0008
-      000040 50 05                  373 	.dw #0x5005
-      000042 00 10                  374 	.dw #0x0010
-      000044 50 0A                  375 	.dw #0x500a
-      000046 00 08                  376 	.dw #0x0008
-      000048 50 00                  377 	.dw #0x5000
-      00004A 00 08                  378 	.dw #0x0008
-      00004C 50 05                  379 	.dw #0x5005
-      00004E 00 20                  380 	.dw #0x0020
-      000050 50 0A                  381 	.dw #0x500a
-      000052 00 08                  382 	.dw #0x0008
-      000054 50 05                  383 	.dw #0x5005
-      000056 00 20                  384 	.dw #0x0020
-      000058 50 05                  385 	.dw #0x5005
-      00005A 00 20                  386 	.dw #0x0020
-      00005C 50 05                  387 	.dw #0x5005
-      00005E 00 10                  388 	.dw #0x0010
-                                    389 	.area INITIALIZER
-                                    390 	.area CABS (ABS)
+      0000BC 7B 01            [ 1]  226 	ld	a, (0x01, sp)
+      0000BE 43               [ 1]  227 	cpl	a
+      0000BF 6B 0F            [ 1]  228 	ld	(0x0f, sp), a
+                                    229 ;	../src/leds.c: 139: if(state) //turn on
+      0000C1 0D 14            [ 1]  230 	tnz	(0x14, sp)
+      0000C3 27 31            [ 1]  231 	jreq	00102$
+                                    232 ;	../src/leds.c: 141: gpioPortPos->ODR |= (gpioPinPos);
+      0000C5 7B 06            [ 1]  233 	ld	a, (0x06, sp)
+      0000C7 1A 10            [ 1]  234 	or	a, (0x10, sp)
+      0000C9 1E 02            [ 2]  235 	ldw	x, (0x02, sp)
+      0000CB F7               [ 1]  236 	ld	(x), a
+                                    237 ;	../src/leds.c: 142: gpioPortNeg->ODR &= ~(gpioPinNeg);
+      0000CC 1E 04            [ 2]  238 	ldw	x, (0x04, sp)
+      0000CE F6               [ 1]  239 	ld	a, (x)
+      0000CF 14 0F            [ 1]  240 	and	a, (0x0f, sp)
+      0000D1 1E 04            [ 2]  241 	ldw	x, (0x04, sp)
+      0000D3 F7               [ 1]  242 	ld	(x), a
+                                    243 ;	../src/leds.c: 144: gpioPortPos->DDR |= gpioPinPos;
+      0000D4 1E 07            [ 2]  244 	ldw	x, (0x07, sp)
+      0000D6 F6               [ 1]  245 	ld	a, (x)
+      0000D7 1A 10            [ 1]  246 	or	a, (0x10, sp)
+      0000D9 1E 07            [ 2]  247 	ldw	x, (0x07, sp)
+      0000DB F7               [ 1]  248 	ld	(x), a
+                                    249 ;	../src/leds.c: 145: gpioPortNeg->DDR |= gpioPinNeg;
+      0000DC 1E 09            [ 2]  250 	ldw	x, (0x09, sp)
+      0000DE F6               [ 1]  251 	ld	a, (x)
+      0000DF 1A 01            [ 1]  252 	or	a, (0x01, sp)
+      0000E1 1E 09            [ 2]  253 	ldw	x, (0x09, sp)
+      0000E3 F7               [ 1]  254 	ld	(x), a
+                                    255 ;	../src/leds.c: 146: gpioPortPos->CR1 |= gpioPinPos;
+      0000E4 1E 0B            [ 2]  256 	ldw	x, (0x0b, sp)
+      0000E6 F6               [ 1]  257 	ld	a, (x)
+      0000E7 1A 10            [ 1]  258 	or	a, (0x10, sp)
+      0000E9 1E 0B            [ 2]  259 	ldw	x, (0x0b, sp)
+      0000EB F7               [ 1]  260 	ld	(x), a
+                                    261 ;	../src/leds.c: 147: gpioPortNeg->CR1 |= gpioPinNeg;
+      0000EC 1E 0D            [ 2]  262 	ldw	x, (0x0d, sp)
+      0000EE F6               [ 1]  263 	ld	a, (x)
+      0000EF 1A 01            [ 1]  264 	or	a, (0x01, sp)
+      0000F1 1E 0D            [ 2]  265 	ldw	x, (0x0d, sp)
+      0000F3 F7               [ 1]  266 	ld	(x), a
+      0000F4 20 31            [ 2]  267 	jra	00104$
+      0000F6                        268 00102$:
+                                    269 ;	../src/leds.c: 151: gpioPortPos->ODR &= ~(gpioPinPos);
+      0000F6 03 10            [ 1]  270 	cpl	(0x10, sp)
+      0000F8 7B 06            [ 1]  271 	ld	a, (0x06, sp)
+      0000FA 14 10            [ 1]  272 	and	a, (0x10, sp)
+      0000FC 1E 02            [ 2]  273 	ldw	x, (0x02, sp)
+      0000FE F7               [ 1]  274 	ld	(x), a
+                                    275 ;	../src/leds.c: 152: gpioPortNeg->ODR &= ~(gpioPinNeg);
+      0000FF 1E 04            [ 2]  276 	ldw	x, (0x04, sp)
+      000101 F6               [ 1]  277 	ld	a, (x)
+      000102 14 0F            [ 1]  278 	and	a, (0x0f, sp)
+      000104 1E 04            [ 2]  279 	ldw	x, (0x04, sp)
+      000106 F7               [ 1]  280 	ld	(x), a
+                                    281 ;	../src/leds.c: 153: gpioPortPos->DDR &= ~gpioPinPos;
+      000107 1E 07            [ 2]  282 	ldw	x, (0x07, sp)
+      000109 F6               [ 1]  283 	ld	a, (x)
+      00010A 14 10            [ 1]  284 	and	a, (0x10, sp)
+      00010C 1E 07            [ 2]  285 	ldw	x, (0x07, sp)
+      00010E F7               [ 1]  286 	ld	(x), a
+                                    287 ;	../src/leds.c: 154: gpioPortNeg->DDR &= ~gpioPinNeg;
+      00010F 1E 09            [ 2]  288 	ldw	x, (0x09, sp)
+      000111 F6               [ 1]  289 	ld	a, (x)
+      000112 14 0F            [ 1]  290 	and	a, (0x0f, sp)
+      000114 1E 09            [ 2]  291 	ldw	x, (0x09, sp)
+      000116 F7               [ 1]  292 	ld	(x), a
+                                    293 ;	../src/leds.c: 155: gpioPortPos->CR1 &= ~gpioPinPos;
+      000117 1E 0B            [ 2]  294 	ldw	x, (0x0b, sp)
+      000119 F6               [ 1]  295 	ld	a, (x)
+      00011A 14 10            [ 1]  296 	and	a, (0x10, sp)
+      00011C 1E 0B            [ 2]  297 	ldw	x, (0x0b, sp)
+      00011E F7               [ 1]  298 	ld	(x), a
+                                    299 ;	../src/leds.c: 156: gpioPortNeg->CR1 &= ~gpioPinNeg;
+      00011F 1E 0D            [ 2]  300 	ldw	x, (0x0d, sp)
+      000121 F6               [ 1]  301 	ld	a, (x)
+      000122 14 0F            [ 1]  302 	and	a, (0x0f, sp)
+      000124 1E 0D            [ 2]  303 	ldw	x, (0x0d, sp)
+      000126 F7               [ 1]  304 	ld	(x), a
+      000127                        305 00104$:
+                                    306 ;	../src/leds.c: 158: }
+      000127 5B 10            [ 2]  307 	addw	sp, #16
+      000129 81               [ 4]  308 	ret
+                                    309 ;	../src/leds.c: 161: uint8_t GetLedState(uint8_t ledID)
+                                    310 ;	-----------------------------------------
+                                    311 ;	 function GetLedState
+                                    312 ;	-----------------------------------------
+      00012A                        313 _GetLedState:
+      00012A 89               [ 2]  314 	pushw	x
+                                    315 ;	../src/leds.c: 163: return (ledsState & (1 << ledID))?1:0;
+      00012B 7B 05            [ 1]  316 	ld	a, (0x05, sp)
+      00012D 5F               [ 1]  317 	clrw	x
+      00012E 5C               [ 1]  318 	incw	x
+      00012F 4D               [ 1]  319 	tnz	a
+      000130 27 04            [ 1]  320 	jreq	00111$
+      000132                        321 00110$:
+      000132 58               [ 2]  322 	sllw	x
+      000133 4A               [ 1]  323 	dec	a
+      000134 26 FC            [ 1]  324 	jrne	00110$
+      000136                        325 00111$:
+      000136 90 CEu00u00      [ 2]  326 	ldw	y, _ledsState+0
+      00013A 17 01            [ 2]  327 	ldw	(0x01, sp), y
+      00013C 9F               [ 1]  328 	ld	a, xl
+      00013D 14 02            [ 1]  329 	and	a, (0x02, sp)
+      00013F 02               [ 1]  330 	rlwa	x
+      000140 14 01            [ 1]  331 	and	a, (0x01, sp)
+      000142 95               [ 1]  332 	ld	xh, a
+      000143 5D               [ 2]  333 	tnzw	x
+      000144 27 03            [ 1]  334 	jreq	00103$
+      000146 5F               [ 1]  335 	clrw	x
+      000147 5C               [ 1]  336 	incw	x
+      000148 21                     337 	.byte 0x21
+      000149                        338 00103$:
+      000149 5F               [ 1]  339 	clrw	x
+      00014A                        340 00104$:
+      00014A 9F               [ 1]  341 	ld	a, xl
+                                    342 ;	../src/leds.c: 164: }
+      00014B 85               [ 2]  343 	popw	x
+      00014C 81               [ 4]  344 	ret
+                                    345 ;	../src/leds.c: 167: void SetLedState(uint8_t ledID, uint8_t state)
+                                    346 ;	-----------------------------------------
+                                    347 ;	 function SetLedState
+                                    348 ;	-----------------------------------------
+      00014D                        349 _SetLedState:
+      00014D 89               [ 2]  350 	pushw	x
+                                    351 ;	../src/leds.c: 169: if(state) ledsState |= (1 << ledID);
+      00014E 7B 05            [ 1]  352 	ld	a, (0x05, sp)
+      000150 CEu00u00         [ 2]  353 	ldw	x, _ledsState+0
+      000153 1F 01            [ 2]  354 	ldw	(0x01, sp), x
+      000155 5F               [ 1]  355 	clrw	x
+      000156 5C               [ 1]  356 	incw	x
+      000157 4D               [ 1]  357 	tnz	a
+      000158 27 04            [ 1]  358 	jreq	00112$
+      00015A                        359 00111$:
+      00015A 58               [ 2]  360 	sllw	x
+      00015B 4A               [ 1]  361 	dec	a
+      00015C 26 FC            [ 1]  362 	jrne	00111$
+      00015E                        363 00112$:
+      00015E 0D 06            [ 1]  364 	tnz	(0x06, sp)
+      000160 27 0C            [ 1]  365 	jreq	00102$
+      000162 9F               [ 1]  366 	ld	a, xl
+      000163 1A 02            [ 1]  367 	or	a, (0x02, sp)
+      000165 02               [ 1]  368 	rlwa	x
+      000166 1A 01            [ 1]  369 	or	a, (0x01, sp)
+      000168 95               [ 1]  370 	ld	xh, a
+      000169 CFu00u00         [ 2]  371 	ldw	_ledsState+0, x
+      00016C 20 0B            [ 2]  372 	jra	00104$
+      00016E                        373 00102$:
+                                    374 ;	../src/leds.c: 170: else ledsState &= ~(1 << ledID); 
+      00016E 53               [ 2]  375 	cplw	x
+      00016F 9F               [ 1]  376 	ld	a, xl
+      000170 14 02            [ 1]  377 	and	a, (0x02, sp)
+      000172 02               [ 1]  378 	rlwa	x
+      000173 14 01            [ 1]  379 	and	a, (0x01, sp)
+      000175 95               [ 1]  380 	ld	xh, a
+      000176 CFu00u00         [ 2]  381 	ldw	_ledsState+0, x
+      000179                        382 00104$:
+                                    383 ;	../src/leds.c: 171: }
+      000179 85               [ 2]  384 	popw	x
+      00017A 81               [ 4]  385 	ret
+                                    386 	.area CODE
+                                    387 	.area CONST
+      000000                        388 _leds_anode:
+      000000 50 00                  389 	.dw #0x5000
+      000002 00 08                  390 	.dw #0x0008
+      000004 50 0A                  391 	.dw #0x500a
+      000006 00 08                  392 	.dw #0x0008
+      000008 50 00                  393 	.dw #0x5000
+      00000A 00 08                  394 	.dw #0x0008
+      00000C 50 05                  395 	.dw #0x5005
+      00000E 00 10                  396 	.dw #0x0010
+      000010 50 0A                  397 	.dw #0x500a
+      000012 00 08                  398 	.dw #0x0008
+      000014 50 05                  399 	.dw #0x5005
+      000016 00 10                  400 	.dw #0x0010
+      000018 50 05                  401 	.dw #0x5005
+      00001A 00 20                  402 	.dw #0x0020
+      00001C 50 00                  403 	.dw #0x5000
+      00001E 00 08                  404 	.dw #0x0008
+      000020 50 05                  405 	.dw #0x5005
+      000022 00 20                  406 	.dw #0x0020
+      000024 50 0A                  407 	.dw #0x500a
+      000026 00 08                  408 	.dw #0x0008
+      000028 50 05                  409 	.dw #0x5005
+      00002A 00 10                  410 	.dw #0x0010
+      00002C 50 05                  411 	.dw #0x5005
+      00002E 00 20                  412 	.dw #0x0020
+      000030                        413 _leds_cathode:
+      000030 50 0A                  414 	.dw #0x500a
+      000032 00 08                  415 	.dw #0x0008
+      000034 50 00                  416 	.dw #0x5000
+      000036 00 08                  417 	.dw #0x0008
+      000038 50 05                  418 	.dw #0x5005
+      00003A 00 10                  419 	.dw #0x0010
+      00003C 50 00                  420 	.dw #0x5000
+      00003E 00 08                  421 	.dw #0x0008
+      000040 50 05                  422 	.dw #0x5005
+      000042 00 10                  423 	.dw #0x0010
+      000044 50 0A                  424 	.dw #0x500a
+      000046 00 08                  425 	.dw #0x0008
+      000048 50 00                  426 	.dw #0x5000
+      00004A 00 08                  427 	.dw #0x0008
+      00004C 50 05                  428 	.dw #0x5005
+      00004E 00 20                  429 	.dw #0x0020
+      000050 50 0A                  430 	.dw #0x500a
+      000052 00 08                  431 	.dw #0x0008
+      000054 50 05                  432 	.dw #0x5005
+      000056 00 20                  433 	.dw #0x0020
+      000058 50 05                  434 	.dw #0x5005
+      00005A 00 20                  435 	.dw #0x0020
+      00005C 50 05                  436 	.dw #0x5005
+      00005E 00 10                  437 	.dw #0x0010
+                                    438 	.area INITIALIZER
+                                    439 	.area CABS (ABS)

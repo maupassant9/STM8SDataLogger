@@ -125,58 +125,58 @@ __sdcc_program_startup:
 ; code
 ;--------------------------------------------------------
 	.area CODE
-;	../src/main.c: 99: void main( void )
+;	../src/main.c: 100: void main( void )
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
 	sub	sp, #47
-;	../src/main.c: 109: clkInit();
+;	../src/main.c: 110: clkInit();
 	call	_clkInit
-;	../src/main.c: 110: LedMatrixInit();
+;	../src/main.c: 111: LedMatrixInit();
 	call	_LedMatrixInit
-;	../src/main.c: 111: sysTickInit();
+;	../src/main.c: 112: sysTickInit();
 	call	_sysTickInit
-;	../src/main.c: 114: enableInterrupts();
+;	../src/main.c: 115: enableInterrupts();
 	rim
-;	../src/main.c: 117: for(i = 0; i < NUM_OF_LEDS; i++){
+;	../src/main.c: 126: for(i = 0; i < NUM_OF_LEDS; i++){
 	clr	(0x2f, sp)
 00141$:
-;	../src/main.c: 118: SetLedMode(i, LED_ON);
+;	../src/main.c: 127: SetLedMode(i, LED_ON);
 	push	#0x03
 	ld	a, (0x30, sp)
 	push	a
 	call	_SetLedMode
 	popw	x
-;	../src/main.c: 119: dly(1000);
+;	../src/main.c: 128: dly(1000);
 	push	#0xe8
 	push	#0x03
 	clrw	x
 	pushw	x
 	call	_dly
 	addw	sp, #4
-;	../src/main.c: 120: SetLedMode(i, LED_OFF);
+;	../src/main.c: 129: SetLedMode(i, LED_OFF);
 	push	#0x00
 	ld	a, (0x30, sp)
 	push	a
 	call	_SetLedMode
 	popw	x
-;	../src/main.c: 121: SetLedMode(i+1, LED_ON);
+;	../src/main.c: 130: SetLedMode(i+1, LED_ON);
 	ld	a, (0x2f, sp)
 	inc	a
 	push	#0x03
 	push	a
 	call	_SetLedMode
 	popw	x
-;	../src/main.c: 117: for(i = 0; i < NUM_OF_LEDS; i++){
+;	../src/main.c: 126: for(i = 0; i < NUM_OF_LEDS; i++){
 	inc	(0x2f, sp)
 	ld	a, (0x2f, sp)
 	cp	a, #0x0c
 	jrc	00141$
-;	../src/main.c: 124: for(i = 0; i < NUM_OF_LEDS; i++){
+;	../src/main.c: 133: for(i = 0; i < NUM_OF_LEDS; i++){
 	clr	(0x2f, sp)
 00143$:
-;	../src/main.c: 125: SetLedMode(i, (i%2)?LED_TOGGLE_FAST:LED_TOGGLE_SLOW);
+;	../src/main.c: 134: SetLedMode(i, (i%2)?LED_TOGGLE_FAST:LED_TOGGLE_SLOW);
 	ld	a, (0x2f, sp)
 	srl	a
 	jrnc	00147$
@@ -190,48 +190,48 @@ _main:
 	push	a
 	call	_SetLedMode
 	popw	x
-;	../src/main.c: 126: dly(10000);
+;	../src/main.c: 135: dly(10000);
 	push	#0x10
 	push	#0x27
 	clrw	x
 	pushw	x
 	call	_dly
 	addw	sp, #4
-;	../src/main.c: 124: for(i = 0; i < NUM_OF_LEDS; i++){
+;	../src/main.c: 133: for(i = 0; i < NUM_OF_LEDS; i++){
 	inc	(0x2f, sp)
 	ld	a, (0x2f, sp)
 	cp	a, #0x0c
 	jrc	00143$
-;	../src/main.c: 129: while(1);
+;	../src/main.c: 138: while(1);
 00104$:
 	jra	00104$
-;	../src/main.c: 230: }
-;	../src/main.c: 232: }
+;	../src/main.c: 239: }
+;	../src/main.c: 241: }
 	addw	sp, #47
 	ret
-;	../src/main.c: 245: static void Wr2SD( fsm_t * pfsm ){
+;	../src/main.c: 254: static void Wr2SD( fsm_t * pfsm ){
 ;	-----------------------------------------
 ;	 function Wr2SD
 ;	-----------------------------------------
 _Wr2SD:
 	sub	sp, #6
-;	../src/main.c: 252: if( S1_WR_BUF0 == pfsm->state){
+;	../src/main.c: 261: if( S1_WR_BUF0 == pfsm->state){
 	ldw	y, (0x09, sp)
 	ldw	(0x03, sp), y
 	ldw	x, y
 	ld	a, (x)
 	dec	a
 	jrne	00102$
-;	../src/main.c: 253: pBuf = adcBuffer0; bufNo = 0;
+;	../src/main.c: 262: pBuf = adcBuffer0; bufNo = 0;
 	ldw	x, #_adcBuffer0+0
 	clr	a
 	jra	00103$
 00102$:
-;	../src/main.c: 255: pBuf = adcBuffer1; bufNo = 1;
+;	../src/main.c: 264: pBuf = adcBuffer1; bufNo = 1;
 	ldw	x, #(_adcBuffer1+0)
 	ld	a, #0x01
 00103$:
-;	../src/main.c: 257: RELEASE_BUFF_FOR_WR(bufNo); //clear this flag
+;	../src/main.c: 266: RELEASE_BUFF_FOR_WR(bufNo); //clear this flag
 	ld	(0x06, sp), a
 	ld	a, #0x01
 	push	a
@@ -246,14 +246,14 @@ _Wr2SD:
 	cpl	a
 	and	a, _buffer_rdy+0
 	ld	_buffer_rdy+0, a
-;	../src/main.c: 260: SetLedMode(0, LED_ON);
+;	../src/main.c: 269: SetLedMode(0, LED_ON);
 	pushw	x
 	push	#0x03
 	push	#0x00
 	call	_SetLedMode
 	popw	x
 	popw	x
-;	../src/main.c: 261: res = pf_write((void*)pBuf,BUFFER_SZ_IN_BYTES, &pbr);
+;	../src/main.c: 270: res = pf_write((void*)pBuf,BUFFER_SZ_IN_BYTES, &pbr);
 	exgw	x, y
 	ldw	x, sp
 	incw	x
@@ -263,39 +263,39 @@ _Wr2SD:
 	pushw	y
 	call	_pf_write
 	addw	sp, #6
-;	../src/main.c: 263: SetLedMode(0, LED_OFF);
+;	../src/main.c: 272: SetLedMode(0, LED_OFF);
 	push	a
 	push	#0x00
 	push	#0x00
 	call	_SetLedMode
 	popw	x
 	pop	a
-;	../src/main.c: 268: pfsm->error = ERR_WR_DATA;
+;	../src/main.c: 277: pfsm->error = ERR_WR_DATA;
 	ldw	x, (0x03, sp)
 	incw	x
 	ldw	(0x05, sp), x
-;	../src/main.c: 265: if(FR_OK != res){
+;	../src/main.c: 274: if(FR_OK != res){
 	tnz	a
 	jreq	00105$
-;	../src/main.c: 268: pfsm->error = ERR_WR_DATA;
+;	../src/main.c: 277: pfsm->error = ERR_WR_DATA;
 	ldw	x, (0x05, sp)
 	ld	a, #0x02
 	ld	(x), a
-;	../src/main.c: 269: pfsm->state = S4_ERR;
+;	../src/main.c: 278: pfsm->state = S4_ERR;
 	ldw	x, (0x03, sp)
 	ld	a, #0x04
 	ld	(x), a
-;	../src/main.c: 270: return;
+;	../src/main.c: 279: return;
 	jra	00112$
 00105$:
-;	../src/main.c: 273: if(NO_BUFF_PER_BLK == ++blkCnt){
+;	../src/main.c: 282: if(NO_BUFF_PER_BLK == ++blkCnt){
 	inc	_blkCnt+0
 	ld	a, _blkCnt+0
 	cp	a, #0x02
 	jrne	00111$
-;	../src/main.c: 275: blkCnt = 0;
+;	../src/main.c: 284: blkCnt = 0;
 	clr	_blkCnt+0
-;	../src/main.c: 276: res = pf_write(0,0,&pbr);
+;	../src/main.c: 285: res = pf_write(0,0,&pbr);
 	ldw	x, sp
 	incw	x
 	pushw	x
@@ -305,21 +305,21 @@ _Wr2SD:
 	pushw	x
 	call	_pf_write
 	addw	sp, #6
-;	../src/main.c: 279: if(FR_OK != res){
+;	../src/main.c: 288: if(FR_OK != res){
 	tnz	a
 	jreq	00107$
-;	../src/main.c: 281: pfsm->error = ERR_WR_NO_RESP;
+;	../src/main.c: 290: pfsm->error = ERR_WR_NO_RESP;
 	ldw	x, (0x05, sp)
 	ld	a, #0x03
 	ld	(x), a
-;	../src/main.c: 282: pfsm->state = S4_ERR;
+;	../src/main.c: 291: pfsm->state = S4_ERR;
 	ldw	x, (0x03, sp)
 	ld	a, #0x04
 	ld	(x), a
-;	../src/main.c: 283: return;
+;	../src/main.c: 292: return;
 	jra	00112$
 00107$:
-;	../src/main.c: 286: if(0 == --fileBlkCnt){
+;	../src/main.c: 295: if(0 == --fileBlkCnt){
 	ldw	x, _fileBlkCnt+2
 	subw	x, #0x0001
 	ldw	y, _fileBlkCnt+0
@@ -332,85 +332,85 @@ _Wr2SD:
 	jrne	00111$
 	ldw	x, _fileBlkCnt+0
 	jrne	00111$
-;	../src/main.c: 289: pfsm->state = S3_NXT_FILE;
+;	../src/main.c: 298: pfsm->state = S3_NXT_FILE;
 	ldw	x, (0x03, sp)
 	ld	a, #0x03
 	ld	(x), a
-;	../src/main.c: 290: return;
+;	../src/main.c: 299: return;
 	jra	00112$
 00111$:
-;	../src/main.c: 295: pfsm->state = S0_RST; 
+;	../src/main.c: 304: pfsm->state = S0_RST; 
 	ldw	x, (0x03, sp)
 	clr	(x)
 00112$:
-;	../src/main.c: 296: }
+;	../src/main.c: 305: }
 	addw	sp, #6
 	ret
-;	../src/main.c: 309: static void GetNxtFileName( char * fname){
+;	../src/main.c: 318: static void GetNxtFileName( char * fname){
 ;	-----------------------------------------
 ;	 function GetNxtFileName
 ;	-----------------------------------------
 _GetNxtFileName:
 	sub	sp, #5
-;	../src/main.c: 310: uint8_t val = 0;
+;	../src/main.c: 319: uint8_t val = 0;
 	clr	(0x01, sp)
-;	../src/main.c: 312: if(0x39 == fname[3]){
+;	../src/main.c: 321: if(0x39 == fname[3]){
 	ldw	x, (0x08, sp)
 	ld	a, (0x3, x)
-;	../src/main.c: 313: val = 0x01;
+;	../src/main.c: 322: val = 0x01;
 	sub	a, #0x39
 	jrne	00102$
 	inc	a
 	ld	(0x01, sp), a
 00102$:
-;	../src/main.c: 315: if(0x39 == fname[2]) {
+;	../src/main.c: 324: if(0x39 == fname[2]) {
 	ldw	x, (0x08, sp)
 	ld	a, (0x2, x)
 	cp	a, #0x39
 	jrne	00104$
-;	../src/main.c: 316: val += 0x02;
+;	../src/main.c: 325: val += 0x02;
 	ld	a, (0x01, sp)
 	add	a, #0x02
 	ld	(0x01, sp), a
 00104$:
-;	../src/main.c: 318: if(0x39 == fname[1]) {
+;	../src/main.c: 327: if(0x39 == fname[1]) {
 	ldw	x, (0x08, sp)
 	ld	a, (0x1, x)
 	cp	a, #0x39
 	jrne	00106$
-;	../src/main.c: 319: val += 0x04;
+;	../src/main.c: 328: val += 0x04;
 	ld	a, (0x01, sp)
 	add	a, #0x04
 	ld	(0x01, sp), a
 00106$:
-;	../src/main.c: 321: if(0x39 == fname[0]) {
+;	../src/main.c: 330: if(0x39 == fname[0]) {
 	ldw	y, (0x08, sp)
 	ldw	(0x02, sp), y
 	ldw	x, y
 	ld	a, (x)
 	cp	a, #0x39
 	jrne	00108$
-;	../src/main.c: 322: val += 0x08;
+;	../src/main.c: 331: val += 0x08;
 	ld	a, (0x01, sp)
 	add	a, #0x08
 	ld	(0x01, sp), a
 00108$:
-;	../src/main.c: 326: case 0x01: fname[3] = 0x30; 
+;	../src/main.c: 335: case 0x01: fname[3] = 0x30; 
 	ldw	x, (0x02, sp)
 	addw	x, #0x0003
-;	../src/main.c: 327: fname[2]++;break;
+;	../src/main.c: 336: fname[2]++;break;
 	ldw	y, (0x02, sp)
 	incw	y
 	incw	y
 	ldw	(0x04, sp), y
-;	../src/main.c: 325: switch(val){
+;	../src/main.c: 334: switch(val){
 	ld	a, (0x01, sp)
 	dec	a
 	jreq	00109$
-;	../src/main.c: 330: fname[1]++; break;
+;	../src/main.c: 339: fname[1]++; break;
 	ldw	y, (0x02, sp)
 	incw	y
-;	../src/main.c: 325: switch(val){
+;	../src/main.c: 334: switch(val){
 	ld	a, (0x01, sp)
 	cp	a, #0x03
 	jreq	00110$
@@ -421,82 +421,82 @@ _GetNxtFileName:
 	cp	a, #0x0f
 	jreq	00112$
 	jra	00113$
-;	../src/main.c: 326: case 0x01: fname[3] = 0x30; 
+;	../src/main.c: 335: case 0x01: fname[3] = 0x30; 
 00109$:
 	ld	a, #0x30
 	ld	(x), a
-;	../src/main.c: 327: fname[2]++;break;
+;	../src/main.c: 336: fname[2]++;break;
 	ldw	x, (0x04, sp)
 	inc	(x)
 	jra	00115$
-;	../src/main.c: 328: case 0x03: fname[3] = 0x30; 
+;	../src/main.c: 337: case 0x03: fname[3] = 0x30; 
 00110$:
 	ld	a, #0x30
 	ld	(x), a
-;	../src/main.c: 329: fname[2] = 0x30; 
+;	../src/main.c: 338: fname[2] = 0x30; 
 	ldw	x, (0x04, sp)
 	ld	a, #0x30
 	ld	(x), a
-;	../src/main.c: 330: fname[1]++; break;
+;	../src/main.c: 339: fname[1]++; break;
 	inc	(y)
 	jra	00115$
-;	../src/main.c: 331: case 0x07: fname[3] = 0x30; 
+;	../src/main.c: 340: case 0x07: fname[3] = 0x30; 
 00111$:
 	ld	a, #0x30
 	ld	(x), a
-;	../src/main.c: 332: fname[2] = 0x30; 
+;	../src/main.c: 341: fname[2] = 0x30; 
 	ldw	x, (0x04, sp)
-;	../src/main.c: 333: fname[1] = 0x30; 
+;	../src/main.c: 342: fname[1] = 0x30; 
 	ld	a, #0x30
 	ld	(x), a
 	ld	(y), a
-;	../src/main.c: 334: fname[0]++; break;
+;	../src/main.c: 343: fname[0]++; break;
 	ldw	x, (0x02, sp)
 	inc	(x)
 	jra	00115$
-;	../src/main.c: 335: case 0x0f: fname[3] = 0x30; 
+;	../src/main.c: 344: case 0x0f: fname[3] = 0x30; 
 00112$:
 	ld	a, #0x30
 	ld	(x), a
-;	../src/main.c: 336: fname[2] = 0x30; 
+;	../src/main.c: 345: fname[2] = 0x30; 
 	ldw	x, (0x04, sp)
-;	../src/main.c: 337: fname[1] = 0x30; 
+;	../src/main.c: 346: fname[1] = 0x30; 
 	ld	a, #0x30
 	ld	(x), a
 	ld	(y), a
-;	../src/main.c: 338: fname[0] = 0x30; break;
+;	../src/main.c: 347: fname[0] = 0x30; break;
 	ldw	x, (0x02, sp)
 	ld	a, #0x30
 	ld	(x), a
 	jra	00115$
-;	../src/main.c: 339: default: fname[3]++; break;
+;	../src/main.c: 348: default: fname[3]++; break;
 00113$:
 	inc	(x)
-;	../src/main.c: 340: }
+;	../src/main.c: 349: }
 00115$:
-;	../src/main.c: 341: }
+;	../src/main.c: 350: }
 	addw	sp, #5
 	ret
-;	../src/main.c: 354: static void ConvertFileName(uint16_t firstFileName, char * fname){
+;	../src/main.c: 363: static void ConvertFileName(uint16_t firstFileName, char * fname){
 ;	-----------------------------------------
 ;	 function ConvertFileName
 ;	-----------------------------------------
 _ConvertFileName:
 	sub	sp, #4
-;	../src/main.c: 357: val = firstFileName/1000;
+;	../src/main.c: 366: val = firstFileName/1000;
 	ldw	y, (0x07, sp)
 	ldw	(0x03, sp), y
 	ldw	x, y
 	ldw	y, #0x03e8
 	divw	x, y
-;	../src/main.c: 358: fname[0] = val + 0x30;
+;	../src/main.c: 367: fname[0] = val + 0x30;
 	ldw	y, (0x09, sp)
 	ldw	(0x01, sp), y
 	ld	a, xl
 	add	a, #0x30
 	ldw	y, (0x01, sp)
 	ld	(y), a
-;	../src/main.c: 359: firstFileName -=  val*1000;
+;	../src/main.c: 368: firstFileName -=  val*1000;
 	pushw	x
 	push	#0xe8
 	push	#0x03
@@ -504,18 +504,18 @@ _ConvertFileName:
 	addw	sp, #4
 	negw	x
 	addw	x, (0x03, sp)
-;	../src/main.c: 360: val = firstFileName/100;
+;	../src/main.c: 369: val = firstFileName/100;
 	ldw	(0x07, sp), x
 	ldw	(0x03, sp), x
 	ldw	y, #0x0064
 	divw	x, y
-;	../src/main.c: 361: fname[1] = val + 0x30;
+;	../src/main.c: 370: fname[1] = val + 0x30;
 	ldw	y, (0x01, sp)
 	incw	y
 	ld	a, xl
 	add	a, #0x30
 	ld	(y), a
-;	../src/main.c: 362: firstFileName -=  val*100;
+;	../src/main.c: 371: firstFileName -=  val*100;
 	pushw	x
 	push	#0x64
 	push	#0x00
@@ -523,18 +523,18 @@ _ConvertFileName:
 	addw	sp, #4
 	negw	x
 	addw	x, (0x03, sp)
-;	../src/main.c: 363: val = firstFileName/10;
+;	../src/main.c: 372: val = firstFileName/10;
 	ldw	(0x07, sp), x
 	ldw	(0x03, sp), x
 	ldw	y, #0x000a
 	divw	x, y
-;	../src/main.c: 364: fname[2] = val + 0x30;
+;	../src/main.c: 373: fname[2] = val + 0x30;
 	ldw	y, (0x01, sp)
 	addw	y, #0x0002
 	ld	a, xl
 	add	a, #0x30
 	ld	(y), a
-;	../src/main.c: 365: firstFileName -=  val*10;
+;	../src/main.c: 374: firstFileName -=  val*10;
 	pushw	x
 	sllw	x
 	sllw	x
@@ -544,25 +544,25 @@ _ConvertFileName:
 	negw	x
 	addw	x, (0x03, sp)
 	ldw	(0x07, sp), x
-;	../src/main.c: 366: fname[3] = firstFileName + 0x30;
+;	../src/main.c: 375: fname[3] = firstFileName + 0x30;
 	ldw	x, (0x01, sp)
 	addw	x, #0x0003
 	ld	a, (0x08, sp)
 	add	a, #0x30
 	ld	(x), a
-;	../src/main.c: 367: fname[4] = '\0';
+;	../src/main.c: 376: fname[4] = '\0';
 	ldw	x, (0x01, sp)
 	clr	(0x0004, x)
-;	../src/main.c: 368: }
+;	../src/main.c: 377: }
 	addw	sp, #4
 	ret
-;	../src/main.c: 383: static UINT GetCfg( uint8_t * pCfgBuf,  cfg_t * pcfg){
+;	../src/main.c: 392: static UINT GetCfg( uint8_t * pCfgBuf,  cfg_t * pcfg){
 ;	-----------------------------------------
 ;	 function GetCfg
 ;	-----------------------------------------
 _GetCfg:
 	sub	sp, #18
-;	../src/main.c: 386: if(!IsValidCfgBuf(pCfgBuf)) return 1; 
+;	../src/main.c: 395: if(!IsValidCfgBuf(pCfgBuf)) return 1; 
 	ldw	x, (0x15, sp)
 	pushw	x
 	call	_IsValidCfgBuf
@@ -573,7 +573,7 @@ _GetCfg:
 	incw	x
 	jp	00106$
 00102$:
-;	../src/main.c: 389: pcfg->sampFreq = pCfgBuf[0]+(((uint16_t)pCfgBuf[1])<<8);
+;	../src/main.c: 398: pcfg->sampFreq = pCfgBuf[0]+(((uint16_t)pCfgBuf[1])<<8);
 	ldw	y, (0x17, sp)
 	ldw	(0x01, sp), y
 	ldw	y, (0x15, sp)
@@ -591,7 +591,7 @@ _GetCfg:
 	addw	y, (0x11, sp)
 	ldw	x, (0x01, sp)
 	ldw	(x), y
-;	../src/main.c: 391: fID = pCfgBuf[2]+(((uint16_t)pCfgBuf[3])<<8);
+;	../src/main.c: 400: fID = pCfgBuf[2]+(((uint16_t)pCfgBuf[3])<<8);
 	ldw	x, (0x03, sp)
 	ld	a, (0x2, x)
 	clrw	y
@@ -603,14 +603,14 @@ _GetCfg:
 	ldw	(0x11, sp), y
 	ld	xl, a
 	addw	x, (0x11, sp)
-;	../src/main.c: 393: ConvertFileName(fID, pcfg->firstFileName);
+;	../src/main.c: 402: ConvertFileName(fID, pcfg->firstFileName);
 	ldw	y, (0x01, sp)
 	addw	y, #0x0002
 	pushw	y
 	pushw	x
 	call	_ConvertFileName
 	addw	sp, #4
-;	../src/main.c: 394: pcfg->fileNo = pCfgBuf[4]+(((uint16_t)pCfgBuf[5])<<8);
+;	../src/main.c: 403: pcfg->fileNo = pCfgBuf[4]+(((uint16_t)pCfgBuf[5])<<8);
 	ldw	y, (0x01, sp)
 	addw	y, #0x000b
 	ldw	x, (0x03, sp)
@@ -624,7 +624,7 @@ _GetCfg:
 	ldw	x, (0x0f, sp)
 	addw	x, (0x11, sp)
 	ldw	(y), x
-;	../src/main.c: 395: pcfg->fileSzInBlock = pCfgBuf[6]+ \
+;	../src/main.c: 404: pcfg->fileSzInBlock = pCfgBuf[6]+ \
 	ldw	x, (0x01, sp)
 	addw	x, #0x0007
 	ldw	(0x05, sp), x
@@ -689,98 +689,98 @@ _GetCfg:
 	ldw	(0x2, x), y
 	ldw	y, (0x0f, sp)
 	ldw	(x), y
-;	../src/main.c: 399: pcfg->channel = pCfgBuf[10];
+;	../src/main.c: 408: pcfg->channel = pCfgBuf[10];
 	ldw	x, (0x01, sp)
 	addw	x, #0x000d
 	ldw	y, (0x03, sp)
 	ld	a, (0xa, y)
 	ld	(x), a
-;	../src/main.c: 400: if(pCfgBuf[11] == 0)
+;	../src/main.c: 409: if(pCfgBuf[11] == 0)
 	ldw	x, (0x03, sp)
 	ld	a, (0xb, x)
-;	../src/main.c: 402: pcfg->isFullResultion = false;
+;	../src/main.c: 411: pcfg->isFullResultion = false;
 	ldw	x, (0x01, sp)
 	addw	x, #0x000e
-;	../src/main.c: 400: if(pCfgBuf[11] == 0)
+;	../src/main.c: 409: if(pCfgBuf[11] == 0)
 	tnz	a
 	jrne	00104$
-;	../src/main.c: 402: pcfg->isFullResultion = false;
+;	../src/main.c: 411: pcfg->isFullResultion = false;
 	clr	(x)
 	jra	00105$
 00104$:
-;	../src/main.c: 404: pcfg->isFullResultion = true;
+;	../src/main.c: 413: pcfg->isFullResultion = true;
 	ld	a, #0x01
 	ld	(x), a
 00105$:
-;	../src/main.c: 407: return 0x0;
+;	../src/main.c: 416: return 0x0;
 	clrw	x
 00106$:
-;	../src/main.c: 408: }
+;	../src/main.c: 417: }
 	addw	sp, #18
 	ret
-;	../src/main.c: 422: static uint8_t IsValidCfgBuf(uint8_t *pCfgBuf){
+;	../src/main.c: 431: static uint8_t IsValidCfgBuf(uint8_t *pCfgBuf){
 ;	-----------------------------------------
 ;	 function IsValidCfgBuf
 ;	-----------------------------------------
 _IsValidCfgBuf:
 	push	a
-;	../src/main.c: 423: uint8_t crc = 0;
+;	../src/main.c: 432: uint8_t crc = 0;
 	clr	(0x01, sp)
-;	../src/main.c: 431: return false;	
+;	../src/main.c: 440: return false;	
 	clrw	x
 00105$:
-;	../src/main.c: 425: for(; i < CFG_BUF_SZ - 1; i++){
+;	../src/main.c: 434: for(; i < CFG_BUF_SZ - 1; i++){
 	cpw	x, #0x000c
 	jrsge	00101$
-;	../src/main.c: 426: crc += pCfgBuf[i];		
+;	../src/main.c: 435: crc += pCfgBuf[i];		
 	ldw	y, x
 	addw	y, (0x04, sp)
 	ld	a, (y)
 	add	a, (0x01, sp)
 	ld	(0x01, sp), a
-;	../src/main.c: 425: for(; i < CFG_BUF_SZ - 1; i++){
+;	../src/main.c: 434: for(; i < CFG_BUF_SZ - 1; i++){
 	incw	x
 	jra	00105$
 00101$:
-;	../src/main.c: 428: if(crc == pCfgBuf[CFG_BUF_SZ-1])
+;	../src/main.c: 437: if(crc == pCfgBuf[CFG_BUF_SZ-1])
 	ldw	x, (0x04, sp)
 	ld	a, (0xc, x)
-;	../src/main.c: 429: return true;
+;	../src/main.c: 438: return true;
 	sub	a, (0x01, sp)
 	jrne	00103$
 	inc	a
-;	../src/main.c: 431: return false;	
+;	../src/main.c: 440: return false;	
 	.byte 0x21
 00103$:
 	clr	a
 00107$:
-;	../src/main.c: 432: }
+;	../src/main.c: 441: }
 	addw	sp, #1
 	ret
-;	../src/main.c: 441: static void clkInit( void )
+;	../src/main.c: 450: static void clkInit( void )
 ;	-----------------------------------------
 ;	 function clkInit
 ;	-----------------------------------------
 _clkInit:
-;	../src/main.c: 444: CLK->CKDIVR = 0;//(CLK_PRESCALER_HSIDIV1|CLK_PRESCALER_CPUDIV1);
+;	../src/main.c: 453: CLK->CKDIVR = 0;//(CLK_PRESCALER_HSIDIV1|CLK_PRESCALER_CPUDIV1);
 	mov	0x50c6+0, #0x00
-;	../src/main.c: 452: CLK->PCKENR1 |= (CLK_PCKENR1_TIM4|CLK_PCKENR1_SPI|CLK_PCKENR1_UART1);
+;	../src/main.c: 461: CLK->PCKENR1 |= (CLK_PCKENR1_TIM4|CLK_PCKENR1_SPI|CLK_PCKENR1_UART1);
 	ld	a, 0x50c7
 	or	a, #0x16
 	ld	0x50c7, a
-;	../src/main.c: 453: CLK->PCKENR2 |= (CLK_PCKENR2_ADC);
+;	../src/main.c: 462: CLK->PCKENR2 |= (CLK_PCKENR2_ADC);
 	bset	20682, #3
-;	../src/main.c: 454: }
+;	../src/main.c: 463: }
 	ret
-;	../src/main.c: 469: void assert_failed(uint8_t* file, uint32_t line)
+;	../src/main.c: 478: void assert_failed(uint8_t* file, uint32_t line)
 ;	-----------------------------------------
 ;	 function assert_failed
 ;	-----------------------------------------
 _assert_failed:
-;	../src/main.c: 475: while (1)
+;	../src/main.c: 484: while (1)
 00102$:
 	jra	00102$
-;	../src/main.c: 478: }
+;	../src/main.c: 487: }
 	ret
 	.area CODE
 	.area CONST

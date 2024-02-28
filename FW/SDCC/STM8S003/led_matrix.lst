@@ -10,284 +10,283 @@
                                      10 ;--------------------------------------------------------
                                      11 	.globl _SetLedState
                                      12 	.globl _GetLedState
-                                     13 	.globl _SetLedRaw
-                                     14 	.globl _UpdateLedState
-                                     15 	.globl _LedsInit
-                                     16 	.globl _led_ticks
-                                     17 	.globl _LedMatrixInit
-                                     18 	.globl _SetLedMode
-                                     19 	.globl _UpdateLeds
-                                     20 ;--------------------------------------------------------
-                                     21 ; ram data
-                                     22 ;--------------------------------------------------------
-                                     23 	.area DATA
-      000000                         24 _led_ticks::
-      000000                         25 	.ds 48
-                                     26 ;--------------------------------------------------------
-                                     27 ; ram data
-                                     28 ;--------------------------------------------------------
-                                     29 	.area INITIALIZED
-                                     30 ;--------------------------------------------------------
-                                     31 ; absolute external ram data
-                                     32 ;--------------------------------------------------------
-                                     33 	.area DABS (ABS)
-                                     34 
-                                     35 ; default segment ordering for linker
-                                     36 	.area HOME
-                                     37 	.area GSINIT
-                                     38 	.area GSFINAL
-                                     39 	.area CONST
-                                     40 	.area INITIALIZER
-                                     41 	.area CODE
-                                     42 
-                                     43 ;--------------------------------------------------------
-                                     44 ; global & static initialisations
-                                     45 ;--------------------------------------------------------
-                                     46 	.area HOME
-                                     47 	.area GSINIT
-                                     48 	.area GSFINAL
-                                     49 	.area GSINIT
-                                     50 ;--------------------------------------------------------
-                                     51 ; Home
-                                     52 ;--------------------------------------------------------
+                                     13 	.globl _UpdateLedState
+                                     14 	.globl _LedsInit
+                                     15 	.globl _led_ticks
+                                     16 	.globl _LedMatrixInit
+                                     17 	.globl _SetLedMode
+                                     18 	.globl _UpdateLeds
+                                     19 ;--------------------------------------------------------
+                                     20 ; ram data
+                                     21 ;--------------------------------------------------------
+                                     22 	.area DATA
+      000000                         23 _led_ticks::
+      000000                         24 	.ds 48
+                                     25 ;--------------------------------------------------------
+                                     26 ; ram data
+                                     27 ;--------------------------------------------------------
+                                     28 	.area INITIALIZED
+                                     29 ;--------------------------------------------------------
+                                     30 ; absolute external ram data
+                                     31 ;--------------------------------------------------------
+                                     32 	.area DABS (ABS)
+                                     33 
+                                     34 ; default segment ordering for linker
+                                     35 	.area HOME
+                                     36 	.area GSINIT
+                                     37 	.area GSFINAL
+                                     38 	.area CONST
+                                     39 	.area INITIALIZER
+                                     40 	.area CODE
+                                     41 
+                                     42 ;--------------------------------------------------------
+                                     43 ; global & static initialisations
+                                     44 ;--------------------------------------------------------
+                                     45 	.area HOME
+                                     46 	.area GSINIT
+                                     47 	.area GSFINAL
+                                     48 	.area GSINIT
+                                     49 ;--------------------------------------------------------
+                                     50 ; Home
+                                     51 ;--------------------------------------------------------
+                                     52 	.area HOME
                                      53 	.area HOME
-                                     54 	.area HOME
-                                     55 ;--------------------------------------------------------
-                                     56 ; code
-                                     57 ;--------------------------------------------------------
-                                     58 	.area CODE
-                                     59 ;	../src/led_matrix.c: 52: void LedMatrixInit( void ){
-                                     60 ;	-----------------------------------------
-                                     61 ;	 function LedMatrixInit
-                                     62 ;	-----------------------------------------
-      000000                         63 _LedMatrixInit:
-                                     64 ;	../src/led_matrix.c: 54: LedsInit();
-                                     65 ;	../src/led_matrix.c: 55: }
-      000000 CCr00r00         [ 2]   66 	jp	_LedsInit
-                                     67 ;	../src/led_matrix.c: 71: void SetLedMode(uint8_t ledID, enum led_mode_t mode)
-                                     68 ;	-----------------------------------------
-                                     69 ;	 function SetLedMode
-                                     70 ;	-----------------------------------------
-      000003                         71 _SetLedMode:
-      000003 52 09            [ 2]   72 	sub	sp, #9
-                                     73 ;	../src/led_matrix.c: 75: if(mode >= LED_MODE_MAX) return;
-      000005 7B 0D            [ 1]   74 	ld	a, (0x0d, sp)
-      000007 A1 04            [ 1]   75 	cp	a, #0x04
-      000009 25 03            [ 1]   76 	jrc	00102$
-      00000B CCr00rD5         [ 2]   77 	jp	00113$
-      00000E                         78 00102$:
-                                     79 ;	../src/led_matrix.c: 76: if(ledID >= NUM_OF_LEDS) return;
-      00000E 7B 0C            [ 1]   80 	ld	a, (0x0c, sp)
-      000010 A1 0C            [ 1]   81 	cp	a, #0x0c
-      000012 25 03            [ 1]   82 	jrc	00104$
-      000014 CCr00rD5         [ 2]   83 	jp	00113$
-      000017                         84 00104$:
-                                     85 ;	../src/led_matrix.c: 78: switch(mode){
-      000017 7B 0D            [ 1]   86 	ld	a, (0x0d, sp)
-      000019 A1 00            [ 1]   87 	cp	a, #0x00
-      00001B 27 14            [ 1]   88 	jreq	00106$
-      00001D 7B 0D            [ 1]   89 	ld	a, (0x0d, sp)
-      00001F 4A               [ 1]   90 	dec	a
-      000020 27 2A            [ 1]   91 	jreq	00107$
-      000022 7B 0D            [ 1]   92 	ld	a, (0x0d, sp)
-      000024 A1 02            [ 1]   93 	cp	a, #0x02
-      000026 27 6E            [ 1]   94 	jreq	00111$
-      000028 7B 0D            [ 1]   95 	ld	a, (0x0d, sp)
-      00002A A1 03            [ 1]   96 	cp	a, #0x03
-      00002C 27 03            [ 1]   97 	jreq	00172$
-      00002E CCr00rD5         [ 2]   98 	jp	00113$
-      000031                         99 00172$:
-                                    100 ;	../src/led_matrix.c: 80: case LED_OFF: led_ticks[ledID] = 0; SetLedRaw(ledID, mode);break;
-      000031                        101 00106$:
-      000031 5F               [ 1]  102 	clrw	x
-      000032 7B 0C            [ 1]  103 	ld	a, (0x0c, sp)
-      000034 97               [ 1]  104 	ld	xl, a
-      000035 58               [ 2]  105 	sllw	x
-      000036 58               [ 2]  106 	sllw	x
-      000037 1Cr00r00         [ 2]  107 	addw	x, #(_led_ticks+0)
-      00003A 90 5F            [ 1]  108 	clrw	y
-      00003C EF 02            [ 2]  109 	ldw	(0x2, x), y
-      00003E FF               [ 2]  110 	ldw	(x), y
-      00003F 7B 0D            [ 1]  111 	ld	a, (0x0d, sp)
-      000041 88               [ 1]  112 	push	a
-      000042 7B 0D            [ 1]  113 	ld	a, (0x0d, sp)
-      000044 88               [ 1]  114 	push	a
-      000045 CDr00r00         [ 4]  115 	call	_SetLedRaw
-      000048 85               [ 2]  116 	popw	x
-      000049 CCr00rD5         [ 2]  117 	jp	00113$
-                                    118 ;	../src/led_matrix.c: 81: case LED_TOGGLE_SLOW: 
-      00004C                        119 00107$:
-                                    120 ;	../src/led_matrix.c: 82: nxtTick = sysTick + LED_TOGGLE_SLOW_TICK;
-      00004C CEu00u02         [ 2]  121 	ldw	x, _sysTick+2
-      00004F 1C 03 E8         [ 2]  122 	addw	x, #0x03e8
-      000052 90 CEu00u00      [ 2]  123 	ldw	y, _sysTick+0
-      000056 24 02            [ 1]  124 	jrnc	00173$
-      000058 90 5C            [ 1]  125 	incw	y
-      00005A                        126 00173$:
-      00005A 1F 08            [ 2]  127 	ldw	(0x08, sp), x
-      00005C 17 06            [ 2]  128 	ldw	(0x06, sp), y
-                                    129 ;	../src/led_matrix.c: 83: if(nxtTick) nxtTick = 2;
-      00005E 1E 08            [ 2]  130 	ldw	x, (0x08, sp)
-      000060 26 04            [ 1]  131 	jrne	00174$
-      000062 1E 06            [ 2]  132 	ldw	x, (0x06, sp)
-      000064 27 0A            [ 1]  133 	jreq	00109$
-      000066                        134 00174$:
-      000066 AE 00 02         [ 2]  135 	ldw	x, #0x0002
-      000069 1F 08            [ 2]  136 	ldw	(0x08, sp), x
-      00006B 5F               [ 1]  137 	clrw	x
-      00006C 1F 06            [ 2]  138 	ldw	(0x06, sp), x
-      00006E 20 14            [ 2]  139 	jra	00110$
-      000070                        140 00109$:
-                                    141 ;	../src/led_matrix.c: 84: else nxtTick = (nxtTick%2)?(nxtTick+1):nxtTick;
-      000070 7B 09            [ 1]  142 	ld	a, (0x09, sp)
-      000072 44               [ 1]  143 	srl	a
-      000073 24 0F            [ 1]  144 	jrnc	00115$
-      000075 1E 08            [ 2]  145 	ldw	x, (0x08, sp)
-      000077 1C 00 01         [ 2]  146 	addw	x, #0x0001
-      00007A 16 06            [ 2]  147 	ldw	y, (0x06, sp)
-      00007C 24 02            [ 1]  148 	jrnc	00176$
-      00007E 90 5C            [ 1]  149 	incw	y
-      000080                        150 00176$:
-      000080 1F 08            [ 2]  151 	ldw	(0x08, sp), x
-      000082 17 06            [ 2]  152 	ldw	(0x06, sp), y
-      000084                        153 00115$:
-      000084                        154 00110$:
-                                    155 ;	../src/led_matrix.c: 85: led_ticks[ledID] = nxtTick;break;
-      000084 5F               [ 1]  156 	clrw	x
-      000085 7B 0C            [ 1]  157 	ld	a, (0x0c, sp)
-      000087 97               [ 1]  158 	ld	xl, a
-      000088 58               [ 2]  159 	sllw	x
-      000089 58               [ 2]  160 	sllw	x
-      00008A 1Cr00r00         [ 2]  161 	addw	x, #(_led_ticks+0)
-      00008D 16 08            [ 2]  162 	ldw	y, (0x08, sp)
-      00008F EF 02            [ 2]  163 	ldw	(0x2, x), y
-      000091 16 06            [ 2]  164 	ldw	y, (0x06, sp)
-      000093 FF               [ 2]  165 	ldw	(x), y
-      000094 20 3F            [ 2]  166 	jra	00113$
-                                    167 ;	../src/led_matrix.c: 86: case LED_TOGGLE_FAST: 
-      000096                        168 00111$:
-                                    169 ;	../src/led_matrix.c: 87: nxtTick = sysTick + LED_TOGGLE_FAST_TICK;
-      000096 CEu00u02         [ 2]  170 	ldw	x, _sysTick+2
-      000099 1C 01 2C         [ 2]  171 	addw	x, #0x012c
-      00009C 90 CEu00u00      [ 2]  172 	ldw	y, _sysTick+0
-      0000A0 24 02            [ 1]  173 	jrnc	00177$
-      0000A2 90 5C            [ 1]  174 	incw	y
-      0000A4                        175 00177$:
-      0000A4 1F 03            [ 2]  176 	ldw	(0x03, sp), x
-      0000A6 17 01            [ 2]  177 	ldw	(0x01, sp), y
-                                    178 ;	../src/led_matrix.c: 88: nxtTick = (nxtTick%2)?nxtTick:(nxtTick+1);
-      0000A8 7B 04            [ 1]  179 	ld	a, (0x04, sp)
-      0000AA 44               [ 1]  180 	srl	a
-      0000AB 24 0A            [ 1]  181 	jrnc	00117$
-      0000AD 16 03            [ 2]  182 	ldw	y, (0x03, sp)
-      0000AF 17 08            [ 2]  183 	ldw	(0x08, sp), y
-      0000B1 16 01            [ 2]  184 	ldw	y, (0x01, sp)
-      0000B3 17 06            [ 2]  185 	ldw	(0x06, sp), y
-      0000B5 20 0E            [ 2]  186 	jra	00118$
-      0000B7                        187 00117$:
-      0000B7 1E 03            [ 2]  188 	ldw	x, (0x03, sp)
-      0000B9 1C 00 01         [ 2]  189 	addw	x, #0x0001
-      0000BC 1F 08            [ 2]  190 	ldw	(0x08, sp), x
-      0000BE 1E 01            [ 2]  191 	ldw	x, (0x01, sp)
-      0000C0 24 01            [ 1]  192 	jrnc	00179$
-      0000C2 5C               [ 1]  193 	incw	x
-      0000C3                        194 00179$:
-      0000C3 1F 06            [ 2]  195 	ldw	(0x06, sp), x
-      0000C5                        196 00118$:
-      0000C5 16 08            [ 2]  197 	ldw	y, (0x08, sp)
-                                    198 ;	../src/led_matrix.c: 89: led_ticks[ledID] = nxtTick;break;
-      0000C7 5F               [ 1]  199 	clrw	x
-      0000C8 7B 0C            [ 1]  200 	ld	a, (0x0c, sp)
-      0000CA 97               [ 1]  201 	ld	xl, a
-      0000CB 58               [ 2]  202 	sllw	x
-      0000CC 58               [ 2]  203 	sllw	x
-      0000CD 1Cr00r00         [ 2]  204 	addw	x, #(_led_ticks+0)
-      0000D0 EF 02            [ 2]  205 	ldw	(0x2, x), y
-      0000D2 16 06            [ 2]  206 	ldw	y, (0x06, sp)
-      0000D4 FF               [ 2]  207 	ldw	(x), y
-                                    208 ;	../src/led_matrix.c: 90: }
-      0000D5                        209 00113$:
-                                    210 ;	../src/led_matrix.c: 91: }
-      0000D5 5B 09            [ 2]  211 	addw	sp, #9
-      0000D7 81               [ 4]  212 	ret
-                                    213 ;	../src/led_matrix.c: 95: void UpdateLeds()
-                                    214 ;	-----------------------------------------
-                                    215 ;	 function UpdateLeds
-                                    216 ;	-----------------------------------------
-      0000D8                        217 _UpdateLeds:
-      0000D8 52 07            [ 2]  218 	sub	sp, #7
-                                    219 ;	../src/led_matrix.c: 100: for(idx = 0; idx < NUM_OF_LEDS; idx++){
-      0000DA 0F 07            [ 1]  220 	clr	(0x07, sp)
-      0000DC                        221 00105$:
-                                    222 ;	../src/led_matrix.c: 101: tick = led_ticks[idx];
-      0000DC 5F               [ 1]  223 	clrw	x
-      0000DD 7B 07            [ 1]  224 	ld	a, (0x07, sp)
-      0000DF 97               [ 1]  225 	ld	xl, a
-      0000E0 58               [ 2]  226 	sllw	x
-      0000E1 58               [ 2]  227 	sllw	x
-      0000E2 1Cr00r00         [ 2]  228 	addw	x, #(_led_ticks+0)
-      0000E5 1F 01            [ 2]  229 	ldw	(0x01, sp), x
-      0000E7 90 93            [ 1]  230 	ldw	y, x
-      0000E9 90 EE 02         [ 2]  231 	ldw	y, (0x2, y)
-      0000EC FE               [ 2]  232 	ldw	x, (x)
-      0000ED 17 05            [ 2]  233 	ldw	(0x05, sp), y
-      0000EF 1F 03            [ 2]  234 	ldw	(0x03, sp), x
-                                    235 ;	../src/led_matrix.c: 102: if((tick != 0) && (sysTick == tick)){
-      0000F1 1E 05            [ 2]  236 	ldw	x, (0x05, sp)
-      0000F3 26 04            [ 1]  237 	jrne	00137$
-      0000F5 1E 03            [ 2]  238 	ldw	x, (0x03, sp)
-      0000F7 27 43            [ 1]  239 	jreq	00106$
-      0000F9                        240 00137$:
-      0000F9 1E 05            [ 2]  241 	ldw	x, (0x05, sp)
-      0000FB C3u00u02         [ 2]  242 	cpw	x, _sysTick+2
-      0000FE 26 3C            [ 1]  243 	jrne	00106$
-      000100 1E 03            [ 2]  244 	ldw	x, (0x03, sp)
-      000102 C3u00u00         [ 2]  245 	cpw	x, _sysTick+0
-      000105 26 35            [ 1]  246 	jrne	00106$
-                                    247 ;	../src/led_matrix.c: 103: led_ticks[idx] = ((tick%2)?LED_TOGGLE_FAST_TICK:LED_TOGGLE_SLOW_TICK);
-      000107 7B 06            [ 1]  248 	ld	a, (0x06, sp)
-      000109 44               [ 1]  249 	srl	a
-      00010A 24 07            [ 1]  250 	jrnc	00109$
-      00010C AE 01 2C         [ 2]  251 	ldw	x, #0x012c
-      00010F 1F 05            [ 2]  252 	ldw	(0x05, sp), x
-      000111 20 05            [ 2]  253 	jra	00110$
-      000113                        254 00109$:
-      000113 AE 03 E8         [ 2]  255 	ldw	x, #0x03e8
-      000116 1F 05            [ 2]  256 	ldw	(0x05, sp), x
-      000118                        257 00110$:
-      000118 16 05            [ 2]  258 	ldw	y, (0x05, sp)
-      00011A 90 9E            [ 1]  259 	ld	a, yh
-      00011C 49               [ 1]  260 	rlc	a
-      00011D 4F               [ 1]  261 	clr	a
-      00011E A2 00            [ 1]  262 	sbc	a, #0x00
-      000120 6B 04            [ 1]  263 	ld	(0x04, sp), a
-      000122 6B 03            [ 1]  264 	ld	(0x03, sp), a
-      000124 1E 01            [ 2]  265 	ldw	x, (0x01, sp)
-      000126 EF 02            [ 2]  266 	ldw	(0x2, x), y
-      000128 16 03            [ 2]  267 	ldw	y, (0x03, sp)
-      00012A FF               [ 2]  268 	ldw	(x), y
-                                    269 ;	../src/led_matrix.c: 104: SetLedState(idx, ~GetLedState(idx));
-      00012B 7B 07            [ 1]  270 	ld	a, (0x07, sp)
-      00012D 88               [ 1]  271 	push	a
-      00012E CDr00r00         [ 4]  272 	call	_GetLedState
-      000131 5B 01            [ 2]  273 	addw	sp, #1
-      000133 43               [ 1]  274 	cpl	a
-      000134 88               [ 1]  275 	push	a
-      000135 7B 08            [ 1]  276 	ld	a, (0x08, sp)
-      000137 88               [ 1]  277 	push	a
-      000138 CDr00r00         [ 4]  278 	call	_SetLedState
-      00013B 85               [ 2]  279 	popw	x
-      00013C                        280 00106$:
-                                    281 ;	../src/led_matrix.c: 100: for(idx = 0; idx < NUM_OF_LEDS; idx++){
-      00013C 0C 07            [ 1]  282 	inc	(0x07, sp)
-      00013E 7B 07            [ 1]  283 	ld	a, (0x07, sp)
-      000140 A1 0C            [ 1]  284 	cp	a, #0x0c
-      000142 25 98            [ 1]  285 	jrc	00105$
-                                    286 ;	../src/led_matrix.c: 108: UpdateLedState();
-      000144 5B 07            [ 2]  287 	addw	sp, #7
-                                    288 ;	../src/led_matrix.c: 109: }
-      000146 CCr00r00         [ 2]  289 	jp	_UpdateLedState
-                                    290 	.area CODE
-                                    291 	.area CONST
-                                    292 	.area INITIALIZER
-                                    293 	.area CABS (ABS)
+                                     54 ;--------------------------------------------------------
+                                     55 ; code
+                                     56 ;--------------------------------------------------------
+                                     57 	.area CODE
+                                     58 ;	../src/led_matrix.c: 52: void LedMatrixInit( void ){
+                                     59 ;	-----------------------------------------
+                                     60 ;	 function LedMatrixInit
+                                     61 ;	-----------------------------------------
+      000000                         62 _LedMatrixInit:
+                                     63 ;	../src/led_matrix.c: 54: LedsInit();
+                                     64 ;	../src/led_matrix.c: 55: }
+      000000 CCr00r00         [ 2]   65 	jp	_LedsInit
+                                     66 ;	../src/led_matrix.c: 71: void SetLedMode(uint8_t ledID, enum led_mode_t mode)
+                                     67 ;	-----------------------------------------
+                                     68 ;	 function SetLedMode
+                                     69 ;	-----------------------------------------
+      000003                         70 _SetLedMode:
+      000003 52 09            [ 2]   71 	sub	sp, #9
+                                     72 ;	../src/led_matrix.c: 75: if(mode >= LED_MODE_MAX) return;
+      000005 7B 0D            [ 1]   73 	ld	a, (0x0d, sp)
+      000007 A1 04            [ 1]   74 	cp	a, #0x04
+      000009 25 03            [ 1]   75 	jrc	00102$
+      00000B CCr00rD5         [ 2]   76 	jp	00113$
+      00000E                         77 00102$:
+                                     78 ;	../src/led_matrix.c: 76: if(ledID >= NUM_OF_LEDS) return;
+      00000E 7B 0C            [ 1]   79 	ld	a, (0x0c, sp)
+      000010 A1 0C            [ 1]   80 	cp	a, #0x0c
+      000012 25 03            [ 1]   81 	jrc	00104$
+      000014 CCr00rD5         [ 2]   82 	jp	00113$
+      000017                         83 00104$:
+                                     84 ;	../src/led_matrix.c: 78: switch(mode){
+      000017 7B 0D            [ 1]   85 	ld	a, (0x0d, sp)
+      000019 A1 00            [ 1]   86 	cp	a, #0x00
+      00001B 27 14            [ 1]   87 	jreq	00106$
+      00001D 7B 0D            [ 1]   88 	ld	a, (0x0d, sp)
+      00001F 4A               [ 1]   89 	dec	a
+      000020 27 2A            [ 1]   90 	jreq	00107$
+      000022 7B 0D            [ 1]   91 	ld	a, (0x0d, sp)
+      000024 A1 02            [ 1]   92 	cp	a, #0x02
+      000026 27 6E            [ 1]   93 	jreq	00111$
+      000028 7B 0D            [ 1]   94 	ld	a, (0x0d, sp)
+      00002A A1 03            [ 1]   95 	cp	a, #0x03
+      00002C 27 03            [ 1]   96 	jreq	00172$
+      00002E CCr00rD5         [ 2]   97 	jp	00113$
+      000031                         98 00172$:
+                                     99 ;	../src/led_matrix.c: 80: case LED_OFF: led_ticks[ledID] = 0; SetLedState(ledID, mode);break;
+      000031                        100 00106$:
+      000031 5F               [ 1]  101 	clrw	x
+      000032 7B 0C            [ 1]  102 	ld	a, (0x0c, sp)
+      000034 97               [ 1]  103 	ld	xl, a
+      000035 58               [ 2]  104 	sllw	x
+      000036 58               [ 2]  105 	sllw	x
+      000037 1Cr00r00         [ 2]  106 	addw	x, #(_led_ticks+0)
+      00003A 90 5F            [ 1]  107 	clrw	y
+      00003C EF 02            [ 2]  108 	ldw	(0x2, x), y
+      00003E FF               [ 2]  109 	ldw	(x), y
+      00003F 7B 0D            [ 1]  110 	ld	a, (0x0d, sp)
+      000041 88               [ 1]  111 	push	a
+      000042 7B 0D            [ 1]  112 	ld	a, (0x0d, sp)
+      000044 88               [ 1]  113 	push	a
+      000045 CDr00r00         [ 4]  114 	call	_SetLedState
+      000048 85               [ 2]  115 	popw	x
+      000049 CCr00rD5         [ 2]  116 	jp	00113$
+                                    117 ;	../src/led_matrix.c: 81: case LED_TOGGLE_SLOW: 
+      00004C                        118 00107$:
+                                    119 ;	../src/led_matrix.c: 82: nxtTick = sysTick + LED_TOGGLE_SLOW_TICK;
+      00004C CEu00u02         [ 2]  120 	ldw	x, _sysTick+2
+      00004F 1C 03 E8         [ 2]  121 	addw	x, #0x03e8
+      000052 90 CEu00u00      [ 2]  122 	ldw	y, _sysTick+0
+      000056 24 02            [ 1]  123 	jrnc	00173$
+      000058 90 5C            [ 1]  124 	incw	y
+      00005A                        125 00173$:
+      00005A 1F 08            [ 2]  126 	ldw	(0x08, sp), x
+      00005C 17 06            [ 2]  127 	ldw	(0x06, sp), y
+                                    128 ;	../src/led_matrix.c: 83: if(nxtTick) nxtTick = 2;
+      00005E 1E 08            [ 2]  129 	ldw	x, (0x08, sp)
+      000060 26 04            [ 1]  130 	jrne	00174$
+      000062 1E 06            [ 2]  131 	ldw	x, (0x06, sp)
+      000064 27 0A            [ 1]  132 	jreq	00109$
+      000066                        133 00174$:
+      000066 AE 00 02         [ 2]  134 	ldw	x, #0x0002
+      000069 1F 08            [ 2]  135 	ldw	(0x08, sp), x
+      00006B 5F               [ 1]  136 	clrw	x
+      00006C 1F 06            [ 2]  137 	ldw	(0x06, sp), x
+      00006E 20 14            [ 2]  138 	jra	00110$
+      000070                        139 00109$:
+                                    140 ;	../src/led_matrix.c: 84: else nxtTick = (nxtTick%2)?(nxtTick+1):nxtTick;
+      000070 7B 09            [ 1]  141 	ld	a, (0x09, sp)
+      000072 44               [ 1]  142 	srl	a
+      000073 24 0F            [ 1]  143 	jrnc	00115$
+      000075 1E 08            [ 2]  144 	ldw	x, (0x08, sp)
+      000077 1C 00 01         [ 2]  145 	addw	x, #0x0001
+      00007A 16 06            [ 2]  146 	ldw	y, (0x06, sp)
+      00007C 24 02            [ 1]  147 	jrnc	00176$
+      00007E 90 5C            [ 1]  148 	incw	y
+      000080                        149 00176$:
+      000080 1F 08            [ 2]  150 	ldw	(0x08, sp), x
+      000082 17 06            [ 2]  151 	ldw	(0x06, sp), y
+      000084                        152 00115$:
+      000084                        153 00110$:
+                                    154 ;	../src/led_matrix.c: 85: led_ticks[ledID] = nxtTick;break;
+      000084 5F               [ 1]  155 	clrw	x
+      000085 7B 0C            [ 1]  156 	ld	a, (0x0c, sp)
+      000087 97               [ 1]  157 	ld	xl, a
+      000088 58               [ 2]  158 	sllw	x
+      000089 58               [ 2]  159 	sllw	x
+      00008A 1Cr00r00         [ 2]  160 	addw	x, #(_led_ticks+0)
+      00008D 16 08            [ 2]  161 	ldw	y, (0x08, sp)
+      00008F EF 02            [ 2]  162 	ldw	(0x2, x), y
+      000091 16 06            [ 2]  163 	ldw	y, (0x06, sp)
+      000093 FF               [ 2]  164 	ldw	(x), y
+      000094 20 3F            [ 2]  165 	jra	00113$
+                                    166 ;	../src/led_matrix.c: 86: case LED_TOGGLE_FAST: 
+      000096                        167 00111$:
+                                    168 ;	../src/led_matrix.c: 87: nxtTick = sysTick + LED_TOGGLE_FAST_TICK;
+      000096 CEu00u02         [ 2]  169 	ldw	x, _sysTick+2
+      000099 1C 01 2C         [ 2]  170 	addw	x, #0x012c
+      00009C 90 CEu00u00      [ 2]  171 	ldw	y, _sysTick+0
+      0000A0 24 02            [ 1]  172 	jrnc	00177$
+      0000A2 90 5C            [ 1]  173 	incw	y
+      0000A4                        174 00177$:
+      0000A4 1F 03            [ 2]  175 	ldw	(0x03, sp), x
+      0000A6 17 01            [ 2]  176 	ldw	(0x01, sp), y
+                                    177 ;	../src/led_matrix.c: 88: nxtTick = (nxtTick%2)?nxtTick:(nxtTick+1);
+      0000A8 7B 04            [ 1]  178 	ld	a, (0x04, sp)
+      0000AA 44               [ 1]  179 	srl	a
+      0000AB 24 0A            [ 1]  180 	jrnc	00117$
+      0000AD 16 03            [ 2]  181 	ldw	y, (0x03, sp)
+      0000AF 17 08            [ 2]  182 	ldw	(0x08, sp), y
+      0000B1 16 01            [ 2]  183 	ldw	y, (0x01, sp)
+      0000B3 17 06            [ 2]  184 	ldw	(0x06, sp), y
+      0000B5 20 0E            [ 2]  185 	jra	00118$
+      0000B7                        186 00117$:
+      0000B7 1E 03            [ 2]  187 	ldw	x, (0x03, sp)
+      0000B9 1C 00 01         [ 2]  188 	addw	x, #0x0001
+      0000BC 1F 08            [ 2]  189 	ldw	(0x08, sp), x
+      0000BE 1E 01            [ 2]  190 	ldw	x, (0x01, sp)
+      0000C0 24 01            [ 1]  191 	jrnc	00179$
+      0000C2 5C               [ 1]  192 	incw	x
+      0000C3                        193 00179$:
+      0000C3 1F 06            [ 2]  194 	ldw	(0x06, sp), x
+      0000C5                        195 00118$:
+      0000C5 16 08            [ 2]  196 	ldw	y, (0x08, sp)
+                                    197 ;	../src/led_matrix.c: 89: led_ticks[ledID] = nxtTick;break;
+      0000C7 5F               [ 1]  198 	clrw	x
+      0000C8 7B 0C            [ 1]  199 	ld	a, (0x0c, sp)
+      0000CA 97               [ 1]  200 	ld	xl, a
+      0000CB 58               [ 2]  201 	sllw	x
+      0000CC 58               [ 2]  202 	sllw	x
+      0000CD 1Cr00r00         [ 2]  203 	addw	x, #(_led_ticks+0)
+      0000D0 EF 02            [ 2]  204 	ldw	(0x2, x), y
+      0000D2 16 06            [ 2]  205 	ldw	y, (0x06, sp)
+      0000D4 FF               [ 2]  206 	ldw	(x), y
+                                    207 ;	../src/led_matrix.c: 90: }
+      0000D5                        208 00113$:
+                                    209 ;	../src/led_matrix.c: 91: }
+      0000D5 5B 09            [ 2]  210 	addw	sp, #9
+      0000D7 81               [ 4]  211 	ret
+                                    212 ;	../src/led_matrix.c: 95: void UpdateLeds()
+                                    213 ;	-----------------------------------------
+                                    214 ;	 function UpdateLeds
+                                    215 ;	-----------------------------------------
+      0000D8                        216 _UpdateLeds:
+      0000D8 52 07            [ 2]  217 	sub	sp, #7
+                                    218 ;	../src/led_matrix.c: 100: for(idx = 0; idx < NUM_OF_LEDS; idx++){
+      0000DA 0F 07            [ 1]  219 	clr	(0x07, sp)
+      0000DC                        220 00105$:
+                                    221 ;	../src/led_matrix.c: 101: tick = led_ticks[idx];
+      0000DC 5F               [ 1]  222 	clrw	x
+      0000DD 7B 07            [ 1]  223 	ld	a, (0x07, sp)
+      0000DF 97               [ 1]  224 	ld	xl, a
+      0000E0 58               [ 2]  225 	sllw	x
+      0000E1 58               [ 2]  226 	sllw	x
+      0000E2 1Cr00r00         [ 2]  227 	addw	x, #(_led_ticks+0)
+      0000E5 1F 01            [ 2]  228 	ldw	(0x01, sp), x
+      0000E7 90 93            [ 1]  229 	ldw	y, x
+      0000E9 90 EE 02         [ 2]  230 	ldw	y, (0x2, y)
+      0000EC FE               [ 2]  231 	ldw	x, (x)
+      0000ED 17 05            [ 2]  232 	ldw	(0x05, sp), y
+      0000EF 1F 03            [ 2]  233 	ldw	(0x03, sp), x
+                                    234 ;	../src/led_matrix.c: 102: if((tick != 0) && (sysTick == tick)){
+      0000F1 1E 05            [ 2]  235 	ldw	x, (0x05, sp)
+      0000F3 26 04            [ 1]  236 	jrne	00137$
+      0000F5 1E 03            [ 2]  237 	ldw	x, (0x03, sp)
+      0000F7 27 43            [ 1]  238 	jreq	00106$
+      0000F9                        239 00137$:
+      0000F9 1E 05            [ 2]  240 	ldw	x, (0x05, sp)
+      0000FB C3u00u02         [ 2]  241 	cpw	x, _sysTick+2
+      0000FE 26 3C            [ 1]  242 	jrne	00106$
+      000100 1E 03            [ 2]  243 	ldw	x, (0x03, sp)
+      000102 C3u00u00         [ 2]  244 	cpw	x, _sysTick+0
+      000105 26 35            [ 1]  245 	jrne	00106$
+                                    246 ;	../src/led_matrix.c: 103: led_ticks[idx] = ((tick%2)?LED_TOGGLE_FAST_TICK:LED_TOGGLE_SLOW_TICK);
+      000107 7B 06            [ 1]  247 	ld	a, (0x06, sp)
+      000109 44               [ 1]  248 	srl	a
+      00010A 24 07            [ 1]  249 	jrnc	00109$
+      00010C AE 01 2C         [ 2]  250 	ldw	x, #0x012c
+      00010F 1F 05            [ 2]  251 	ldw	(0x05, sp), x
+      000111 20 05            [ 2]  252 	jra	00110$
+      000113                        253 00109$:
+      000113 AE 03 E8         [ 2]  254 	ldw	x, #0x03e8
+      000116 1F 05            [ 2]  255 	ldw	(0x05, sp), x
+      000118                        256 00110$:
+      000118 16 05            [ 2]  257 	ldw	y, (0x05, sp)
+      00011A 90 9E            [ 1]  258 	ld	a, yh
+      00011C 49               [ 1]  259 	rlc	a
+      00011D 4F               [ 1]  260 	clr	a
+      00011E A2 00            [ 1]  261 	sbc	a, #0x00
+      000120 6B 04            [ 1]  262 	ld	(0x04, sp), a
+      000122 6B 03            [ 1]  263 	ld	(0x03, sp), a
+      000124 1E 01            [ 2]  264 	ldw	x, (0x01, sp)
+      000126 EF 02            [ 2]  265 	ldw	(0x2, x), y
+      000128 16 03            [ 2]  266 	ldw	y, (0x03, sp)
+      00012A FF               [ 2]  267 	ldw	(x), y
+                                    268 ;	../src/led_matrix.c: 104: SetLedState(idx, ~GetLedState(idx));
+      00012B 7B 07            [ 1]  269 	ld	a, (0x07, sp)
+      00012D 88               [ 1]  270 	push	a
+      00012E CDr00r00         [ 4]  271 	call	_GetLedState
+      000131 5B 01            [ 2]  272 	addw	sp, #1
+      000133 43               [ 1]  273 	cpl	a
+      000134 88               [ 1]  274 	push	a
+      000135 7B 08            [ 1]  275 	ld	a, (0x08, sp)
+      000137 88               [ 1]  276 	push	a
+      000138 CDr00r00         [ 4]  277 	call	_SetLedState
+      00013B 85               [ 2]  278 	popw	x
+      00013C                        279 00106$:
+                                    280 ;	../src/led_matrix.c: 100: for(idx = 0; idx < NUM_OF_LEDS; idx++){
+      00013C 0C 07            [ 1]  281 	inc	(0x07, sp)
+      00013E 7B 07            [ 1]  282 	ld	a, (0x07, sp)
+      000140 A1 0C            [ 1]  283 	cp	a, #0x0c
+      000142 25 98            [ 1]  284 	jrc	00105$
+                                    285 ;	../src/led_matrix.c: 108: UpdateLedState();
+      000144 5B 07            [ 2]  286 	addw	sp, #7
+                                    287 ;	../src/led_matrix.c: 109: }
+      000146 CCr00r00         [ 2]  288 	jp	_UpdateLedState
+                                    289 	.area CODE
+                                    290 	.area CONST
+                                    291 	.area INITIALIZER
+                                    292 	.area CABS (ABS)

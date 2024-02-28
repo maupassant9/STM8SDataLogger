@@ -69,7 +69,7 @@
                                      69 ;	-----------------------------------------
       008270                         70 _disk_initialize:
                                      71 ;	../src/diskio.c: 16: if(SD_Detect() == SD_NOT_PRESENT)
-      008270 CD 8B 1F         [ 4]   72 	call	_SD_Detect
+      008270 CD 8B 5E         [ 4]   72 	call	_SD_Detect
       008273 4D               [ 1]   73 	tnz	a
       008274 26 03            [ 1]   74 	jrne	00102$
                                      75 ;	../src/diskio.c: 17: return STA_NODISK;
@@ -77,7 +77,7 @@
       008278 81               [ 4]   77 	ret
       008279                         78 00102$:
                                      79 ;	../src/diskio.c: 18: if(SD_Init() == SD_RESPONSE_FAILURE){
-      008279 CD 8A EB         [ 4]   80 	call	_SD_Init
+      008279 CD 8B 2A         [ 4]   80 	call	_SD_Init
       00827C 4C               [ 1]   81 	inc	a
       00827D 26 03            [ 1]   82 	jrne	00104$
                                      83 ;	../src/diskio.c: 19: return STA_NOINIT;
@@ -108,11 +108,11 @@
       008297 1E 14            [ 2]  108 	ldw	x, (0x14, sp)
       008299 89               [ 2]  109 	pushw	x
       00829A 4B 11            [ 1]  110 	push	#0x11
-      00829C CD 8B 27         [ 4]  111 	call	_SD_SendCmd
+      00829C CD 8B 66         [ 4]  111 	call	_SD_SendCmd
       00829F 5B 06            [ 2]  112 	addw	sp, #6
                                     113 ;	../src/diskio.c: 47: if (!SD_GetResponse(SD_RESPONSE_NO_ERROR))
       0082A1 4B 00            [ 1]  114 	push	#0x00
-      0082A3 CD 8B DD         [ 4]  115 	call	_SD_GetResponse
+      0082A3 CD 8C 1C         [ 4]  115 	call	_SD_GetResponse
       0082A6 5B 01            [ 2]  116 	addw	sp, #1
       0082A8 6B 0C            [ 1]  117 	ld	(0x0c, sp), a
       0082AA 27 03            [ 1]  118 	jreq	00162$
@@ -120,7 +120,7 @@
       0082AF                        120 00162$:
                                     121 ;	../src/diskio.c: 50: if (!SD_GetResponse(SD_START_DATA_SINGLE_BLOCK_READ))
       0082AF 4B FE            [ 1]  122 	push	#0xfe
-      0082B1 CD 8B DD         [ 4]  123 	call	_SD_GetResponse
+      0082B1 CD 8C 1C         [ 4]  123 	call	_SD_GetResponse
       0082B4 5B 01            [ 2]  124 	addw	sp, #1
       0082B6 4D               [ 1]  125 	tnz	a
       0082B7 27 03            [ 1]  126 	jreq	00163$
@@ -143,7 +143,7 @@
       0082D3 12 05            [ 1]  143 	sbc	a, (0x05, sp)
       0082D5 24 11            [ 1]  144 	jrnc	00124$
                                     145 ;	../src/diskio.c: 54: SD_ReadByte();
-      0082D7 CD 8D 94         [ 4]  146 	call	_SD_ReadByte
+      0082D7 CD 8D D3         [ 4]  146 	call	_SD_ReadByte
                                     147 ;	../src/diskio.c: 53: for(i = 0; i < offset; i++){
       0082DA 1E 0B            [ 2]  148 	ldw	x, (0x0b, sp)
       0082DC 5C               [ 1]  149 	incw	x
@@ -173,7 +173,7 @@
       008305 12 01            [ 1]  173 	sbc	a, (0x01, sp)
       008307 24 19            [ 1]  174 	jrnc	00126$
                                     175 ;	../src/diskio.c: 59: *buff = SD_ReadByte();
-      008309 CD 8D 94         [ 4]  176 	call	_SD_ReadByte
+      008309 CD 8D D3         [ 4]  176 	call	_SD_ReadByte
       00830C 1E 07            [ 2]  177 	ldw	x, (0x07, sp)
       00830E F7               [ 1]  178 	ld	(x), a
                                     179 ;	../src/diskio.c: 62: buff++;
@@ -203,7 +203,7 @@
                                     203 ;	../src/diskio.c: 65: SD_ReadByte();
       008332 89               [ 2]  204 	pushw	x
       008333 90 89            [ 2]  205 	pushw	y
-      008335 CD 8D 94         [ 4]  206 	call	_SD_ReadByte
+      008335 CD 8D D3         [ 4]  206 	call	_SD_ReadByte
       008338 90 85            [ 2]  207 	popw	y
       00833A 85               [ 2]  208 	popw	x
                                     209 ;	../src/diskio.c: 64: for(;i < 512; i++){
@@ -213,9 +213,9 @@
       008340 20 E4            [ 2]  213 	jra	00115$
       008342                        214 00103$:
                                     215 ;	../src/diskio.c: 68: SD_ReadByte();
-      008342 CD 8D 94         [ 4]  216 	call	_SD_ReadByte
+      008342 CD 8D D3         [ 4]  216 	call	_SD_ReadByte
                                     217 ;	../src/diskio.c: 69: SD_ReadByte();
-      008345 CD 8D 94         [ 4]  218 	call	_SD_ReadByte
+      008345 CD 8D D3         [ 4]  218 	call	_SD_ReadByte
                                     219 ;	../src/diskio.c: 71: res = RES_OK;
       008348 0F 0B            [ 1]  220 	clr	(0x0b, sp)
       00834A                        221 00107$:
@@ -223,7 +223,7 @@
       00834A 72 18 50 0A      [ 1]  223 	bset	20490, #4
                                     224 ;	../src/diskio.c: 78: SD_WriteByte(SD_DUMMY_BYTE);
       00834E 4B FF            [ 1]  225 	push	#0xff
-      008350 CD 8D 84         [ 4]  226 	call	_SD_WriteByte
+      008350 CD 8D C3         [ 4]  226 	call	_SD_WriteByte
       008353 84               [ 1]  227 	pop	a
                                     228 ;	../src/diskio.c: 81: return res;
       008354 7B 0B            [ 1]  229 	ld	a, (0x0b, sp)
@@ -261,11 +261,11 @@
       00837B 1E 0E            [ 2]  261 	ldw	x, (0x0e, sp)
       00837D 89               [ 2]  262 	pushw	x
       00837E 4B 18            [ 1]  263 	push	#0x18
-      008380 CD 8B 27         [ 4]  264 	call	_SD_SendCmd
+      008380 CD 8B 66         [ 4]  264 	call	_SD_SendCmd
       008383 5B 06            [ 2]  265 	addw	sp, #6
                                     266 ;	../src/diskio.c: 107: if (!SD_GetResponse(SD_RESPONSE_NO_ERROR))
       008385 4B 00            [ 1]  267 	push	#0x00
-      008387 CD 8B DD         [ 4]  268 	call	_SD_GetResponse
+      008387 CD 8C 1C         [ 4]  268 	call	_SD_GetResponse
       00838A 5B 01            [ 2]  269 	addw	sp, #1
       00838C 4D               [ 1]  270 	tnz	a
       00838D 27 03            [ 1]  271 	jreq	00195$
@@ -273,11 +273,11 @@
       008392                        273 00195$:
                                     274 ;	../src/diskio.c: 110: SD_WriteByte(SD_DUMMY_BYTE);
       008392 4B FF            [ 1]  275 	push	#0xff
-      008394 CD 8D 84         [ 4]  276 	call	_SD_WriteByte
+      008394 CD 8D C3         [ 4]  276 	call	_SD_WriteByte
       008397 84               [ 1]  277 	pop	a
                                     278 ;	../src/diskio.c: 112: SD_WriteByte(0xFE);
       008398 4B FE            [ 1]  279 	push	#0xfe
-      00839A CD 8D 84         [ 4]  280 	call	_SD_WriteByte
+      00839A CD 8D C3         [ 4]  280 	call	_SD_WriteByte
       00839D 84               [ 1]  281 	pop	a
                                     282 ;	../src/diskio.c: 113: byteLeft = 512;
       00839E AE 02 00         [ 2]  283 	ldw	x, #0x0200
@@ -308,20 +308,20 @@
       0083D4                        308 00197$:
                                     309 ;	../src/diskio.c: 119: SD_WriteByte(0);
       0083D4 4B 00            [ 1]  310 	push	#0x00
-      0083D6 CD 8D 84         [ 4]  311 	call	_SD_WriteByte
+      0083D6 CD 8D C3         [ 4]  311 	call	_SD_WriteByte
       0083D9 84               [ 1]  312 	pop	a
       0083DA 20 D1            [ 2]  313 	jra	00103$
       0083DC                        314 00105$:
                                     315 ;	../src/diskio.c: 122: SD_WriteByte(0);
       0083DC 4B 00            [ 1]  316 	push	#0x00
-      0083DE CD 8D 84         [ 4]  317 	call	_SD_WriteByte
+      0083DE CD 8D C3         [ 4]  317 	call	_SD_WriteByte
       0083E1 84               [ 1]  318 	pop	a
                                     319 ;	../src/diskio.c: 123: SD_WriteByte(0);
       0083E2 4B 00            [ 1]  320 	push	#0x00
-      0083E4 CD 8D 84         [ 4]  321 	call	_SD_WriteByte
+      0083E4 CD 8D C3         [ 4]  321 	call	_SD_WriteByte
       0083E7 84               [ 1]  322 	pop	a
                                     323 ;	../src/diskio.c: 126: if (SD_GetDataResponse() == SD_DATA_OK){
-      0083E8 CD 8B 83         [ 4]  324 	call	_SD_GetDataResponse
+      0083E8 CD 8B C2         [ 4]  324 	call	_SD_GetDataResponse
       0083EB A1 05            [ 1]  325 	cp	a, #0x05
       0083ED 26 48            [ 1]  326 	jrne	00110$
                                     327 ;	../src/diskio.c: 127: for (byteLeft = 5000;
@@ -331,7 +331,7 @@
       0083F6 CF 02 09         [ 2]  331 	ldw	_disk_writep_byteLeft_65536_355+0, x
       0083F9                        332 00123$:
                                     333 ;	../src/diskio.c: 128: (SD_ReadByte() != 0xFF) && byteLeft;
-      0083F9 CD 8D 94         [ 4]  334 	call	_SD_ReadByte
+      0083F9 CD 8D D3         [ 4]  334 	call	_SD_ReadByte
       0083FC 4C               [ 1]  335 	inc	a
       0083FD 27 2C            [ 1]  336 	jreq	00106$
       0083FF CE 02 0B         [ 2]  337 	ldw	x, _disk_writep_byteLeft_65536_355+2
@@ -369,7 +369,7 @@
       008437 72 18 50 0A      [ 1]  369 	bset	20490, #4
                                     370 ;	../src/diskio.c: 138: SD_WriteByte(SD_DUMMY_BYTE);
       00843B 4B FF            [ 1]  371 	push	#0xff
-      00843D CD 8D 84         [ 4]  372 	call	_SD_WriteByte
+      00843D CD 8D C3         [ 4]  372 	call	_SD_WriteByte
       008440 84               [ 1]  373 	pop	a
       008441 20 52            [ 2]  374 	jra	00120$
                                     375 ;	../src/diskio.c: 143: while((byteLeft)&&(sc))
@@ -395,7 +395,7 @@
       008461 1E 01            [ 2]  395 	ldw	x, (0x01, sp)
       008463 F6               [ 1]  396 	ld	a, (x)
       008464 88               [ 1]  397 	push	a
-      008465 CD 8D 84         [ 4]  398 	call	_SD_WriteByte
+      008465 CD 8D C3         [ 4]  398 	call	_SD_WriteByte
       008468 84               [ 1]  399 	pop	a
                                     400 ;	../src/diskio.c: 148: buff++;byteLeft--;sc--;
       008469 1E 01            [ 2]  401 	ldw	x, (0x01, sp)

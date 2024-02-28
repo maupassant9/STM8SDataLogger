@@ -160,27 +160,27 @@ _UpdateLedState:
 ;	 function SetLedRaw
 ;	-----------------------------------------
 _SetLedRaw:
-	sub	sp, #11
+	sub	sp, #16
 ;	../src/leds.c: 132: ledId = ledId << 2;
-	ld	a, (0x0e, sp)
+	ld	a, (0x13, sp)
 	sll	a
 	sll	a
-	ld	(0x0e, sp), a
+	ld	(0x13, sp), a
 ;	../src/leds.c: 134: GPIO_TypeDef * gpioPortPos = (GPIO_TypeDef * )leds_anode[ledId];
 	clrw	x
-	ld	a, (0x0e, sp)
+	ld	a, (0x13, sp)
 	ld	xl, a
 	sllw	x
 	ldw	y, x
 	ldw	x, (_leds_anode+0, x)
-	ldw	(0x03, sp), x
+	ldw	(0x02, sp), x
 ;	../src/leds.c: 135: GPIO_TypeDef * gpioPortNeg = (GPIO_TypeDef *) leds_cathode[ledId];
 	ldw	x, y
 	addw	x, #(_leds_cathode+0)
 	ldw	x, (x)
-	ldw	(0x05, sp), x
+	ldw	(0x04, sp), x
 ;	../src/leds.c: 136: ADDR_BANK_T gpioPinPos = leds_anode[ledId+1];
-	ld	a, (0x0e, sp)
+	ld	a, (0x13, sp)
 	inc	a
 	ld	xl, a
 	rlc	a
@@ -189,81 +189,130 @@ _SetLedRaw:
 	ld	xh, a
 	sllw	x
 	ldw	y, x
-	ldw	x, (_leds_anode+0, x)
-	ldw	(0x01, sp), x
+	ldw	y, (_leds_anode+0, y)
 ;	../src/leds.c: 137: ADDR_BANK_T gpioPinNeg = leds_cathode[ledId+1];
-	ldw	x, y
 	ldw	x, (_leds_cathode+0, x)
-	ld	a, xl
-;	../src/leds.c: 142: gpioPortNeg->ODR &= ~(gpioPinNeg);
-	ld	(0x07, sp), a
-;	../src/leds.c: 144: gpioPortPos->DDR |= gpioPinPos;
-	ldw	x, (0x03, sp)
-	incw	x
-	incw	x
-;	../src/leds.c: 145: gpioPortNeg->DDR |= gpioPinNeg;
-	ldw	y, (0x05, sp)
-	incw	y
-	incw	y
-	ldw	(0x08, sp), y
+	ldw	(0x0f, sp), x
 ;	../src/leds.c: 141: gpioPortPos->ODR |= (gpioPinPos);
-	ld	a, (0x02, sp)
-	ld	(0x0a, sp), a
+	ldw	x, (0x02, sp)
+	ld	a, (x)
+	ld	(0x06, sp), a
 ;	../src/leds.c: 142: gpioPortNeg->ODR &= ~(gpioPinNeg);
-	ld	a, (0x07, sp)
+	ld	a, (0x10, sp)
+	ld	(0x01, sp), a
+;	../src/leds.c: 144: gpioPortPos->DDR |= gpioPinPos;
+	ldw	x, (0x02, sp)
+	incw	x
+	incw	x
+	ldw	(0x07, sp), x
+;	../src/leds.c: 145: gpioPortNeg->DDR |= gpioPinNeg;
+	ldw	x, (0x04, sp)
+	incw	x
+	incw	x
+	ldw	(0x09, sp), x
+;	../src/leds.c: 146: gpioPortPos->CR1 |= gpioPinPos;
+	ldw	x, (0x02, sp)
+	addw	x, #0x0003
+	ldw	(0x0b, sp), x
+;	../src/leds.c: 147: gpioPortNeg->CR1 |= gpioPinNeg;
+	ldw	x, (0x04, sp)
+	addw	x, #0x0003
+	ldw	(0x0d, sp), x
+;	../src/leds.c: 141: gpioPortPos->ODR |= (gpioPinPos);
+	exg	a, yl
+	ld	(0x10, sp), a
+	exg	a, yl
+;	../src/leds.c: 142: gpioPortNeg->ODR &= ~(gpioPinNeg);
+	ld	a, (0x01, sp)
 	cpl	a
-	ld	(0x0b, sp), a
+	ld	(0x0f, sp), a
 ;	../src/leds.c: 139: if(state) //turn on
-	tnz	(0x0f, sp)
+	tnz	(0x14, sp)
 	jreq	00102$
 ;	../src/leds.c: 141: gpioPortPos->ODR |= (gpioPinPos);
-	ldw	y, (0x03, sp)
-	ld	a, (y)
-	or	a, (0x0a, sp)
-	ldw	y, (0x03, sp)
-	ld	(y), a
+	ld	a, (0x06, sp)
+	or	a, (0x10, sp)
+	ldw	x, (0x02, sp)
+	ld	(x), a
 ;	../src/leds.c: 142: gpioPortNeg->ODR &= ~(gpioPinNeg);
-	ldw	y, (0x05, sp)
-	ld	a, (y)
-	and	a, (0x0b, sp)
-	ldw	y, (0x05, sp)
-	ld	(y), a
-;	../src/leds.c: 144: gpioPortPos->DDR |= gpioPinPos;
+	ldw	x, (0x04, sp)
 	ld	a, (x)
-	or	a, (0x0a, sp)
+	and	a, (0x0f, sp)
+	ldw	x, (0x04, sp)
+	ld	(x), a
+;	../src/leds.c: 144: gpioPortPos->DDR |= gpioPinPos;
+	ldw	x, (0x07, sp)
+	ld	a, (x)
+	or	a, (0x10, sp)
+	ldw	x, (0x07, sp)
 	ld	(x), a
 ;	../src/leds.c: 145: gpioPortNeg->DDR |= gpioPinNeg;
-	ldw	x, (0x08, sp)
+	ldw	x, (0x09, sp)
 	ld	a, (x)
-	or	a, (0x07, sp)
-	ldw	x, (0x08, sp)
+	or	a, (0x01, sp)
+	ldw	x, (0x09, sp)
+	ld	(x), a
+;	../src/leds.c: 146: gpioPortPos->CR1 |= gpioPinPos;
+	ldw	x, (0x0b, sp)
+	ld	a, (x)
+	or	a, (0x10, sp)
+	ldw	x, (0x0b, sp)
+	ld	(x), a
+;	../src/leds.c: 147: gpioPortNeg->CR1 |= gpioPinNeg;
+	ldw	x, (0x0d, sp)
+	ld	a, (x)
+	or	a, (0x01, sp)
+	ldw	x, (0x0d, sp)
 	ld	(x), a
 	jra	00104$
 00102$:
-;	../src/leds.c: 149: gpioPortPos->DDR &= ~gpioPinPos;
-	ld	a, (x)
-	ld	(0x07, sp), a
-	ld	a, (0x0a, sp)
-	cpl	a
-	and	a, (0x07, sp)
+;	../src/leds.c: 151: gpioPortPos->ODR &= ~(gpioPinPos);
+	cpl	(0x10, sp)
+	ld	a, (0x06, sp)
+	and	a, (0x10, sp)
+	ldw	x, (0x02, sp)
 	ld	(x), a
-;	../src/leds.c: 150: gpioPortNeg->DDR &= ~gpioPinNeg;
-	ldw	x, (0x08, sp)
+;	../src/leds.c: 152: gpioPortNeg->ODR &= ~(gpioPinNeg);
+	ldw	x, (0x04, sp)
 	ld	a, (x)
-	and	a, (0x0b, sp)
-	ldw	x, (0x08, sp)
+	and	a, (0x0f, sp)
+	ldw	x, (0x04, sp)
+	ld	(x), a
+;	../src/leds.c: 153: gpioPortPos->DDR &= ~gpioPinPos;
+	ldw	x, (0x07, sp)
+	ld	a, (x)
+	and	a, (0x10, sp)
+	ldw	x, (0x07, sp)
+	ld	(x), a
+;	../src/leds.c: 154: gpioPortNeg->DDR &= ~gpioPinNeg;
+	ldw	x, (0x09, sp)
+	ld	a, (x)
+	and	a, (0x0f, sp)
+	ldw	x, (0x09, sp)
+	ld	(x), a
+;	../src/leds.c: 155: gpioPortPos->CR1 &= ~gpioPinPos;
+	ldw	x, (0x0b, sp)
+	ld	a, (x)
+	and	a, (0x10, sp)
+	ldw	x, (0x0b, sp)
+	ld	(x), a
+;	../src/leds.c: 156: gpioPortNeg->CR1 &= ~gpioPinNeg;
+	ldw	x, (0x0d, sp)
+	ld	a, (x)
+	and	a, (0x0f, sp)
+	ldw	x, (0x0d, sp)
 	ld	(x), a
 00104$:
-;	../src/leds.c: 152: }
-	addw	sp, #11
+;	../src/leds.c: 158: }
+	addw	sp, #16
 	ret
-;	../src/leds.c: 155: uint8_t GetLedState(uint8_t ledID)
+;	../src/leds.c: 161: uint8_t GetLedState(uint8_t ledID)
 ;	-----------------------------------------
 ;	 function GetLedState
 ;	-----------------------------------------
 _GetLedState:
 	pushw	x
-;	../src/leds.c: 157: return (ledsState & (1 << ledID))?1:0;
+;	../src/leds.c: 163: return (ledsState & (1 << ledID))?1:0;
 	ld	a, (0x05, sp)
 	clrw	x
 	incw	x
@@ -290,16 +339,16 @@ _GetLedState:
 	clrw	x
 00104$:
 	ld	a, xl
-;	../src/leds.c: 158: }
+;	../src/leds.c: 164: }
 	popw	x
 	ret
-;	../src/leds.c: 161: void SetLedState(uint8_t ledID, uint8_t state)
+;	../src/leds.c: 167: void SetLedState(uint8_t ledID, uint8_t state)
 ;	-----------------------------------------
 ;	 function SetLedState
 ;	-----------------------------------------
 _SetLedState:
 	pushw	x
-;	../src/leds.c: 163: if(state) ledsState |= (1 << ledID);
+;	../src/leds.c: 169: if(state) ledsState |= (1 << ledID);
 	ld	a, (0x05, sp)
 	ldw	x, _ledsState+0
 	ldw	(0x01, sp), x
@@ -322,7 +371,7 @@ _SetLedState:
 	ldw	_ledsState+0, x
 	jra	00104$
 00102$:
-;	../src/leds.c: 164: else ledsState &= ~(1 << ledID); 
+;	../src/leds.c: 170: else ledsState &= ~(1 << ledID); 
 	cplw	x
 	ld	a, xl
 	and	a, (0x02, sp)
@@ -331,7 +380,7 @@ _SetLedState:
 	ld	xh, a
 	ldw	_ledsState+0, x
 00104$:
-;	../src/leds.c: 165: }
+;	../src/leds.c: 171: }
 	popw	x
 	ret
 	.area CODE

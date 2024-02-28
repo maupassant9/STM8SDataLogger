@@ -76,7 +76,7 @@
                                      76 ;	../src/dly.c: 63: TIM4->IER = TIM4_IER_UIE;
       0084AC 35 01 53 43      [ 1]   77 	mov	0x5343+0, #0x01
                                      78 ;	../src/dly.c: 64: TIM4->ARR = TIMER_VALUE_FOR_SYSTICK;
-      0084B0 35 19 53 48      [ 1]   79 	mov	0x5348+0, #0x19
+      0084B0 35 FA 53 48      [ 1]   79 	mov	0x5348+0, #0xfa
                                      80 ;	../src/dly.c: 65: TIM4->CR1 |= TIM4_CR1_CEN;
       0084B4 72 10 53 40      [ 1]   81 	bset	21312, #0
                                      82 ;	../src/dly.c: 66: }
@@ -118,14 +118,12 @@
       0084E4                        118 00103$:
       0084E4 CF 02 0F         [ 2]  119 	ldw	_sysTick+2, x
       0084E7 90 CF 02 0D      [ 2]  120 	ldw	_sysTick+0, y
-                                    121 ;	../src/dly.c: 100: TIM4->SR1 &= ~TIM4_SR1_UIF;
-      0084EB C6 53 44         [ 1]  122 	ld	a, 0x5344
-      0084EE A4 FE            [ 1]  123 	and	a, #0xfe
-      0084F0 C7 53 44         [ 1]  124 	ld	0x5344, a
-                                    125 ;	../src/dly.c: 101: UpdateLeds();
-                                    126 ;	../src/dly.c: 102: }
-      0084F3 CC 85 CE         [ 2]  127 	jp	_UpdateLeds
-                                    128 	.area CODE
-                                    129 	.area CONST
-                                    130 	.area INITIALIZER
-                                    131 	.area CABS (ABS)
+                                    121 ;	../src/dly.c: 100: TIM4->SR1 = ~TIM4_SR1_UIF;
+      0084EB 35 FE 53 44      [ 1]  122 	mov	0x5344+0, #0xfe
+                                    123 ;	../src/dly.c: 101: UpdateLeds();
+                                    124 ;	../src/dly.c: 102: }
+      0084EF CC 85 CA         [ 2]  125 	jp	_UpdateLeds
+                                    126 	.area CODE
+                                    127 	.area CONST
+                                    128 	.area INITIALIZER
+                                    129 	.area CABS (ABS)

@@ -76,7 +76,7 @@ _tim4Init:
 ;	../src/dly.c: 63: TIM4->IER = TIM4_IER_UIE;
 	mov	0x5343+0, #0x01
 ;	../src/dly.c: 64: TIM4->ARR = TIMER_VALUE_FOR_SYSTICK;
-	mov	0x5348+0, #0x19
+	mov	0x5348+0, #0xfa
 ;	../src/dly.c: 65: TIM4->CR1 |= TIM4_CR1_CEN;
 	bset	21312, #0
 ;	../src/dly.c: 66: }
@@ -118,10 +118,8 @@ _systemTickIsr:
 00103$:
 	ldw	_sysTick+2, x
 	ldw	_sysTick+0, y
-;	../src/dly.c: 100: TIM4->SR1 &= ~TIM4_SR1_UIF;
-	ld	a, 0x5344
-	and	a, #0xfe
-	ld	0x5344, a
+;	../src/dly.c: 100: TIM4->SR1 = ~TIM4_SR1_UIF;
+	mov	0x5344+0, #0xfe
 ;	../src/dly.c: 101: UpdateLeds();
 ;	../src/dly.c: 102: }
 	jp	_UpdateLeds

@@ -143,11 +143,17 @@ void SetLedRaw(uint8_t ledId, uint8_t state){
         //as output
         gpioPortPos->DDR |= gpioPinPos;
         gpioPortNeg->DDR |= gpioPinNeg;
+        gpioPortPos->CR1 |= gpioPinPos;
+        gpioPortNeg->CR1 |= gpioPinNeg;
 
     } else { //turn off
         //as Input
+        gpioPortPos->ODR &= ~(gpioPinPos);
+        gpioPortNeg->ODR &= ~(gpioPinNeg);
         gpioPortPos->DDR &= ~gpioPinPos;
         gpioPortNeg->DDR &= ~gpioPinNeg;
+        gpioPortPos->CR1 &= ~gpioPinPos;
+        gpioPortNeg->CR1 &= ~gpioPinNeg;
     }
 }
 

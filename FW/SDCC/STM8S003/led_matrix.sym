@@ -11,7 +11,6 @@ Symbol Table
   9 _LedMatrixInit                                                 000000 GR
     _LedsInit                                                      ****** GX
   9 _SetLedMode                                                    000003 GR
-    _SetLedRaw                                                     ****** GX
     _SetLedState                                                   ****** GX
     _UpdateLedState                                                ****** GX
   9 _UpdateLeds                                                    0000D8 GR
