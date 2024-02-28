@@ -1,5 +1,6 @@
+;!FILE STM8S003/led_matrix.asm
 XH3
-H B areas A global symbols
+H B areas 100 global symbols
 M led_matrix
 O -mstm8
 S _sysTick Ref000000
@@ -11,6 +12,7 @@ S _LedsInit Ref000000
 A _CODE size 0 flags 0 addr 0
 A DATA size 30 flags 0 addr 0
 S _led_ticks Def000000
+S G$led_ticks$0_0$0 Def000000
 A INITIALIZED size 0 flags 0 addr 0
 A DABS size 0 flags 8 addr 0
 A HOME size 0 flags 0 addr 0
@@ -18,10 +20,255 @@ A GSINIT size 0 flags 0 addr 0
 A GSFINAL size 0 flags 0 addr 0
 A CONST size 0 flags 0 addr 0
 A INITIALIZER size 0 flags 0 addr 0
-A CODE size 149 flags 0 addr 0
-S _UpdateLeds Def0000D8
-S _SetLedMode Def000003
+A CODE size 1AD flags 0 addr 0
+S C$led_matrix.c$109$1_0$324 Def0001AC
+S C$led_matrix.c$103$4_0$327 Def000130
+S C$led_matrix.c$104$4_0$327 Def000186
+S A$led_matrix$200 Def000071
+S A$led_matrix$110 Def000012
+S A$led_matrix$300 Def0000DE
+S A$led_matrix$210 Def000082
+S A$led_matrix$201 Def000073
+S A$led_matrix$111 Def000014
+S A$led_matrix$400 Def000131
+S A$led_matrix$310 Def0000E7
+S A$led_matrix$301 Def0000E0
+S A$led_matrix$220 Def00008A
+S A$led_matrix$202 Def000075
+S A$led_matrix$130 Def000027
+S A$led_matrix$112 Def000016
+S A$led_matrix$103 Def00000F
+S A$led_matrix$410 Def00013F
+S A$led_matrix$401 Def000133
+S A$led_matrix$320 Def0000EE
+S A$led_matrix$302 Def0000E2
+S A$led_matrix$221 Def00008C
+S A$led_matrix$212 Def000084
+S A$led_matrix$203 Def000077
+S A$led_matrix$140 Def000035
+S A$led_matrix$131 Def000029
+S A$led_matrix$113 Def000018
+S A$led_matrix$411 Def000142
+S A$led_matrix$402 Def000134
+S A$led_matrix$303 Def0000E4
+S A$led_matrix$204 Def000079
+S A$led_matrix$132 Def00002A
+S A$led_matrix$123 Def00001E
+S C$led_matrix.c$52$0_0$320 Def000000
+S A$led_matrix$430 Def00015A
+S A$led_matrix$412 Def000144
+S A$led_matrix$403 Def000135
+S A$led_matrix$322 Def0000EF
+S A$led_matrix$250 Def0000A2
+S A$led_matrix$232 Def00009A
+S A$led_matrix$160 Def000045
+S A$led_matrix$133 Def00002C
+S A$led_matrix$124 Def000020
+S XG$LedMatrixInit$0$0 Def000003
+S A$led_matrix$440 Def000166
+S A$led_matrix$422 Def00014F
+S A$led_matrix$413 Def000145
+S A$led_matrix$260 Def0000B0
+S A$led_matrix$251 Def0000A4
+S A$led_matrix$233 Def00009C
+S A$led_matrix$161 Def000047
+S A$led_matrix$125 Def000022
+S _UpdateLeds Def0000FA
+S A$led_matrix$504 Def0001AA
+S A$led_matrix$450 Def000179
+S A$led_matrix$441 Def000168
+S A$led_matrix$423 Def000152
+S A$led_matrix$405 Def000136
+S A$led_matrix$360 Def0000FE
+S A$led_matrix$324 Def0000F2
+S A$led_matrix$306 Def0000E5
+S A$led_matrix$270 Def0000B4
+S A$led_matrix$252 Def0000A5
+S A$led_matrix$225 Def00008F
+S A$led_matrix$207 Def00007C
+S A$led_matrix$180 Def00005C
+S A$led_matrix$171 Def000052
+S A$led_matrix$162 Def000048
+S A$led_matrix$144 Def000038
+S A$led_matrix$126 Def000024
+S A$led_matrix$117 Def00001B
+S C$led_matrix.c$54$1_0$320 Def000000
+S A$led_matrix$451 Def00017B
+S A$led_matrix$415 Def000147
+S A$led_matrix$406 Def000139
+S A$led_matrix$370 Def00010C
+S A$led_matrix$361 Def0000FF
+S A$led_matrix$352 Def0000FC
+S A$led_matrix$334 Def0000F7
+S A$led_matrix$325 Def0000F4
+S A$led_matrix$316 Def0000E9
+S A$led_matrix$271 Def0000B7
+S A$led_matrix$262 Def0000B1
+S A$led_matrix$253 Def0000A6
+S A$led_matrix$235 Def00009E
+S A$led_matrix$226 Def000091
+S A$led_matrix$208 Def00007F
+S A$led_matrix$190 Def000065
+S A$led_matrix$172 Def000054
+S A$led_matrix$163 Def000049
+S A$led_matrix$145 Def00003A
+S C$led_matrix.c$71$1_0$322 Def000004
+S C$led_matrix.c$55$1_0$320 Def000003
+S A$led_matrix$461 Def000186
+S A$led_matrix$443 Def00016A
+S A$led_matrix$434 Def00015C
+S A$led_matrix$425 Def000154
+S A$led_matrix$416 Def000149
+S A$led_matrix$380 Def000117
+S A$led_matrix$362 Def000101
+S A$led_matrix$326 Def0000F6
+S A$led_matrix$317 Def0000EA
+S A$led_matrix$290 Def0000D0
+S A$led_matrix$272 Def0000BA
+S A$led_matrix$227 Def000094
+S A$led_matrix$218 Def000087
+S A$led_matrix$209 Def000081
+S A$led_matrix$191 Def000069
+S A$led_matrix$146 Def00003C
+S A$led_matrix$137 Def00002F
+S C$led_matrix.c$90$1_0$322 Def0000F7
+S A$led_matrix$507 Def0001AC
+S A$led_matrix$462 Def000188
+S A$led_matrix$453 Def00017D
+S A$led_matrix$444 Def00016C
+S A$led_matrix$435 Def00015E
+S A$led_matrix$417 Def00014A
+S A$led_matrix$408 Def00013B
+S A$led_matrix$390 Def00012A
+S A$led_matrix$381 Def000119
+S A$led_matrix$372 Def00010D
+S A$led_matrix$363 Def000102
+S A$led_matrix$318 Def0000EC
+S A$led_matrix$291 Def0000D2
+S A$led_matrix$282 Def0000C6
+S A$led_matrix$273 Def0000BE
+S A$led_matrix$255 Def0000A7
+S A$led_matrix$228 Def000096
+S A$led_matrix$219 Def000089
+S A$led_matrix$192 Def00006B
+S A$led_matrix$174 Def000055
+S A$led_matrix$165 Def00004A
+S A$led_matrix$147 Def00003E
+S A$led_matrix$138 Def000031
+S C$led_matrix.c$91$1_0$322 Def0000F9
+S C$led_matrix.c$80$2_0$323 Def000044
+S A$led_matrix$490 Def0001A0
+S A$led_matrix$454 Def00017F
+S A$led_matrix$445 Def00016F
+S A$led_matrix$436 Def000160
+S A$led_matrix$418 Def00014C
+S A$led_matrix$409 Def00013D
+S A$led_matrix$373 Def00010F
+S A$led_matrix$364 Def000103
+S A$led_matrix$337 Def0000F9
+S A$led_matrix$319 Def0000ED
+S A$led_matrix$292 Def0000D4
+S A$led_matrix$283 Def0000C8
+S A$led_matrix$274 Def0000C0
+S A$led_matrix$229 Def000098
+S A$led_matrix$175 Def000057
+S A$led_matrix$139 Def000033
+S C$led_matrix.c$81$2_0$323 Def00005F
+S A$led_matrix$491 Def0001A2
+S A$led_matrix$473 Def000192
+S A$led_matrix$464 Def000189
+S A$led_matrix$455 Def000181
+S A$led_matrix$446 Def000171
+S A$led_matrix$437 Def000162
+S A$led_matrix$392 Def00012D
+S A$led_matrix$284 Def0000C9
+S A$led_matrix$257 Def0000AA
+S A$led_matrix$167 Def00004D
+S A$led_matrix$149 Def000041
+S C$led_matrix.c$82$2_0$323 Def00005F
+S C$led_matrix.c$75$1_0$322 Def000006
+S A$led_matrix$465 Def00018C
+S A$led_matrix$456 Def000183
+S A$led_matrix$447 Def000173
+S A$led_matrix$438 Def000163
+S A$led_matrix$429 Def000157
+S A$led_matrix$384 Def00011C
+S A$led_matrix$366 Def000104
+S A$led_matrix$348 Def0000FA
+S A$led_matrix$294 Def0000D6
+S A$led_matrix$285 Def0000CB
+S A$led_matrix$258 Def0000AC
+S A$led_matrix$249 Def0000A1
+S A$led_matrix$195 Def00006D
+S A$led_matrix$177 Def000058
+S A$led_matrix$168 Def00004F
+S A$led_matrix$159 Def000044
+S C$led_matrix.c$83$2_0$323 Def000071
+S C$led_matrix.c$76$1_0$322 Def000012
+S A$led_matrix$475 Def000193
+S A$led_matrix$457 Def000185
+S A$led_matrix$448 Def000175
+S A$led_matrix$439 Def000164
+S A$led_matrix$385 Def00011E
+S A$led_matrix$277 Def0000C2
+S A$led_matrix$259 Def0000AE
+S A$led_matrix$196 Def00006F
+S A$led_matrix$178 Def00005B
+S A$led_matrix$169 Def000051
+S C$led_matrix.c$84$2_0$323 Def000087
+S A$led_matrix$485 Def00019A
+S A$led_matrix$476 Def000195
+S A$led_matrix$467 Def00018E
+S A$led_matrix$449 Def000177
+S A$led_matrix$386 Def000121
+S A$led_matrix$377 Def000111
+S A$led_matrix$368 Def000107
+S A$led_matrix$278 Def0000C4
+S A$led_matrix$188 Def00005F
+S C$led_matrix.c$85$2_0$323 Def0000A1
+S C$led_matrix.c$78$1_0$322 Def00001E
+S A$led_matrix$468 Def000190
+S A$led_matrix$387 Def000123
+S A$led_matrix$378 Def000113
+S A$led_matrix$369 Def000109
+S A$led_matrix$189 Def000062
+S C$led_matrix.c$95$1_0$324 Def0000FA
+S C$led_matrix.c$86$2_0$323 Def0000B4
+S A$led_matrix$478 Def000196
+S A$led_matrix$469 Def000191
+S A$led_matrix$388 Def000125
+S A$led_matrix$379 Def000115
+S A$led_matrix$298 Def0000D9
+S A$led_matrix$289 Def0000CE
+S C$led_matrix.c$87$2_0$323 Def0000B4
+S A$led_matrix$497 Def0001A5
+S A$led_matrix$488 Def00019C
+S A$led_matrix$479 Def000199
+S A$led_matrix$389 Def000128
+S A$led_matrix$299 Def0000DB
+S XG$UpdateLeds$0$0 Def0001AC
+S C$led_matrix.c$88$2_0$323 Def0000C6
+S A$led_matrix$498 Def0001A7
+S A$led_matrix$489 Def00019E
+S A$led_matrix$399 Def000130
+S C$led_matrix.c$89$2_0$323 Def0000E9
+S G$SetLedMode$0$0 Def000004
+S A$led_matrix$80 Def000003
+S A$led_matrix$72 Def000000
+S A$led_matrix$91 Def000004
+S A$led_matrix$96 Def000006
+S A$led_matrix$97 Def000008
+S A$led_matrix$98 Def00000A
+S A$led_matrix$99 Def00000C
+S _SetLedMode Def000004
+S XG$SetLedMode$0$0 Def0000F9
+S G$LedMatrixInit$0$0 Def000000
+S C$led_matrix.c$100$2_0$325 Def00019A
+S C$led_matrix.c$101$3_0$326 Def0000FE
+S C$led_matrix.c$102$3_0$326 Def000111
 S _LedMatrixInit Def000000
+S G$UpdateLeds$0$0 Def0000FA
+S C$led_matrix.c$108$1_0$324 Def0001A5
 A CABS size 0 flags 8 addr 0
 T 00 00 00
 R 00 00 00 01
@@ -33,121 +280,183 @@ T 00 00 00 CC 00 00
 R 00 00 00 09 02 04 00 05
 T 00 00 03
 R 00 00 00 09
-T 00 00 03 52 09 7B 0D A1 04 25 03 CC 00 D5
+T 00 00 03 81
+R 00 00 00 09
+T 00 00 04
+R 00 00 00 09
+T 00 00 04 52 09 7B 0D A1 04 24 03 CC 00 12
 R 00 00 00 09 00 0C 00 09
-T 00 00 0E
+T 00 00 0F
 R 00 00 00 09
-T 00 00 0E 7B 0C A1 0C 25 03 CC 00 D5
+T 00 00 0F CC 00 F7
+R 00 00 00 09 00 04 00 09
+T 00 00 12
+R 00 00 00 09
+T 00 00 12 7B 0C A1 0C 24 03 CC 00 1E
 R 00 00 00 09 00 0A 00 09
-T 00 00 17
+T 00 00 1B
 R 00 00 00 09
-T 00 00 17 7B 0D A1 00 27 14 7B 0D 4A 27 2A 7B 0D
+T 00 00 1B CC 00 F7
+R 00 00 00 09 00 04 00 09
+T 00 00 1E
 R 00 00 00 09
-T 00 00 24 A1 02 27 6E 7B 0D A1 03 27 03 CC 00 D5
-R 00 00 00 09 00 0E 00 09
-T 00 00 31
+T 00 00 1E 7B 0D A1 00 26 03 CC 00 44
+R 00 00 00 09 00 0A 00 09
+T 00 00 27
 R 00 00 00 09
-T 00 00 31
+T 00 00 27 7B 0D 4A 26 03 CC 00 5F
+R 00 00 00 09 00 09 00 09
+T 00 00 2F
 R 00 00 00 09
-T 00 00 31 5F 7B 0C 97 58 58 1C 00 00 90 5F EF 02
+T 00 00 2F 7B 0D A1 02 26 03 CC 00 B4
+R 00 00 00 09 00 0A 00 09
+T 00 00 38
+R 00 00 00 09
+T 00 00 38 7B 0D A1 03 26 03 CC 00 44
+R 00 00 00 09 00 0A 00 09
+T 00 00 41
+R 00 00 00 09
+T 00 00 41 CC 00 F7
+R 00 00 00 09 00 04 00 09
+T 00 00 44
+R 00 00 00 09
+T 00 00 44
+R 00 00 00 09
+T 00 00 44 5F 7B 0C 97 58 58 1C 00 00 90 5F EF 02
 R 00 00 00 09 00 0A 00 01
-T 00 00 3E FF 7B 0D 88 7B 0D 88 CD 00 00 85 CC
+T 00 00 51 FF 7B 0D 88 7B 0D 88 CD 00 00 85 CC
 R 00 00 00 09 02 0B 00 04
-T 00 00 4A 00 D5
+T 00 00 5D 00 F7
 R 00 00 00 09 00 03 00 09
-T 00 00 4C
+T 00 00 5F
 R 00 00 00 09
-T 00 00 4C CE 00 02 1C 03 E8 90 CE 00 00 24 02 90
+T 00 00 5F CE 00 02 1C 03 E8 90 CE 00 00 24 02 90
 R 00 00 00 09 12 04 00 00 12 0B 00 00
-T 00 00 59 5C
+T 00 00 6C 5C
 R 00 00 00 09
-T 00 00 5A
+T 00 00 6D
 R 00 00 00 09
-T 00 00 5A 1F 08 17 06 1E 08 26 04 1E 06 27 0A
+T 00 00 6D 1F 08 17 06 1E 08 26 07 1E 06 26 03 CC
 R 00 00 00 09
-T 00 00 66
+T 00 00 7A 00 87
+R 00 00 00 09 00 03 00 09
+T 00 00 7C
 R 00 00 00 09
-T 00 00 66 AE 00 02 1F 08 5F 1F 06 20 14
+T 00 00 7C AE 00 02 1F 08 5F 1F 06 CC 00 A1
+R 00 00 00 09 00 0C 00 09
+T 00 00 87
 R 00 00 00 09
-T 00 00 70
+T 00 00 87 7B 09 44 25 03 CC 00 A1
+R 00 00 00 09 00 09 00 09
+T 00 00 8F
 R 00 00 00 09
-T 00 00 70 7B 09 44 24 0F 1E 08 1C 00 01 16 06 24
+T 00 00 8F 1E 08 1C 00 01 16 06 24 02 90 5C
 R 00 00 00 09
-T 00 00 7D 02 90 5C
+T 00 00 9A
 R 00 00 00 09
-T 00 00 80
+T 00 00 9A 1F 08 17 06 CC 00 A1
+R 00 00 00 09 00 08 00 09
+T 00 00 A1
 R 00 00 00 09
-T 00 00 80 1F 08 17 06
+T 00 00 A1
 R 00 00 00 09
-T 00 00 84
+T 00 00 A1
 R 00 00 00 09
-T 00 00 84
-R 00 00 00 09
-T 00 00 84 5F 7B 0C 97 58 58 1C 00 00 16 08 EF 02
+T 00 00 A1 5F 7B 0C 97 58 58 1C 00 00 16 08 EF 02
 R 00 00 00 09 00 0A 00 01
-T 00 00 91 16 06 FF 20 3F
+T 00 00 AE 16 06 FF CC 00 F7
+R 00 00 00 09 00 07 00 09
+T 00 00 B4
 R 00 00 00 09
-T 00 00 96
-R 00 00 00 09
-T 00 00 96 CE 00 02 1C 01 2C 90 CE 00 00 24 02 90
+T 00 00 B4 CE 00 02 1C 01 2C 90 CE 00 00 24 02 90
 R 00 00 00 09 12 04 00 00 12 0B 00 00
-T 00 00 A3 5C
+T 00 00 C1 5C
 R 00 00 00 09
-T 00 00 A4
+T 00 00 C2
 R 00 00 00 09
-T 00 00 A4 1F 03 17 01 7B 04 44 24 0A 16 03 17 08
+T 00 00 C2 1F 03 17 01 7B 04 44 25 03 CC 00 D9
+R 00 00 00 09 00 0D 00 09
+T 00 00 CE
 R 00 00 00 09
-T 00 00 B1 16 01 17 06 20 0E
+T 00 00 CE 16 03 17 08 16 01 17 06 CC 00 E7
+R 00 00 00 09 00 0C 00 09
+T 00 00 D9
 R 00 00 00 09
-T 00 00 B7
+T 00 00 D9 1E 03 1C 00 01 1F 08 1E 01 24 01 5C
 R 00 00 00 09
-T 00 00 B7 1E 03 1C 00 01 1F 08 1E 01 24 01 5C
+T 00 00 E5
 R 00 00 00 09
-T 00 00 C3
+T 00 00 E5 1F 06
 R 00 00 00 09
-T 00 00 C3 1F 06
+T 00 00 E7
 R 00 00 00 09
-T 00 00 C5
-R 00 00 00 09
-T 00 00 C5 16 08 5F 7B 0C 97 58 58 1C 00 00 EF 02
+T 00 00 E7 16 08 5F 7B 0C 97 58 58 1C 00 00 EF 02
 R 00 00 00 09 00 0C 00 01
-T 00 00 D2 16 06 FF
+T 00 00 F4 16 06 FF
 R 00 00 00 09
-T 00 00 D5
+T 00 00 F7
 R 00 00 00 09
-T 00 00 D5 5B 09 81
+T 00 00 F7 5B 09 81
 R 00 00 00 09
-T 00 00 D8
+T 00 00 FA
 R 00 00 00 09
-T 00 00 D8 52 07 0F 07
+T 00 00 FA 52 0F 0F 0F
 R 00 00 00 09
-T 00 00 DC
+T 00 00 FE
 R 00 00 00 09
-T 00 00 DC 5F 7B 07 97 58 58 1C 00 00 1F 01 90 93
+T 00 00 FE 5F 7B 0F 97 58 58 1C 00 00 90 93 90 EE
 R 00 00 00 09 00 0A 00 01
-T 00 00 E9 90 EE 02 FE 17 05 1F 03 1E 05 26 04 1E
+T 00 01 0B 02 FE 17 0D 1F 0B 1E 0D 26 07 1E 0B 26
 R 00 00 00 09
-T 00 00 F6 03 27 43
+T 00 01 18 03 CC 01 9A
+R 00 00 00 09 00 05 00 09
+T 00 01 1C
 R 00 00 00 09
-T 00 00 F9
-R 00 00 00 09
-T 00 00 F9 1E 05 C3 00 02 26 3C 1E 03 C3 00 00 26
+T 00 01 1C 1E 0D C3 00 02 26 0A 1E 0B C3 00 00 26
 R 00 00 00 09 12 06 00 00 12 0D 00 00
-T 00 01 06 35 7B 06 44 24 07 AE 01 2C 1F 05 20 05
+T 00 01 29 03 CC 01 30
+R 00 00 00 09 00 05 00 09
+T 00 01 2D
 R 00 00 00 09
-T 00 01 13
+T 00 01 2D CC 01 9A
+R 00 00 00 09 00 04 00 09
+T 00 01 30
 R 00 00 00 09
-T 00 01 13 AE 03 E8 1F 05
+T 00 01 30 5F 7B 0F 97 58 58 1C 00 00 1F 01 1E 01
+R 00 00 00 09 00 0A 00 01
+T 00 01 3D 90 93 90 EE 02 17 05 FE 1F 03 7B 0E 44
 R 00 00 00 09
-T 00 01 18
+T 00 01 4A 25 03 CC 01 57
+R 00 00 00 09 00 06 00 09
+T 00 01 4F
 R 00 00 00 09
-T 00 01 18 16 05 90 9E 49 4F A2 00 6B 04 6B 03 1E
+T 00 01 4F AE 01 2C 1F 0D CC 01 5C
+R 00 00 00 09 00 09 00 09
+T 00 01 57
 R 00 00 00 09
-T 00 01 25 01 EF 02 16 03 FF 7B 07 88 CD 00 00 5B
-R 00 00 00 09 02 0D 00 01
-T 00 01 32 01 43 88 7B 08 88 CD 00 00 85
+T 00 01 57 AE 03 E8 1F 0D
+R 00 00 00 09
+T 00 01 5C
+R 00 00 00 09
+T 00 01 5C 16 0D 17 09 7B 09 49 4F A2 00 6B 08 6B
+R 00 00 00 09
+T 00 01 69 07 1E 05 72 FB 09 1F 0D 7B 04 19 08 6B
+R 00 00 00 09
+T 00 01 76 0C 7B 03 19 07 6B 0B 1E 01 16 0D EF 02
+R 00 00 00 09
+T 00 01 83 16 0B FF 7B 0F 88 CD 00 00 5B 01 A0 01
+R 00 00 00 09 02 0A 00 01
+T 00 01 90 4F 49 88 7B 10 88 CD 00 00 85
 R 00 00 00 09 02 0A 00 04
-T 00 01 3C
+T 00 01 9A
 R 00 00 00 09
-T 00 01 3C 0C 07 7B 07 A1 0C 25 98 5B 07 CC 00 00
-R 00 00 00 09 02 0E 00 02
+T 00 01 9A 0C 0F 7B 0F A1 0C 24 03 CC 00 FE
+R 00 00 00 09 00 0C 00 09
+T 00 01 A5
+R 00 00 00 09
+T 00 01 A5 5B 0F CC 00 00
+R 00 00 00 09 02 06 00 02
+T 00 01 AA
+R 00 00 00 09
+T 00 01 AA 5B 0F 81
+R 00 00 00 09

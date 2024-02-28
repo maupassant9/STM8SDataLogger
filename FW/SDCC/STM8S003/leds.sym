@@ -7,19 +7,332 @@ Symbol Table
     .__.ABS.                                                    =  000000 G
     .__.CPU.                                                    =  000000 L
     .__.H$L.                                                    =  000001 L
-  9 _GetLedState                                                   00012A GR
-  9 _GpioInit                                                      000007 R
+  9 A$leds$113                                                     000008 GR
+  9 A$leds$119                                                     000009 GR
+  9 A$leds$120                                                     00000A GR
+  9 A$leds$122                                                     00000C GR
+  9 A$leds$124                                                     00000D GR
+  9 A$leds$125                                                     000010 GR
+  9 A$leds$126                                                     000011 GR
+  9 A$leds$130                                                     000012 GR
+  9 A$leds$133                                                     000013 GR
+  9 A$leds$134                                                     000015 GR
+  9 A$leds$135                                                     000017 GR
+  9 A$leds$145                                                     00001A GR
+  9 A$leds$159                                                     00001B GR
+  9 A$leds$160                                                     00001E GR
+  9 A$leds$161                                                     000020 GR
+  9 A$leds$162                                                     000022 GR
+  9 A$leds$164                                                     000025 GR
+  9 A$leds$168                                                     000028 GR
+  9 A$leds$169                                                     000029 GR
+  9 A$leds$171                                                     00002A GR
+  9 A$leds$176                                                     00002D GR
+  9 A$leds$178                                                     000030 GR
+  9 A$leds$180                                                     000031 GR
+  9 A$leds$181                                                     000032 GR
+  9 A$leds$182                                                     000033 GR
+  9 A$leds$183                                                     000034 GR
+  9 A$leds$184                                                     000036 GR
+  9 A$leds$185                                                     000037 GR
+  9 A$leds$191                                                     000038 GR
+  9 A$leds$195                                                     00003B GR
+  9 A$leds$197                                                     00003D GR
+  9 A$leds$199                                                     000040 GR
+  9 A$leds$200                                                     000043 GR
+  9 A$leds$204                                                     000044 GR
+  9 A$leds$206                                                     000047 GR
+  9 A$leds$207                                                     00004A GR
+  9 A$leds$209                                                     00004C GR
+  9 A$leds$211                                                     00004D GR
+  9 A$leds$213                                                     000050 GR
+  9 A$leds$214                                                     000053 GR
+  9 A$leds$218                                                     000054 GR
+  9 A$leds$226                                                     000059 GR
+  9 A$leds$237                                                     00005A GR
+  9 A$leds$242                                                     00005C GR
+  9 A$leds$243                                                     00005E GR
+  9 A$leds$244                                                     000060 GR
+  9 A$leds$245                                                     000062 GR
+  9 A$leds$249                                                     000065 GR
+  9 A$leds$256                                                     000068 GR
+  9 A$leds$258                                                     00006A GR
+  9 A$leds$259                                                     00006B GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 2.
+Hexadecimal [24-Bits]
+
+Symbol Table
+
+  9 A$leds$265                                                     00006D GR
+  9 A$leds$266                                                     00006E GR
+  9 A$leds$267                                                     000070 GR
+  9 A$leds$269                                                     000071 GR
+  9 A$leds$270                                                     000072 GR
+  9 A$leds$272                                                     000073 GR
+  9 A$leds$273                                                     000074 GR
+  9 A$leds$275                                                     000077 GR
+  9 A$leds$279                                                     000078 GR
+  9 A$leds$284                                                     00007A GR
+  9 A$leds$285                                                     00007B GR
+  9 A$leds$287                                                     00007E GR
+  9 A$leds$291                                                     00007F GR
+  9 A$leds$296                                                     000081 GR
+  9 A$leds$298                                                     000083 GR
+  9 A$leds$300                                                     000084 GR
+  9 A$leds$301                                                     000085 GR
+  9 A$leds$302                                                     000086 GR
+  9 A$leds$303                                                     000087 GR
+  9 A$leds$304                                                     000088 GR
+  9 A$leds$305                                                     00008A GR
+  9 A$leds$307                                                     00008B GR
+  9 A$leds$308                                                     00008C GR
+  9 A$leds$310                                                     00008D GR
+  9 A$leds$311                                                     00008E GR
+  9 A$leds$313                                                     000091 GR
+  9 A$leds$314                                                     000093 GR
+  9 A$leds$318                                                     000095 GR
+  9 A$leds$319                                                     000096 GR
+  9 A$leds$321                                                     000099 GR
+  9 A$leds$322                                                     00009B GR
+  9 A$leds$326                                                     00009D GR
+  9 A$leds$327                                                     00009F GR
+  9 A$leds$328                                                     0000A0 GR
+  9 A$leds$332                                                     0000A2 GR
+  9 A$leds$333                                                     0000A4 GR
+  9 A$leds$334                                                     0000A5 GR
+  9 A$leds$338                                                     0000A7 GR
+  9 A$leds$339                                                     0000A9 GR
+  9 A$leds$340                                                     0000AA GR
+  9 A$leds$341                                                     0000AB GR
+  9 A$leds$345                                                     0000AD GR
+  9 A$leds$346                                                     0000AF GR
+  9 A$leds$347                                                     0000B0 GR
+  9 A$leds$348                                                     0000B1 GR
+  9 A$leds$352                                                     0000B3 GR
+  9 A$leds$353                                                     0000B5 GR
+  9 A$leds$357                                                     0000B9 GR
+  9 A$leds$358                                                     0000BB GR
+  9 A$leds$359                                                     0000BE GR
+  9 A$leds$363                                                     0000C0 GR
+  9 A$leds$364                                                     0000C2 GR
+  9 A$leds$365                                                     0000C4 GR
+  9 A$leds$370                                                     0000C7 GR
+  9 A$leds$371                                                     0000C9 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 3.
+Hexadecimal [24-Bits]
+
+Symbol Table
+
+  9 A$leds$373                                                     0000CB GR
+  9 A$leds$374                                                     0000CD GR
+  9 A$leds$378                                                     0000CE GR
+  9 A$leds$379                                                     0000D0 GR
+  9 A$leds$381                                                     0000D1 GR
+  9 A$leds$383                                                     0000D3 GR
+  9 A$leds$384                                                     0000D5 GR
+  9 A$leds$388                                                     0000D6 GR
+  9 A$leds$389                                                     0000D8 GR
+  9 A$leds$391                                                     0000D9 GR
+  9 A$leds$393                                                     0000DB GR
+  9 A$leds$394                                                     0000DD GR
+  9 A$leds$398                                                     0000DE GR
+  9 A$leds$399                                                     0000E0 GR
+  9 A$leds$401                                                     0000E1 GR
+  9 A$leds$403                                                     0000E3 GR
+  9 A$leds$404                                                     0000E5 GR
+  9 A$leds$408                                                     0000E6 GR
+  9 A$leds$410                                                     0000E8 GR
+  9 A$leds$412                                                     0000EA GR
+  9 A$leds$416                                                     0000EC GR
+  9 A$leds$417                                                     0000EE GR
+  9 A$leds$419                                                     0000EF GR
+  9 A$leds$421                                                     0000F1 GR
+  9 A$leds$422                                                     0000F3 GR
+  9 A$leds$424                                                     0000F4 GR
+  9 A$leds$430                                                     0000F7 GR
+  9 A$leds$432                                                     0000F9 GR
+  9 A$leds$433                                                     0000FB GR
+  9 A$leds$435                                                     0000FD GR
+  9 A$leds$436                                                     0000FF GR
+  9 A$leds$440                                                     000100 GR
+  9 A$leds$441                                                     000102 GR
+  9 A$leds$443                                                     000103 GR
+  9 A$leds$445                                                     000105 GR
+  9 A$leds$446                                                     000107 GR
+  9 A$leds$450                                                     000108 GR
+  9 A$leds$451                                                     00010A GR
+  9 A$leds$453                                                     00010B GR
+  9 A$leds$455                                                     00010D GR
+  9 A$leds$456                                                     00010F GR
+  9 A$leds$460                                                     000110 GR
+  9 A$leds$461                                                     000112 GR
+  9 A$leds$463                                                     000113 GR
+  9 A$leds$465                                                     000115 GR
+  9 A$leds$466                                                     000117 GR
+  9 A$leds$470                                                     000118 GR
+  9 A$leds$472                                                     00011A GR
+  9 A$leds$474                                                     00011C GR
+  9 A$leds$478                                                     00011E GR
+  9 A$leds$479                                                     000120 GR
+  9 A$leds$481                                                     000121 GR
+  9 A$leds$483                                                     000123 GR
+  9 A$leds$484                                                     000125 GR
+  9 A$leds$490                                                     000126 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 4.
+Hexadecimal [24-Bits]
+
+Symbol Table
+
+  9 A$leds$493                                                     000128 GR
+  9 A$leds$507                                                     000129 GR
+  9 A$leds$509                                                     00012B GR
+  9 A$leds$510                                                     00012C GR
+  9 A$leds$511                                                     00012D GR
+  9 A$leds$512                                                     00012E GR
+  9 A$leds$514                                                     000130 GR
+  9 A$leds$515                                                     000131 GR
+  9 A$leds$516                                                     000132 GR
+  9 A$leds$519                                                     000134 GR
+  9 A$leds$520                                                     000135 GR
+  9 A$leds$521                                                     000138 GR
+  9 A$leds$522                                                     000139 GR
+  9 A$leds$523                                                     00013A GR
+  9 A$leds$524                                                     00013D GR
+  9 A$leds$526                                                     00013E GR
+  9 A$leds$527                                                     00013F GR
+  9 A$leds$528                                                     000141 GR
+  9 A$leds$531                                                     000144 GR
+  9 A$leds$532                                                     000145 GR
+  9 A$leds$534                                                     000146 GR
+  9 A$leds$538                                                     000149 GR
+  9 A$leds$543                                                     00014A GR
+  9 A$leds$552                                                     00014B GR
+  9 A$leds$566                                                     00014C GR
+  9 A$leds$567                                                     00014D GR
+  9 A$leds$571                                                     00014E GR
+  9 A$leds$573                                                     000150 GR
+  9 A$leds$574                                                     000151 GR
+  9 A$leds$576                                                     000153 GR
+  9 A$leds$577                                                     000154 GR
+  9 A$leds$578                                                     000155 GR
+  9 A$leds$581                                                     000157 GR
+  9 A$leds$582                                                     000159 GR
+  9 A$leds$583                                                     00015B GR
+  9 A$leds$586                                                     00015E GR
+  9 A$leds$587                                                     00015F GR
+  9 A$leds$588                                                     000162 GR
+  9 A$leds$589                                                     000163 GR
+  5 A$leds$59                                                      000000 GR
+  9 A$leds$590                                                     000164 GR
+  9 A$leds$591                                                     000167 GR
+  9 A$leds$593                                                     000168 GR
+  9 A$leds$595                                                     00016B GR
+  9 A$leds$601                                                     00016E GR
+  9 A$leds$602                                                     00016F GR
+  9 A$leds$604                                                     000170 GR
+  9 A$leds$605                                                     000173 GR
+  9 A$leds$606                                                     000174 GR
+  9 A$leds$607                                                     000175 GR
+  9 A$leds$608                                                     000178 GR
+  9 A$leds$610                                                     000179 GR
+  9 A$leds$618                                                     00017C GR
+  5 A$leds$63                                                      000004 GR
+  9 A$leds$86                                                      000000 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 5.
+Hexadecimal [24-Bits]
+
+Symbol Table
+
+  9 A$leds$87                                                      000001 GR
+  9 A$leds$91                                                      000004 GR
+  9 A$leds$99                                                      000007 GR
+  9 C$leds.c$101$1_0$325                                        =  00001B GR
+  9 C$leds.c$103$1_0$325                                        =  00003B GR
+  9 C$leds.c$104$1_0$325                                        =  000044 GR
+  9 C$leds.c$105$1_0$325                                        =  000054 GR
+  9 C$leds.c$106$1_0$325                                        =  000059 GR
+  9 C$leds.c$126$1_0$327                                        =  00005A GR
+  9 C$leds.c$128$1_0$327                                        =  00005C GR
+  9 C$leds.c$129$1_0$327                                        =  000068 GR
+  9 C$leds.c$131$1_1$328                                        =  00006D GR
+  9 C$leds.c$132$1_1$328                                        =  00007A GR
+  9 C$leds.c$133$1_1$328                                        =  000081 GR
+  9 C$leds.c$134$1_1$328                                        =  000095 GR
+  9 C$leds.c$136$1_1$328                                        =  0000C0 GR
+  9 C$leds.c$138$1_1$327                                        =  00009D GR
+  9 C$leds.c$138$2_1$329                                        =  0000C7 GR
+  9 C$leds.c$139$1_1$327                                        =  0000A2 GR
+  9 C$leds.c$139$2_1$329                                        =  0000CE GR
+  9 C$leds.c$141$1_1$327                                        =  0000A7 GR
+  9 C$leds.c$141$2_1$329                                        =  0000D6 GR
+  9 C$leds.c$142$1_1$327                                        =  0000AD GR
+  9 C$leds.c$142$2_1$329                                        =  0000DE GR
+  9 C$leds.c$143$1_1$327                                        =  0000B3 GR
+  9 C$leds.c$143$2_1$329                                        =  0000E6 GR
+  9 C$leds.c$144$1_1$327                                        =  0000B9 GR
+  9 C$leds.c$144$2_1$329                                        =  0000EC GR
+  9 C$leds.c$148$2_1$330                                        =  0000F7 GR
+  9 C$leds.c$149$2_1$330                                        =  000100 GR
+  9 C$leds.c$150$2_1$330                                        =  000108 GR
+  9 C$leds.c$151$2_1$330                                        =  000110 GR
+  9 C$leds.c$152$2_1$330                                        =  000118 GR
+  9 C$leds.c$153$2_1$330                                        =  00011E GR
+  9 C$leds.c$155$1_1$327                                        =  000128 GR
+  9 C$leds.c$158$1_1$332                                        =  000129 GR
+  9 C$leds.c$161$1_0$332                                        =  000129 GR
+  9 C$leds.c$162$1_0$332                                        =  00014B GR
+  9 C$leds.c$165$1_0$334                                        =  00014C GR
+  9 C$leds.c$167$2_0$334                                        =  00014C GR
+  9 C$leds.c$168$1_0$334                                        =  00014E GR
+  9 C$leds.c$169$1_0$334                                        =  00016E GR
+  9 C$leds.c$170$1_0$334                                        =  00017C GR
+  9 C$leds.c$55$0_0$319                                         =  000000 GR
+  9 C$leds.c$57$1_0$319                                         =  000000 GR
+  9 C$leds.c$58$1_0$319                                         =  000004 GR
+  9 C$leds.c$59$1_0$319                                         =  000007 GR
+  9 C$leds.c$72$1_0$322                                         =  000008 GR
+  9 C$leds.c$75$2_0$322                                         =  000012 GR
+  9 C$leds.c$76$3_0$323                                         =  000009 GR
+  9 C$leds.c$78$2_0$322                                         =  00001A GR
+  9 C$leds.c$95$2_0$325                                         =  00001B GR
+  5 C$leds.c$97$1_0$325                                         =  000000 GR
+  5 C$leds.c$98$1_0$325                                         =  000004 GR
+  9 Fleds$GpioInit$0$0                                          =  000008 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 6.
+Hexadecimal [24-Bits]
+
+Symbol Table
+
+  1 Fleds$ledsState$0_0$0                                       =  000000 GR
+  9 G$GetLedState$0$0                                           =  000129 GR
+  9 G$LedsInit$0$0                                              =  000000 GR
+  9 G$SetLedRaw$0$0                                             =  00005A GR
+  9 G$SetLedState$0$0                                           =  00014C GR
+  9 G$UpdateLedState$0$0                                        =  00001B GR
+  7 G$leds_anode$0_0$0                                          =  000000 GR
+  7 G$leds_cathode$0_0$0                                        =  000030 GR
+  1 Lleds.UpdateLedState$ledId$1_0$325                          =  000002 GR
+  1 Lleds.UpdateLedState$ledIdPrev$1_0$325                      =  000003 GR
+  9 XFleds$GpioInit$0$0                                         =  00001A GR
+  9 XG$GetLedState$0$0                                          =  00014B GR
+  9 XG$LedsInit$0$0                                             =  000007 GR
+  9 XG$SetLedRaw$0$0                                            =  000128 GR
+  9 XG$SetLedState$0$0                                          =  00017C GR
+  9 XG$UpdateLedState$0$0                                       =  000059 GR
+  9 _GetLedState                                                   000129 GR
+  9 _GpioInit                                                      000008 R
   9 _LedsInit                                                      000000 GR
-  9 _SetLedRaw                                                     000065 GR
-  9 _SetLedState                                                   00014D GR
-  9 _UpdateLedState                                                000017 GR
+  9 _SetLedRaw                                                     00005A GR
+  9 _SetLedState                                                   00014C GR
+  9 _UpdateLedState                                                00001B GR
   1 _UpdateLedState_ledIdPrev_65536_325                            000003 R
   1 _UpdateLedState_ledId_65536_325                                000002 R
   1 _ledsState                                                     000000 R
   7 _leds_anode                                                    000000 GR
   7 _leds_cathode                                                  000030 GR
 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 2.
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 7.
 Hexadecimal [24-Bits]
 
 Area Table
@@ -33,6 +346,6 @@ Area Table
    6 GSFINAL                                    size      0   flags    0
    7 CONST                                      size     60   flags    0
    8 INITIALIZER                                size      0   flags    0
-   9 CODE                                       size    17B   flags    0
+   9 CODE                                       size    17D   flags    0
    A CABS                                       size      0   flags    8
 

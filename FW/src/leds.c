@@ -94,19 +94,15 @@ static void GpioInit( void ){
 *----------------------------------------------*/
 void UpdateLedState( void )
 {
-    uint8_t idx = 0; 
-    static uint8_t ledId = NUM_OF_LEDS-1;
-    LED_STATE_T ledBit = (0x01 << ledId);
-    static uint8_t ledIdPrev = 0;
-    
+    static uint8_t ledId = 0;
+    static uint8_t ledIdPrev = NUM_OF_LEDS-1;
+
     //new ledId = ledId+1 and prev
-    ledIdPrev = ledId;
     ledId = (ledId == NUM_OF_LEDS-1)?0:(ledId+1);
 
     SetLedRaw(ledIdPrev, LED_OFF_STATE);
-    if(ledBit&ledsState){
-        SetLedRaw(ledId,LED_ON_STATE);
-    }    
+    SetLedRaw(ledId,GetLedState(ledId));
+    ledIdPrev = ledId; 
 }
 
 
@@ -129,12 +125,13 @@ void UpdateLedState( void )
 *----------------------------------------------*/
 void SetLedRaw(uint8_t ledId, uint8_t state){
 
-    ledId = ledId << 2;
+    if(ledId >= NUM_OF_LEDS) return;
+    ledId = ledId << 1;
     //set led port to output
     GPIO_TypeDef * gpioPortPos = (GPIO_TypeDef * )leds_anode[ledId];
     GPIO_TypeDef * gpioPortNeg = (GPIO_TypeDef *) leds_cathode[ledId];
-    ADDR_BANK_T gpioPinPos = leds_anode[ledId+1];
-    ADDR_BANK_T gpioPinNeg = leds_cathode[ledId+1];
+    uint8_t gpioPinPos = leds_anode[ledId+1];
+    uint8_t gpioPinNeg = leds_cathode[ledId+1];
 
     if(state) //turn on
     {
@@ -160,12 +157,14 @@ void SetLedRaw(uint8_t ledId, uint8_t state){
 
 uint8_t GetLedState(uint8_t ledID)
 {
-    return (ledsState & (1 << ledID))?1:0;
+    uint16_t v = 1;
+    return (ledsState & (v << ledID))?1:0;
 }
 
 
 void SetLedState(uint8_t ledID, uint8_t state)
 {
-    if(state) ledsState |= (1 << ledID);
-    else ledsState &= ~(1 << ledID); 
+    uint16_t v = 1;
+    if(state) ledsState |= (v << ledID);
+    else ledsState &= ~(v << ledID); 
 }

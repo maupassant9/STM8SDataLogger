@@ -12,788 +12,1767 @@
                                      12 	.globl _SetLedMode
                                      13 	.globl _LedMatrixInit
                                      14 	.globl _pf_write
-                                     15 	.globl _dly
-                                     16 	.globl _sysTickInit
-                                     17 	.globl _loggerCfg
-                                     18 	.globl _assert_failed
-                                     19 ;--------------------------------------------------------
-                                     20 ; ram data
-                                     21 ;--------------------------------------------------------
-                                     22 	.area DATA
-      000000                         23 _cfg:
-      000000                         24 	.ds 13
-      00000D                         25 _loggerCfg::
-      00000D                         26 	.ds 15
-                                     27 ;--------------------------------------------------------
-                                     28 ; ram data
-                                     29 ;--------------------------------------------------------
-                                     30 	.area INITIALIZED
-      000000                         31 _blkCnt:
-      000000                         32 	.ds 1
-      000001                         33 _fileBlkCnt:
-      000001                         34 	.ds 4
-      000005                         35 _fileNoCnt:
-      000005                         36 	.ds 2
-                                     37 ;--------------------------------------------------------
-                                     38 ; Stack segment in internal ram 
-                                     39 ;--------------------------------------------------------
-                                     40 	.area	SSEG
-      000000                         41 __start__stack:
-      000000                         42 	.ds	1
-                                     43 
-                                     44 ;--------------------------------------------------------
-                                     45 ; absolute external ram data
+                                     15 	.globl _pf_read
+                                     16 	.globl _pf_open
+                                     17 	.globl _pf_mount
+                                     18 	.globl _adcInit
+                                     19 	.globl _dly
+                                     20 	.globl _sysTickInit
+                                     21 	.globl _loggerCfg
+                                     22 	.globl _assert_failed
+                                     23 ;--------------------------------------------------------
+                                     24 ; ram data
+                                     25 ;--------------------------------------------------------
+                                     26 	.area DATA
+                           000000    27 Fmain$cfg$0_0$0==.
+      000000                         28 _cfg:
+      000000                         29 	.ds 13
+                           00000D    30 G$loggerCfg$0_0$0==.
+      00000D                         31 _loggerCfg::
+      00000D                         32 	.ds 15
+                                     33 ;--------------------------------------------------------
+                                     34 ; ram data
+                                     35 ;--------------------------------------------------------
+                                     36 	.area INITIALIZED
+                           000000    37 Fmain$blkCnt$0_0$0==.
+      000000                         38 _blkCnt:
+      000000                         39 	.ds 1
+                           000001    40 Fmain$fileBlkCnt$0_0$0==.
+      000001                         41 _fileBlkCnt:
+      000001                         42 	.ds 4
+                           000005    43 Fmain$fileNoCnt$0_0$0==.
+      000005                         44 _fileNoCnt:
+      000005                         45 	.ds 2
                                      46 ;--------------------------------------------------------
-                                     47 	.area DABS (ABS)
-                                     48 
-                                     49 ; default segment ordering for linker
-                                     50 	.area HOME
-                                     51 	.area GSINIT
-                                     52 	.area GSFINAL
-                                     53 	.area CONST
-                                     54 	.area INITIALIZER
-                                     55 	.area CODE
-                                     56 
-                                     57 ;--------------------------------------------------------
-                                     58 ; interrupt vector 
-                                     59 ;--------------------------------------------------------
-                                     60 	.area HOME
-      000000                         61 __interrupt_vect:
-      000000 82v00u00u00             62 	int s_GSINIT ; reset
-      000004 82v00u00u00             63 	int _TRAP_IRQHandler ; trap
-      000008 82v00u00u00             64 	int _TLI_IRQHandler ; int0
-      00000C 82v00u00u00             65 	int _AWU_IRQHandler ; int1
-      000010 82v00u00u00             66 	int _CLK_IRQHandler ; int2
-      000014 82v00u00u00             67 	int _EXTI_PORTA_IRQHandler ; int3
-      000018 82v00u00u00             68 	int _EXTI_PORTB_IRQHandler ; int4
-      00001C 82v00u00u00             69 	int _EXTI_PORTC_IRQHandler ; int5
-      000020 82v00u00u00             70 	int _EXTI_PORTD_IRQHandler ; int6
-      000024 82v00u00u00             71 	int _EXTI_PORTE_IRQHandler ; int7
-      000028 82 00 00 00             72 	int 0x000000 ; int8
-      00002C 82 00 00 00             73 	int 0x000000 ; int9
-      000030 82v00u00u00             74 	int _SPI_IRQHandler ; int10
-      000034 82v00u00u00             75 	int _TIM1_UPD_OVF_TRG_BRK_IRQHandler ; int11
-      000038 82v00u00u00             76 	int _TIM1_CAP_COM_IRQHandler ; int12
-      00003C 82v00u00u00             77 	int _TIM2_UPD_OVF_BRK_IRQHandler ; int13
-      000040 82v00u00u00             78 	int _TIM2_CAP_COM_IRQHandler ; int14
-      000044 82 00 00 00             79 	int 0x000000 ; int15
-      000048 82 00 00 00             80 	int 0x000000 ; int16
-      00004C 82v00u00u00             81 	int _UART1_TX_IRQHandler ; int17
-      000050 82v00u00u00             82 	int _UART1_RX_IRQHandler ; int18
-      000054 82v00u00u00             83 	int _I2C_IRQHandler ; int19
-      000058 82 00 00 00             84 	int 0x000000 ; int20
-      00005C 82 00 00 00             85 	int 0x000000 ; int21
-      000060 82v00u00u00             86 	int _ADC1_IRQHandler ; int22
-      000064 82v00u00u00             87 	int _TIM4_UPD_OVF_IRQHandler ; int23
-      000068 82v00u00u00             88 	int _EEPROM_EEC_IRQHandler ; int24
-                                     89 ;--------------------------------------------------------
-                                     90 ; global & static initialisations
-                                     91 ;--------------------------------------------------------
-                                     92 	.area HOME
-                                     93 	.area GSINIT
-                                     94 	.area GSFINAL
-                                     95 	.area GSINIT
-      000000                         96 __sdcc_init_data:
-                                     97 ; stm8_genXINIT() start
-      000000 AEr00r00         [ 2]   98 	ldw x, #l_DATA
-      000003 27 07            [ 1]   99 	jreq	00002$
-      000005                        100 00001$:
-      000005 72 4FuFFuFF      [ 1]  101 	clr (s_DATA - 1, x)
-      000009 5A               [ 2]  102 	decw x
-      00000A 26 F9            [ 1]  103 	jrne	00001$
-      00000C                        104 00002$:
-      00000C AEr00r00         [ 2]  105 	ldw	x, #l_INITIALIZER
-      00000F 27 09            [ 1]  106 	jreq	00004$
-      000011                        107 00003$:
-      000011 D6uFFuFF         [ 1]  108 	ld	a, (s_INITIALIZER - 1, x)
-      000014 D7uFFuFF         [ 1]  109 	ld	(s_INITIALIZED - 1, x), a
-      000017 5A               [ 2]  110 	decw	x
-      000018 26 F7            [ 1]  111 	jrne	00003$
-      00001A                        112 00004$:
-                                    113 ; stm8_genXINIT() end
-                                    114 	.area GSFINAL
-      000000 CCr00r6C         [ 2]  115 	jp	__sdcc_program_startup
-                                    116 ;--------------------------------------------------------
-                                    117 ; Home
-                                    118 ;--------------------------------------------------------
-                                    119 	.area HOME
-                                    120 	.area HOME
-      00006C                        121 __sdcc_program_startup:
-      00006C CCr00r00         [ 2]  122 	jp	_main
-                                    123 ;	return from main will return to caller
-                                    124 ;--------------------------------------------------------
-                                    125 ; code
-                                    126 ;--------------------------------------------------------
-                                    127 	.area CODE
-                                    128 ;	../src/main.c: 100: void main( void )
-                                    129 ;	-----------------------------------------
-                                    130 ;	 function main
-                                    131 ;	-----------------------------------------
-      000000                        132 _main:
-      000000 52 2F            [ 2]  133 	sub	sp, #47
-                                    134 ;	../src/main.c: 110: clkInit();
-      000002 CDr03r60         [ 4]  135 	call	_clkInit
-                                    136 ;	../src/main.c: 111: LedMatrixInit();
-      000005 CDr00r00         [ 4]  137 	call	_LedMatrixInit
-                                    138 ;	../src/main.c: 112: sysTickInit();
-      000008 CDr00r00         [ 4]  139 	call	_sysTickInit
-                                    140 ;	../src/main.c: 115: enableInterrupts();
-      00000B 9A               [ 1]  141 	rim
-                                    142 ;	../src/main.c: 126: for(i = 0; i < NUM_OF_LEDS; i++){
-      00000C 0F 2F            [ 1]  143 	clr	(0x2f, sp)
-      00000E                        144 00141$:
-                                    145 ;	../src/main.c: 127: SetLedMode(i, LED_ON);
-      00000E 4B 03            [ 1]  146 	push	#0x03
-      000010 7B 30            [ 1]  147 	ld	a, (0x30, sp)
-      000012 88               [ 1]  148 	push	a
-      000013 CDr00r00         [ 4]  149 	call	_SetLedMode
-      000016 85               [ 2]  150 	popw	x
-                                    151 ;	../src/main.c: 128: dly(1000);
-      000017 4B E8            [ 1]  152 	push	#0xe8
-      000019 4B 03            [ 1]  153 	push	#0x03
-      00001B 5F               [ 1]  154 	clrw	x
-      00001C 89               [ 2]  155 	pushw	x
-      00001D CDr00r00         [ 4]  156 	call	_dly
-      000020 5B 04            [ 2]  157 	addw	sp, #4
-                                    158 ;	../src/main.c: 129: SetLedMode(i, LED_OFF);
-      000022 4B 00            [ 1]  159 	push	#0x00
-      000024 7B 30            [ 1]  160 	ld	a, (0x30, sp)
-      000026 88               [ 1]  161 	push	a
-      000027 CDr00r00         [ 4]  162 	call	_SetLedMode
-      00002A 85               [ 2]  163 	popw	x
-                                    164 ;	../src/main.c: 130: SetLedMode(i+1, LED_ON);
-      00002B 7B 2F            [ 1]  165 	ld	a, (0x2f, sp)
-      00002D 4C               [ 1]  166 	inc	a
-      00002E 4B 03            [ 1]  167 	push	#0x03
-      000030 88               [ 1]  168 	push	a
-      000031 CDr00r00         [ 4]  169 	call	_SetLedMode
-      000034 85               [ 2]  170 	popw	x
-                                    171 ;	../src/main.c: 126: for(i = 0; i < NUM_OF_LEDS; i++){
-      000035 0C 2F            [ 1]  172 	inc	(0x2f, sp)
-      000037 7B 2F            [ 1]  173 	ld	a, (0x2f, sp)
-      000039 A1 0C            [ 1]  174 	cp	a, #0x0c
-      00003B 25 D1            [ 1]  175 	jrc	00141$
-                                    176 ;	../src/main.c: 133: for(i = 0; i < NUM_OF_LEDS; i++){
-      00003D 0F 2F            [ 1]  177 	clr	(0x2f, sp)
-      00003F                        178 00143$:
-                                    179 ;	../src/main.c: 134: SetLedMode(i, (i%2)?LED_TOGGLE_FAST:LED_TOGGLE_SLOW);
-      00003F 7B 2F            [ 1]  180 	ld	a, (0x2f, sp)
-      000041 44               [ 1]  181 	srl	a
-      000042 24 03            [ 1]  182 	jrnc	00147$
-      000044 A6 02            [ 1]  183 	ld	a, #0x02
-      000046 C5                     184 	.byte 0xc5
-      000047                        185 00147$:
-      000047 A6 01            [ 1]  186 	ld	a, #0x01
-      000049                        187 00148$:
-      000049 88               [ 1]  188 	push	a
-      00004A 7B 30            [ 1]  189 	ld	a, (0x30, sp)
-      00004C 88               [ 1]  190 	push	a
-      00004D CDr00r00         [ 4]  191 	call	_SetLedMode
-      000050 85               [ 2]  192 	popw	x
-                                    193 ;	../src/main.c: 135: dly(10000);
-      000051 4B 10            [ 1]  194 	push	#0x10
-      000053 4B 27            [ 1]  195 	push	#0x27
-      000055 5F               [ 1]  196 	clrw	x
-      000056 89               [ 2]  197 	pushw	x
-      000057 CDr00r00         [ 4]  198 	call	_dly
-      00005A 5B 04            [ 2]  199 	addw	sp, #4
-                                    200 ;	../src/main.c: 133: for(i = 0; i < NUM_OF_LEDS; i++){
-      00005C 0C 2F            [ 1]  201 	inc	(0x2f, sp)
-      00005E 7B 2F            [ 1]  202 	ld	a, (0x2f, sp)
-      000060 A1 0C            [ 1]  203 	cp	a, #0x0c
-      000062 25 DB            [ 1]  204 	jrc	00143$
-                                    205 ;	../src/main.c: 138: while(1);
-      000064                        206 00104$:
-      000064 20 FE            [ 2]  207 	jra	00104$
-                                    208 ;	../src/main.c: 239: }
-                                    209 ;	../src/main.c: 241: }
-      000066 5B 2F            [ 2]  210 	addw	sp, #47
-      000068 81               [ 4]  211 	ret
-                                    212 ;	../src/main.c: 254: static void Wr2SD( fsm_t * pfsm ){
-                                    213 ;	-----------------------------------------
-                                    214 ;	 function Wr2SD
-                                    215 ;	-----------------------------------------
-      000069                        216 _Wr2SD:
-      000069 52 06            [ 2]  217 	sub	sp, #6
-                                    218 ;	../src/main.c: 261: if( S1_WR_BUF0 == pfsm->state){
-      00006B 16 09            [ 2]  219 	ldw	y, (0x09, sp)
-      00006D 17 03            [ 2]  220 	ldw	(0x03, sp), y
-      00006F 93               [ 1]  221 	ldw	x, y
-      000070 F6               [ 1]  222 	ld	a, (x)
-      000071 4A               [ 1]  223 	dec	a
-      000072 26 06            [ 1]  224 	jrne	00102$
-                                    225 ;	../src/main.c: 262: pBuf = adcBuffer0; bufNo = 0;
-      000074 AEr00r00         [ 2]  226 	ldw	x, #_adcBuffer0+0
-      000077 4F               [ 1]  227 	clr	a
-      000078 20 05            [ 2]  228 	jra	00103$
-      00007A                        229 00102$:
-                                    230 ;	../src/main.c: 264: pBuf = adcBuffer1; bufNo = 1;
-      00007A AEr00r00         [ 2]  231 	ldw	x, #(_adcBuffer1+0)
-      00007D A6 01            [ 1]  232 	ld	a, #0x01
-      00007F                        233 00103$:
-                                    234 ;	../src/main.c: 266: RELEASE_BUFF_FOR_WR(bufNo); //clear this flag
-      00007F 6B 06            [ 1]  235 	ld	(0x06, sp), a
-      000081 A6 01            [ 1]  236 	ld	a, #0x01
-      000083 88               [ 1]  237 	push	a
-      000084 7B 07            [ 1]  238 	ld	a, (0x07, sp)
-      000086 27 05            [ 1]  239 	jreq	00143$
-      000088                        240 00142$:
-      000088 08 01            [ 1]  241 	sll	(1, sp)
-      00008A 4A               [ 1]  242 	dec	a
-      00008B 26 FB            [ 1]  243 	jrne	00142$
-      00008D                        244 00143$:
-      00008D 84               [ 1]  245 	pop	a
-      00008E 43               [ 1]  246 	cpl	a
-      00008F C4u00u00         [ 1]  247 	and	a, _buffer_rdy+0
-      000092 C7u00u00         [ 1]  248 	ld	_buffer_rdy+0, a
-                                    249 ;	../src/main.c: 269: SetLedMode(0, LED_ON);
-      000095 89               [ 2]  250 	pushw	x
-      000096 4B 03            [ 1]  251 	push	#0x03
-      000098 4B 00            [ 1]  252 	push	#0x00
-      00009A CDr00r00         [ 4]  253 	call	_SetLedMode
-      00009D 85               [ 2]  254 	popw	x
-      00009E 85               [ 2]  255 	popw	x
-                                    256 ;	../src/main.c: 270: res = pf_write((void*)pBuf,BUFFER_SZ_IN_BYTES, &pbr);
-      00009F 51               [ 1]  257 	exgw	x, y
-      0000A0 96               [ 1]  258 	ldw	x, sp
-      0000A1 5C               [ 1]  259 	incw	x
-      0000A2 89               [ 2]  260 	pushw	x
-      0000A3 4B 00            [ 1]  261 	push	#0x00
-      0000A5 4B 01            [ 1]  262 	push	#0x01
-      0000A7 90 89            [ 2]  263 	pushw	y
-      0000A9 CDr00r00         [ 4]  264 	call	_pf_write
-      0000AC 5B 06            [ 2]  265 	addw	sp, #6
-                                    266 ;	../src/main.c: 272: SetLedMode(0, LED_OFF);
-      0000AE 88               [ 1]  267 	push	a
-      0000AF 4B 00            [ 1]  268 	push	#0x00
-      0000B1 4B 00            [ 1]  269 	push	#0x00
-      0000B3 CDr00r00         [ 4]  270 	call	_SetLedMode
-      0000B6 85               [ 2]  271 	popw	x
-      0000B7 84               [ 1]  272 	pop	a
-                                    273 ;	../src/main.c: 277: pfsm->error = ERR_WR_DATA;
-      0000B8 1E 03            [ 2]  274 	ldw	x, (0x03, sp)
-      0000BA 5C               [ 1]  275 	incw	x
-      0000BB 1F 05            [ 2]  276 	ldw	(0x05, sp), x
-                                    277 ;	../src/main.c: 274: if(FR_OK != res){
-      0000BD 4D               [ 1]  278 	tnz	a
-      0000BE 27 0C            [ 1]  279 	jreq	00105$
-                                    280 ;	../src/main.c: 277: pfsm->error = ERR_WR_DATA;
-      0000C0 1E 05            [ 2]  281 	ldw	x, (0x05, sp)
-      0000C2 A6 02            [ 1]  282 	ld	a, #0x02
-      0000C4 F7               [ 1]  283 	ld	(x), a
-                                    284 ;	../src/main.c: 278: pfsm->state = S4_ERR;
-      0000C5 1E 03            [ 2]  285 	ldw	x, (0x03, sp)
-      0000C7 A6 04            [ 1]  286 	ld	a, #0x04
-      0000C9 F7               [ 1]  287 	ld	(x), a
-                                    288 ;	../src/main.c: 279: return;
-      0000CA 20 53            [ 2]  289 	jra	00112$
-      0000CC                        290 00105$:
-                                    291 ;	../src/main.c: 282: if(NO_BUFF_PER_BLK == ++blkCnt){
-      0000CC 72 5Cu00u00      [ 1]  292 	inc	_blkCnt+0
-      0000D0 C6u00u00         [ 1]  293 	ld	a, _blkCnt+0
-      0000D3 A1 02            [ 1]  294 	cp	a, #0x02
-      0000D5 26 45            [ 1]  295 	jrne	00111$
-                                    296 ;	../src/main.c: 284: blkCnt = 0;
-      0000D7 72 5Fu00u00      [ 1]  297 	clr	_blkCnt+0
-                                    298 ;	../src/main.c: 285: res = pf_write(0,0,&pbr);
-      0000DB 96               [ 1]  299 	ldw	x, sp
-      0000DC 5C               [ 1]  300 	incw	x
-      0000DD 89               [ 2]  301 	pushw	x
-      0000DE 5F               [ 1]  302 	clrw	x
-      0000DF 89               [ 2]  303 	pushw	x
-      0000E0 5F               [ 1]  304 	clrw	x
-      0000E1 89               [ 2]  305 	pushw	x
-      0000E2 CDr00r00         [ 4]  306 	call	_pf_write
-      0000E5 5B 06            [ 2]  307 	addw	sp, #6
-                                    308 ;	../src/main.c: 288: if(FR_OK != res){
-      0000E7 4D               [ 1]  309 	tnz	a
-      0000E8 27 0C            [ 1]  310 	jreq	00107$
-                                    311 ;	../src/main.c: 290: pfsm->error = ERR_WR_NO_RESP;
-      0000EA 1E 05            [ 2]  312 	ldw	x, (0x05, sp)
-      0000EC A6 03            [ 1]  313 	ld	a, #0x03
-      0000EE F7               [ 1]  314 	ld	(x), a
-                                    315 ;	../src/main.c: 291: pfsm->state = S4_ERR;
-      0000EF 1E 03            [ 2]  316 	ldw	x, (0x03, sp)
-      0000F1 A6 04            [ 1]  317 	ld	a, #0x04
-      0000F3 F7               [ 1]  318 	ld	(x), a
-                                    319 ;	../src/main.c: 292: return;
-      0000F4 20 29            [ 2]  320 	jra	00112$
-      0000F6                        321 00107$:
-                                    322 ;	../src/main.c: 295: if(0 == --fileBlkCnt){
-      0000F6 CEu00u03         [ 2]  323 	ldw	x, _fileBlkCnt+2
-      0000F9 1D 00 01         [ 2]  324 	subw	x, #0x0001
-      0000FC 90 CEu00u01      [ 2]  325 	ldw	y, _fileBlkCnt+0
-      000100 24 02            [ 1]  326 	jrnc	00149$
-      000102 90 5A            [ 2]  327 	decw	y
-      000104                        328 00149$:
-      000104 CFu00u03         [ 2]  329 	ldw	_fileBlkCnt+2, x
-      000107 90 CFu00u01      [ 2]  330 	ldw	_fileBlkCnt+0, y
-      00010B CEu00u03         [ 2]  331 	ldw	x, _fileBlkCnt+2
-      00010E 26 0C            [ 1]  332 	jrne	00111$
-      000110 CEu00u01         [ 2]  333 	ldw	x, _fileBlkCnt+0
-      000113 26 07            [ 1]  334 	jrne	00111$
-                                    335 ;	../src/main.c: 298: pfsm->state = S3_NXT_FILE;
-      000115 1E 03            [ 2]  336 	ldw	x, (0x03, sp)
-      000117 A6 03            [ 1]  337 	ld	a, #0x03
-      000119 F7               [ 1]  338 	ld	(x), a
-                                    339 ;	../src/main.c: 299: return;
-      00011A 20 03            [ 2]  340 	jra	00112$
-      00011C                        341 00111$:
-                                    342 ;	../src/main.c: 304: pfsm->state = S0_RST; 
-      00011C 1E 03            [ 2]  343 	ldw	x, (0x03, sp)
-      00011E 7F               [ 1]  344 	clr	(x)
-      00011F                        345 00112$:
-                                    346 ;	../src/main.c: 305: }
-      00011F 5B 06            [ 2]  347 	addw	sp, #6
-      000121 81               [ 4]  348 	ret
-                                    349 ;	../src/main.c: 318: static void GetNxtFileName( char * fname){
-                                    350 ;	-----------------------------------------
-                                    351 ;	 function GetNxtFileName
-                                    352 ;	-----------------------------------------
-      000122                        353 _GetNxtFileName:
-      000122 52 05            [ 2]  354 	sub	sp, #5
-                                    355 ;	../src/main.c: 319: uint8_t val = 0;
-      000124 0F 01            [ 1]  356 	clr	(0x01, sp)
-                                    357 ;	../src/main.c: 321: if(0x39 == fname[3]){
-      000126 1E 08            [ 2]  358 	ldw	x, (0x08, sp)
-      000128 E6 03            [ 1]  359 	ld	a, (0x3, x)
-                                    360 ;	../src/main.c: 322: val = 0x01;
-      00012A A0 39            [ 1]  361 	sub	a, #0x39
-      00012C 26 03            [ 1]  362 	jrne	00102$
-      00012E 4C               [ 1]  363 	inc	a
-      00012F 6B 01            [ 1]  364 	ld	(0x01, sp), a
-      000131                        365 00102$:
-                                    366 ;	../src/main.c: 324: if(0x39 == fname[2]) {
-      000131 1E 08            [ 2]  367 	ldw	x, (0x08, sp)
-      000133 E6 02            [ 1]  368 	ld	a, (0x2, x)
-      000135 A1 39            [ 1]  369 	cp	a, #0x39
-      000137 26 06            [ 1]  370 	jrne	00104$
-                                    371 ;	../src/main.c: 325: val += 0x02;
-      000139 7B 01            [ 1]  372 	ld	a, (0x01, sp)
-      00013B AB 02            [ 1]  373 	add	a, #0x02
-      00013D 6B 01            [ 1]  374 	ld	(0x01, sp), a
-      00013F                        375 00104$:
-                                    376 ;	../src/main.c: 327: if(0x39 == fname[1]) {
-      00013F 1E 08            [ 2]  377 	ldw	x, (0x08, sp)
-      000141 E6 01            [ 1]  378 	ld	a, (0x1, x)
-      000143 A1 39            [ 1]  379 	cp	a, #0x39
-      000145 26 06            [ 1]  380 	jrne	00106$
-                                    381 ;	../src/main.c: 328: val += 0x04;
-      000147 7B 01            [ 1]  382 	ld	a, (0x01, sp)
-      000149 AB 04            [ 1]  383 	add	a, #0x04
-      00014B 6B 01            [ 1]  384 	ld	(0x01, sp), a
-      00014D                        385 00106$:
-                                    386 ;	../src/main.c: 330: if(0x39 == fname[0]) {
-      00014D 16 08            [ 2]  387 	ldw	y, (0x08, sp)
-      00014F 17 02            [ 2]  388 	ldw	(0x02, sp), y
-      000151 93               [ 1]  389 	ldw	x, y
-      000152 F6               [ 1]  390 	ld	a, (x)
-      000153 A1 39            [ 1]  391 	cp	a, #0x39
-      000155 26 06            [ 1]  392 	jrne	00108$
-                                    393 ;	../src/main.c: 331: val += 0x08;
-      000157 7B 01            [ 1]  394 	ld	a, (0x01, sp)
-      000159 AB 08            [ 1]  395 	add	a, #0x08
-      00015B 6B 01            [ 1]  396 	ld	(0x01, sp), a
-      00015D                        397 00108$:
-                                    398 ;	../src/main.c: 335: case 0x01: fname[3] = 0x30; 
-      00015D 1E 02            [ 2]  399 	ldw	x, (0x02, sp)
-      00015F 1C 00 03         [ 2]  400 	addw	x, #0x0003
-                                    401 ;	../src/main.c: 336: fname[2]++;break;
-      000162 16 02            [ 2]  402 	ldw	y, (0x02, sp)
-      000164 90 5C            [ 1]  403 	incw	y
-      000166 90 5C            [ 1]  404 	incw	y
-      000168 17 04            [ 2]  405 	ldw	(0x04, sp), y
-                                    406 ;	../src/main.c: 334: switch(val){
-      00016A 7B 01            [ 1]  407 	ld	a, (0x01, sp)
-      00016C 4A               [ 1]  408 	dec	a
-      00016D 27 18            [ 1]  409 	jreq	00109$
-                                    410 ;	../src/main.c: 339: fname[1]++; break;
-      00016F 16 02            [ 2]  411 	ldw	y, (0x02, sp)
-      000171 90 5C            [ 1]  412 	incw	y
-                                    413 ;	../src/main.c: 334: switch(val){
-      000173 7B 01            [ 1]  414 	ld	a, (0x01, sp)
-      000175 A1 03            [ 1]  415 	cp	a, #0x03
-      000177 27 16            [ 1]  416 	jreq	00110$
-      000179 7B 01            [ 1]  417 	ld	a, (0x01, sp)
-      00017B A1 07            [ 1]  418 	cp	a, #0x07
-      00017D 27 1C            [ 1]  419 	jreq	00111$
-      00017F 7B 01            [ 1]  420 	ld	a, (0x01, sp)
-      000181 A1 0F            [ 1]  421 	cp	a, #0x0f
-      000183 27 25            [ 1]  422 	jreq	00112$
-      000185 20 34            [ 2]  423 	jra	00113$
-                                    424 ;	../src/main.c: 335: case 0x01: fname[3] = 0x30; 
-      000187                        425 00109$:
-      000187 A6 30            [ 1]  426 	ld	a, #0x30
-      000189 F7               [ 1]  427 	ld	(x), a
-                                    428 ;	../src/main.c: 336: fname[2]++;break;
-      00018A 1E 04            [ 2]  429 	ldw	x, (0x04, sp)
-      00018C 7C               [ 1]  430 	inc	(x)
-      00018D 20 2D            [ 2]  431 	jra	00115$
-                                    432 ;	../src/main.c: 337: case 0x03: fname[3] = 0x30; 
-      00018F                        433 00110$:
-      00018F A6 30            [ 1]  434 	ld	a, #0x30
-      000191 F7               [ 1]  435 	ld	(x), a
-                                    436 ;	../src/main.c: 338: fname[2] = 0x30; 
-      000192 1E 04            [ 2]  437 	ldw	x, (0x04, sp)
-      000194 A6 30            [ 1]  438 	ld	a, #0x30
-      000196 F7               [ 1]  439 	ld	(x), a
-                                    440 ;	../src/main.c: 339: fname[1]++; break;
-      000197 90 7C            [ 1]  441 	inc	(y)
-      000199 20 21            [ 2]  442 	jra	00115$
-                                    443 ;	../src/main.c: 340: case 0x07: fname[3] = 0x30; 
-      00019B                        444 00111$:
-      00019B A6 30            [ 1]  445 	ld	a, #0x30
-      00019D F7               [ 1]  446 	ld	(x), a
-                                    447 ;	../src/main.c: 341: fname[2] = 0x30; 
-      00019E 1E 04            [ 2]  448 	ldw	x, (0x04, sp)
-                                    449 ;	../src/main.c: 342: fname[1] = 0x30; 
-      0001A0 A6 30            [ 1]  450 	ld	a, #0x30
-      0001A2 F7               [ 1]  451 	ld	(x), a
-      0001A3 90 F7            [ 1]  452 	ld	(y), a
-                                    453 ;	../src/main.c: 343: fname[0]++; break;
-      0001A5 1E 02            [ 2]  454 	ldw	x, (0x02, sp)
-      0001A7 7C               [ 1]  455 	inc	(x)
-      0001A8 20 12            [ 2]  456 	jra	00115$
-                                    457 ;	../src/main.c: 344: case 0x0f: fname[3] = 0x30; 
-      0001AA                        458 00112$:
-      0001AA A6 30            [ 1]  459 	ld	a, #0x30
-      0001AC F7               [ 1]  460 	ld	(x), a
-                                    461 ;	../src/main.c: 345: fname[2] = 0x30; 
-      0001AD 1E 04            [ 2]  462 	ldw	x, (0x04, sp)
-                                    463 ;	../src/main.c: 346: fname[1] = 0x30; 
-      0001AF A6 30            [ 1]  464 	ld	a, #0x30
-      0001B1 F7               [ 1]  465 	ld	(x), a
-      0001B2 90 F7            [ 1]  466 	ld	(y), a
-                                    467 ;	../src/main.c: 347: fname[0] = 0x30; break;
-      0001B4 1E 02            [ 2]  468 	ldw	x, (0x02, sp)
-      0001B6 A6 30            [ 1]  469 	ld	a, #0x30
-      0001B8 F7               [ 1]  470 	ld	(x), a
-      0001B9 20 01            [ 2]  471 	jra	00115$
-                                    472 ;	../src/main.c: 348: default: fname[3]++; break;
-      0001BB                        473 00113$:
-      0001BB 7C               [ 1]  474 	inc	(x)
-                                    475 ;	../src/main.c: 349: }
-      0001BC                        476 00115$:
-                                    477 ;	../src/main.c: 350: }
-      0001BC 5B 05            [ 2]  478 	addw	sp, #5
-      0001BE 81               [ 4]  479 	ret
-                                    480 ;	../src/main.c: 363: static void ConvertFileName(uint16_t firstFileName, char * fname){
-                                    481 ;	-----------------------------------------
-                                    482 ;	 function ConvertFileName
-                                    483 ;	-----------------------------------------
-      0001BF                        484 _ConvertFileName:
-      0001BF 52 04            [ 2]  485 	sub	sp, #4
-                                    486 ;	../src/main.c: 366: val = firstFileName/1000;
-      0001C1 16 07            [ 2]  487 	ldw	y, (0x07, sp)
-      0001C3 17 03            [ 2]  488 	ldw	(0x03, sp), y
-      0001C5 93               [ 1]  489 	ldw	x, y
-      0001C6 90 AE 03 E8      [ 2]  490 	ldw	y, #0x03e8
-      0001CA 65               [ 2]  491 	divw	x, y
-                                    492 ;	../src/main.c: 367: fname[0] = val + 0x30;
-      0001CB 16 09            [ 2]  493 	ldw	y, (0x09, sp)
-      0001CD 17 01            [ 2]  494 	ldw	(0x01, sp), y
-      0001CF 9F               [ 1]  495 	ld	a, xl
-      0001D0 AB 30            [ 1]  496 	add	a, #0x30
-      0001D2 16 01            [ 2]  497 	ldw	y, (0x01, sp)
-      0001D4 90 F7            [ 1]  498 	ld	(y), a
-                                    499 ;	../src/main.c: 368: firstFileName -=  val*1000;
-      0001D6 89               [ 2]  500 	pushw	x
-      0001D7 4B E8            [ 1]  501 	push	#0xe8
-      0001D9 4B 03            [ 1]  502 	push	#0x03
-      0001DB CDr00r00         [ 4]  503 	call	__mulint
-      0001DE 5B 04            [ 2]  504 	addw	sp, #4
-      0001E0 50               [ 2]  505 	negw	x
-      0001E1 72 FB 03         [ 2]  506 	addw	x, (0x03, sp)
-                                    507 ;	../src/main.c: 369: val = firstFileName/100;
-      0001E4 1F 07            [ 2]  508 	ldw	(0x07, sp), x
-      0001E6 1F 03            [ 2]  509 	ldw	(0x03, sp), x
-      0001E8 90 AE 00 64      [ 2]  510 	ldw	y, #0x0064
-      0001EC 65               [ 2]  511 	divw	x, y
-                                    512 ;	../src/main.c: 370: fname[1] = val + 0x30;
-      0001ED 16 01            [ 2]  513 	ldw	y, (0x01, sp)
-      0001EF 90 5C            [ 1]  514 	incw	y
-      0001F1 9F               [ 1]  515 	ld	a, xl
-      0001F2 AB 30            [ 1]  516 	add	a, #0x30
-      0001F4 90 F7            [ 1]  517 	ld	(y), a
-                                    518 ;	../src/main.c: 371: firstFileName -=  val*100;
-      0001F6 89               [ 2]  519 	pushw	x
-      0001F7 4B 64            [ 1]  520 	push	#0x64
-      0001F9 4B 00            [ 1]  521 	push	#0x00
-      0001FB CDr00r00         [ 4]  522 	call	__mulint
-      0001FE 5B 04            [ 2]  523 	addw	sp, #4
-      000200 50               [ 2]  524 	negw	x
-      000201 72 FB 03         [ 2]  525 	addw	x, (0x03, sp)
-                                    526 ;	../src/main.c: 372: val = firstFileName/10;
-      000204 1F 07            [ 2]  527 	ldw	(0x07, sp), x
-      000206 1F 03            [ 2]  528 	ldw	(0x03, sp), x
-      000208 90 AE 00 0A      [ 2]  529 	ldw	y, #0x000a
-      00020C 65               [ 2]  530 	divw	x, y
-                                    531 ;	../src/main.c: 373: fname[2] = val + 0x30;
-      00020D 16 01            [ 2]  532 	ldw	y, (0x01, sp)
-      00020F 72 A9 00 02      [ 2]  533 	addw	y, #0x0002
-      000213 9F               [ 1]  534 	ld	a, xl
-      000214 AB 30            [ 1]  535 	add	a, #0x30
-      000216 90 F7            [ 1]  536 	ld	(y), a
-                                    537 ;	../src/main.c: 374: firstFileName -=  val*10;
-      000218 89               [ 2]  538 	pushw	x
-      000219 58               [ 2]  539 	sllw	x
-      00021A 58               [ 2]  540 	sllw	x
-      00021B 72 FB 01         [ 2]  541 	addw	x, (1, sp)
-      00021E 58               [ 2]  542 	sllw	x
-      00021F 5B 02            [ 2]  543 	addw	sp, #2
-      000221 50               [ 2]  544 	negw	x
-      000222 72 FB 03         [ 2]  545 	addw	x, (0x03, sp)
-      000225 1F 07            [ 2]  546 	ldw	(0x07, sp), x
-                                    547 ;	../src/main.c: 375: fname[3] = firstFileName + 0x30;
-      000227 1E 01            [ 2]  548 	ldw	x, (0x01, sp)
-      000229 1C 00 03         [ 2]  549 	addw	x, #0x0003
-      00022C 7B 08            [ 1]  550 	ld	a, (0x08, sp)
-      00022E AB 30            [ 1]  551 	add	a, #0x30
-      000230 F7               [ 1]  552 	ld	(x), a
-                                    553 ;	../src/main.c: 376: fname[4] = '\0';
-      000231 1E 01            [ 2]  554 	ldw	x, (0x01, sp)
-      000233 6F 04            [ 1]  555 	clr	(0x0004, x)
-                                    556 ;	../src/main.c: 377: }
-      000235 5B 04            [ 2]  557 	addw	sp, #4
-      000237 81               [ 4]  558 	ret
-                                    559 ;	../src/main.c: 392: static UINT GetCfg( uint8_t * pCfgBuf,  cfg_t * pcfg){
-                                    560 ;	-----------------------------------------
-                                    561 ;	 function GetCfg
-                                    562 ;	-----------------------------------------
-      000238                        563 _GetCfg:
-      000238 52 12            [ 2]  564 	sub	sp, #18
-                                    565 ;	../src/main.c: 395: if(!IsValidCfgBuf(pCfgBuf)) return 1; 
-      00023A 1E 15            [ 2]  566 	ldw	x, (0x15, sp)
-      00023C 89               [ 2]  567 	pushw	x
-      00023D CDr03r3B         [ 4]  568 	call	_IsValidCfgBuf
-      000240 85               [ 2]  569 	popw	x
-      000241 6B 12            [ 1]  570 	ld	(0x12, sp), a
-      000243 26 05            [ 1]  571 	jrne	00102$
-      000245 5F               [ 1]  572 	clrw	x
-      000246 5C               [ 1]  573 	incw	x
-      000247 CCr03r38         [ 2]  574 	jp	00106$
-      00024A                        575 00102$:
-                                    576 ;	../src/main.c: 398: pcfg->sampFreq = pCfgBuf[0]+(((uint16_t)pCfgBuf[1])<<8);
-      00024A 16 17            [ 2]  577 	ldw	y, (0x17, sp)
-      00024C 17 01            [ 2]  578 	ldw	(0x01, sp), y
-      00024E 16 15            [ 2]  579 	ldw	y, (0x15, sp)
-      000250 17 03            [ 2]  580 	ldw	(0x03, sp), y
-      000252 93               [ 1]  581 	ldw	x, y
-      000253 F6               [ 1]  582 	ld	a, (x)
-      000254 5F               [ 1]  583 	clrw	x
-      000255 97               [ 1]  584 	ld	xl, a
-      000256 16 03            [ 2]  585 	ldw	y, (0x03, sp)
-      000258 90 E6 01         [ 1]  586 	ld	a, (0x1, y)
-      00025B 90 95            [ 1]  587 	ld	yh, a
-      00025D 4F               [ 1]  588 	clr	a
-      00025E 1F 11            [ 2]  589 	ldw	(0x11, sp), x
-      000260 90 97            [ 1]  590 	ld	yl, a
-      000262 72 F9 11         [ 2]  591 	addw	y, (0x11, sp)
-      000265 1E 01            [ 2]  592 	ldw	x, (0x01, sp)
-      000267 FF               [ 2]  593 	ldw	(x), y
-                                    594 ;	../src/main.c: 400: fID = pCfgBuf[2]+(((uint16_t)pCfgBuf[3])<<8);
-      000268 1E 03            [ 2]  595 	ldw	x, (0x03, sp)
-      00026A E6 02            [ 1]  596 	ld	a, (0x2, x)
-      00026C 90 5F            [ 1]  597 	clrw	y
-      00026E 90 97            [ 1]  598 	ld	yl, a
-      000270 1E 03            [ 2]  599 	ldw	x, (0x03, sp)
-      000272 E6 03            [ 1]  600 	ld	a, (0x3, x)
-      000274 95               [ 1]  601 	ld	xh, a
-      000275 4F               [ 1]  602 	clr	a
-      000276 17 11            [ 2]  603 	ldw	(0x11, sp), y
-      000278 97               [ 1]  604 	ld	xl, a
-      000279 72 FB 11         [ 2]  605 	addw	x, (0x11, sp)
-                                    606 ;	../src/main.c: 402: ConvertFileName(fID, pcfg->firstFileName);
-      00027C 16 01            [ 2]  607 	ldw	y, (0x01, sp)
-      00027E 72 A9 00 02      [ 2]  608 	addw	y, #0x0002
-      000282 90 89            [ 2]  609 	pushw	y
-      000284 89               [ 2]  610 	pushw	x
-      000285 CDr01rBF         [ 4]  611 	call	_ConvertFileName
-      000288 5B 04            [ 2]  612 	addw	sp, #4
-                                    613 ;	../src/main.c: 403: pcfg->fileNo = pCfgBuf[4]+(((uint16_t)pCfgBuf[5])<<8);
-      00028A 16 01            [ 2]  614 	ldw	y, (0x01, sp)
-      00028C 72 A9 00 0B      [ 2]  615 	addw	y, #0x000b
-      000290 1E 03            [ 2]  616 	ldw	x, (0x03, sp)
-      000292 E6 04            [ 1]  617 	ld	a, (0x4, x)
-      000294 6B 10            [ 1]  618 	ld	(0x10, sp), a
-      000296 0F 0F            [ 1]  619 	clr	(0x0f, sp)
-      000298 1E 03            [ 2]  620 	ldw	x, (0x03, sp)
-      00029A E6 05            [ 1]  621 	ld	a, (0x5, x)
-      00029C 6B 11            [ 1]  622 	ld	(0x11, sp), a
-      00029E 0F 12            [ 1]  623 	clr	(0x12, sp)
-      0002A0 1E 0F            [ 2]  624 	ldw	x, (0x0f, sp)
-      0002A2 72 FB 11         [ 2]  625 	addw	x, (0x11, sp)
-      0002A5 90 FF            [ 2]  626 	ldw	(y), x
-                                    627 ;	../src/main.c: 404: pcfg->fileSzInBlock = pCfgBuf[6]+ \
-      0002A7 1E 01            [ 2]  628 	ldw	x, (0x01, sp)
-      0002A9 1C 00 07         [ 2]  629 	addw	x, #0x0007
-      0002AC 1F 05            [ 2]  630 	ldw	(0x05, sp), x
-      0002AE 1E 03            [ 2]  631 	ldw	x, (0x03, sp)
-      0002B0 E6 06            [ 1]  632 	ld	a, (0x6, x)
-      0002B2 90 97            [ 1]  633 	ld	yl, a
-      0002B4 1E 03            [ 2]  634 	ldw	x, (0x03, sp)
-      0002B6 E6 07            [ 1]  635 	ld	a, (0x7, x)
-      0002B8 0F 11            [ 1]  636 	clr	(0x11, sp)
-      0002BA 5F               [ 1]  637 	clrw	x
-      0002BB 95               [ 1]  638 	ld	xh, a
-      0002BC 7B 11            [ 1]  639 	ld	a, (0x11, sp)
-      0002BE 0F 0A            [ 1]  640 	clr	(0x0a, sp)
-      0002C0 0F 11            [ 1]  641 	clr	(0x11, sp)
-      0002C2 0F 10            [ 1]  642 	clr	(0x10, sp)
-      0002C4 0F 0F            [ 1]  643 	clr	(0x0f, sp)
-      0002C6 88               [ 1]  644 	push	a
-      0002C7 90 9F            [ 1]  645 	ld	a, yl
-      0002C9 1B 0B            [ 1]  646 	add	a, (0x0b, sp)
-      0002CB 90 97            [ 1]  647 	ld	yl, a
-      0002CD 9E               [ 1]  648 	ld	a, xh
-      0002CE 19 12            [ 1]  649 	adc	a, (0x12, sp)
-      0002D0 90 95            [ 1]  650 	ld	yh, a
-      0002D2 84               [ 1]  651 	pop	a
-      0002D3 19 10            [ 1]  652 	adc	a, (0x10, sp)
-      0002D5 6B 0C            [ 1]  653 	ld	(0x0c, sp), a
-      0002D7 9F               [ 1]  654 	ld	a, xl
-      0002D8 19 0F            [ 1]  655 	adc	a, (0x0f, sp)
-      0002DA 6B 0B            [ 1]  656 	ld	(0x0b, sp), a
-      0002DC 1E 03            [ 2]  657 	ldw	x, (0x03, sp)
-      0002DE E6 08            [ 1]  658 	ld	a, (0x8, x)
-      0002E0 5F               [ 1]  659 	clrw	x
-      0002E1 0F 0F            [ 1]  660 	clr	(0x0f, sp)
-      0002E3 0F 12            [ 1]  661 	clr	(0x12, sp)
-      0002E5 0F 11            [ 1]  662 	clr	(0x11, sp)
-      0002E7 72 F9 11         [ 2]  663 	addw	y, (0x11, sp)
-      0002EA 19 0C            [ 1]  664 	adc	a, (0x0c, sp)
-      0002EC 6B 08            [ 1]  665 	ld	(0x08, sp), a
-      0002EE 9F               [ 1]  666 	ld	a, xl
-      0002EF 19 0B            [ 1]  667 	adc	a, (0x0b, sp)
-      0002F1 6B 07            [ 1]  668 	ld	(0x07, sp), a
-      0002F3 1E 03            [ 2]  669 	ldw	x, (0x03, sp)
-      0002F5 E6 09            [ 1]  670 	ld	a, (0x9, x)
-      0002F7 0F 0F            [ 1]  671 	clr	(0x0f, sp)
-      0002F9 0F 0E            [ 1]  672 	clr	(0x0e, sp)
-      0002FB 5F               [ 1]  673 	clrw	x
-      0002FC 88               [ 1]  674 	push	a
-      0002FD 90 9F            [ 1]  675 	ld	a, yl
-      0002FF 1B 0F            [ 1]  676 	add	a, (0x0f, sp)
-      000301 90 02            [ 1]  677 	rlwa	y
-      000303 89               [ 2]  678 	pushw	x
-      000304 19 02            [ 1]  679 	adc	a, (2, sp)
-      000306 85               [ 2]  680 	popw	x
-      000307 90 95            [ 1]  681 	ld	yh, a
-      000309 9E               [ 1]  682 	ld	a, xh
-      00030A 19 09            [ 1]  683 	adc	a, (0x09, sp)
-      00030C 6B 11            [ 1]  684 	ld	(0x11, sp), a
-      00030E 84               [ 1]  685 	pop	a
-      00030F 19 07            [ 1]  686 	adc	a, (0x07, sp)
-      000311 6B 0F            [ 1]  687 	ld	(0x0f, sp), a
-      000313 1E 05            [ 2]  688 	ldw	x, (0x05, sp)
-      000315 EF 02            [ 2]  689 	ldw	(0x2, x), y
-      000317 16 0F            [ 2]  690 	ldw	y, (0x0f, sp)
-      000319 FF               [ 2]  691 	ldw	(x), y
-                                    692 ;	../src/main.c: 408: pcfg->channel = pCfgBuf[10];
-      00031A 1E 01            [ 2]  693 	ldw	x, (0x01, sp)
-      00031C 1C 00 0D         [ 2]  694 	addw	x, #0x000d
-      00031F 16 03            [ 2]  695 	ldw	y, (0x03, sp)
-      000321 90 E6 0A         [ 1]  696 	ld	a, (0xa, y)
-      000324 F7               [ 1]  697 	ld	(x), a
-                                    698 ;	../src/main.c: 409: if(pCfgBuf[11] == 0)
-      000325 1E 03            [ 2]  699 	ldw	x, (0x03, sp)
-      000327 E6 0B            [ 1]  700 	ld	a, (0xb, x)
-                                    701 ;	../src/main.c: 411: pcfg->isFullResultion = false;
-      000329 1E 01            [ 2]  702 	ldw	x, (0x01, sp)
-      00032B 1C 00 0E         [ 2]  703 	addw	x, #0x000e
-                                    704 ;	../src/main.c: 409: if(pCfgBuf[11] == 0)
-      00032E 4D               [ 1]  705 	tnz	a
-      00032F 26 03            [ 1]  706 	jrne	00104$
-                                    707 ;	../src/main.c: 411: pcfg->isFullResultion = false;
-      000331 7F               [ 1]  708 	clr	(x)
-      000332 20 03            [ 2]  709 	jra	00105$
-      000334                        710 00104$:
-                                    711 ;	../src/main.c: 413: pcfg->isFullResultion = true;
-      000334 A6 01            [ 1]  712 	ld	a, #0x01
-      000336 F7               [ 1]  713 	ld	(x), a
-      000337                        714 00105$:
-                                    715 ;	../src/main.c: 416: return 0x0;
-      000337 5F               [ 1]  716 	clrw	x
-      000338                        717 00106$:
-                                    718 ;	../src/main.c: 417: }
-      000338 5B 12            [ 2]  719 	addw	sp, #18
-      00033A 81               [ 4]  720 	ret
-                                    721 ;	../src/main.c: 431: static uint8_t IsValidCfgBuf(uint8_t *pCfgBuf){
-                                    722 ;	-----------------------------------------
-                                    723 ;	 function IsValidCfgBuf
-                                    724 ;	-----------------------------------------
-      00033B                        725 _IsValidCfgBuf:
-      00033B 88               [ 1]  726 	push	a
-                                    727 ;	../src/main.c: 432: uint8_t crc = 0;
-      00033C 0F 01            [ 1]  728 	clr	(0x01, sp)
-                                    729 ;	../src/main.c: 440: return false;	
-      00033E 5F               [ 1]  730 	clrw	x
-      00033F                        731 00105$:
-                                    732 ;	../src/main.c: 434: for(; i < CFG_BUF_SZ - 1; i++){
-      00033F A3 00 0C         [ 2]  733 	cpw	x, #0x000c
-      000342 2E 0E            [ 1]  734 	jrsge	00101$
-                                    735 ;	../src/main.c: 435: crc += pCfgBuf[i];		
-      000344 90 93            [ 1]  736 	ldw	y, x
-      000346 72 F9 04         [ 2]  737 	addw	y, (0x04, sp)
-      000349 90 F6            [ 1]  738 	ld	a, (y)
-      00034B 1B 01            [ 1]  739 	add	a, (0x01, sp)
-      00034D 6B 01            [ 1]  740 	ld	(0x01, sp), a
-                                    741 ;	../src/main.c: 434: for(; i < CFG_BUF_SZ - 1; i++){
-      00034F 5C               [ 1]  742 	incw	x
-      000350 20 ED            [ 2]  743 	jra	00105$
-      000352                        744 00101$:
-                                    745 ;	../src/main.c: 437: if(crc == pCfgBuf[CFG_BUF_SZ-1])
-      000352 1E 04            [ 2]  746 	ldw	x, (0x04, sp)
-      000354 E6 0C            [ 1]  747 	ld	a, (0xc, x)
-                                    748 ;	../src/main.c: 438: return true;
-      000356 10 01            [ 1]  749 	sub	a, (0x01, sp)
-      000358 26 02            [ 1]  750 	jrne	00103$
-      00035A 4C               [ 1]  751 	inc	a
-                                    752 ;	../src/main.c: 440: return false;	
-      00035B 21                     753 	.byte 0x21
-      00035C                        754 00103$:
-      00035C 4F               [ 1]  755 	clr	a
-      00035D                        756 00107$:
-                                    757 ;	../src/main.c: 441: }
-      00035D 5B 01            [ 2]  758 	addw	sp, #1
-      00035F 81               [ 4]  759 	ret
-                                    760 ;	../src/main.c: 450: static void clkInit( void )
-                                    761 ;	-----------------------------------------
-                                    762 ;	 function clkInit
-                                    763 ;	-----------------------------------------
-      000360                        764 _clkInit:
-                                    765 ;	../src/main.c: 453: CLK->CKDIVR = 0;//(CLK_PRESCALER_HSIDIV1|CLK_PRESCALER_CPUDIV1);
-      000360 35 00 50 C6      [ 1]  766 	mov	0x50c6+0, #0x00
-                                    767 ;	../src/main.c: 461: CLK->PCKENR1 |= (CLK_PCKENR1_TIM4|CLK_PCKENR1_SPI|CLK_PCKENR1_UART1);
-      000364 C6 50 C7         [ 1]  768 	ld	a, 0x50c7
-      000367 AA 16            [ 1]  769 	or	a, #0x16
-      000369 C7 50 C7         [ 1]  770 	ld	0x50c7, a
-                                    771 ;	../src/main.c: 462: CLK->PCKENR2 |= (CLK_PCKENR2_ADC);
-      00036C 72 16 50 CA      [ 1]  772 	bset	20682, #3
-                                    773 ;	../src/main.c: 463: }
-      000370 81               [ 4]  774 	ret
-                                    775 ;	../src/main.c: 478: void assert_failed(uint8_t* file, uint32_t line)
-                                    776 ;	-----------------------------------------
-                                    777 ;	 function assert_failed
-                                    778 ;	-----------------------------------------
-      000371                        779 _assert_failed:
-                                    780 ;	../src/main.c: 484: while (1)
-      000371                        781 00102$:
-      000371 20 FE            [ 2]  782 	jra	00102$
-                                    783 ;	../src/main.c: 487: }
-      000373 81               [ 4]  784 	ret
-                                    785 	.area CODE
-                                    786 	.area CONST
-                                    787 	.area CONST
-      000000                        788 ___str_0:
-      000000 43 46 47               789 	.ascii "CFG"
-      000003 00                     790 	.db 0x00
-                                    791 	.area CODE
-                                    792 	.area INITIALIZER
-      000000                        793 __xinit__blkCnt:
-      000000 00                     794 	.db #0x00	; 0
-      000001                        795 __xinit__fileBlkCnt:
-      000001 00 00 00 00            796 	.byte #0x00, #0x00, #0x00, #0x00	; 0
-      000005                        797 __xinit__fileNoCnt:
-      000005 00 00                  798 	.dw #0x0000
-                                    799 	.area CABS (ABS)
+                                     47 ; Stack segment in internal ram 
+                                     48 ;--------------------------------------------------------
+                                     49 	.area	SSEG
+      000000                         50 __start__stack:
+      000000                         51 	.ds	1
+                                     52 
+                                     53 ;--------------------------------------------------------
+                                     54 ; absolute external ram data
+                                     55 ;--------------------------------------------------------
+                                     56 	.area DABS (ABS)
+                                     57 
+                                     58 ; default segment ordering for linker
+                                     59 	.area HOME
+                                     60 	.area GSINIT
+                                     61 	.area GSFINAL
+                                     62 	.area CONST
+                                     63 	.area INITIALIZER
+                                     64 	.area CODE
+                                     65 
+                                     66 ;--------------------------------------------------------
+                                     67 ; interrupt vector 
+                                     68 ;--------------------------------------------------------
+                                     69 	.area HOME
+      000000                         70 __interrupt_vect:
+      000000 82v00u00u00             71 	int s_GSINIT ; reset
+      000004 82v00u00u00             72 	int _TRAP_IRQHandler ; trap
+      000008 82v00u00u00             73 	int _TLI_IRQHandler ; int0
+      00000C 82v00u00u00             74 	int _AWU_IRQHandler ; int1
+      000010 82v00u00u00             75 	int _CLK_IRQHandler ; int2
+      000014 82v00u00u00             76 	int _EXTI_PORTA_IRQHandler ; int3
+      000018 82v00u00u00             77 	int _EXTI_PORTB_IRQHandler ; int4
+      00001C 82v00u00u00             78 	int _EXTI_PORTC_IRQHandler ; int5
+      000020 82v00u00u00             79 	int _EXTI_PORTD_IRQHandler ; int6
+      000024 82v00u00u00             80 	int _EXTI_PORTE_IRQHandler ; int7
+      000028 82 00 00 00             81 	int 0x000000 ; int8
+      00002C 82 00 00 00             82 	int 0x000000 ; int9
+      000030 82v00u00u00             83 	int _SPI_IRQHandler ; int10
+      000034 82v00u00u00             84 	int _TIM1_UPD_OVF_TRG_BRK_IRQHandler ; int11
+      000038 82v00u00u00             85 	int _TIM1_CAP_COM_IRQHandler ; int12
+      00003C 82v00u00u00             86 	int _TIM2_UPD_OVF_BRK_IRQHandler ; int13
+      000040 82v00u00u00             87 	int _TIM2_CAP_COM_IRQHandler ; int14
+      000044 82 00 00 00             88 	int 0x000000 ; int15
+      000048 82 00 00 00             89 	int 0x000000 ; int16
+      00004C 82v00u00u00             90 	int _UART1_TX_IRQHandler ; int17
+      000050 82v00u00u00             91 	int _UART1_RX_IRQHandler ; int18
+      000054 82v00u00u00             92 	int _I2C_IRQHandler ; int19
+      000058 82 00 00 00             93 	int 0x000000 ; int20
+      00005C 82 00 00 00             94 	int 0x000000 ; int21
+      000060 82v00u00u00             95 	int _ADC1_IRQHandler ; int22
+      000064 82v00u00u00             96 	int _TIM4_UPD_OVF_IRQHandler ; int23
+      000068 82v00u00u00             97 	int _EEPROM_EEC_IRQHandler ; int24
+                                     98 ;--------------------------------------------------------
+                                     99 ; global & static initialisations
+                                    100 ;--------------------------------------------------------
+                                    101 	.area HOME
+                                    102 	.area GSINIT
+                                    103 	.area GSFINAL
+                                    104 	.area GSINIT
+      000000                        105 __sdcc_init_data:
+                                    106 ; stm8_genXINIT() start
+      000000 AEr00r00         [ 2]  107 	ldw x, #l_DATA
+      000003 27 07            [ 1]  108 	jreq	00002$
+      000005                        109 00001$:
+      000005 72 4FuFFuFF      [ 1]  110 	clr (s_DATA - 1, x)
+      000009 5A               [ 2]  111 	decw x
+      00000A 26 F9            [ 1]  112 	jrne	00001$
+      00000C                        113 00002$:
+      00000C AEr00r00         [ 2]  114 	ldw	x, #l_INITIALIZER
+      00000F 27 09            [ 1]  115 	jreq	00004$
+      000011                        116 00003$:
+      000011 D6uFFuFF         [ 1]  117 	ld	a, (s_INITIALIZER - 1, x)
+      000014 D7uFFuFF         [ 1]  118 	ld	(s_INITIALIZED - 1, x), a
+      000017 5A               [ 2]  119 	decw	x
+      000018 26 F7            [ 1]  120 	jrne	00003$
+      00001A                        121 00004$:
+                                    122 ; stm8_genXINIT() end
+                                    123 	.area GSFINAL
+      000000 CCr00r6C         [ 2]  124 	jp	__sdcc_program_startup
+                                    125 ;--------------------------------------------------------
+                                    126 ; Home
+                                    127 ;--------------------------------------------------------
+                                    128 	.area HOME
+                                    129 	.area HOME
+      00006C                        130 __sdcc_program_startup:
+      00006C CCr00r00         [ 2]  131 	jp	_main
+                                    132 ;	return from main will return to caller
+                                    133 ;--------------------------------------------------------
+                                    134 ; code
+                                    135 ;--------------------------------------------------------
+                                    136 	.area CODE
+                           000000   137 	G$main$0$0 ==.
+                           000000   138 	C$main.c$100$0_0$355 ==.
+                                    139 ;	../src/main.c: 100: void main( void )
+                                    140 ; genLabel
+                                    141 ;	-----------------------------------------
+                                    142 ;	 function main
+                                    143 ;	-----------------------------------------
+                                    144 ;	Register assignment might be sub-optimal.
+                                    145 ;	Stack space usage: 50 bytes.
+      000000                        146 _main:
+      000000 52 32            [ 2]  147 	sub	sp, #50
+                           000002   148 	C$main.c$110$1_0$355 ==.
+                                    149 ;	../src/main.c: 110: clkInit();
+                                    150 ; genCall
+      000002 CDr05r00         [ 4]  151 	call	_clkInit
+                           000005   152 	C$main.c$111$1_0$355 ==.
+                                    153 ;	../src/main.c: 111: LedMatrixInit();
+                                    154 ; genCall
+      000005 CDr00r00         [ 4]  155 	call	_LedMatrixInit
+                           000008   156 	C$main.c$112$1_0$355 ==.
+                                    157 ;	../src/main.c: 112: sysTickInit();
+                                    158 ; genCall
+      000008 CDr00r00         [ 4]  159 	call	_sysTickInit
+                           00000B   160 	C$main.c$115$1_0$355 ==.
+                                    161 ;	../src/main.c: 115: enableInterrupts();
+                                    162 ;	genInline
+      00000B 9A               [ 1]  163 	rim
+                           00000C   164 	C$main.c$117$1_0$355 ==.
+                                    165 ;	../src/main.c: 117: SetLedMode(0, LED_ON);
+                                    166 ; genIPush
+      00000C 4B 03            [ 1]  167 	push	#0x03
+                                    168 ; genIPush
+      00000E 4B 00            [ 1]  169 	push	#0x00
+                                    170 ; genCall
+      000010 CDr00r00         [ 4]  171 	call	_SetLedMode
+      000013 85               [ 2]  172 	popw	x
+                           000014   173 	C$main.c$118$1_0$355 ==.
+                                    174 ;	../src/main.c: 118: dly(10000);
+                                    175 ; genIPush
+      000014 4B 10            [ 1]  176 	push	#0x10
+      000016 4B 27            [ 1]  177 	push	#0x27
+      000018 5F               [ 1]  178 	clrw	x
+      000019 89               [ 2]  179 	pushw	x
+                                    180 ; genCall
+      00001A CDr00r00         [ 4]  181 	call	_dly
+      00001D 5B 04            [ 2]  182 	addw	sp, #4
+                           00001F   183 	C$main.c$124$1_0$355 ==.
+                                    184 ;	../src/main.c: 124: res |= pf_mount(&fid);	
+                                    185 ; skipping iCode since result will be rematerialized
+                                    186 ; skipping iCode since result will be rematerialized
+                                    187 ; genIPush
+      00001F 96               [ 1]  188 	ldw	x, sp
+      000020 1C 00 03         [ 2]  189 	addw	x, #3
+      000023 89               [ 2]  190 	pushw	x
+                                    191 ; genCall
+      000024 CDr00r00         [ 4]  192 	call	_pf_mount
+      000027 85               [ 2]  193 	popw	x
+                                    194 ; genAssign
+      000028 6B 32            [ 1]  195 	ld	(0x32, sp), a
+                           00002A   196 	C$main.c$125$1_0$355 ==.
+                                    197 ;	../src/main.c: 125: res |= pf_open("CFG");
+                                    198 ; skipping iCode since result will be rematerialized
+                                    199 ; skipping iCode since result will be rematerialized
+                                    200 ; genIPush
+      00002A 4Br00            [ 1]  201 	push	#<(___str_0+0)
+      00002C 4Bs00            [ 1]  202 	push	#((___str_0+0) >> 8)
+                                    203 ; genCall
+      00002E CDr00r00         [ 4]  204 	call	_pf_open
+      000031 85               [ 2]  205 	popw	x
+                                    206 ; genOr
+      000032 1A 32            [ 1]  207 	or	a, (0x32, sp)
+      000034 6B 32            [ 1]  208 	ld	(0x32, sp), a
+                           000036   209 	C$main.c$126$1_0$355 ==.
+                                    210 ;	../src/main.c: 126: res |= pf_read(cfg, 13 , &pbr);
+                                    211 ; skipping iCode since result will be rematerialized
+                                    212 ; skipping iCode since result will be rematerialized
+                                    213 ; skipping iCode since result will be rematerialized
+                                    214 ; skipping iCode since result will be rematerialized
+                                    215 ; genIPush
+      000036 96               [ 1]  216 	ldw	x, sp
+      000037 5C               [ 1]  217 	incw	x
+      000038 89               [ 2]  218 	pushw	x
+                                    219 ; genIPush
+      000039 4B 0D            [ 1]  220 	push	#0x0d
+      00003B 4B 00            [ 1]  221 	push	#0x00
+                                    222 ; genIPush
+      00003D 4Br00            [ 1]  223 	push	#<(_cfg+0)
+      00003F 4Bs00            [ 1]  224 	push	#((_cfg+0) >> 8)
+                                    225 ; genCall
+      000041 CDr00r00         [ 4]  226 	call	_pf_read
+      000044 5B 06            [ 2]  227 	addw	sp, #6
+                                    228 ; genOr
+      000046 1A 32            [ 1]  229 	or	a, (0x32, sp)
+      000048 6B 32            [ 1]  230 	ld	(0x32, sp), a
+                           00004A   231 	C$main.c$128$1_0$355 ==.
+                                    232 ;	../src/main.c: 128: res |= GetCfg(cfg, &loggerCfg);
+                                    233 ; skipping iCode since result will be rematerialized
+                                    234 ; skipping iCode since result will be rematerialized
+                                    235 ; skipping iCode since result will be rematerialized
+                                    236 ; skipping iCode since result will be rematerialized
+                                    237 ; genIPush
+      00004A 4Br0D            [ 1]  238 	push	#<(_loggerCfg+0)
+      00004C 4Bs00            [ 1]  239 	push	#((_loggerCfg+0) >> 8)
+                                    240 ; genIPush
+      00004E 4Br00            [ 1]  241 	push	#<(_cfg+0)
+      000050 4Bs00            [ 1]  242 	push	#((_cfg+0) >> 8)
+                                    243 ; genCall
+      000052 CDr03rBB         [ 4]  244 	call	_GetCfg
+      000055 5B 04            [ 2]  245 	addw	sp, #4
+      000057 9F               [ 1]  246 	ld	a, xl
+                                    247 ; genCast
+                                    248 ; genAssign
+                                    249 ; genOr
+      000058 1A 32            [ 1]  250 	or	a, (0x32, sp)
+                                    251 ; genAssign
+      00005A 6B 32            [ 1]  252 	ld	(0x32, sp), a
+                           00005C   253 	C$main.c$130$1_0$355 ==.
+                                    254 ;	../src/main.c: 130: if(FR_OK == res){
+                                    255 ; genIfx
+      00005C 0D 32            [ 1]  256 	tnz	(0x32, sp)
+      00005E 27 03            [ 1]  257 	jreq	00196$
+      000060 CCr00rB1         [ 2]  258 	jp	00105$
+      000063                        259 00196$:
+                           000063   260 	C$main.c$132$2_0$356 ==.
+                                    261 ;	../src/main.c: 132: fileBlkCnt = loggerCfg.fileSzInBlock;
+                                    262 ; skipping iCode since result will be rematerialized
+                                    263 ; genAssign
+      000063 AEr00r0D         [ 2]  264 	ldw	x, #(_loggerCfg+0)
+                                    265 ; genPointerGet
+      000066 90 93            [ 1]  266 	ldw	y, x
+      000068 90 EE 09         [ 2]  267 	ldw	y, (0x9, y)
+      00006B EE 07            [ 2]  268 	ldw	x, (0x7, x)
+                                    269 ; genAssign
+      00006D 90 CFu00u03      [ 2]  270 	ldw	_fileBlkCnt+2, y
+      000071 CFu00u01         [ 2]  271 	ldw	_fileBlkCnt+0, x
+                           000074   272 	C$main.c$133$2_0$356 ==.
+                                    273 ;	../src/main.c: 133: fileNoCnt = loggerCfg.fileNo;
+                                    274 ; skipping iCode since result will be rematerialized
+                                    275 ; genPointerGet
+      000074 CEu00u18         [ 2]  276 	ldw	x, _loggerCfg+11
+                                    277 ; genAssign
+      000077 CFu00u05         [ 2]  278 	ldw	_fileNoCnt+0, x
+                           00007A   279 	C$main.c$134$2_0$356 ==.
+                                    280 ;	../src/main.c: 134: SetLedMode(1, LED_ON);
+                                    281 ; genIPush
+      00007A 4B 03            [ 1]  282 	push	#0x03
+                                    283 ; genIPush
+      00007C 4B 01            [ 1]  284 	push	#0x01
+                                    285 ; genCall
+      00007E CDr00r00         [ 4]  286 	call	_SetLedMode
+      000081 85               [ 2]  287 	popw	x
+                           000082   288 	C$main.c$136$2_0$356 ==.
+                                    289 ;	../src/main.c: 136: res |= pf_open(loggerCfg.firstFileName);
+                                    290 ; genPlus
+      000082 AEr00r0F         [ 2]  291 	ldw	x, #(_loggerCfg+0)+2
+                                    292 ; genCast
+                                    293 ; genAssign
+                                    294 ; genIPush
+      000085 89               [ 2]  295 	pushw	x
+                                    296 ; genCall
+      000086 CDr00r00         [ 4]  297 	call	_pf_open
+      000089 85               [ 2]  298 	popw	x
+                                    299 ; genOr
+      00008A 1A 32            [ 1]  300 	or	a, (0x32, sp)
+                           00008C   301 	C$main.c$138$2_0$356 ==.
+                                    302 ;	../src/main.c: 138: if(FR_OK == res){
+                                    303 ; genIfx
+      00008C 4D               [ 1]  304 	tnz	a
+      00008D 27 03            [ 1]  305 	jreq	00197$
+      00008F CCr00r99         [ 2]  306 	jp	00102$
+      000092                        307 00197$:
+                           000092   308 	C$main.c$141$3_0$357 ==.
+                                    309 ;	../src/main.c: 141: fsm.state = S0_RST;
+                                    310 ; skipping iCode since result will be rematerialized
+                                    311 ; genPointerSet
+      000092 0F 2D            [ 1]  312 	clr	(0x2d, sp)
+                           000094   313 	C$main.c$142$3_0$357 ==.
+                                    314 ;	../src/main.c: 142: fsm.error = NO_ERR;
+                                    315 ; skipping iCode since result will be rematerialized
+                                    316 ; genPointerSet
+      000094 0F 2E            [ 1]  317 	clr	(0x2e, sp)
+                                    318 ; genGoto
+      000096 CCr00rA9         [ 2]  319 	jp	00103$
+                                    320 ; genLabel
+      000099                        321 00102$:
+                           000099   322 	C$main.c$145$3_0$358 ==.
+                                    323 ;	../src/main.c: 145: fsm.state = S4_ERR;
+                                    324 ; skipping iCode since result will be rematerialized
+                                    325 ; genPointerSet
+      000099 A6 04            [ 1]  326 	ld	a, #0x04
+      00009B 6B 2D            [ 1]  327 	ld	(0x2d, sp), a
+                           00009D   328 	C$main.c$146$3_0$358 ==.
+                                    329 ;	../src/main.c: 146: fsm.error = ERR_CARD_INIT;
+                                    330 ; skipping iCode since result will be rematerialized
+                                    331 ; genPointerSet
+      00009D A6 01            [ 1]  332 	ld	a, #0x01
+      00009F 6B 2E            [ 1]  333 	ld	(0x2e, sp), a
+                           0000A1   334 	C$main.c$147$3_0$358 ==.
+                                    335 ;	../src/main.c: 147: SetLedMode(1, LED_TOGGLE_FAST);
+                                    336 ; genIPush
+      0000A1 4B 02            [ 1]  337 	push	#0x02
+                                    338 ; genIPush
+      0000A3 4B 01            [ 1]  339 	push	#0x01
+                                    340 ; genCall
+      0000A5 CDr00r00         [ 4]  341 	call	_SetLedMode
+      0000A8 85               [ 2]  342 	popw	x
+                                    343 ; genLabel
+      0000A9                        344 00103$:
+                           0000A9   345 	C$main.c$150$2_0$356 ==.
+                                    346 ;	../src/main.c: 150: disableInterrupts();
+                                    347 ;	genInline
+      0000A9 9B               [ 1]  348 	sim
+                           0000AA   349 	C$main.c$151$2_0$356 ==.
+                                    350 ;	../src/main.c: 151: adcInit();
+                                    351 ; genCall
+      0000AA CDr00r00         [ 4]  352 	call	_adcInit
+                           0000AD   353 	C$main.c$153$2_0$356 ==.
+                                    354 ;	../src/main.c: 153: enableInterrupts();
+                                    355 ;	genInline
+      0000AD 9A               [ 1]  356 	rim
+                                    357 ; genGoto
+      0000AE CCr00rB9         [ 2]  358 	jp	00106$
+                                    359 ; genLabel
+      0000B1                        360 00105$:
+                           0000B1   361 	C$main.c$156$2_0$359 ==.
+                                    362 ;	../src/main.c: 156: fsm.state = S4_ERR;
+                                    363 ; skipping iCode since result will be rematerialized
+                                    364 ; genPointerSet
+      0000B1 A6 04            [ 1]  365 	ld	a, #0x04
+      0000B3 6B 2D            [ 1]  366 	ld	(0x2d, sp), a
+                           0000B5   367 	C$main.c$157$2_0$359 ==.
+                                    368 ;	../src/main.c: 157: fsm.error = ERR_CARD_INIT;
+                                    369 ; skipping iCode since result will be rematerialized
+                                    370 ; genPointerSet
+      0000B5 A6 01            [ 1]  371 	ld	a, #0x01
+      0000B7 6B 2E            [ 1]  372 	ld	(0x2e, sp), a
+                                    373 ; genLabel
+      0000B9                        374 00106$:
+                           0000B9   375 	C$main.c$159$1_0$355 ==.
+                                    376 ;	../src/main.c: 159: SetLedMode(0, LED_TOGGLE_SLOW);
+                                    377 ; genIPush
+      0000B9 4B 01            [ 1]  378 	push	#0x01
+                                    379 ; genIPush
+      0000BB 4B 00            [ 1]  380 	push	#0x00
+                                    381 ; genCall
+      0000BD CDr00r00         [ 4]  382 	call	_SetLedMode
+      0000C0 85               [ 2]  383 	popw	x
+                           0000C1   384 	C$main.c$161$2_0$360 ==.
+                                    385 ;	../src/main.c: 161: while(1){
+                                    386 ; skipping iCode since result will be rematerialized
+                                    387 ; skipping iCode since result will be rematerialized
+                                    388 ; skipping iCode since result will be rematerialized
+                                    389 ; skipping iCode since result will be rematerialized
+                                    390 ; skipping iCode since result will be rematerialized
+                                    391 ; genPlus
+      0000C1 AEr00r0F         [ 2]  392 	ldw	x, #(_loggerCfg+0)+2
+      0000C4 1F 2F            [ 2]  393 	ldw	(0x2f, sp), x
+                                    394 ; genAssign
+      0000C6 16 2F            [ 2]  395 	ldw	y, (0x2f, sp)
+      0000C8 17 31            [ 2]  396 	ldw	(0x31, sp), y
+                                    397 ; genLabel
+      0000CA                        398 00137$:
+                           0000CA   399 	C$main.c$166$2_0$360 ==.
+                                    400 ;	../src/main.c: 166: switch (fsm.state){
+                                    401 ; genPointerGet
+      0000CA 7B 2D            [ 1]  402 	ld	a, (0x2d, sp)
+                                    403 ; genCmp
+                                    404 ; genCmpTop
+      0000CC A1 06            [ 1]  405 	cp	a, #0x06
+      0000CE 23 03            [ 2]  406 	jrule	00198$
+      0000D0 CCr00rCA         [ 2]  407 	jp	00137$
+      0000D3                        408 00198$:
+                                    409 ; skipping generated iCode
+                                    410 ; genJumpTab
+      0000D3 5F               [ 1]  411 	clrw	x
+      0000D4 97               [ 1]  412 	ld	xl, a
+      0000D5 58               [ 2]  413 	sllw	x
+      0000D6 DEu00uDA         [ 2]  414 	ldw	x, (#00199$, x)
+      0000D9 FC               [ 2]  415 	jp	(x)
+      0000DA                        416 00199$:
+      0000DAr00rE8                  417 	.dw	#00107$
+      0000DCr01r2C                  418 	.dw	#00117$
+      0000DEr01r2C                  419 	.dw	#00117$
+      0000E0r01r38                  420 	.dw	#00118$
+      0000E2r01r7F                  421 	.dw	#00125$
+      0000E4r01r8A                  422 	.dw	#00129$
+      0000E6r00rCA                  423 	.dw	#00137$
+                           0000E8   424 	C$main.c$167$3_0$361 ==.
+                                    425 ;	../src/main.c: 167: case S0_RST:
+                                    426 ; genLabel
+      0000E8                        427 00107$:
+                           0000E8   428 	C$main.c$170$3_0$361 ==.
+                                    429 ;	../src/main.c: 170: if( 0x3 == buffer_rdy ){
+                                    430 ; genCmpEQorNE
+      0000E8 C6u00u00         [ 1]  431 	ld	a, _buffer_rdy+0
+      0000EB A1 03            [ 1]  432 	cp	a, #0x03
+      0000ED 26 03            [ 1]  433 	jrne	00201$
+      0000EF CCr00rF5         [ 2]  434 	jp	00202$
+      0000F2                        435 00201$:
+      0000F2 CCr01r05         [ 2]  436 	jp	00114$
+      0000F5                        437 00202$:
+                                    438 ; skipping generated iCode
+                           0000F5   439 	C$main.c$173$4_0$362 ==.
+                                    440 ;	../src/main.c: 173: fsm.state = S4_ERR;
+                                    441 ; genPointerSet
+      0000F5 A6 04            [ 1]  442 	ld	a, #0x04
+      0000F7 6B 2D            [ 1]  443 	ld	(0x2d, sp), a
+                           0000F9   444 	C$main.c$174$4_0$362 ==.
+                                    445 ;	../src/main.c: 174: fsm.error = ERR_BUFF_OVERLAP;
+                                    446 ; genPlus
+      0000F9 96               [ 1]  447 	ldw	x, sp
+      0000FA 1C 00 2E         [ 2]  448 	addw	x, #46
+      0000FD 9F               [ 1]  449 	ld	a, xl
+                                    450 ; genPointerSet
+      0000FE 97               [ 1]  451 	ld	xl, a
+      0000FF A6 05            [ 1]  452 	ld	a, #0x05
+      000101 F7               [ 1]  453 	ld	(x), a
+                                    454 ; genGoto
+      000102 CCr00rCA         [ 2]  455 	jp	00137$
+                                    456 ; genLabel
+      000105                        457 00114$:
+                           000105   458 	C$main.c$175$3_0$361 ==.
+                                    459 ;	../src/main.c: 175: } else if (0x01 == buffer_rdy) {
+                                    460 ; genCmpEQorNE
+      000105 C6u00u00         [ 1]  461 	ld	a, _buffer_rdy+0
+      000108 4A               [ 1]  462 	dec	a
+      000109 26 03            [ 1]  463 	jrne	00204$
+      00010B CCr01r11         [ 2]  464 	jp	00205$
+      00010E                        465 00204$:
+      00010E CCr01r18         [ 2]  466 	jp	00111$
+      000111                        467 00205$:
+                                    468 ; skipping generated iCode
+                           000111   469 	C$main.c$177$4_0$363 ==.
+                                    470 ;	../src/main.c: 177: fsm.state = S1_WR_BUF0;
+                                    471 ; genPointerSet
+      000111 A6 01            [ 1]  472 	ld	a, #0x01
+      000113 6B 2D            [ 1]  473 	ld	(0x2d, sp), a
+                                    474 ; genGoto
+      000115 CCr00rCA         [ 2]  475 	jp	00137$
+                                    476 ; genLabel
+      000118                        477 00111$:
+                           000118   478 	C$main.c$178$3_0$361 ==.
+                                    479 ;	../src/main.c: 178: } else if ( 0x02 == buffer_rdy) {
+                                    480 ; genCmpEQorNE
+      000118 C6u00u00         [ 1]  481 	ld	a, _buffer_rdy+0
+      00011B A1 02            [ 1]  482 	cp	a, #0x02
+      00011D 26 03            [ 1]  483 	jrne	00207$
+      00011F CCr01r25         [ 2]  484 	jp	00208$
+      000122                        485 00207$:
+      000122 CCr00rCA         [ 2]  486 	jp	00137$
+      000125                        487 00208$:
+                                    488 ; skipping generated iCode
+                           000125   489 	C$main.c$180$4_0$364 ==.
+                                    490 ;	../src/main.c: 180: fsm.state = S2_WR_BUF1;
+                                    491 ; genPointerSet
+      000125 A6 02            [ 1]  492 	ld	a, #0x02
+      000127 6B 2D            [ 1]  493 	ld	(0x2d, sp), a
+                           000129   494 	C$main.c$182$3_0$361 ==.
+                                    495 ;	../src/main.c: 182: break;
+                                    496 ; genGoto
+      000129 CCr00rCA         [ 2]  497 	jp	00137$
+                           00012C   498 	C$main.c$184$3_0$361 ==.
+                                    499 ;	../src/main.c: 184: case S2_WR_BUF1:
+                                    500 ; genLabel
+      00012C                        501 00117$:
+                           00012C   502 	C$main.c$186$3_0$361 ==.
+                                    503 ;	../src/main.c: 186: Wr2SD(&fsm);
+                                    504 ; skipping iCode since result will be rematerialized
+                                    505 ; genIPush
+      00012C 96               [ 1]  506 	ldw	x, sp
+      00012D 1C 00 2D         [ 2]  507 	addw	x, #45
+      000130 89               [ 2]  508 	pushw	x
+                                    509 ; genCall
+      000131 CDr01r98         [ 4]  510 	call	_Wr2SD
+      000134 85               [ 2]  511 	popw	x
+                           000135   512 	C$main.c$187$3_0$361 ==.
+                                    513 ;	../src/main.c: 187: break;
+                                    514 ; genGoto
+      000135 CCr00rCA         [ 2]  515 	jp	00137$
+                           000138   516 	C$main.c$188$3_0$361 ==.
+                                    517 ;	../src/main.c: 188: case S3_NXT_FILE:
+                                    518 ; genLabel
+      000138                        519 00118$:
+                           000138   520 	C$main.c$189$3_0$361 ==.
+                                    521 ;	../src/main.c: 189: fileBlkCnt = loggerCfg.fileSzInBlock;
+                                    522 ; genPointerGet
+      000138 AEr00r0D         [ 2]  523 	ldw	x, #(_loggerCfg+0)
+      00013B 90 93            [ 1]  524 	ldw	y, x
+      00013D 90 EE 09         [ 2]  525 	ldw	y, (0x9, y)
+      000140 EE 07            [ 2]  526 	ldw	x, (0x7, x)
+                                    527 ; genAssign
+      000142 90 CFu00u03      [ 2]  528 	ldw	_fileBlkCnt+2, y
+      000146 CFu00u01         [ 2]  529 	ldw	_fileBlkCnt+0, x
+                           000149   530 	C$main.c$191$3_0$361 ==.
+                                    531 ;	../src/main.c: 191: if(--fileNoCnt != 0){
+                                    532 ; genMinus
+      000149 CEu00u05         [ 2]  533 	ldw	x, _fileNoCnt+0
+      00014C 5A               [ 2]  534 	decw	x
+                                    535 ; genAssign
+      00014D CFu00u05         [ 2]  536 	ldw	_fileNoCnt+0, x
+                                    537 ; genIfx
+      000150 CEu00u05         [ 2]  538 	ldw	x, _fileNoCnt+0
+      000153 26 03            [ 1]  539 	jrne	00209$
+      000155 CCr01r78         [ 2]  540 	jp	00123$
+      000158                        541 00209$:
+                           000158   542 	C$main.c$193$4_0$365 ==.
+                                    543 ;	../src/main.c: 193: GetNxtFileName(loggerCfg.firstFileName);
+                                    544 ; genCast
+                                    545 ; genAssign
+      000158 1E 2F            [ 2]  546 	ldw	x, (0x2f, sp)
+                                    547 ; genIPush
+      00015A 89               [ 2]  548 	pushw	x
+                                    549 ; genCall
+      00015B CDr02r57         [ 4]  550 	call	_GetNxtFileName
+      00015E 85               [ 2]  551 	popw	x
+                           00015F   552 	C$main.c$195$4_0$365 ==.
+                                    553 ;	../src/main.c: 195: res = pf_open(loggerCfg.firstFileName);
+                                    554 ; genCast
+                                    555 ; genAssign
+      00015F 1E 31            [ 2]  556 	ldw	x, (0x31, sp)
+                                    557 ; genIPush
+      000161 89               [ 2]  558 	pushw	x
+                                    559 ; genCall
+      000162 CDr00r00         [ 4]  560 	call	_pf_open
+      000165 85               [ 2]  561 	popw	x
+                                    562 ; genAssign
+                           000166   563 	C$main.c$196$4_0$365 ==.
+                                    564 ;	../src/main.c: 196: if( FR_OK != res ){
+                                    565 ; genIfx
+      000166 4D               [ 1]  566 	tnz	a
+      000167 26 03            [ 1]  567 	jrne	00210$
+      000169 CCr01r73         [ 2]  568 	jp	00120$
+      00016C                        569 00210$:
+                           00016C   570 	C$main.c$197$5_0$366 ==.
+                                    571 ;	../src/main.c: 197: fsm.state = S4_ERR;
+                                    572 ; genPointerSet
+      00016C A6 04            [ 1]  573 	ld	a, #0x04
+      00016E 6B 2D            [ 1]  574 	ld	(0x2d, sp), a
+                                    575 ; genGoto
+      000170 CCr00rCA         [ 2]  576 	jp	00137$
+                                    577 ; genLabel
+      000173                        578 00120$:
+                           000173   579 	C$main.c$200$5_0$367 ==.
+                                    580 ;	../src/main.c: 200: fsm.state = S0_RST;
+                                    581 ; genPointerSet
+      000173 0F 2D            [ 1]  582 	clr	(0x2d, sp)
+                                    583 ; genGoto
+      000175 CCr00rCA         [ 2]  584 	jp	00137$
+                                    585 ; genLabel
+      000178                        586 00123$:
+                           000178   587 	C$main.c$206$4_0$368 ==.
+                                    588 ;	../src/main.c: 206: fsm.state = S5_COMPLETE;
+                                    589 ; genPointerSet
+      000178 A6 05            [ 1]  590 	ld	a, #0x05
+      00017A 6B 2D            [ 1]  591 	ld	(0x2d, sp), a
+                           00017C   592 	C$main.c$209$3_0$361 ==.
+                                    593 ;	../src/main.c: 209: break;
+                                    594 ; genGoto
+      00017C CCr00rCA         [ 2]  595 	jp	00137$
+                           00017F   596 	C$main.c$211$3_0$361 ==.
+                                    597 ;	../src/main.c: 211: case S4_ERR:
+                                    598 ; genLabel
+      00017F                        599 00125$:
+                           00017F   600 	C$main.c$212$3_0$361 ==.
+                                    601 ;	../src/main.c: 212: SetLedMode(1, LED_TOGGLE_FAST);
+                                    602 ; genIPush
+      00017F 4B 02            [ 1]  603 	push	#0x02
+                                    604 ; genIPush
+      000181 4B 01            [ 1]  605 	push	#0x01
+                                    606 ; genCall
+      000183 CDr00r00         [ 4]  607 	call	_SetLedMode
+      000186 85               [ 2]  608 	popw	x
+                           000187   609 	C$main.c$213$3_0$361 ==.
+                                    610 ;	../src/main.c: 213: while(1); break;
+                                    611 ; genLabel
+      000187                        612 00127$:
+                                    613 ; genGoto
+      000187 CCr01r87         [ 2]  614 	jp	00127$
+                           00018A   615 	C$main.c$214$3_0$361 ==.
+                                    616 ;	../src/main.c: 214: case S5_COMPLETE:
+                                    617 ; genLabel
+      00018A                        618 00129$:
+                           00018A   619 	C$main.c$215$3_0$361 ==.
+                                    620 ;	../src/main.c: 215: SetLedMode(0, LED_ON);
+                                    621 ; genIPush
+      00018A 4B 03            [ 1]  622 	push	#0x03
+                                    623 ; genIPush
+      00018C 4B 00            [ 1]  624 	push	#0x00
+                                    625 ; genCall
+      00018E CDr00r00         [ 4]  626 	call	_SetLedMode
+      000191 85               [ 2]  627 	popw	x
+                           000192   628 	C$main.c$216$3_0$361 ==.
+                                    629 ;	../src/main.c: 216: while(1);
+                                    630 ; genLabel
+      000192                        631 00131$:
+                                    632 ; genGoto
+      000192 CCr01r92         [ 2]  633 	jp	00131$
+                           000195   634 	C$main.c$221$1_0$355 ==.
+                                    635 ;	../src/main.c: 221: }
+                                    636 ; genLabel
+      000195                        637 00139$:
+                           000195   638 	C$main.c$223$1_0$355 ==.
+                                    639 ;	../src/main.c: 223: }
+                                    640 ; genEndFunction
+      000195 5B 32            [ 2]  641 	addw	sp, #50
+                           000197   642 	C$main.c$223$1_0$355 ==.
+                           000197   643 	XG$main$0$0 ==.
+      000197 81               [ 4]  644 	ret
+                           000198   645 	Fmain$Wr2SD$0$0 ==.
+                           000198   646 	C$main.c$236$1_0$370 ==.
+                                    647 ;	../src/main.c: 236: static void Wr2SD( fsm_t * pfsm ){
+                                    648 ; genLabel
+                                    649 ;	-----------------------------------------
+                                    650 ;	 function Wr2SD
+                                    651 ;	-----------------------------------------
+                                    652 ;	Register assignment might be sub-optimal.
+                                    653 ;	Stack space usage: 6 bytes.
+      000198                        654 _Wr2SD:
+      000198 52 06            [ 2]  655 	sub	sp, #6
+                           00019A   656 	C$main.c$243$1_0$370 ==.
+                                    657 ;	../src/main.c: 243: if( S1_WR_BUF0 == pfsm->state){
+                                    658 ; genAssign
+      00019A 1E 09            [ 2]  659 	ldw	x, (0x09, sp)
+                                    660 ; genPointerGet
+      00019C F6               [ 1]  661 	ld	a, (x)
+                                    662 ; genCmpEQorNE
+      00019D 4A               [ 1]  663 	dec	a
+      00019E 26 03            [ 1]  664 	jrne	00140$
+      0001A0 CCr01rA6         [ 2]  665 	jp	00141$
+      0001A3                        666 00140$:
+      0001A3 CCr01rAE         [ 2]  667 	jp	00102$
+      0001A6                        668 00141$:
+                                    669 ; skipping generated iCode
+                           0001A6   670 	C$main.c$244$2_0$371 ==.
+                                    671 ;	../src/main.c: 244: pBuf = adcBuffer0; bufNo = 0;
+                                    672 ; genAddrOf
+      0001A6 90 AEr00r00      [ 2]  673 	ldw	y, #_adcBuffer0+0
+                                    674 ; genCast
+                                    675 ; genAssign
+                                    676 ; genAssign
+                                    677 ; genAssign
+      0001AA 5F               [ 1]  678 	clrw	x
+                                    679 ; genGoto
+      0001AB CCr01rB5         [ 2]  680 	jp	00103$
+                                    681 ; genLabel
+      0001AE                        682 00102$:
+                           0001AE   683 	C$main.c$246$2_0$372 ==.
+                                    684 ;	../src/main.c: 246: pBuf = adcBuffer1; bufNo = 1;
+                                    685 ; skipping iCode since result will be rematerialized
+                                    686 ; skipping iCode since result will be rematerialized
+                                    687 ; genAssign
+      0001AE 90 AEr00r00      [ 2]  688 	ldw	y, #(_adcBuffer1+0)
+                                    689 ; genAssign
+      0001B2 A6 01            [ 1]  690 	ld	a, #0x01
+      0001B4 97               [ 1]  691 	ld	xl, a
+                                    692 ; genLabel
+      0001B5                        693 00103$:
+                           0001B5   694 	C$main.c$248$1_0$370 ==.
+                                    695 ;	../src/main.c: 248: RELEASE_BUFF_FOR_WR(bufNo); //clear this flag
+                                    696 ; genCast
+                                    697 ; genAssign
+                                    698 ; genLeftShift
+      0001B5 A6 01            [ 1]  699 	ld	a, #0x01
+      0001B7 88               [ 1]  700 	push	a
+      0001B8 9F               [ 1]  701 	ld	a, xl
+      0001B9 4D               [ 1]  702 	tnz	a
+      0001BA 27 05            [ 1]  703 	jreq	00143$
+      0001BC                        704 00142$:
+      0001BC 08 01            [ 1]  705 	sll	(1, sp)
+      0001BE 4A               [ 1]  706 	dec	a
+      0001BF 26 FB            [ 1]  707 	jrne	00142$
+      0001C1                        708 00143$:
+      0001C1 84               [ 1]  709 	pop	a
+                                    710 ; genCpl
+      0001C2 43               [ 1]  711 	cpl	a
+                                    712 ; genAnd
+      0001C3 C4u00u00         [ 1]  713 	and	a, _buffer_rdy+0
+      0001C6 C7u00u00         [ 1]  714 	ld	_buffer_rdy+0, a
+                           0001C9   715 	C$main.c$252$1_0$370 ==.
+                                    716 ;	../src/main.c: 252: res = pf_write((void*)pBuf,BUFFER_SZ_IN_BYTES, &pbr);
+                                    717 ; genAddrOf
+      0001C9 96               [ 1]  718 	ldw	x, sp
+      0001CA 5C               [ 1]  719 	incw	x
+                                    720 ; genCast
+                                    721 ; genAssign
+                                    722 ; genCast
+                                    723 ; genAssign
+                                    724 ; genIPush
+      0001CB 89               [ 2]  725 	pushw	x
+                                    726 ; genIPush
+      0001CC 4B 00            [ 1]  727 	push	#0x00
+      0001CE 4B 01            [ 1]  728 	push	#0x01
+                                    729 ; genIPush
+      0001D0 90 89            [ 2]  730 	pushw	y
+                                    731 ; genCall
+      0001D2 CDr00r00         [ 4]  732 	call	_pf_write
+      0001D5 5B 06            [ 2]  733 	addw	sp, #6
+                           0001D7   734 	C$main.c$243$1_0$370 ==.
+                                    735 ;	../src/main.c: 243: if( S1_WR_BUF0 == pfsm->state){
+                                    736 ; genAssign
+      0001D7 16 09            [ 2]  737 	ldw	y, (0x09, sp)
+      0001D9 17 03            [ 2]  738 	ldw	(0x03, sp), y
+                           0001DB   739 	C$main.c$259$1_0$370 ==.
+                                    740 ;	../src/main.c: 259: pfsm->error = ERR_WR_DATA;
+                                    741 ; genPlus
+      0001DB 1E 03            [ 2]  742 	ldw	x, (0x03, sp)
+      0001DD 5C               [ 1]  743 	incw	x
+      0001DE 1F 05            [ 2]  744 	ldw	(0x05, sp), x
+                           0001E0   745 	C$main.c$256$1_0$370 ==.
+                                    746 ;	../src/main.c: 256: if(FR_OK != res){
+                                    747 ; genIfx
+      0001E0 4D               [ 1]  748 	tnz	a
+      0001E1 26 03            [ 1]  749 	jrne	00144$
+      0001E3 CCr01rF3         [ 2]  750 	jp	00105$
+      0001E6                        751 00144$:
+                           0001E6   752 	C$main.c$259$2_0$373 ==.
+                                    753 ;	../src/main.c: 259: pfsm->error = ERR_WR_DATA;
+                                    754 ; genPointerSet
+      0001E6 1E 05            [ 2]  755 	ldw	x, (0x05, sp)
+      0001E8 A6 02            [ 1]  756 	ld	a, #0x02
+      0001EA F7               [ 1]  757 	ld	(x), a
+                           0001EB   758 	C$main.c$260$2_0$373 ==.
+                                    759 ;	../src/main.c: 260: pfsm->state = S4_ERR;
+                                    760 ; genPointerSet
+      0001EB 1E 03            [ 2]  761 	ldw	x, (0x03, sp)
+      0001ED A6 04            [ 1]  762 	ld	a, #0x04
+      0001EF F7               [ 1]  763 	ld	(x), a
+                           0001F0   764 	C$main.c$261$2_0$373 ==.
+                                    765 ;	../src/main.c: 261: return;
+                                    766 ; genReturn
+      0001F0 CCr02r54         [ 2]  767 	jp	00112$
+                                    768 ; genLabel
+      0001F3                        769 00105$:
+                           0001F3   770 	C$main.c$264$1_0$370 ==.
+                                    771 ;	../src/main.c: 264: if(NO_BUFF_PER_BLK == ++blkCnt){
+                                    772 ; genPlus
+      0001F3 72 5Cu00u00      [ 1]  773 	inc	_blkCnt+0
+                                    774 ; genCmpEQorNE
+      0001F7 C6u00u00         [ 1]  775 	ld	a, _blkCnt+0
+      0001FA A1 02            [ 1]  776 	cp	a, #0x02
+      0001FC 26 03            [ 1]  777 	jrne	00146$
+      0001FE CCr02r04         [ 2]  778 	jp	00147$
+      000201                        779 00146$:
+      000201 CCr02r51         [ 2]  780 	jp	00111$
+      000204                        781 00147$:
+                                    782 ; skipping generated iCode
+                           000204   783 	C$main.c$266$2_0$374 ==.
+                                    784 ;	../src/main.c: 266: blkCnt = 0;
+                                    785 ; genAssign
+      000204 72 5Fu00u00      [ 1]  786 	clr	_blkCnt+0
+                           000208   787 	C$main.c$267$2_0$374 ==.
+                                    788 ;	../src/main.c: 267: res = pf_write(0,0,&pbr);
+                                    789 ; skipping iCode since result will be rematerialized
+                                    790 ; skipping iCode since result will be rematerialized
+                                    791 ; genIPush
+      000208 96               [ 1]  792 	ldw	x, sp
+      000209 5C               [ 1]  793 	incw	x
+      00020A 89               [ 2]  794 	pushw	x
+                                    795 ; genIPush
+      00020B 5F               [ 1]  796 	clrw	x
+      00020C 89               [ 2]  797 	pushw	x
+                                    798 ; genIPush
+      00020D 5F               [ 1]  799 	clrw	x
+      00020E 89               [ 2]  800 	pushw	x
+                                    801 ; genCall
+      00020F CDr00r00         [ 4]  802 	call	_pf_write
+      000212 5B 06            [ 2]  803 	addw	sp, #6
+                           000214   804 	C$main.c$270$2_0$374 ==.
+                                    805 ;	../src/main.c: 270: if(FR_OK != res){
+                                    806 ; genIfx
+      000214 4D               [ 1]  807 	tnz	a
+      000215 26 03            [ 1]  808 	jrne	00148$
+      000217 CCr02r27         [ 2]  809 	jp	00107$
+      00021A                        810 00148$:
+                           00021A   811 	C$main.c$272$3_0$375 ==.
+                                    812 ;	../src/main.c: 272: pfsm->error = ERR_WR_NO_RESP;
+                                    813 ; genPointerSet
+      00021A 1E 05            [ 2]  814 	ldw	x, (0x05, sp)
+      00021C A6 03            [ 1]  815 	ld	a, #0x03
+      00021E F7               [ 1]  816 	ld	(x), a
+                           00021F   817 	C$main.c$273$3_0$375 ==.
+                                    818 ;	../src/main.c: 273: pfsm->state = S4_ERR;
+                                    819 ; genPointerSet
+      00021F 1E 03            [ 2]  820 	ldw	x, (0x03, sp)
+      000221 A6 04            [ 1]  821 	ld	a, #0x04
+      000223 F7               [ 1]  822 	ld	(x), a
+                           000224   823 	C$main.c$274$3_0$375 ==.
+                                    824 ;	../src/main.c: 274: return;
+                                    825 ; genReturn
+      000224 CCr02r54         [ 2]  826 	jp	00112$
+                                    827 ; genLabel
+      000227                        828 00107$:
+                           000227   829 	C$main.c$277$2_0$374 ==.
+                                    830 ;	../src/main.c: 277: if(0 == --fileBlkCnt){
+                                    831 ; genMinus
+      000227 CEu00u03         [ 2]  832 	ldw	x, _fileBlkCnt+2
+      00022A 1D 00 01         [ 2]  833 	subw	x, #0x0001
+      00022D 90 CEu00u01      [ 2]  834 	ldw	y, _fileBlkCnt+0
+      000231 24 02            [ 1]  835 	jrnc	00149$
+      000233 90 5A            [ 2]  836 	decw	y
+      000235                        837 00149$:
+                                    838 ; genAssign
+      000235 CFu00u03         [ 2]  839 	ldw	_fileBlkCnt+2, x
+      000238 90 CFu00u01      [ 2]  840 	ldw	_fileBlkCnt+0, y
+                                    841 ; genIfx
+      00023C CEu00u03         [ 2]  842 	ldw	x, _fileBlkCnt+2
+      00023F 26 05            [ 1]  843 	jrne	00150$
+      000241 CEu00u01         [ 2]  844 	ldw	x, _fileBlkCnt+0
+      000244 27 03            [ 1]  845 	jreq	00151$
+      000246                        846 00150$:
+      000246 CCr02r51         [ 2]  847 	jp	00111$
+      000249                        848 00151$:
+                           000249   849 	C$main.c$280$3_0$376 ==.
+                                    850 ;	../src/main.c: 280: pfsm->state = S3_NXT_FILE;
+                                    851 ; genPointerSet
+      000249 1E 03            [ 2]  852 	ldw	x, (0x03, sp)
+      00024B A6 03            [ 1]  853 	ld	a, #0x03
+      00024D F7               [ 1]  854 	ld	(x), a
+                           00024E   855 	C$main.c$281$3_0$376 ==.
+                                    856 ;	../src/main.c: 281: return;
+                                    857 ; genReturn
+      00024E CCr02r54         [ 2]  858 	jp	00112$
+                                    859 ; genLabel
+      000251                        860 00111$:
+                           000251   861 	C$main.c$286$1_0$370 ==.
+                                    862 ;	../src/main.c: 286: pfsm->state = S0_RST; 
+                                    863 ; genPointerSet
+      000251 1E 03            [ 2]  864 	ldw	x, (0x03, sp)
+      000253 7F               [ 1]  865 	clr	(x)
+                                    866 ; genLabel
+      000254                        867 00112$:
+                           000254   868 	C$main.c$287$1_0$370 ==.
+                                    869 ;	../src/main.c: 287: }
+                                    870 ; genEndFunction
+      000254 5B 06            [ 2]  871 	addw	sp, #6
+                           000256   872 	C$main.c$287$1_0$370 ==.
+                           000256   873 	XFmain$Wr2SD$0$0 ==.
+      000256 81               [ 4]  874 	ret
+                           000257   875 	Fmain$GetNxtFileName$0$0 ==.
+                           000257   876 	C$main.c$300$1_0$378 ==.
+                                    877 ;	../src/main.c: 300: static void GetNxtFileName( char * fname){
+                                    878 ; genLabel
+                                    879 ;	-----------------------------------------
+                                    880 ;	 function GetNxtFileName
+                                    881 ;	-----------------------------------------
+                                    882 ;	Register assignment might be sub-optimal.
+                                    883 ;	Stack space usage: 8 bytes.
+      000257                        884 _GetNxtFileName:
+      000257 52 08            [ 2]  885 	sub	sp, #8
+                           000259   886 	C$main.c$301$2_0$378 ==.
+                                    887 ;	../src/main.c: 301: uint8_t val = 0;
+                                    888 ; genAssign
+      000259 5F               [ 1]  889 	clrw	x
+                           00025A   890 	C$main.c$303$1_0$378 ==.
+                                    891 ;	../src/main.c: 303: if(0x39 == fname[3]){
+                                    892 ; genPlus
+      00025A 16 0B            [ 2]  893 	ldw	y, (0x0b, sp)
+      00025C 72 A9 00 03      [ 2]  894 	addw	y, #0x0003
+      000260 17 01            [ 2]  895 	ldw	(0x01, sp), y
+                                    896 ; genPointerGet
+      000262 16 01            [ 2]  897 	ldw	y, (0x01, sp)
+      000264 90 F6            [ 1]  898 	ld	a, (y)
+      000266 97               [ 1]  899 	ld	xl, a
+                                    900 ; genCmpEQorNE
+      000267 9F               [ 1]  901 	ld	a, xl
+      000268 A1 39            [ 1]  902 	cp	a, #0x39
+      00026A 26 03            [ 1]  903 	jrne	00158$
+      00026C CCr02r72         [ 2]  904 	jp	00159$
+      00026F                        905 00158$:
+      00026F CCr02r75         [ 2]  906 	jp	00102$
+      000272                        907 00159$:
+                                    908 ; skipping generated iCode
+                           000272   909 	C$main.c$304$2_0$379 ==.
+                                    910 ;	../src/main.c: 304: val = 0x01;
+                                    911 ; genAssign
+      000272 A6 01            [ 1]  912 	ld	a, #0x01
+      000274 95               [ 1]  913 	ld	xh, a
+                                    914 ; genLabel
+      000275                        915 00102$:
+                           000275   916 	C$main.c$306$1_0$378 ==.
+                                    917 ;	../src/main.c: 306: if(0x39 == fname[2]) {
+                                    918 ; genPlus
+      000275 16 0B            [ 2]  919 	ldw	y, (0x0b, sp)
+      000277 90 5C            [ 1]  920 	incw	y
+      000279 90 5C            [ 1]  921 	incw	y
+      00027B 17 03            [ 2]  922 	ldw	(0x03, sp), y
+                                    923 ; genPointerGet
+      00027D 16 03            [ 2]  924 	ldw	y, (0x03, sp)
+      00027F 90 F6            [ 1]  925 	ld	a, (y)
+                                    926 ; genCmpEQorNE
+      000281 A1 39            [ 1]  927 	cp	a, #0x39
+      000283 26 03            [ 1]  928 	jrne	00161$
+      000285 CCr02r8B         [ 2]  929 	jp	00162$
+      000288                        930 00161$:
+      000288 CCr02r8E         [ 2]  931 	jp	00104$
+      00028B                        932 00162$:
+                                    933 ; skipping generated iCode
+                           00028B   934 	C$main.c$307$2_0$380 ==.
+                                    935 ;	../src/main.c: 307: val += 0x02;
+                                    936 ; genCast
+                                    937 ; genAssign
+                                    938 ; genPlus
+      00028B 1C 02 00         [ 2]  939 	addw	x, #512
+                                    940 ; genLabel
+      00028E                        941 00104$:
+                           00028E   942 	C$main.c$309$1_0$378 ==.
+                                    943 ;	../src/main.c: 309: if(0x39 == fname[1]) {
+                                    944 ; genPlus
+      00028E 16 0B            [ 2]  945 	ldw	y, (0x0b, sp)
+      000290 90 5C            [ 1]  946 	incw	y
+      000292 17 05            [ 2]  947 	ldw	(0x05, sp), y
+                                    948 ; genPointerGet
+      000294 16 05            [ 2]  949 	ldw	y, (0x05, sp)
+      000296 90 F6            [ 1]  950 	ld	a, (y)
+                                    951 ; genCmpEQorNE
+      000298 A1 39            [ 1]  952 	cp	a, #0x39
+      00029A 26 03            [ 1]  953 	jrne	00164$
+      00029C CCr02rA2         [ 2]  954 	jp	00165$
+      00029F                        955 00164$:
+      00029F CCr02rA5         [ 2]  956 	jp	00106$
+      0002A2                        957 00165$:
+                                    958 ; skipping generated iCode
+                           0002A2   959 	C$main.c$310$2_0$381 ==.
+                                    960 ;	../src/main.c: 310: val += 0x04;
+                                    961 ; genCast
+                                    962 ; genAssign
+                                    963 ; genPlus
+      0002A2 1C 04 00         [ 2]  964 	addw	x, #1024
+                                    965 ; genLabel
+      0002A5                        966 00106$:
+                           0002A5   967 	C$main.c$312$1_0$378 ==.
+                                    968 ;	../src/main.c: 312: if(0x39 == fname[0]) {
+                                    969 ; genAssign
+      0002A5 16 0B            [ 2]  970 	ldw	y, (0x0b, sp)
+      0002A7 17 07            [ 2]  971 	ldw	(0x07, sp), y
+                                    972 ; genPointerGet
+      0002A9 16 07            [ 2]  973 	ldw	y, (0x07, sp)
+      0002AB 90 F6            [ 1]  974 	ld	a, (y)
+                                    975 ; genCmpEQorNE
+      0002AD A1 39            [ 1]  976 	cp	a, #0x39
+      0002AF 26 03            [ 1]  977 	jrne	00167$
+      0002B1 CCr02rB7         [ 2]  978 	jp	00168$
+      0002B4                        979 00167$:
+      0002B4 CCr02rBA         [ 2]  980 	jp	00108$
+      0002B7                        981 00168$:
+                                    982 ; skipping generated iCode
+                           0002B7   983 	C$main.c$313$2_0$382 ==.
+                                    984 ;	../src/main.c: 313: val += 0x08;
+                                    985 ; genCast
+                                    986 ; genAssign
+                                    987 ; genPlus
+      0002B7 1C 08 00         [ 2]  988 	addw	x, #2048
+                                    989 ; genLabel
+      0002BA                        990 00108$:
+                           0002BA   991 	C$main.c$316$1_0$378 ==.
+                                    992 ;	../src/main.c: 316: switch(val){
+                                    993 ; genCmpEQorNE
+      0002BA 9E               [ 1]  994 	ld	a, xh
+      0002BB 4A               [ 1]  995 	dec	a
+      0002BC 26 03            [ 1]  996 	jrne	00170$
+      0002BE CCr02rDC         [ 2]  997 	jp	00109$
+      0002C1                        998 00170$:
+                                    999 ; skipping generated iCode
+                                   1000 ; genCmpEQorNE
+      0002C1 9E               [ 1] 1001 	ld	a, xh
+      0002C2 A1 03            [ 1] 1002 	cp	a, #0x03
+      0002C4 26 03            [ 1] 1003 	jrne	00173$
+      0002C6 CCr02rEB         [ 2] 1004 	jp	00110$
+      0002C9                       1005 00173$:
+                                   1006 ; skipping generated iCode
+                                   1007 ; genCmpEQorNE
+      0002C9 9E               [ 1] 1008 	ld	a, xh
+      0002CA A1 07            [ 1] 1009 	cp	a, #0x07
+      0002CC 26 03            [ 1] 1010 	jrne	00176$
+      0002CE CCr02rFF         [ 2] 1011 	jp	00111$
+      0002D1                       1012 00176$:
+                                   1013 ; skipping generated iCode
+                                   1014 ; genCmpEQorNE
+      0002D1 9E               [ 1] 1015 	ld	a, xh
+      0002D2 A1 0F            [ 1] 1016 	cp	a, #0x0f
+      0002D4 26 03            [ 1] 1017 	jrne	00179$
+      0002D6 CCr03r18         [ 2] 1018 	jp	00112$
+      0002D9                       1019 00179$:
+                                   1020 ; skipping generated iCode
+                                   1021 ; genGoto
+      0002D9 CCr03r2F         [ 2] 1022 	jp	00113$
+                           0002DC  1023 	C$main.c$317$2_0$383 ==.
+                                   1024 ;	../src/main.c: 317: case 0x01: fname[3] = 0x30; 
+                                   1025 ; genLabel
+      0002DC                       1026 00109$:
+                                   1027 ; genPointerSet
+      0002DC 1E 01            [ 2] 1028 	ldw	x, (0x01, sp)
+      0002DE A6 30            [ 1] 1029 	ld	a, #0x30
+      0002E0 F7               [ 1] 1030 	ld	(x), a
+                           0002E1  1031 	C$main.c$318$2_0$383 ==.
+                                   1032 ;	../src/main.c: 318: fname[2]++;break;
+                                   1033 ; genPointerGet
+      0002E1 1E 03            [ 2] 1034 	ldw	x, (0x03, sp)
+      0002E3 F6               [ 1] 1035 	ld	a, (x)
+                                   1036 ; genPlus
+      0002E4 4C               [ 1] 1037 	inc	a
+                                   1038 ; genPointerSet
+      0002E5 1E 03            [ 2] 1039 	ldw	x, (0x03, sp)
+      0002E7 F7               [ 1] 1040 	ld	(x), a
+                                   1041 ; genGoto
+      0002E8 CCr03r34         [ 2] 1042 	jp	00115$
+                           0002EB  1043 	C$main.c$319$2_0$383 ==.
+                                   1044 ;	../src/main.c: 319: case 0x03: fname[3] = 0x30; 
+                                   1045 ; genLabel
+      0002EB                       1046 00110$:
+                                   1047 ; genPointerSet
+      0002EB 1E 01            [ 2] 1048 	ldw	x, (0x01, sp)
+      0002ED A6 30            [ 1] 1049 	ld	a, #0x30
+      0002EF F7               [ 1] 1050 	ld	(x), a
+                           0002F0  1051 	C$main.c$320$2_0$383 ==.
+                                   1052 ;	../src/main.c: 320: fname[2] = 0x30; 
+                                   1053 ; genPointerSet
+      0002F0 1E 03            [ 2] 1054 	ldw	x, (0x03, sp)
+      0002F2 A6 30            [ 1] 1055 	ld	a, #0x30
+      0002F4 F7               [ 1] 1056 	ld	(x), a
+                           0002F5  1057 	C$main.c$321$2_0$383 ==.
+                                   1058 ;	../src/main.c: 321: fname[1]++; break;
+                                   1059 ; genPointerGet
+      0002F5 1E 05            [ 2] 1060 	ldw	x, (0x05, sp)
+      0002F7 F6               [ 1] 1061 	ld	a, (x)
+                                   1062 ; genPlus
+      0002F8 4C               [ 1] 1063 	inc	a
+                                   1064 ; genPointerSet
+      0002F9 1E 05            [ 2] 1065 	ldw	x, (0x05, sp)
+      0002FB F7               [ 1] 1066 	ld	(x), a
+                                   1067 ; genGoto
+      0002FC CCr03r34         [ 2] 1068 	jp	00115$
+                           0002FF  1069 	C$main.c$322$2_0$383 ==.
+                                   1070 ;	../src/main.c: 322: case 0x07: fname[3] = 0x30; 
+                                   1071 ; genLabel
+      0002FF                       1072 00111$:
+                                   1073 ; genPointerSet
+      0002FF 1E 01            [ 2] 1074 	ldw	x, (0x01, sp)
+      000301 A6 30            [ 1] 1075 	ld	a, #0x30
+      000303 F7               [ 1] 1076 	ld	(x), a
+                           000304  1077 	C$main.c$323$2_0$383 ==.
+                                   1078 ;	../src/main.c: 323: fname[2] = 0x30; 
+                                   1079 ; genPointerSet
+      000304 1E 03            [ 2] 1080 	ldw	x, (0x03, sp)
+      000306 A6 30            [ 1] 1081 	ld	a, #0x30
+      000308 F7               [ 1] 1082 	ld	(x), a
+                           000309  1083 	C$main.c$324$2_0$383 ==.
+                                   1084 ;	../src/main.c: 324: fname[1] = 0x30; 
+                                   1085 ; genPointerSet
+      000309 1E 05            [ 2] 1086 	ldw	x, (0x05, sp)
+      00030B A6 30            [ 1] 1087 	ld	a, #0x30
+      00030D F7               [ 1] 1088 	ld	(x), a
+                           00030E  1089 	C$main.c$325$2_0$383 ==.
+                                   1090 ;	../src/main.c: 325: fname[0]++; break;
+                                   1091 ; genPointerGet
+      00030E 1E 07            [ 2] 1092 	ldw	x, (0x07, sp)
+      000310 F6               [ 1] 1093 	ld	a, (x)
+                                   1094 ; genPlus
+      000311 4C               [ 1] 1095 	inc	a
+                                   1096 ; genPointerSet
+      000312 1E 07            [ 2] 1097 	ldw	x, (0x07, sp)
+      000314 F7               [ 1] 1098 	ld	(x), a
+                                   1099 ; genGoto
+      000315 CCr03r34         [ 2] 1100 	jp	00115$
+                           000318  1101 	C$main.c$326$2_0$383 ==.
+                                   1102 ;	../src/main.c: 326: case 0x0f: fname[3] = 0x30; 
+                                   1103 ; genLabel
+      000318                       1104 00112$:
+                                   1105 ; genPointerSet
+      000318 1E 01            [ 2] 1106 	ldw	x, (0x01, sp)
+      00031A A6 30            [ 1] 1107 	ld	a, #0x30
+      00031C F7               [ 1] 1108 	ld	(x), a
+                           00031D  1109 	C$main.c$327$2_0$383 ==.
+                                   1110 ;	../src/main.c: 327: fname[2] = 0x30; 
+                                   1111 ; genPointerSet
+      00031D 1E 03            [ 2] 1112 	ldw	x, (0x03, sp)
+      00031F A6 30            [ 1] 1113 	ld	a, #0x30
+      000321 F7               [ 1] 1114 	ld	(x), a
+                           000322  1115 	C$main.c$328$2_0$383 ==.
+                                   1116 ;	../src/main.c: 328: fname[1] = 0x30; 
+                                   1117 ; genPointerSet
+      000322 1E 05            [ 2] 1118 	ldw	x, (0x05, sp)
+      000324 A6 30            [ 1] 1119 	ld	a, #0x30
+      000326 F7               [ 1] 1120 	ld	(x), a
+                           000327  1121 	C$main.c$329$2_0$383 ==.
+                                   1122 ;	../src/main.c: 329: fname[0] = 0x30; break;
+                                   1123 ; genPointerSet
+      000327 1E 07            [ 2] 1124 	ldw	x, (0x07, sp)
+      000329 A6 30            [ 1] 1125 	ld	a, #0x30
+      00032B F7               [ 1] 1126 	ld	(x), a
+                                   1127 ; genGoto
+      00032C CCr03r34         [ 2] 1128 	jp	00115$
+                           00032F  1129 	C$main.c$330$2_0$383 ==.
+                                   1130 ;	../src/main.c: 330: default: fname[3]++; break;
+                                   1131 ; genLabel
+      00032F                       1132 00113$:
+                                   1133 ; genPlus
+      00032F 9F               [ 1] 1134 	ld	a, xl
+      000330 4C               [ 1] 1135 	inc	a
+                                   1136 ; genPointerSet
+      000331 1E 01            [ 2] 1137 	ldw	x, (0x01, sp)
+      000333 F7               [ 1] 1138 	ld	(x), a
+                           000334  1139 	C$main.c$331$1_0$378 ==.
+                                   1140 ;	../src/main.c: 331: }
+                                   1141 ; genLabel
+      000334                       1142 00115$:
+                           000334  1143 	C$main.c$332$1_0$378 ==.
+                                   1144 ;	../src/main.c: 332: }
+                                   1145 ; genEndFunction
+      000334 5B 08            [ 2] 1146 	addw	sp, #8
+                           000336  1147 	C$main.c$332$1_0$378 ==.
+                           000336  1148 	XFmain$GetNxtFileName$0$0 ==.
+      000336 81               [ 4] 1149 	ret
+                           000337  1150 	Fmain$ConvertFileName$0$0 ==.
+                           000337  1151 	C$main.c$345$1_0$385 ==.
+                                   1152 ;	../src/main.c: 345: static void ConvertFileName(uint16_t firstFileName, char * fname){
+                                   1153 ; genLabel
+                                   1154 ;	-----------------------------------------
+                                   1155 ;	 function ConvertFileName
+                                   1156 ;	-----------------------------------------
+                                   1157 ;	Register assignment might be sub-optimal.
+                                   1158 ;	Stack space usage: 4 bytes.
+      000337                       1159 _ConvertFileName:
+      000337 52 04            [ 2] 1160 	sub	sp, #4
+                           000339  1161 	C$main.c$348$1_0$385 ==.
+                                   1162 ;	../src/main.c: 348: val = firstFileName/1000;
+                                   1163 ; genCast
+                                   1164 ; genAssign
+      000339 16 07            [ 2] 1165 	ldw	y, (0x07, sp)
+      00033B 17 03            [ 2] 1166 	ldw	(0x03, sp), y
+                                   1167 ; genDivMod
+      00033D 1E 03            [ 2] 1168 	ldw	x, (0x03, sp)
+      00033F 90 AE 03 E8      [ 2] 1169 	ldw	y, #0x03e8
+      000343 65               [ 2] 1170 	divw	x, y
+                                   1171 ; genCast
+                                   1172 ; genAssign
+                                   1173 ; genAssign
+                           000344  1174 	C$main.c$349$1_0$385 ==.
+                                   1175 ;	../src/main.c: 349: fname[0] = val + 0x30;
+                                   1176 ; genAssign
+      000344 16 09            [ 2] 1177 	ldw	y, (0x09, sp)
+      000346 17 01            [ 2] 1178 	ldw	(0x01, sp), y
+                                   1179 ; genCast
+                                   1180 ; genAssign
+      000348 9F               [ 1] 1181 	ld	a, xl
+                                   1182 ; genCast
+                                   1183 ; genAssign
+                                   1184 ; genPlus
+      000349 AB 30            [ 1] 1185 	add	a, #0x30
+                                   1186 ; genPointerSet
+      00034B 16 01            [ 2] 1187 	ldw	y, (0x01, sp)
+      00034D 90 F7            [ 1] 1188 	ld	(y), a
+                           00034F  1189 	C$main.c$350$1_0$385 ==.
+                                   1190 ;	../src/main.c: 350: firstFileName -=  val*1000;
+                                   1191 ; genCast
+                                   1192 ; genAssign
+                                   1193 ; genIPush
+      00034F 89               [ 2] 1194 	pushw	x
+                                   1195 ; genIPush
+      000350 4B E8            [ 1] 1196 	push	#0xe8
+      000352 4B 03            [ 1] 1197 	push	#0x03
+                                   1198 ; genCall
+      000354 CDr00r00         [ 4] 1199 	call	__mulint
+      000357 5B 04            [ 2] 1200 	addw	sp, #4
+                                   1201 ; genMinus
+      000359 50               [ 2] 1202 	negw	x
+      00035A 72 FB 03         [ 2] 1203 	addw	x, (0x03, sp)
+                                   1204 ; genCast
+                                   1205 ; genAssign
+                                   1206 ; genAssign
+      00035D 1F 07            [ 2] 1207 	ldw	(0x07, sp), x
+                           00035F  1208 	C$main.c$351$1_0$385 ==.
+                                   1209 ;	../src/main.c: 351: val = firstFileName/100;
+                                   1210 ; genCast
+                                   1211 ; genAssign
+      00035F 16 07            [ 2] 1212 	ldw	y, (0x07, sp)
+      000361 17 03            [ 2] 1213 	ldw	(0x03, sp), y
+                                   1214 ; genDivMod
+      000363 1E 03            [ 2] 1215 	ldw	x, (0x03, sp)
+      000365 90 AE 00 64      [ 2] 1216 	ldw	y, #0x0064
+      000369 65               [ 2] 1217 	divw	x, y
+                                   1218 ; genCast
+                                   1219 ; genAssign
+                                   1220 ; genAssign
+                           00036A  1221 	C$main.c$352$1_0$385 ==.
+                                   1222 ;	../src/main.c: 352: fname[1] = val + 0x30;
+                                   1223 ; genPlus
+      00036A 16 01            [ 2] 1224 	ldw	y, (0x01, sp)
+      00036C 90 5C            [ 1] 1225 	incw	y
+                                   1226 ; genCast
+                                   1227 ; genAssign
+      00036E 9F               [ 1] 1228 	ld	a, xl
+                                   1229 ; genCast
+                                   1230 ; genAssign
+                                   1231 ; genPlus
+      00036F AB 30            [ 1] 1232 	add	a, #0x30
+                                   1233 ; genPointerSet
+      000371 90 F7            [ 1] 1234 	ld	(y), a
+                           000373  1235 	C$main.c$353$1_0$385 ==.
+                                   1236 ;	../src/main.c: 353: firstFileName -=  val*100;
+                                   1237 ; genCast
+                                   1238 ; genAssign
+                                   1239 ; genIPush
+      000373 89               [ 2] 1240 	pushw	x
+                                   1241 ; genIPush
+      000374 4B 64            [ 1] 1242 	push	#0x64
+      000376 4B 00            [ 1] 1243 	push	#0x00
+                                   1244 ; genCall
+      000378 CDr00r00         [ 4] 1245 	call	__mulint
+      00037B 5B 04            [ 2] 1246 	addw	sp, #4
+                                   1247 ; genMinus
+      00037D 50               [ 2] 1248 	negw	x
+      00037E 72 FB 03         [ 2] 1249 	addw	x, (0x03, sp)
+                                   1250 ; genCast
+                                   1251 ; genAssign
+                                   1252 ; genAssign
+      000381 1F 07            [ 2] 1253 	ldw	(0x07, sp), x
+                           000383  1254 	C$main.c$354$1_0$385 ==.
+                                   1255 ;	../src/main.c: 354: val = firstFileName/10;
+                                   1256 ; genCast
+                                   1257 ; genAssign
+      000383 16 07            [ 2] 1258 	ldw	y, (0x07, sp)
+      000385 17 03            [ 2] 1259 	ldw	(0x03, sp), y
+                                   1260 ; genDivMod
+      000387 1E 03            [ 2] 1261 	ldw	x, (0x03, sp)
+      000389 90 AE 00 0A      [ 2] 1262 	ldw	y, #0x000a
+      00038D 65               [ 2] 1263 	divw	x, y
+                                   1264 ; genCast
+                                   1265 ; genAssign
+                                   1266 ; genAssign
+                           00038E  1267 	C$main.c$355$1_0$385 ==.
+                                   1268 ;	../src/main.c: 355: fname[2] = val + 0x30;
+                                   1269 ; genPlus
+      00038E 16 01            [ 2] 1270 	ldw	y, (0x01, sp)
+      000390 72 A9 00 02      [ 2] 1271 	addw	y, #0x0002
+                                   1272 ; genCast
+                                   1273 ; genAssign
+      000394 9F               [ 1] 1274 	ld	a, xl
+                                   1275 ; genCast
+                                   1276 ; genAssign
+                                   1277 ; genPlus
+      000395 AB 30            [ 1] 1278 	add	a, #0x30
+                                   1279 ; genPointerSet
+      000397 90 F7            [ 1] 1280 	ld	(y), a
+                           000399  1281 	C$main.c$356$1_0$385 ==.
+                                   1282 ;	../src/main.c: 356: firstFileName -=  val*10;
+                                   1283 ; genCast
+                                   1284 ; genAssign
+                                   1285 ; genMult
+                                   1286 ; genMultLit
+      000399 89               [ 2] 1287 	pushw	x
+      00039A 58               [ 2] 1288 	sllw	x
+      00039B 58               [ 2] 1289 	sllw	x
+      00039C 72 FB 01         [ 2] 1290 	addw	x, (1, sp)
+      00039F 58               [ 2] 1291 	sllw	x
+      0003A0 5B 02            [ 2] 1292 	addw	sp, #2
+                                   1293 ; genMinus
+      0003A2 50               [ 2] 1294 	negw	x
+      0003A3 72 FB 03         [ 2] 1295 	addw	x, (0x03, sp)
+                                   1296 ; genCast
+                                   1297 ; genAssign
+                                   1298 ; genAssign
+      0003A6 1F 07            [ 2] 1299 	ldw	(0x07, sp), x
+                           0003A8  1300 	C$main.c$357$1_0$385 ==.
+                                   1301 ;	../src/main.c: 357: fname[3] = firstFileName + 0x30;
+                                   1302 ; genPlus
+      0003A8 1E 01            [ 2] 1303 	ldw	x, (0x01, sp)
+      0003AA 1C 00 03         [ 2] 1304 	addw	x, #0x0003
+                                   1305 ; genCast
+                                   1306 ; genAssign
+      0003AD 7B 08            [ 1] 1307 	ld	a, (0x08, sp)
+                                   1308 ; genCast
+                                   1309 ; genAssign
+                                   1310 ; genPlus
+      0003AF AB 30            [ 1] 1311 	add	a, #0x30
+                                   1312 ; genPointerSet
+      0003B1 F7               [ 1] 1313 	ld	(x), a
+                           0003B2  1314 	C$main.c$358$1_0$385 ==.
+                                   1315 ;	../src/main.c: 358: fname[4] = '\0';
+                                   1316 ; genPlus
+      0003B2 1E 01            [ 2] 1317 	ldw	x, (0x01, sp)
+      0003B4 1C 00 04         [ 2] 1318 	addw	x, #0x0004
+                                   1319 ; genPointerSet
+      0003B7 7F               [ 1] 1320 	clr	(x)
+                                   1321 ; genLabel
+      0003B8                       1322 00101$:
+                           0003B8  1323 	C$main.c$359$1_0$385 ==.
+                                   1324 ;	../src/main.c: 359: }
+                                   1325 ; genEndFunction
+      0003B8 5B 04            [ 2] 1326 	addw	sp, #4
+                           0003BA  1327 	C$main.c$359$1_0$385 ==.
+                           0003BA  1328 	XFmain$ConvertFileName$0$0 ==.
+      0003BA 81               [ 4] 1329 	ret
+                           0003BB  1330 	Fmain$GetCfg$0$0 ==.
+                           0003BB  1331 	C$main.c$374$1_0$387 ==.
+                                   1332 ;	../src/main.c: 374: static UINT GetCfg( uint8_t * pCfgBuf,  cfg_t * pcfg){
+                                   1333 ; genLabel
+                                   1334 ;	-----------------------------------------
+                                   1335 ;	 function GetCfg
+                                   1336 ;	-----------------------------------------
+                                   1337 ;	Register assignment might be sub-optimal.
+                                   1338 ;	Stack space usage: 18 bytes.
+      0003BB                       1339 _GetCfg:
+      0003BB 52 12            [ 2] 1340 	sub	sp, #18
+                           0003BD  1341 	C$main.c$377$1_0$387 ==.
+                                   1342 ;	../src/main.c: 377: if(!IsValidCfgBuf(pCfgBuf)) return 1; 
+                                   1343 ; genIPush
+      0003BD 1E 15            [ 2] 1344 	ldw	x, (0x15, sp)
+      0003BF 89               [ 2] 1345 	pushw	x
+                                   1346 ; genCall
+      0003C0 CDr04rCE         [ 4] 1347 	call	_IsValidCfgBuf
+      0003C3 85               [ 2] 1348 	popw	x
+      0003C4 6B 12            [ 1] 1349 	ld	(0x12, sp), a
+                                   1350 ; genIfx
+      0003C6 0D 12            [ 1] 1351 	tnz	(0x12, sp)
+      0003C8 27 03            [ 1] 1352 	jreq	00118$
+      0003CA CCr03rD2         [ 2] 1353 	jp	00102$
+      0003CD                       1354 00118$:
+                                   1355 ; genReturn
+      0003CD 5F               [ 1] 1356 	clrw	x
+      0003CE 5C               [ 1] 1357 	incw	x
+      0003CF CCr04rCB         [ 2] 1358 	jp	00106$
+                                   1359 ; genLabel
+      0003D2                       1360 00102$:
+                           0003D2  1361 	C$main.c$380$1_0$387 ==.
+                                   1362 ;	../src/main.c: 380: pcfg->sampFreq = pCfgBuf[0]+(((uint16_t)pCfgBuf[1])<<8);
+                                   1363 ; genAssign
+      0003D2 16 17            [ 2] 1364 	ldw	y, (0x17, sp)
+      0003D4 17 01            [ 2] 1365 	ldw	(0x01, sp), y
+                                   1366 ; genAssign
+      0003D6 16 15            [ 2] 1367 	ldw	y, (0x15, sp)
+      0003D8 17 03            [ 2] 1368 	ldw	(0x03, sp), y
+                                   1369 ; genPointerGet
+      0003DA 1E 03            [ 2] 1370 	ldw	x, (0x03, sp)
+      0003DC F6               [ 1] 1371 	ld	a, (x)
+                                   1372 ; genCast
+                                   1373 ; genAssign
+      0003DD 5F               [ 1] 1374 	clrw	x
+      0003DE 97               [ 1] 1375 	ld	xl, a
+                                   1376 ; genAssign
+      0003DF 16 03            [ 2] 1377 	ldw	y, (0x03, sp)
+                                   1378 ; genPointerGet
+      0003E1 90 E6 01         [ 1] 1379 	ld	a, (0x1, y)
+                                   1380 ; genCast
+                                   1381 ; genAssign
+      0003E4 90 95            [ 1] 1382 	ld	yh, a
+      0003E6 4F               [ 1] 1383 	clr	a
+                                   1384 ; genLeftShiftLiteral
+      0003E7 4F               [ 1] 1385 	clr	a
+                                   1386 ; genCast
+                                   1387 ; genAssign
+      0003E8 1F 11            [ 2] 1388 	ldw	(0x11, sp), x
+                                   1389 ; genPlus
+      0003EA 90 97            [ 1] 1390 	ld	yl, a
+      0003EC 72 F9 11         [ 2] 1391 	addw	y, (0x11, sp)
+                                   1392 ; genPointerSet
+      0003EF 1E 01            [ 2] 1393 	ldw	x, (0x01, sp)
+      0003F1 FF               [ 2] 1394 	ldw	(x), y
+                           0003F2  1395 	C$main.c$382$1_0$387 ==.
+                                   1396 ;	../src/main.c: 382: fID = pCfgBuf[2]+(((uint16_t)pCfgBuf[3])<<8);
+                                   1397 ; genAssign
+      0003F2 1E 03            [ 2] 1398 	ldw	x, (0x03, sp)
+                                   1399 ; genPointerGet
+      0003F4 E6 02            [ 1] 1400 	ld	a, (0x2, x)
+                                   1401 ; genCast
+                                   1402 ; genAssign
+      0003F6 90 5F            [ 1] 1403 	clrw	y
+      0003F8 90 97            [ 1] 1404 	ld	yl, a
+                                   1405 ; genAssign
+      0003FA 1E 03            [ 2] 1406 	ldw	x, (0x03, sp)
+                                   1407 ; genPointerGet
+      0003FC E6 03            [ 1] 1408 	ld	a, (0x3, x)
+                                   1409 ; genCast
+                                   1410 ; genAssign
+      0003FE 5F               [ 1] 1411 	clrw	x
+                                   1412 ; genLeftShiftLiteral
+      0003FF 95               [ 1] 1413 	ld	xh, a
+      000400 4F               [ 1] 1414 	clr	a
+                                   1415 ; genCast
+                                   1416 ; genAssign
+      000401 17 11            [ 2] 1417 	ldw	(0x11, sp), y
+                                   1418 ; genPlus
+      000403 97               [ 1] 1419 	ld	xl, a
+      000404 72 FB 11         [ 2] 1420 	addw	x, (0x11, sp)
+                                   1421 ; genAssign
+                           000407  1422 	C$main.c$384$1_0$387 ==.
+                                   1423 ;	../src/main.c: 384: ConvertFileName(fID, pcfg->firstFileName);
+                                   1424 ; genPlus
+      000407 16 01            [ 2] 1425 	ldw	y, (0x01, sp)
+      000409 72 A9 00 02      [ 2] 1426 	addw	y, #0x0002
+                                   1427 ; genIPush
+      00040D 90 89            [ 2] 1428 	pushw	y
+                                   1429 ; genIPush
+      00040F 89               [ 2] 1430 	pushw	x
+                                   1431 ; genCall
+      000410 CDr03r37         [ 4] 1432 	call	_ConvertFileName
+      000413 5B 04            [ 2] 1433 	addw	sp, #4
+                           000415  1434 	C$main.c$385$1_0$387 ==.
+                                   1435 ;	../src/main.c: 385: pcfg->fileNo = pCfgBuf[4]+(((uint16_t)pCfgBuf[5])<<8);
+                                   1436 ; genPlus
+      000415 16 01            [ 2] 1437 	ldw	y, (0x01, sp)
+      000417 72 A9 00 0B      [ 2] 1438 	addw	y, #0x000b
+                                   1439 ; genAssign
+      00041B 1E 03            [ 2] 1440 	ldw	x, (0x03, sp)
+                                   1441 ; genPointerGet
+      00041D E6 04            [ 1] 1442 	ld	a, (0x4, x)
+                                   1443 ; genCast
+                                   1444 ; genAssign
+      00041F 6B 10            [ 1] 1445 	ld	(0x10, sp), a
+      000421 0F 0F            [ 1] 1446 	clr	(0x0f, sp)
+                                   1447 ; genAssign
+      000423 1E 03            [ 2] 1448 	ldw	x, (0x03, sp)
+                                   1449 ; genPointerGet
+      000425 E6 05            [ 1] 1450 	ld	a, (0x5, x)
+                                   1451 ; genCast
+                                   1452 ; genAssign
+      000427 5F               [ 1] 1453 	clrw	x
+                                   1454 ; genLeftShiftLiteral
+      000428 6B 11            [ 1] 1455 	ld	(0x11, sp), a
+      00042A 0F 12            [ 1] 1456 	clr	(0x12, sp)
+                                   1457 ; genCast
+                                   1458 ; genAssign
+      00042C 1E 0F            [ 2] 1459 	ldw	x, (0x0f, sp)
+                                   1460 ; genPlus
+      00042E 72 FB 11         [ 2] 1461 	addw	x, (0x11, sp)
+                                   1462 ; genPointerSet
+      000431 90 FF            [ 2] 1463 	ldw	(y), x
+                           000433  1464 	C$main.c$386$1_0$387 ==.
+                                   1465 ;	../src/main.c: 386: pcfg->fileSzInBlock = pCfgBuf[6]+ \
+                                   1466 ; genPlus
+      000433 1E 01            [ 2] 1467 	ldw	x, (0x01, sp)
+      000435 1C 00 07         [ 2] 1468 	addw	x, #0x0007
+      000438 1F 05            [ 2] 1469 	ldw	(0x05, sp), x
+                                   1470 ; genAssign
+      00043A 1E 03            [ 2] 1471 	ldw	x, (0x03, sp)
+                                   1472 ; genPointerGet
+      00043C E6 06            [ 1] 1473 	ld	a, (0x6, x)
+      00043E 90 97            [ 1] 1474 	ld	yl, a
+                                   1475 ; genAssign
+      000440 1E 03            [ 2] 1476 	ldw	x, (0x03, sp)
+                                   1477 ; genPointerGet
+      000442 E6 07            [ 1] 1478 	ld	a, (0x7, x)
+                                   1479 ; genCast
+                                   1480 ; genAssign
+      000444 0F 11            [ 1] 1481 	clr	(0x11, sp)
+      000446 5F               [ 1] 1482 	clrw	x
+                                   1483 ; genLeftShiftLiteral
+      000447 95               [ 1] 1484 	ld	xh, a
+      000448 7B 11            [ 1] 1485 	ld	a, (0x11, sp)
+      00044A 0F 0A            [ 1] 1486 	clr	(0x0a, sp)
+                                   1487 ; genCast
+                                   1488 ; genAssign
+      00044C 0F 11            [ 1] 1489 	clr	(0x11, sp)
+      00044E 0F 10            [ 1] 1490 	clr	(0x10, sp)
+      000450 0F 0F            [ 1] 1491 	clr	(0x0f, sp)
+                                   1492 ; genPlus
+      000452 88               [ 1] 1493 	push	a
+      000453 90 9F            [ 1] 1494 	ld	a, yl
+      000455 1B 0B            [ 1] 1495 	add	a, (0x0b, sp)
+      000457 90 97            [ 1] 1496 	ld	yl, a
+      000459 9E               [ 1] 1497 	ld	a, xh
+      00045A 19 12            [ 1] 1498 	adc	a, (0x12, sp)
+      00045C 90 95            [ 1] 1499 	ld	yh, a
+      00045E 84               [ 1] 1500 	pop	a
+      00045F 19 10            [ 1] 1501 	adc	a, (0x10, sp)
+      000461 6B 0C            [ 1] 1502 	ld	(0x0c, sp), a
+      000463 9F               [ 1] 1503 	ld	a, xl
+      000464 19 0F            [ 1] 1504 	adc	a, (0x0f, sp)
+      000466 6B 0B            [ 1] 1505 	ld	(0x0b, sp), a
+                                   1506 ; genAssign
+      000468 1E 03            [ 2] 1507 	ldw	x, (0x03, sp)
+                                   1508 ; genPointerGet
+      00046A E6 08            [ 1] 1509 	ld	a, (0x8, x)
+                                   1510 ; genCast
+                                   1511 ; genAssign
+      00046C 5F               [ 1] 1512 	clrw	x
+      00046D 0F 0F            [ 1] 1513 	clr	(0x0f, sp)
+                                   1514 ; genLeftShiftLiteral
+      00046F 0F 12            [ 1] 1515 	clr	(0x12, sp)
+      000471 0F 11            [ 1] 1516 	clr	(0x11, sp)
+                                   1517 ; genPlus
+      000473 72 F9 11         [ 2] 1518 	addw	y, (0x11, sp)
+      000476 19 0C            [ 1] 1519 	adc	a, (0x0c, sp)
+      000478 6B 08            [ 1] 1520 	ld	(0x08, sp), a
+      00047A 9F               [ 1] 1521 	ld	a, xl
+      00047B 19 0B            [ 1] 1522 	adc	a, (0x0b, sp)
+      00047D 6B 07            [ 1] 1523 	ld	(0x07, sp), a
+                                   1524 ; genAssign
+      00047F 1E 03            [ 2] 1525 	ldw	x, (0x03, sp)
+                                   1526 ; genPointerGet
+      000481 E6 09            [ 1] 1527 	ld	a, (0x9, x)
+                                   1528 ; genCast
+                                   1529 ; genAssign
+      000483 5F               [ 1] 1530 	clrw	x
+      000484 0F 0F            [ 1] 1531 	clr	(0x0f, sp)
+                                   1532 ; genLeftShiftLiteral
+      000486 0F 0E            [ 1] 1533 	clr	(0x0e, sp)
+      000488 5F               [ 1] 1534 	clrw	x
+                                   1535 ; genPlus
+      000489 88               [ 1] 1536 	push	a
+      00048A 90 9F            [ 1] 1537 	ld	a, yl
+      00048C 1B 0F            [ 1] 1538 	add	a, (0x0f, sp)
+      00048E 90 97            [ 1] 1539 	ld	yl, a
+      000490 90 9E            [ 1] 1540 	ld	a, yh
+      000492 89               [ 2] 1541 	pushw	x
+      000493 19 02            [ 1] 1542 	adc	a, (2, sp)
+      000495 85               [ 2] 1543 	popw	x
+      000496 90 95            [ 1] 1544 	ld	yh, a
+      000498 9E               [ 1] 1545 	ld	a, xh
+      000499 19 09            [ 1] 1546 	adc	a, (0x09, sp)
+      00049B 6B 11            [ 1] 1547 	ld	(0x11, sp), a
+      00049D 84               [ 1] 1548 	pop	a
+      00049E 19 07            [ 1] 1549 	adc	a, (0x07, sp)
+      0004A0 6B 0F            [ 1] 1550 	ld	(0x0f, sp), a
+                                   1551 ; genPointerSet
+      0004A2 1E 05            [ 2] 1552 	ldw	x, (0x05, sp)
+      0004A4 EF 02            [ 2] 1553 	ldw	(0x2, x), y
+      0004A6 16 0F            [ 2] 1554 	ldw	y, (0x0f, sp)
+      0004A8 FF               [ 2] 1555 	ldw	(x), y
+                           0004A9  1556 	C$main.c$390$1_0$387 ==.
+                                   1557 ;	../src/main.c: 390: pcfg->channel = pCfgBuf[10];
+                                   1558 ; genPlus
+      0004A9 1E 01            [ 2] 1559 	ldw	x, (0x01, sp)
+      0004AB 1C 00 0D         [ 2] 1560 	addw	x, #0x000d
+                                   1561 ; genAssign
+      0004AE 16 03            [ 2] 1562 	ldw	y, (0x03, sp)
+                                   1563 ; genPointerGet
+      0004B0 90 E6 0A         [ 1] 1564 	ld	a, (0xa, y)
+                                   1565 ; genPointerSet
+      0004B3 F7               [ 1] 1566 	ld	(x), a
+                           0004B4  1567 	C$main.c$391$1_0$387 ==.
+                                   1568 ;	../src/main.c: 391: if(pCfgBuf[11] == 0)
+                                   1569 ; genAssign
+      0004B4 1E 03            [ 2] 1570 	ldw	x, (0x03, sp)
+                                   1571 ; genPointerGet
+      0004B6 E6 0B            [ 1] 1572 	ld	a, (0xb, x)
+                           0004B8  1573 	C$main.c$393$1_0$387 ==.
+                                   1574 ;	../src/main.c: 393: pcfg->isFullResultion = false;
+                                   1575 ; genPlus
+      0004B8 1E 01            [ 2] 1576 	ldw	x, (0x01, sp)
+      0004BA 1C 00 0E         [ 2] 1577 	addw	x, #0x000e
+                           0004BD  1578 	C$main.c$391$1_0$387 ==.
+                                   1579 ;	../src/main.c: 391: if(pCfgBuf[11] == 0)
+                                   1580 ; genIfx
+      0004BD 4D               [ 1] 1581 	tnz	a
+      0004BE 27 03            [ 1] 1582 	jreq	00119$
+      0004C0 CCr04rC7         [ 2] 1583 	jp	00104$
+      0004C3                       1584 00119$:
+                           0004C3  1585 	C$main.c$393$2_0$388 ==.
+                                   1586 ;	../src/main.c: 393: pcfg->isFullResultion = false;
+                                   1587 ; genPointerSet
+      0004C3 7F               [ 1] 1588 	clr	(x)
+                                   1589 ; genGoto
+      0004C4 CCr04rCA         [ 2] 1590 	jp	00105$
+                                   1591 ; genLabel
+      0004C7                       1592 00104$:
+                           0004C7  1593 	C$main.c$395$2_0$389 ==.
+                                   1594 ;	../src/main.c: 395: pcfg->isFullResultion = true;
+                                   1595 ; genPointerSet
+      0004C7 A6 01            [ 1] 1596 	ld	a, #0x01
+      0004C9 F7               [ 1] 1597 	ld	(x), a
+                                   1598 ; genLabel
+      0004CA                       1599 00105$:
+                           0004CA  1600 	C$main.c$398$1_0$387 ==.
+                                   1601 ;	../src/main.c: 398: return 0x0;
+                                   1602 ; genReturn
+      0004CA 5F               [ 1] 1603 	clrw	x
+                                   1604 ; genLabel
+      0004CB                       1605 00106$:
+                           0004CB  1606 	C$main.c$399$1_0$387 ==.
+                                   1607 ;	../src/main.c: 399: }
+                                   1608 ; genEndFunction
+      0004CB 5B 12            [ 2] 1609 	addw	sp, #18
+                           0004CD  1610 	C$main.c$399$1_0$387 ==.
+                           0004CD  1611 	XFmain$GetCfg$0$0 ==.
+      0004CD 81               [ 4] 1612 	ret
+                           0004CE  1613 	Fmain$IsValidCfgBuf$0$0 ==.
+                           0004CE  1614 	C$main.c$413$1_0$391 ==.
+                                   1615 ;	../src/main.c: 413: static uint8_t IsValidCfgBuf(uint8_t *pCfgBuf){
+                                   1616 ; genLabel
+                                   1617 ;	-----------------------------------------
+                                   1618 ;	 function IsValidCfgBuf
+                                   1619 ;	-----------------------------------------
+                                   1620 ;	Register assignment might be sub-optimal.
+                                   1621 ;	Stack space usage: 1 bytes.
+      0004CE                       1622 _IsValidCfgBuf:
+      0004CE 88               [ 1] 1623 	push	a
+                           0004CF  1624 	C$main.c$414$2_0$391 ==.
+                                   1625 ;	../src/main.c: 414: uint8_t crc = 0;
+                                   1626 ; genAssign
+      0004CF 0F 01            [ 1] 1627 	clr	(0x01, sp)
+                           0004D1  1628 	C$main.c$415$2_0$391 ==.
+                                   1629 ;	../src/main.c: 415: int i = 0;
+                                   1630 ; genAssign
+      0004D1 5F               [ 1] 1631 	clrw	x
+                           0004D2  1632 	C$main.c$422$1_0$391 ==.
+                                   1633 ;	../src/main.c: 422: return false;	
+                                   1634 ; genAssign
+                                   1635 ; genLabel
+      0004D2                       1636 00105$:
+                           0004D2  1637 	C$main.c$416$2_0$392 ==.
+                                   1638 ;	../src/main.c: 416: for(; i < CFG_BUF_SZ - 1; i++){
+                                   1639 ; genCmp
+                                   1640 ; genCmpTop
+      0004D2 A3 00 0C         [ 2] 1641 	cpw	x, #0x000c
+      0004D5 2F 03            [ 1] 1642 	jrslt	00125$
+      0004D7 CCr04rE9         [ 2] 1643 	jp	00101$
+      0004DA                       1644 00125$:
+                                   1645 ; skipping generated iCode
+                           0004DA  1646 	C$main.c$417$3_0$393 ==.
+                                   1647 ;	../src/main.c: 417: crc += pCfgBuf[i];		
+                                   1648 ; genPlus
+      0004DA 90 93            [ 1] 1649 	ldw	y, x
+      0004DC 72 F9 04         [ 2] 1650 	addw	y, (0x04, sp)
+                                   1651 ; genPointerGet
+      0004DF 90 F6            [ 1] 1652 	ld	a, (y)
+                                   1653 ; genPlus
+      0004E1 1B 01            [ 1] 1654 	add	a, (0x01, sp)
+      0004E3 6B 01            [ 1] 1655 	ld	(0x01, sp), a
+                           0004E5  1656 	C$main.c$416$2_0$392 ==.
+                                   1657 ;	../src/main.c: 416: for(; i < CFG_BUF_SZ - 1; i++){
+                                   1658 ; genPlus
+      0004E5 5C               [ 1] 1659 	incw	x
+                                   1660 ; genGoto
+      0004E6 CCr04rD2         [ 2] 1661 	jp	00105$
+                                   1662 ; genLabel
+      0004E9                       1663 00101$:
+                           0004E9  1664 	C$main.c$419$1_0$391 ==.
+                                   1665 ;	../src/main.c: 419: if(crc == pCfgBuf[CFG_BUF_SZ-1])
+                                   1666 ; genAssign
+      0004E9 1E 04            [ 2] 1667 	ldw	x, (0x04, sp)
+                                   1668 ; genPointerGet
+      0004EB E6 0C            [ 1] 1669 	ld	a, (0xc, x)
+                                   1670 ; genCmpEQorNE
+      0004ED 11 01            [ 1] 1671 	cp	a, (0x01, sp)
+      0004EF 26 03            [ 1] 1672 	jrne	00127$
+      0004F1 CCr04rF7         [ 2] 1673 	jp	00128$
+      0004F4                       1674 00127$:
+      0004F4 CCr04rFC         [ 2] 1675 	jp	00103$
+      0004F7                       1676 00128$:
+                                   1677 ; skipping generated iCode
+                           0004F7  1678 	C$main.c$420$1_0$391 ==.
+                                   1679 ;	../src/main.c: 420: return true;
+                                   1680 ; genReturn
+      0004F7 A6 01            [ 1] 1681 	ld	a, #0x01
+      0004F9 CCr04rFD         [ 2] 1682 	jp	00107$
+                                   1683 ; genLabel
+      0004FC                       1684 00103$:
+                           0004FC  1685 	C$main.c$422$1_0$391 ==.
+                                   1686 ;	../src/main.c: 422: return false;	
+                                   1687 ; genReturn
+      0004FC 4F               [ 1] 1688 	clr	a
+                                   1689 ; genLabel
+      0004FD                       1690 00107$:
+                           0004FD  1691 	C$main.c$423$1_0$391 ==.
+                                   1692 ;	../src/main.c: 423: }
+                                   1693 ; genEndFunction
+      0004FD 5B 01            [ 2] 1694 	addw	sp, #1
+                           0004FF  1695 	C$main.c$423$1_0$391 ==.
+                           0004FF  1696 	XFmain$IsValidCfgBuf$0$0 ==.
+      0004FF 81               [ 4] 1697 	ret
+                           000500  1698 	Fmain$clkInit$0$0 ==.
+                           000500  1699 	C$main.c$432$1_0$395 ==.
+                                   1700 ;	../src/main.c: 432: static void clkInit( void )
+                                   1701 ; genLabel
+                                   1702 ;	-----------------------------------------
+                                   1703 ;	 function clkInit
+                                   1704 ;	-----------------------------------------
+                                   1705 ;	Register assignment is optimal.
+                                   1706 ;	Stack space usage: 0 bytes.
+      000500                       1707 _clkInit:
+                           000500  1708 	C$main.c$435$1_0$395 ==.
+                                   1709 ;	../src/main.c: 435: CLK->CKDIVR = 0;//(CLK_PRESCALER_HSIDIV1|CLK_PRESCALER_CPUDIV1);
+                                   1710 ; genPointerSet
+      000500 35 00 50 C6      [ 1] 1711 	mov	0x50c6+0, #0x00
+                           000504  1712 	C$main.c$443$1_0$395 ==.
+                                   1713 ;	../src/main.c: 443: CLK->PCKENR1 |= (CLK_PCKENR1_TIM4|CLK_PCKENR1_SPI|CLK_PCKENR1_UART1);
+                                   1714 ; genPointerGet
+      000504 C6 50 C7         [ 1] 1715 	ld	a, 0x50c7
+                                   1716 ; genOr
+      000507 AA 16            [ 1] 1717 	or	a, #0x16
+                                   1718 ; genPointerSet
+      000509 C7 50 C7         [ 1] 1719 	ld	0x50c7, a
+                           00050C  1720 	C$main.c$444$1_0$395 ==.
+                                   1721 ;	../src/main.c: 444: CLK->PCKENR2 |= (CLK_PCKENR2_ADC);
+                                   1722 ; genPointerGet
+      00050C C6 50 CA         [ 1] 1723 	ld	a, 0x50ca
+                                   1724 ; genOr
+      00050F AA 08            [ 1] 1725 	or	a, #0x08
+                                   1726 ; genPointerSet
+      000511 C7 50 CA         [ 1] 1727 	ld	0x50ca, a
+                                   1728 ; genLabel
+      000514                       1729 00101$:
+                           000514  1730 	C$main.c$445$1_0$395 ==.
+                                   1731 ;	../src/main.c: 445: }
+                                   1732 ; genEndFunction
+                           000514  1733 	C$main.c$445$1_0$395 ==.
+                           000514  1734 	XFmain$clkInit$0$0 ==.
+      000514 81               [ 4] 1735 	ret
+                           000515  1736 	G$assert_failed$0$0 ==.
+                           000515  1737 	C$main.c$460$1_0$397 ==.
+                                   1738 ;	../src/main.c: 460: void assert_failed(uint8_t* file, uint32_t line)
+                                   1739 ; genLabel
+                                   1740 ;	-----------------------------------------
+                                   1741 ;	 function assert_failed
+                                   1742 ;	-----------------------------------------
+                                   1743 ;	Register assignment is optimal.
+                                   1744 ;	Stack space usage: 0 bytes.
+      000515                       1745 _assert_failed:
+                           000515  1746 	C$main.c$466$1_0$397 ==.
+                                   1747 ;	../src/main.c: 466: while (1)
+                                   1748 ; genLabel
+      000515                       1749 00102$:
+                                   1750 ; genGoto
+      000515 CCr05r15         [ 2] 1751 	jp	00102$
+                                   1752 ; genLabel
+      000518                       1753 00104$:
+                           000518  1754 	C$main.c$469$1_0$397 ==.
+                                   1755 ;	../src/main.c: 469: }
+                                   1756 ; genEndFunction
+                           000518  1757 	C$main.c$469$1_0$397 ==.
+                           000518  1758 	XG$assert_failed$0$0 ==.
+      000518 81               [ 4] 1759 	ret
+                                   1760 	.area CODE
+                                   1761 	.area CONST
+                           000000  1762 Fmain$__str_0$0_0$0 == .
+                                   1763 	.area CONST
+      000000                       1764 ___str_0:
+      000000 43 46 47              1765 	.ascii "CFG"
+      000003 00                    1766 	.db 0x00
+                                   1767 	.area CODE
+                                   1768 	.area INITIALIZER
+                           000000  1769 Fmain$__xinit_blkCnt$0_0$0 == .
+      000000                       1770 __xinit__blkCnt:
+      000000 00                    1771 	.db #0x00	; 0
+                           000001  1772 Fmain$__xinit_fileBlkCnt$0_0$0 == .
+      000001                       1773 __xinit__fileBlkCnt:
+      000001 00 00 00 00           1774 	.byte #0x00, #0x00, #0x00, #0x00	; 0
+                           000005  1775 Fmain$__xinit_fileNoCnt$0_0$0 == .
+      000005                       1776 __xinit__fileNoCnt:
+      000005 00 00                 1777 	.dw #0x0000
+                                   1778 	.area CABS (ABS)

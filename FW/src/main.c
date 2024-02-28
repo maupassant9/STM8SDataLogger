@@ -113,29 +113,10 @@ void main( void )
 	
 	//Enable global Interrupt
 	enableInterrupts();
-	
-	// GPIOA->ODR |= GPIO_PIN_3;
-	// GPIOC->ODR &= ~GPIO_PIN_3;
-	// GPIOA->DDR |= GPIO_PIN_3;
-	// GPIOC->DDR |= GPIO_PIN_3;
-	// GPIOA->CR1 |= GPIO_PIN_3;
-	// GPIOC->CR1 |= GPIO_PIN_3;
-	// dly(10000);
 
-	//led show
-	for(i = 0; i < NUM_OF_LEDS; i++){
-		SetLedMode(i, LED_ON);
-		dly(1000);
-		SetLedMode(i, LED_OFF);
-		SetLedMode(i+1, LED_ON);
-	}
-
-	for(i = 0; i < NUM_OF_LEDS; i++){
-		SetLedMode(i, (i%2)?LED_TOGGLE_FAST:LED_TOGGLE_SLOW);
-		dly(10000);
-	}
+	SetLedMode(0, LED_ON);
+	dly(10000);
 	
-	while(1);
 	///////////////////////////////
 	// Mount the file sys       ///
 	// And get the configuration///
@@ -150,7 +131,7 @@ void main( void )
 		//init the cnters
 		fileBlkCnt = loggerCfg.fileSzInBlock;
 		fileNoCnt = loggerCfg.fileNo;
-		
+		SetLedMode(1, LED_ON);
 		//open the first file to be written	
 		res |= pf_open(loggerCfg.firstFileName);
 		
@@ -163,6 +144,7 @@ void main( void )
 			//SetFsm(&fsm, S4_ERR, ERR_CARD_INIT);
 			fsm.state = S4_ERR;
 			fsm.error = ERR_CARD_INIT;
+			SetLedMode(1, LED_TOGGLE_FAST);
 		}
 			
 		disableInterrupts();
@@ -174,9 +156,10 @@ void main( void )
 		fsm.state = S4_ERR;
 		fsm.error = ERR_CARD_INIT;
 	}
+	SetLedMode(0, LED_TOGGLE_SLOW);
 	//Disable led auto toggle func	
 	while(1){
-
+	
 	////////////////////
 	//State machine ////
 	////////////////////
@@ -226,10 +209,9 @@ void main( void )
 				break;
 				//error sstate
 			case S4_ERR:
-				//LED_SET_TOGGLE_FREQ(50000);
-				SetLedMode(0, LED_TOGGLE_FAST);
+				SetLedMode(1, LED_TOGGLE_FAST);
+				while(1); break;
 			case S5_COMPLETE:
-				//LED_SET();
 				SetLedMode(0, LED_ON);
 				while(1);
 				break;
@@ -266,10 +248,10 @@ static void Wr2SD( fsm_t * pfsm ){
 	RELEASE_BUFF_FOR_WR(bufNo); //clear this flag
 	//when the adc buffer is ready for writing to sd card	
 	//LED_SET();
-	SetLedMode(0, LED_ON);
+	//SetLedMode(0, LED_ON);
 	res = pf_write((void*)pBuf,BUFFER_SZ_IN_BYTES, &pbr);
 	//LED_CLR();
-	SetLedMode(0, LED_OFF);
+	//SetLedMode(0, LED_OFF);
 	
 	if(FR_OK != res){
 		

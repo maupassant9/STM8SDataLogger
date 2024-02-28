@@ -895,9 +895,9 @@ uint8_t SD_GoIdleState(void)
         do{
             SD_SendCmd(SD_CMD_55, (uint32_t)0, 0x01);
             SD_GetResponseVal(resp,0x01);
-						dly((uint32_t)100);
+						dly((uint32_t)10);
             SD_SendCmd(SD_ACMD_41&0x7f, (1UL<<30), 0x1);
-						dly((uint32_t)10000);
+						dly((uint32_t)1000);
             SD_GetResponseVal(resp,0x00);
         } while(resp[0]); //until resved 0x0
 
@@ -914,10 +914,10 @@ uint8_t SD_GoIdleState(void)
 		do{
 				SD_SendCmd(SD_CMD_55, 0, 0x01);
 				SD_GetResponseVal(resp,0x01);
-				dly((uint32_t)10000);
+				dly((uint32_t)1000);
 				SD_SendCmd(SD_ACMD_41&0x7f, 0UL, 0x1);
 				SD_GetResponseVal(resp,0x00);
-				dly((uint32_t)10000);
+				dly((uint32_t)1000);
 		} while(resp[0]);
 
 	}
@@ -974,7 +974,7 @@ uint8_t SD_ReadByte(void)
   while (SPI->SR&(SPI_FLAG_RXNE) == 0)
   {}
   /*!< Get the received data */
-  Data = SPI->DR;
+  Data = (uint8_t)SPI->DR;
 
   /*!< Return the shifted data */
   return Data;

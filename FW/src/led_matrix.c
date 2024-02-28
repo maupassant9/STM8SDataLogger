@@ -78,12 +78,12 @@ void SetLedMode(uint8_t ledID, enum led_mode_t mode)
 	switch(mode){
 	case LED_ON:
 	case LED_OFF: led_ticks[ledID] = 0; SetLedState(ledID, mode);break;
-	case LED_TOGGLE_SLOW: 
+	case LED_TOGGLE_SLOW: //even number is slow
 		nxtTick = sysTick + LED_TOGGLE_SLOW_TICK;
 		if(nxtTick) nxtTick = 2;
 		else nxtTick = (nxtTick%2)?(nxtTick+1):nxtTick;
 		led_ticks[ledID] = nxtTick;break;
-	case LED_TOGGLE_FAST: 
+	case LED_TOGGLE_FAST: //odd number is fast
 		nxtTick = sysTick + LED_TOGGLE_FAST_TICK;
 		nxtTick = (nxtTick%2)?nxtTick:(nxtTick+1);
 		led_ticks[ledID] = nxtTick;break;
@@ -100,8 +100,8 @@ void UpdateLeds()
 	for(idx = 0; idx < NUM_OF_LEDS; idx++){
 		tick = led_ticks[idx];
 		if((tick != 0) && (sysTick == tick)){
-			led_ticks[idx] = ((tick%2)?LED_TOGGLE_FAST_TICK:LED_TOGGLE_SLOW_TICK);
-			SetLedState(idx, ~GetLedState(idx));
+			led_ticks[idx] += ((tick%2)?LED_TOGGLE_FAST_TICK:LED_TOGGLE_SLOW_TICK);
+			SetLedState(idx, !GetLedState(idx));
 		}
 	}
 

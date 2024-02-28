@@ -19,11 +19,11 @@ DEVICE=STM8S003
 # set compiler path & parameters 
 CC_ROOT = /usr/libexec/sdcc/
 CC      = sdcc
-CFLAGS  = -lstm8 -mstm8 --opt-code-size --std-sdcc99 --nogcse --all-callee-saves --debug --verbose --stack-auto --fverbose-asm --float-reent --no-peep
+CFLAGS  = -mstm8 -lstm8 --opt-code-size
 
 # set output folder and target name
 OUTPUT_DIR = ./$(DEVICE)
-TARGET     = $(OUTPUT_DIR)/$(DEVICE).elf
+TARGET     = $(OUTPUT_DIR)/$(DEVICE).hex
 
 # set project folder and files (all *.c)
 PRJ_ROOT    = ../src
