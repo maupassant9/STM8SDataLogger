@@ -15,7 +15,6 @@
 /********************************************
 * Include 
 ********************************************/
-#include "stm8s_conf.h"
 #include "Drv/sd/mmcsd.h"
 #include "Drv/FAT32/pff.h"
 #include "stm8s.h"
@@ -109,6 +108,7 @@ void main( void )
 	//Enable global Interrupt
 	enableInterrupts();
 	
+	dly(50000l);
 	
 	///////////////////////////////
 	// Mount the file sys       ///
@@ -125,7 +125,7 @@ void main( void )
 		//show user that the system initialize ok.
 		for(i = 0; i < 10; i++) {
 			LED_TOGGLE();
-			dly(10000);
+			dly(10000l);
 		}
 	
 		//init the cnters

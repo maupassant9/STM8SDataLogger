@@ -1,7 +1,7 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
-   2                     ; Parser V4.11.13 - 05 Feb 2019
-   3                     ; Generator (Limited) V4.4.9 - 06 Feb 2019
-   4                     ; Optimizer V4.4.9 - 06 Feb 2019
+   2                     ; Parser V4.12.9 - 19 Apr 2023
+   3                     ; Generator (Limited) V4.5.6 - 18 Jul 2023
+   4                     ; Optimizer V4.5.6 - 18 Jul 2023
   63                     ; 384 static WORD ld_word (const BYTE* ptr)	/*	 Load a 2-byte little-endian word */
   63                     ; 385 {
   65                     	switch	.text
@@ -703,1123 +703,1119 @@
 1859  03f9 20c0          	jra	L356
 1860  03fb               L556:
 1861                     ; 687 	*path = &p[si];						/* Rerurn pointer to the next segment */
-1863  03fb 7b03          	ld	a,(OFST-6,sp)
-1864  03fd 97            	ld	xl,a
-1865  03fe 7b04          	ld	a,(OFST-5,sp)
-1866  0400 1b02          	add	a,(OFST-7,sp)
-1867  0402 2401          	jrnc	L601
-1868  0404 5c            	incw	x
-1869  0405               L601:
-1870  0405 160e          	ldw	y,(OFST+5,sp)
-1871  0407 02            	rlwa	x,a
-1872  0408 90ff          	ldw	(y),x
-1873                     ; 689 	sfn[11] = (c <= ' ') ? 1 : 0;		/* Set last segment flag if end of path */
-1875  040a 7b09          	ld	a,(OFST+0,sp)
-1876  040c a121          	cp	a,#33
-1877  040e 2404          	jruge	L011
-1878  0410 a601          	ld	a,#1
-1879  0412 2001          	jra	L211
-1880  0414               L011:
-1881  0414 4f            	clr	a
-1882  0415               L211:
-1883  0415 1e05          	ldw	x,(OFST-4,sp)
-1884  0417 e70b          	ld	(11,x),a
-1885                     ; 691 	return FR_OK;
-1887  0419 4f            	clr	a
-1890  041a 5b0b          	addw	sp,#11
-1891  041c 81            	ret	
-1963                     ; 742 static FRESULT follow_path (	/* FR_OK(0): successful, !=0: error code */
-1963                     ; 743 	DIR *dj,			/* Directory object to return last directory and found object */
-1963                     ; 744 	BYTE *dir,			/* 32-byte working buffer */
-1963                     ; 745 	const char *path	/* Full-path string to find a file or directory */
-1963                     ; 746 )
-1963                     ; 747 {
-1964                     	switch	.text
-1965  041d               L376_follow_path:
-1967  041d 89            	pushw	x
-1968  041e 88            	push	a
-1969       00000001      OFST:	set	1
-1972  041f 1e08          	ldw	x,(OFST+7,sp)
-1973  0421 2001          	jra	L337
-1974  0423               L137:
-1975                     ; 751 	while (*path == ' ') path++;		/* Strip leading spaces */
-1977  0423 5c            	incw	x
-1978  0424               L337:
-1981  0424 f6            	ld	a,(x)
-1982  0425 a120          	cp	a,#32
-1983  0427 27fa          	jreq	L137
-1984                     ; 752 	if (*path == '/') path++;			/* Strip heading separator if exist */
-1986  0429 a12f          	cp	a,#47
-1987  042b 2601          	jrne	L737
-1990  042d 5c            	incw	x
-1991  042e               L737:
-1992  042e 1f08          	ldw	(OFST+7,sp),x
-1993                     ; 753 	dj->sclust = 0;						/* Set start directory (always root dir) */
-1995  0430 1e02          	ldw	x,(OFST+1,sp)
-1996  0432 4f            	clr	a
-1997  0433 e707          	ld	(7,x),a
-1998  0435 e706          	ld	(6,x),a
-1999  0437 e705          	ld	(5,x),a
-2000  0439 e704          	ld	(4,x),a
-2001                     ; 755 	if ((BYTE)*path < ' ') {			/* Null path means the root directory */
-2003  043b 1e08          	ldw	x,(OFST+7,sp)
-2004  043d f6            	ld	a,(x)
-2005  043e a120          	cp	a,#32
-2006  0440 240c          	jruge	L547
-2007                     ; 756 		res = dir_rewind(dj);
-2009  0442 1e02          	ldw	x,(OFST+1,sp)
-2010  0444 cd01f0        	call	L153_dir_rewind
-2012  0447 6b01          	ld	(OFST+0,sp),a
-2014                     ; 757 		dir[0] = 0;
-2016  0449 1e06          	ldw	x,(OFST+5,sp)
-2017  044b 7f            	clr	(x)
-2019  044c 202e          	jra	L347
-2020  044e               L547:
-2021                     ; 761 			res = create_name(dj, &path);	/* Get a segment */
-2023  044e 96            	ldw	x,sp
-2024  044f 1c0008        	addw	x,#OFST+7
-2025  0452 89            	pushw	x
-2026  0453 1e04          	ldw	x,(OFST+3,sp)
-2027  0455 cd0398        	call	L306_create_name
-2029  0458 85            	popw	x
-2030  0459 6b01          	ld	(OFST+0,sp),a
-2032                     ; 762 			if (res != FR_OK) break;
-2034  045b 261f          	jrne	L347
-2037                     ; 763 			res = dir_find(dj, dir);		/* Find it */
-2039  045d 1e06          	ldw	x,(OFST+5,sp)
-2040  045f 89            	pushw	x
-2041  0460 1e04          	ldw	x,(OFST+3,sp)
-2042  0462 cd0331        	call	L135_dir_find
-2044  0465 85            	popw	x
-2045  0466 6b01          	ld	(OFST+0,sp),a
-2047                     ; 764 			if (res != FR_OK) break;		/* Could not find the object */
-2049  0468 2612          	jrne	L347
-2052                     ; 765 			if (dj->fn[11]) break;			/* Last segment match. Function completed. */
-2054  046a 1e02          	ldw	x,(OFST+1,sp)
-2055  046c ee02          	ldw	x,(2,x)
-2056  046e 6d0b          	tnz	(11,x)
-2057  0470 260a          	jrne	L347
-2060                     ; 766 			if (!(dir[DIR_Attr] & AM_DIR)) { /* Cannot follow path because it is a file */
-2062  0472 1e06          	ldw	x,(OFST+5,sp)
-2063  0474 e60b          	ld	a,(11,x)
-2064  0476 a510          	bcp	a,#16
-2065  0478 2605          	jrne	L757
-2066                     ; 767 				res = FR_NO_FILE; break;
-2068  047a a603          	ld	a,#3
-2071  047c               L347:
-2072                     ; 773 	return res;
-2076  047c 5b03          	addw	sp,#3
-2077  047e 81            	ret	
-2078  047f               L757:
-2079                     ; 769 			dj->sclust = get_clust(dir);	/* Follow next */
-2081  047f cd01b1        	call	L123_get_clust
-2083  0482 1e02          	ldw	x,(OFST+1,sp)
-2084  0484 1c0004        	addw	x,#4
-2085  0487 cd0000        	call	c_rtol
-2088  048a 20c2          	jra	L547
-2132                     ; 783 static BYTE check_fs (	/* 0:The FAT boot record, 1:Valid boot record but not an FAT, 2:Not a boot record, 3:Error */
-2132                     ; 784 	BYTE *buf,	/* Working buffer */
-2132                     ; 785 	DWORD sect	/* Sector# (lba) to check if it is an FAT boot record or not */
-2132                     ; 786 )
-2132                     ; 787 {
-2133                     	switch	.text
-2134  048c               L167_check_fs:
-2136  048c 89            	pushw	x
-2137       00000000      OFST:	set	0
-2140                     ; 788   if (disk_readp(buf, sect, 510, 2)) {	/* Read the boot record */
-2142  048d ae0002        	ldw	x,#2
-2143  0490 89            	pushw	x
-2144  0491 ae01fe        	ldw	x,#510
-2145  0494 89            	pushw	x
-2146  0495 1e0b          	ldw	x,(OFST+11,sp)
-2147  0497 89            	pushw	x
-2148  0498 1e0b          	ldw	x,(OFST+11,sp)
-2149  049a 89            	pushw	x
-2150  049b 1e09          	ldw	x,(OFST+9,sp)
-2151  049d cd0000        	call	_disk_readp
-2153  04a0 5b08          	addw	sp,#8
-2154  04a2 4d            	tnz	a
-2155  04a3 2704          	jreq	L3001
-2156                     ; 789 		return 3;
-2158  04a5 a603          	ld	a,#3
-2160  04a7 200c          	jra	L041
-2161  04a9               L3001:
-2162                     ; 791 	if (ld_word(buf) != 0xAA55) {			/* Check record signature */
-2164  04a9 1e01          	ldw	x,(OFST+1,sp)
-2165  04ab cd0000        	call	L5_ld_word
-2167  04ae a3aa55        	cpw	x,#43605
-2168  04b1 2704          	jreq	L5001
-2169                     ; 792 		return 2;
-2171  04b3 a602          	ld	a,#2
-2173  04b5               L041:
-2175  04b5 85            	popw	x
-2176  04b6 81            	ret	
-2177  04b7               L5001:
-2178                     ; 798 	if (PF_FS_FAT32 && !disk_readp(buf, sect, BS_FilSysType32, 2) && ld_word(buf) == 0x4146) {	/* Check FAT32 */
-2180  04b7 ae0002        	ldw	x,#2
-2181  04ba 89            	pushw	x
-2182  04bb ae0052        	ldw	x,#82
-2183  04be 89            	pushw	x
-2184  04bf 1e0b          	ldw	x,(OFST+11,sp)
-2185  04c1 89            	pushw	x
-2186  04c2 1e0b          	ldw	x,(OFST+11,sp)
-2187  04c4 89            	pushw	x
-2188  04c5 1e09          	ldw	x,(OFST+9,sp)
-2189  04c7 cd0000        	call	_disk_readp
-2191  04ca 5b08          	addw	sp,#8
-2192  04cc 4d            	tnz	a
-2193  04cd 260d          	jrne	L7001
-2195  04cf 1e01          	ldw	x,(OFST+1,sp)
-2196  04d1 cd0000        	call	L5_ld_word
-2198  04d4 a34146        	cpw	x,#16710
-2199  04d7 2603          	jrne	L7001
-2200                     ; 799 		return 0;
-2202  04d9 4f            	clr	a
-2204  04da 20d9          	jra	L041
-2205  04dc               L7001:
-2206                     ; 801 	return 1;
-2208  04dc a601          	ld	a,#1
-2210  04de 20d5          	jra	L041
-2299                     	switch	.const
-2300  0008               L671:
-2301  0008 0000fff7      	dc.l	65527
-2302                     ; 819 FRESULT pf_mount (
-2302                     ; 820 	FATFS *fs		/* Pointer to new file system object */
-2302                     ; 821 )
-2302                     ; 822 {
-2303                     	switch	.text
-2304  04e0               _pf_mount:
-2306  04e0 89            	pushw	x
-2307  04e1 5239          	subw	sp,#57
-2308       00000039      OFST:	set	57
-2311                     ; 827 	FatFs = 0;
-2313  04e3 5f            	clrw	x
-2314  04e4 cf0000        	ldw	L3_FatFs,x
-2315                     ; 829 	if (disk_initialize() & STA_NOINIT) {	/* Check if the drive is ready or not */
-2317  04e7 cd0000        	call	_disk_initialize
-2319  04ea a501          	bcp	a,#1
-2320  04ec 2704          	jreq	L7401
-2321                     ; 830 		return FR_NOT_READY;
-2323  04ee a602          	ld	a,#2
-2325  04f0 205d          	jra	L202
-2326  04f2               L7401:
-2327                     ; 834 	bsect = 0;
-2329  04f2 5f            	clrw	x
-2330  04f3 1f14          	ldw	(OFST-37,sp),x
-2331  04f5 1f12          	ldw	(OFST-39,sp),x
-2333                     ; 835 	fmt = check_fs(buf, bsect);			/* Check sector 0 as an SFD format */
-2335  04f7 89            	pushw	x
-2336  04f8 89            	pushw	x
-2337  04f9 96            	ldw	x,sp
-2338  04fa 1c001a        	addw	x,#OFST-31
-2339  04fd ad8d          	call	L167_check_fs
-2341  04ff 5b04          	addw	sp,#4
-2342  0501 6b11          	ld	(OFST-40,sp),a
-2344                     ; 836 	if (fmt == 1) {						/* Not an FAT boot record, it may be FDISK format */
-2346  0503 4a            	dec	a
-2347  0504 2641          	jrne	L1501
-2348                     ; 838 		if (disk_readp(buf, bsect, MBR_Table, 16)) {	/* 1st partition entry */
-2350  0506 ae0010        	ldw	x,#16
-2351  0509 89            	pushw	x
-2352  050a ae01be        	ldw	x,#446
-2353  050d 89            	pushw	x
-2354  050e 1e18          	ldw	x,(OFST-33,sp)
-2355  0510 89            	pushw	x
-2356  0511 1e18          	ldw	x,(OFST-33,sp)
-2357  0513 89            	pushw	x
-2358  0514 96            	ldw	x,sp
-2359  0515 1c001e        	addw	x,#OFST-27
-2360  0518 cd0000        	call	_disk_readp
-2362  051b 5b08          	addw	sp,#8
-2363  051d 4d            	tnz	a
-2364  051e 2704          	jreq	L3501
-2365                     ; 839 			fmt = 3;
-2367  0520 a603          	ld	a,#3
-2369  0522 2021          	jp	LC003
-2370  0524               L3501:
-2371                     ; 841 			if (buf[4]) {					/* Is the partition existing? */
-2373  0524 7b1a          	ld	a,(OFST-31,sp)
-2374  0526 271f          	jreq	L1501
-2375                     ; 842 				bsect = ld_dword(&buf[8]);	/* Partition offset in LBA */
-2377  0528 96            	ldw	x,sp
-2378  0529 1c001e        	addw	x,#OFST-27
-2379  052c cd000d        	call	L53_ld_dword
-2381  052f 96            	ldw	x,sp
-2382  0530 1c0012        	addw	x,#OFST-39
-2383  0533 cd0000        	call	c_rtol
-2386                     ; 843 				fmt = check_fs(buf, bsect);	/* Check the partition */
-2388  0536 1e14          	ldw	x,(OFST-37,sp)
-2389  0538 89            	pushw	x
-2390  0539 1e14          	ldw	x,(OFST-37,sp)
-2391  053b 89            	pushw	x
-2392  053c 96            	ldw	x,sp
-2393  053d 1c001a        	addw	x,#OFST-31
-2394  0540 cd048c        	call	L167_check_fs
-2396  0543 5b04          	addw	sp,#4
-2397  0545               LC003:
-2398  0545 6b11          	ld	(OFST-40,sp),a
-2400  0547               L1501:
-2401                     ; 847 	if (fmt == 3) return FR_DISK_ERR;
-2403  0547 7b11          	ld	a,(OFST-40,sp)
-2404  0549 a103          	cp	a,#3
-2405  054b 2605          	jrne	L1601
-2408  054d               LC004:
-2410  054d a601          	ld	a,#1
-2412  054f               L202:
-2414  054f 5b3b          	addw	sp,#59
-2415  0551 81            	ret	
-2416  0552               L1601:
-2417                     ; 848 	if (fmt) return FR_NO_FILESYSTEM;	/* No valid FAT patition is found */
-2419  0552 7b11          	ld	a,(OFST-40,sp)
-2422  0554 2703cc068b    	jrne	LC005
-2423                     ; 851 	if (disk_readp(buf, bsect, 13, sizeof (buf))) return FR_DISK_ERR;
-2425  0559 ae0024        	ldw	x,#36
-2426  055c 89            	pushw	x
-2427  055d ae000d        	ldw	x,#13
-2428  0560 89            	pushw	x
-2429  0561 1e18          	ldw	x,(OFST-33,sp)
-2430  0563 89            	pushw	x
-2431  0564 1e18          	ldw	x,(OFST-33,sp)
-2432  0566 89            	pushw	x
-2433  0567 96            	ldw	x,sp
-2434  0568 1c001e        	addw	x,#OFST-27
-2435  056b cd0000        	call	_disk_readp
-2437  056e 5b08          	addw	sp,#8
-2438  0570 4d            	tnz	a
-2441  0571 26da          	jrne	LC004
-2442                     ; 853 	fsize = ld_word(buf+BPB_FATSz16-13);				/* Number of sectors per FAT */
-2444  0573 96            	ldw	x,sp
-2445  0574 1c001f        	addw	x,#OFST-26
-2446  0577 cd0000        	call	L5_ld_word
-2448  057a cd0000        	call	c_uitolx
-2450  057d 96            	ldw	x,sp
-2451  057e 1c000d        	addw	x,#OFST-44
-2452  0581 cd0000        	call	c_rtol
-2455                     ; 854 	if (!fsize) fsize = ld_dword(buf+BPB_FATSz32-13);
-2457  0584 96            	ldw	x,sp
-2458  0585 1c000d        	addw	x,#OFST-44
-2459  0588 cd0000        	call	c_lzmp
-2461  058b 260e          	jrne	L7601
-2464  058d 96            	ldw	x,sp
-2465  058e 1c002d        	addw	x,#OFST-12
-2466  0591 cd000d        	call	L53_ld_dword
-2468  0594 96            	ldw	x,sp
-2469  0595 1c000d        	addw	x,#OFST-44
-2470  0598 cd0000        	call	c_rtol
-2473  059b               L7601:
-2474                     ; 856 	fsize *= buf[BPB_NumFATs-13];						/* Number of sectors in FAT area */
-2476  059b 7b19          	ld	a,(OFST-32,sp)
-2477  059d b703          	ld	c_lreg+3,a
-2478  059f 3f02          	clr	c_lreg+2
-2479  05a1 3f01          	clr	c_lreg+1
-2480  05a3 3f00          	clr	c_lreg
-2481  05a5 96            	ldw	x,sp
-2482  05a6 1c000d        	addw	x,#OFST-44
-2483  05a9 cd0000        	call	c_lgmul
-2486                     ; 857 	fs->fatbase = bsect + ld_word(buf+BPB_RsvdSecCnt-13); /* FAT start sector (lba) */
-2488  05ac 96            	ldw	x,sp
-2489  05ad 1c0017        	addw	x,#OFST-34
-2490  05b0 cd0000        	call	L5_ld_word
-2492  05b3 cd0000        	call	c_uitolx
-2494  05b6 96            	ldw	x,sp
-2495  05b7 1c0012        	addw	x,#OFST-39
-2496  05ba cd0000        	call	c_ladd
-2498  05bd 1e3a          	ldw	x,(OFST+1,sp)
-2499  05bf 1c000a        	addw	x,#10
-2500  05c2 cd0000        	call	c_rtol
-2502                     ; 858 	fs->csize = buf[BPB_SecPerClus-13];					/* Number of sectors per cluster */
-2504  05c5 1e3a          	ldw	x,(OFST+1,sp)
-2505  05c7 7b16          	ld	a,(OFST-35,sp)
-2506  05c9 e702          	ld	(2,x),a
-2507                     ; 859 	fs->n_rootdir = ld_word(buf+BPB_RootEntCnt-13);		/* Nmuber of root directory entries */
-2509  05cb 96            	ldw	x,sp
-2510  05cc 1c001a        	addw	x,#OFST-31
-2511  05cf cd0000        	call	L5_ld_word
-2513  05d2 163a          	ldw	y,(OFST+1,sp)
-2514  05d4 90ef04        	ldw	(4,y),x
-2515                     ; 860 	tsect = ld_word(buf+BPB_TotSec16-13);				/* Number of sectors on the file system */
-2517  05d7 96            	ldw	x,sp
-2518  05d8 1c001c        	addw	x,#OFST-29
-2519  05db cd0000        	call	L5_ld_word
-2521  05de cd0000        	call	c_uitolx
-2523  05e1 96            	ldw	x,sp
-2524  05e2 1c0012        	addw	x,#OFST-39
-2525  05e5 cd0000        	call	c_rtol
-2528                     ; 861 	if (!tsect) tsect = ld_dword(buf+BPB_TotSec32-13);
-2530  05e8 96            	ldw	x,sp
-2531  05e9 1c0012        	addw	x,#OFST-39
-2532  05ec cd0000        	call	c_lzmp
-2534  05ef 260e          	jrne	L1701
-2537  05f1 96            	ldw	x,sp
-2538  05f2 1c0029        	addw	x,#OFST-16
-2539  05f5 cd000d        	call	L53_ld_dword
-2541  05f8 96            	ldw	x,sp
-2542  05f9 1c0012        	addw	x,#OFST-39
-2543  05fc cd0000        	call	c_rtol
-2546  05ff               L1701:
-2547                     ; 862 	mclst = (tsect						/* Last cluster# + 1 */
-2547                     ; 863 		- ld_word(buf+BPB_RsvdSecCnt-13) - fsize - fs->n_rootdir / 16
-2547                     ; 864 		) / fs->csize + 2;
-2549  05ff 1e3a          	ldw	x,(OFST+1,sp)
-2550  0601 e602          	ld	a,(2,x)
-2551  0603 b703          	ld	c_lreg+3,a
-2552  0605 3f02          	clr	c_lreg+2
-2553  0607 3f01          	clr	c_lreg+1
-2554  0609 3f00          	clr	c_lreg
-2555  060b 96            	ldw	x,sp
-2556  060c 1c0009        	addw	x,#OFST-48
-2557  060f cd0000        	call	c_rtol
-2560  0612 1e3a          	ldw	x,(OFST+1,sp)
-2561  0614 ee04          	ldw	x,(4,x)
-2562  0616 54            	srlw	x
-2563  0617 54            	srlw	x
-2564  0618 54            	srlw	x
-2565  0619 54            	srlw	x
-2566  061a cd0000        	call	c_uitolx
-2568  061d 96            	ldw	x,sp
-2569  061e 1c0005        	addw	x,#OFST-52
-2570  0621 cd0000        	call	c_rtol
-2573  0624 96            	ldw	x,sp
-2574  0625 1c0017        	addw	x,#OFST-34
-2575  0628 cd0000        	call	L5_ld_word
-2577  062b cd0000        	call	c_uitolx
-2579  062e 96            	ldw	x,sp
-2580  062f 5c            	incw	x
-2581  0630 cd0000        	call	c_rtol
-2584  0633 96            	ldw	x,sp
-2585  0634 1c0012        	addw	x,#OFST-39
-2586  0637 cd0000        	call	c_ltor
+1863  03fb 7b02          	ld	a,(OFST-7,sp)
+1864  03fd 5f            	clrw	x
+1865  03fe 97            	ld	xl,a
+1866  03ff 160e          	ldw	y,(OFST+5,sp)
+1867  0401 72fb03        	addw	x,(OFST-6,sp)
+1868  0404 90ff          	ldw	(y),x
+1869                     ; 689 	sfn[11] = (c <= ' ') ? 1 : 0;		/* Set last segment flag if end of path */
+1871  0406 7b09          	ld	a,(OFST+0,sp)
+1872  0408 a121          	cp	a,#33
+1873  040a 2404          	jruge	L601
+1874  040c a601          	ld	a,#1
+1875  040e 2001          	jra	L011
+1876  0410               L601:
+1877  0410 4f            	clr	a
+1878  0411               L011:
+1879  0411 1e05          	ldw	x,(OFST-4,sp)
+1880  0413 e70b          	ld	(11,x),a
+1881                     ; 691 	return FR_OK;
+1883  0415 4f            	clr	a
+1886  0416 5b0b          	addw	sp,#11
+1887  0418 81            	ret	
+1959                     ; 742 static FRESULT follow_path (	/* FR_OK(0): successful, !=0: error code */
+1959                     ; 743 	DIR *dj,			/* Directory object to return last directory and found object */
+1959                     ; 744 	BYTE *dir,			/* 32-byte working buffer */
+1959                     ; 745 	const char *path	/* Full-path string to find a file or directory */
+1959                     ; 746 )
+1959                     ; 747 {
+1960                     	switch	.text
+1961  0419               L376_follow_path:
+1963  0419 89            	pushw	x
+1964  041a 88            	push	a
+1965       00000001      OFST:	set	1
+1968  041b 1e08          	ldw	x,(OFST+7,sp)
+1969  041d 2001          	jra	L337
+1970  041f               L137:
+1971                     ; 751 	while (*path == ' ') path++;		/* Strip leading spaces */
+1973  041f 5c            	incw	x
+1974  0420               L337:
+1977  0420 f6            	ld	a,(x)
+1978  0421 a120          	cp	a,#32
+1979  0423 27fa          	jreq	L137
+1980                     ; 752 	if (*path == '/') path++;			/* Strip heading separator if exist */
+1982  0425 a12f          	cp	a,#47
+1983  0427 2601          	jrne	L737
+1986  0429 5c            	incw	x
+1987  042a               L737:
+1988  042a 1f08          	ldw	(OFST+7,sp),x
+1989                     ; 753 	dj->sclust = 0;						/* Set start directory (always root dir) */
+1991  042c 1e02          	ldw	x,(OFST+1,sp)
+1992  042e 4f            	clr	a
+1993  042f e707          	ld	(7,x),a
+1994  0431 e706          	ld	(6,x),a
+1995  0433 e705          	ld	(5,x),a
+1996  0435 e704          	ld	(4,x),a
+1997                     ; 755 	if ((BYTE)*path < ' ') {			/* Null path means the root directory */
+1999  0437 1e08          	ldw	x,(OFST+7,sp)
+2000  0439 f6            	ld	a,(x)
+2001  043a a120          	cp	a,#32
+2002  043c 240c          	jruge	L547
+2003                     ; 756 		res = dir_rewind(dj);
+2005  043e 1e02          	ldw	x,(OFST+1,sp)
+2006  0440 cd01f0        	call	L153_dir_rewind
+2008  0443 6b01          	ld	(OFST+0,sp),a
+2010                     ; 757 		dir[0] = 0;
+2012  0445 1e06          	ldw	x,(OFST+5,sp)
+2013  0447 7f            	clr	(x)
+2015  0448 202e          	jra	L347
+2016  044a               L547:
+2017                     ; 761 			res = create_name(dj, &path);	/* Get a segment */
+2019  044a 96            	ldw	x,sp
+2020  044b 1c0008        	addw	x,#OFST+7
+2021  044e 89            	pushw	x
+2022  044f 1e04          	ldw	x,(OFST+3,sp)
+2023  0451 cd0398        	call	L306_create_name
+2025  0454 85            	popw	x
+2026  0455 6b01          	ld	(OFST+0,sp),a
+2028                     ; 762 			if (res != FR_OK) break;
+2030  0457 261f          	jrne	L347
+2033                     ; 763 			res = dir_find(dj, dir);		/* Find it */
+2035  0459 1e06          	ldw	x,(OFST+5,sp)
+2036  045b 89            	pushw	x
+2037  045c 1e04          	ldw	x,(OFST+3,sp)
+2038  045e cd0331        	call	L135_dir_find
+2040  0461 85            	popw	x
+2041  0462 6b01          	ld	(OFST+0,sp),a
+2043                     ; 764 			if (res != FR_OK) break;		/* Could not find the object */
+2045  0464 2612          	jrne	L347
+2048                     ; 765 			if (dj->fn[11]) break;			/* Last segment match. Function completed. */
+2050  0466 1e02          	ldw	x,(OFST+1,sp)
+2051  0468 ee02          	ldw	x,(2,x)
+2052  046a 6d0b          	tnz	(11,x)
+2053  046c 260a          	jrne	L347
+2056                     ; 766 			if (!(dir[DIR_Attr] & AM_DIR)) { /* Cannot follow path because it is a file */
+2058  046e 1e06          	ldw	x,(OFST+5,sp)
+2059  0470 e60b          	ld	a,(11,x)
+2060  0472 a510          	bcp	a,#16
+2061  0474 2605          	jrne	L757
+2062                     ; 767 				res = FR_NO_FILE; break;
+2064  0476 a603          	ld	a,#3
+2067  0478               L347:
+2068                     ; 773 	return res;
+2072  0478 5b03          	addw	sp,#3
+2073  047a 81            	ret	
+2074  047b               L757:
+2075                     ; 769 			dj->sclust = get_clust(dir);	/* Follow next */
+2077  047b cd01b1        	call	L123_get_clust
+2079  047e 1e02          	ldw	x,(OFST+1,sp)
+2080  0480 1c0004        	addw	x,#4
+2081  0483 cd0000        	call	c_rtol
+2084  0486 20c2          	jra	L547
+2128                     ; 783 static BYTE check_fs (	/* 0:The FAT boot record, 1:Valid boot record but not an FAT, 2:Not a boot record, 3:Error */
+2128                     ; 784 	BYTE *buf,	/* Working buffer */
+2128                     ; 785 	DWORD sect	/* Sector# (lba) to check if it is an FAT boot record or not */
+2128                     ; 786 )
+2128                     ; 787 {
+2129                     	switch	.text
+2130  0488               L167_check_fs:
+2132  0488 89            	pushw	x
+2133       00000000      OFST:	set	0
+2136                     ; 788   if (disk_readp(buf, sect, 510, 2)) {	/* Read the boot record */
+2138  0489 ae0002        	ldw	x,#2
+2139  048c 89            	pushw	x
+2140  048d ae01fe        	ldw	x,#510
+2141  0490 89            	pushw	x
+2142  0491 1e0b          	ldw	x,(OFST+11,sp)
+2143  0493 89            	pushw	x
+2144  0494 1e0b          	ldw	x,(OFST+11,sp)
+2145  0496 89            	pushw	x
+2146  0497 1e09          	ldw	x,(OFST+9,sp)
+2147  0499 cd0000        	call	_disk_readp
+2149  049c 5b08          	addw	sp,#8
+2150  049e 4d            	tnz	a
+2151  049f 2704          	jreq	L3001
+2152                     ; 789 		return 3;
+2154  04a1 a603          	ld	a,#3
+2156  04a3 200c          	jra	L631
+2157  04a5               L3001:
+2158                     ; 791 	if (ld_word(buf) != 0xAA55) {			/* Check record signature */
+2160  04a5 1e01          	ldw	x,(OFST+1,sp)
+2161  04a7 cd0000        	call	L5_ld_word
+2163  04aa a3aa55        	cpw	x,#43605
+2164  04ad 2704          	jreq	L5001
+2165                     ; 792 		return 2;
+2167  04af a602          	ld	a,#2
+2169  04b1               L631:
+2171  04b1 85            	popw	x
+2172  04b2 81            	ret	
+2173  04b3               L5001:
+2174                     ; 797 	if (PF_FS_FAT32 && !disk_readp(buf, sect, BS_FilSysType32, 2) && ld_word(buf) == 0x4146) {	/* Check FAT32 */
+2176  04b3 ae0002        	ldw	x,#2
+2177  04b6 89            	pushw	x
+2178  04b7 ae0052        	ldw	x,#82
+2179  04ba 89            	pushw	x
+2180  04bb 1e0b          	ldw	x,(OFST+11,sp)
+2181  04bd 89            	pushw	x
+2182  04be 1e0b          	ldw	x,(OFST+11,sp)
+2183  04c0 89            	pushw	x
+2184  04c1 1e09          	ldw	x,(OFST+9,sp)
+2185  04c3 cd0000        	call	_disk_readp
+2187  04c6 5b08          	addw	sp,#8
+2188  04c8 4d            	tnz	a
+2189  04c9 260d          	jrne	L7001
+2191  04cb 1e01          	ldw	x,(OFST+1,sp)
+2192  04cd cd0000        	call	L5_ld_word
+2194  04d0 a34146        	cpw	x,#16710
+2195  04d3 2603          	jrne	L7001
+2196                     ; 798 		return 0;
+2198  04d5 4f            	clr	a
+2200  04d6 20d9          	jra	L631
+2201  04d8               L7001:
+2202                     ; 800 	return 1;
+2204  04d8 a601          	ld	a,#1
+2206  04da 20d5          	jra	L631
+2295                     	switch	.const
+2296  0008               L471:
+2297  0008 0000fff7      	dc.l	65527
+2298                     ; 818 FRESULT pf_mount (
+2298                     ; 819 	FATFS *fs		/* Pointer to new file system object */
+2298                     ; 820 )
+2298                     ; 821 {
+2299                     	switch	.text
+2300  04dc               _pf_mount:
+2302  04dc 89            	pushw	x
+2303  04dd 5239          	subw	sp,#57
+2304       00000039      OFST:	set	57
+2307                     ; 826 	FatFs = 0;
+2309  04df 5f            	clrw	x
+2310  04e0 cf0000        	ldw	L3_FatFs,x
+2311                     ; 828 	if (disk_initialize() & STA_NOINIT) {	/* Check if the drive is ready or not */
+2313  04e3 cd0000        	call	_disk_initialize
+2315  04e6 a501          	bcp	a,#1
+2316  04e8 2704          	jreq	L7401
+2317                     ; 829 		return FR_NOT_READY;
+2319  04ea a602          	ld	a,#2
+2321  04ec 205d          	jra	L002
+2322  04ee               L7401:
+2323                     ; 833 	bsect = 0;
+2325  04ee 5f            	clrw	x
+2326  04ef 1f14          	ldw	(OFST-37,sp),x
+2327  04f1 1f12          	ldw	(OFST-39,sp),x
+2329                     ; 834 	fmt = check_fs(buf, bsect);			/* Check sector 0 as an SFD format */
+2331  04f3 89            	pushw	x
+2332  04f4 89            	pushw	x
+2333  04f5 96            	ldw	x,sp
+2334  04f6 1c001a        	addw	x,#OFST-31
+2335  04f9 ad8d          	call	L167_check_fs
+2337  04fb 5b04          	addw	sp,#4
+2338  04fd 6b11          	ld	(OFST-40,sp),a
+2340                     ; 835 	if (fmt == 1) {						/* Not an FAT boot record, it may be FDISK format */
+2342  04ff 4a            	dec	a
+2343  0500 2641          	jrne	L1501
+2344                     ; 837 		if (disk_readp(buf, bsect, MBR_Table, 16)) {	/* 1st partition entry */
+2346  0502 ae0010        	ldw	x,#16
+2347  0505 89            	pushw	x
+2348  0506 ae01be        	ldw	x,#446
+2349  0509 89            	pushw	x
+2350  050a 1e18          	ldw	x,(OFST-33,sp)
+2351  050c 89            	pushw	x
+2352  050d 1e18          	ldw	x,(OFST-33,sp)
+2353  050f 89            	pushw	x
+2354  0510 96            	ldw	x,sp
+2355  0511 1c001e        	addw	x,#OFST-27
+2356  0514 cd0000        	call	_disk_readp
+2358  0517 5b08          	addw	sp,#8
+2359  0519 4d            	tnz	a
+2360  051a 2704          	jreq	L3501
+2361                     ; 838 			fmt = 3;
+2363  051c a603          	ld	a,#3
+2365  051e 2021          	jp	LC003
+2366  0520               L3501:
+2367                     ; 840 			if (buf[4]) {					/* Is the partition existing? */
+2369  0520 7b1a          	ld	a,(OFST-31,sp)
+2370  0522 271f          	jreq	L1501
+2371                     ; 841 				bsect = ld_dword(&buf[8]);	/* Partition offset in LBA */
+2373  0524 96            	ldw	x,sp
+2374  0525 1c001e        	addw	x,#OFST-27
+2375  0528 cd000d        	call	L53_ld_dword
+2377  052b 96            	ldw	x,sp
+2378  052c 1c0012        	addw	x,#OFST-39
+2379  052f cd0000        	call	c_rtol
+2382                     ; 842 				fmt = check_fs(buf, bsect);	/* Check the partition */
+2384  0532 1e14          	ldw	x,(OFST-37,sp)
+2385  0534 89            	pushw	x
+2386  0535 1e14          	ldw	x,(OFST-37,sp)
+2387  0537 89            	pushw	x
+2388  0538 96            	ldw	x,sp
+2389  0539 1c001a        	addw	x,#OFST-31
+2390  053c cd0488        	call	L167_check_fs
+2392  053f 5b04          	addw	sp,#4
+2393  0541               LC003:
+2394  0541 6b11          	ld	(OFST-40,sp),a
+2396  0543               L1501:
+2397                     ; 846 	if (fmt == 3) return FR_DISK_ERR;
+2399  0543 7b11          	ld	a,(OFST-40,sp)
+2400  0545 a103          	cp	a,#3
+2401  0547 2605          	jrne	L1601
+2404  0549               LC004:
+2406  0549 a601          	ld	a,#1
+2408  054b               L002:
+2410  054b 5b3b          	addw	sp,#59
+2411  054d 81            	ret	
+2412  054e               L1601:
+2413                     ; 847 	if (fmt) return FR_NO_FILESYSTEM;	/* No valid FAT patition is found */
+2415  054e 4d            	tnz	a
+2418  054f 2703cc0686    	jrne	LC005
+2419                     ; 850 	if (disk_readp(buf, bsect, 13, sizeof (buf))) return FR_DISK_ERR;
+2421  0554 ae0024        	ldw	x,#36
+2422  0557 89            	pushw	x
+2423  0558 ae000d        	ldw	x,#13
+2424  055b 89            	pushw	x
+2425  055c 1e18          	ldw	x,(OFST-33,sp)
+2426  055e 89            	pushw	x
+2427  055f 1e18          	ldw	x,(OFST-33,sp)
+2428  0561 89            	pushw	x
+2429  0562 96            	ldw	x,sp
+2430  0563 1c001e        	addw	x,#OFST-27
+2431  0566 cd0000        	call	_disk_readp
+2433  0569 5b08          	addw	sp,#8
+2434  056b 4d            	tnz	a
+2437  056c 26db          	jrne	LC004
+2438                     ; 852 	fsize = ld_word(buf+BPB_FATSz16-13);				/* Number of sectors per FAT */
+2440  056e 96            	ldw	x,sp
+2441  056f 1c001f        	addw	x,#OFST-26
+2442  0572 cd0000        	call	L5_ld_word
+2444  0575 cd0000        	call	c_uitolx
+2446  0578 96            	ldw	x,sp
+2447  0579 1c000d        	addw	x,#OFST-44
+2448  057c cd0000        	call	c_rtol
+2451                     ; 853 	if (!fsize) fsize = ld_dword(buf+BPB_FATSz32-13);
+2453  057f 96            	ldw	x,sp
+2454  0580 1c000d        	addw	x,#OFST-44
+2455  0583 cd0000        	call	c_lzmp
+2457  0586 260e          	jrne	L7601
+2460  0588 96            	ldw	x,sp
+2461  0589 1c002d        	addw	x,#OFST-12
+2462  058c cd000d        	call	L53_ld_dword
+2464  058f 96            	ldw	x,sp
+2465  0590 1c000d        	addw	x,#OFST-44
+2466  0593 cd0000        	call	c_rtol
+2469  0596               L7601:
+2470                     ; 855 	fsize *= buf[BPB_NumFATs-13];						/* Number of sectors in FAT area */
+2472  0596 7b19          	ld	a,(OFST-32,sp)
+2473  0598 b703          	ld	c_lreg+3,a
+2474  059a 3f02          	clr	c_lreg+2
+2475  059c 3f01          	clr	c_lreg+1
+2476  059e 3f00          	clr	c_lreg
+2477  05a0 96            	ldw	x,sp
+2478  05a1 1c000d        	addw	x,#OFST-44
+2479  05a4 cd0000        	call	c_lgmul
+2482                     ; 856 	fs->fatbase = bsect + ld_word(buf+BPB_RsvdSecCnt-13); /* FAT start sector (lba) */
+2484  05a7 96            	ldw	x,sp
+2485  05a8 1c0017        	addw	x,#OFST-34
+2486  05ab cd0000        	call	L5_ld_word
+2488  05ae cd0000        	call	c_uitolx
+2490  05b1 96            	ldw	x,sp
+2491  05b2 1c0012        	addw	x,#OFST-39
+2492  05b5 cd0000        	call	c_ladd
+2494  05b8 1e3a          	ldw	x,(OFST+1,sp)
+2495  05ba 1c000a        	addw	x,#10
+2496  05bd cd0000        	call	c_rtol
+2498                     ; 857 	fs->csize = buf[BPB_SecPerClus-13];					/* Number of sectors per cluster */
+2500  05c0 1e3a          	ldw	x,(OFST+1,sp)
+2501  05c2 7b16          	ld	a,(OFST-35,sp)
+2502  05c4 e702          	ld	(2,x),a
+2503                     ; 858 	fs->n_rootdir = ld_word(buf+BPB_RootEntCnt-13);		/* Nmuber of root directory entries */
+2505  05c6 96            	ldw	x,sp
+2506  05c7 1c001a        	addw	x,#OFST-31
+2507  05ca cd0000        	call	L5_ld_word
+2509  05cd 163a          	ldw	y,(OFST+1,sp)
+2510  05cf 90ef04        	ldw	(4,y),x
+2511                     ; 859 	tsect = ld_word(buf+BPB_TotSec16-13);				/* Number of sectors on the file system */
+2513  05d2 96            	ldw	x,sp
+2514  05d3 1c001c        	addw	x,#OFST-29
+2515  05d6 cd0000        	call	L5_ld_word
+2517  05d9 cd0000        	call	c_uitolx
+2519  05dc 96            	ldw	x,sp
+2520  05dd 1c0012        	addw	x,#OFST-39
+2521  05e0 cd0000        	call	c_rtol
+2524                     ; 860 	if (!tsect) tsect = ld_dword(buf+BPB_TotSec32-13);
+2526  05e3 96            	ldw	x,sp
+2527  05e4 1c0012        	addw	x,#OFST-39
+2528  05e7 cd0000        	call	c_lzmp
+2530  05ea 260e          	jrne	L1701
+2533  05ec 96            	ldw	x,sp
+2534  05ed 1c0029        	addw	x,#OFST-16
+2535  05f0 cd000d        	call	L53_ld_dword
+2537  05f3 96            	ldw	x,sp
+2538  05f4 1c0012        	addw	x,#OFST-39
+2539  05f7 cd0000        	call	c_rtol
+2542  05fa               L1701:
+2543                     ; 861 	mclst = (tsect						/* Last cluster# + 1 */
+2543                     ; 862 		- ld_word(buf+BPB_RsvdSecCnt-13) - fsize - fs->n_rootdir / 16
+2543                     ; 863 		) / fs->csize + 2;
+2545  05fa 1e3a          	ldw	x,(OFST+1,sp)
+2546  05fc e602          	ld	a,(2,x)
+2547  05fe b703          	ld	c_lreg+3,a
+2548  0600 3f02          	clr	c_lreg+2
+2549  0602 3f01          	clr	c_lreg+1
+2550  0604 3f00          	clr	c_lreg
+2551  0606 96            	ldw	x,sp
+2552  0607 1c0009        	addw	x,#OFST-48
+2553  060a cd0000        	call	c_rtol
+2556  060d 1e3a          	ldw	x,(OFST+1,sp)
+2557  060f ee04          	ldw	x,(4,x)
+2558  0611 54            	srlw	x
+2559  0612 54            	srlw	x
+2560  0613 54            	srlw	x
+2561  0614 54            	srlw	x
+2562  0615 cd0000        	call	c_uitolx
+2564  0618 96            	ldw	x,sp
+2565  0619 1c0005        	addw	x,#OFST-52
+2566  061c cd0000        	call	c_rtol
+2569  061f 96            	ldw	x,sp
+2570  0620 1c0017        	addw	x,#OFST-34
+2571  0623 cd0000        	call	L5_ld_word
+2573  0626 cd0000        	call	c_uitolx
+2575  0629 96            	ldw	x,sp
+2576  062a 5c            	incw	x
+2577  062b cd0000        	call	c_rtol
+2580  062e 96            	ldw	x,sp
+2581  062f 1c0012        	addw	x,#OFST-39
+2582  0632 cd0000        	call	c_ltor
+2584  0635 96            	ldw	x,sp
+2585  0636 5c            	incw	x
+2586  0637 cd0000        	call	c_lsub
 2588  063a 96            	ldw	x,sp
-2589  063b 5c            	incw	x
-2590  063c cd0000        	call	c_lsub
-2592  063f 96            	ldw	x,sp
-2593  0640 1c000d        	addw	x,#OFST-44
-2594  0643 cd0000        	call	c_lsub
-2596  0646 96            	ldw	x,sp
-2597  0647 1c0005        	addw	x,#OFST-52
-2598  064a cd0000        	call	c_lsub
-2600  064d 96            	ldw	x,sp
-2601  064e 1c0009        	addw	x,#OFST-48
-2602  0651 cd0000        	call	c_ludv
-2604  0654 a602          	ld	a,#2
-2605  0656 cd0000        	call	c_ladc
-2607  0659 96            	ldw	x,sp
-2608  065a 1c0012        	addw	x,#OFST-39
-2609  065d cd0000        	call	c_rtol
-2612                     ; 865 	fs->n_fatent = (CLUST)mclst;
-2614  0660 1e3a          	ldw	x,(OFST+1,sp)
-2615  0662 7b15          	ld	a,(OFST-36,sp)
-2616  0664 e709          	ld	(9,x),a
-2617  0666 7b14          	ld	a,(OFST-37,sp)
-2618  0668 e708          	ld	(8,x),a
-2619  066a 7b13          	ld	a,(OFST-38,sp)
-2620  066c e707          	ld	(7,x),a
-2621  066e 7b12          	ld	a,(OFST-39,sp)
-2622  0670 e706          	ld	(6,x),a
-2623                     ; 867 	fmt = 0;							/* Determine the FAT sub type */
-2625  0672 0f11          	clr	(OFST-40,sp)
-2627                     ; 870 	if (PF_FS_FAT32 && mclst >= 0xFFF7) fmt = FS_FAT32;
-2629  0674 96            	ldw	x,sp
-2630  0675 1c0012        	addw	x,#OFST-39
-2631  0678 cd0000        	call	c_ltor
-2633  067b ae0008        	ldw	x,#L671
-2634  067e cd0000        	call	c_lcmp
-2636  0681 2504          	jrult	L3701
-2639  0683 a603          	ld	a,#3
-2640  0685 6b11          	ld	(OFST-40,sp),a
-2642  0687               L3701:
-2643                     ; 871 	if (!fmt) return FR_NO_FILESYSTEM;
-2645  0687 7b11          	ld	a,(OFST-40,sp)
-2646  0689 2605          	jrne	L5701
-2649  068b               LC005:
-2651  068b a606          	ld	a,#6
-2653  068d cc054f        	jra	L202
-2654  0690               L5701:
-2655                     ; 872 	fs->fs_type = fmt;
-2657  0690 1e3a          	ldw	x,(OFST+1,sp)
-2658  0692 f7            	ld	(x),a
-2659                     ; 875 		fs->dirbase = ld_dword(buf+(BPB_RootClus-13));	/* Root directory start cluster */
-2661  0693 96            	ldw	x,sp
-2662  0694 1c0035        	addw	x,#OFST-4
-2663  0697 cd000d        	call	L53_ld_dword
-2665  069a 1e3a          	ldw	x,(OFST+1,sp)
-2666  069c 1c000e        	addw	x,#14
-2667  069f cd0000        	call	c_rtol
-2669                     ; 879 	fs->database = fs->fatbase + fsize + fs->n_rootdir / 16;	/* Data start sector (lba) */
-2671  06a2 1e3a          	ldw	x,(OFST+1,sp)
-2672  06a4 ee04          	ldw	x,(4,x)
-2673  06a6 54            	srlw	x
-2674  06a7 54            	srlw	x
-2675  06a8 54            	srlw	x
-2676  06a9 54            	srlw	x
-2677  06aa cd0000        	call	c_uitolx
-2679  06ad 96            	ldw	x,sp
-2680  06ae 1c0009        	addw	x,#OFST-48
-2681  06b1 cd0000        	call	c_rtol
-2684  06b4 1e3a          	ldw	x,(OFST+1,sp)
-2685  06b6 1c000a        	addw	x,#10
-2686  06b9 cd0000        	call	c_ltor
-2688  06bc 96            	ldw	x,sp
-2689  06bd 1c000d        	addw	x,#OFST-44
-2690  06c0 cd0000        	call	c_ladd
-2692  06c3 96            	ldw	x,sp
-2693  06c4 1c0009        	addw	x,#OFST-48
-2694  06c7 cd0000        	call	c_ladd
-2696  06ca 1e3a          	ldw	x,(OFST+1,sp)
-2697  06cc 1c0012        	addw	x,#18
-2698  06cf cd0000        	call	c_rtol
-2700                     ; 881 	fs->flag = 0;
-2702  06d2 1e3a          	ldw	x,(OFST+1,sp)
-2703                     ; 882 	FatFs = fs;
-2705  06d4 cf0000        	ldw	L3_FatFs,x
-2706  06d7 6f01          	clr	(1,x)
-2707                     ; 884 	return FR_OK;
-2709  06d9 4f            	clr	a
-2711  06da cc054f        	jra	L202
-2803                     ; 894 FRESULT pf_open (
-2803                     ; 895 	const char *path	/* Pointer to the file name */
-2803                     ; 896 )
-2803                     ; 897 {
-2804                     	switch	.text
-2805  06dd               _pf_open:
-2807  06dd 89            	pushw	x
-2808  06de 523f          	subw	sp,#63
-2809       0000003f      OFST:	set	63
-2812                     ; 901 	FATFS *fs = FatFs;
-2814  06e0 ce0000        	ldw	x,L3_FatFs
-2815  06e3 1f3e          	ldw	(OFST-1,sp),x
-2817                     ; 904 	if (!fs) return FR_NOT_ENABLED;		/* Check file system */
-2819  06e5 2604          	jrne	L3411
-2822  06e7 a605          	ld	a,#5
-2824  06e9 201a          	jra	L412
-2825  06eb               L3411:
-2826                     ; 906 	fs->flag = 0;
-2828  06eb 6f01          	clr	(1,x)
-2829                     ; 907 	dj.fn = sp;
-2831  06ed 96            	ldw	x,sp
-2832  06ee 5c            	incw	x
-2833  06ef 1f0f          	ldw	(OFST-48,sp),x
-2835                     ; 908 	res = follow_path(&dj, dir, path);	/* Follow the file path */
-2837  06f1 1e40          	ldw	x,(OFST+1,sp)
-2838  06f3 89            	pushw	x
-2839  06f4 96            	ldw	x,sp
-2840  06f5 1c0020        	addw	x,#OFST-31
-2841  06f8 89            	pushw	x
-2842  06f9 1d0011        	subw	x,#17
-2843  06fc cd041d        	call	L376_follow_path
-2845  06ff 5b04          	addw	sp,#4
-2846  0701 6b1d          	ld	(OFST-34,sp),a
-2848                     ; 909 	if (res != FR_OK) return res;		/* Follow failed */
-2850  0703 2703          	jreq	L5411
-2854  0705               L412:
-2856  0705 5b41          	addw	sp,#65
-2857  0707 81            	ret	
-2858  0708               L5411:
-2859                     ; 910 	if (!dir[0] || (dir[DIR_Attr] & AM_DIR)) return FR_NO_FILE;	/* It is a directory */
-2861  0708 7b1e          	ld	a,(OFST-33,sp)
-2862  070a 2706          	jreq	L1511
-2864  070c 7b29          	ld	a,(OFST-22,sp)
-2865  070e a510          	bcp	a,#16
-2866  0710 2704          	jreq	L7411
-2867  0712               L1511:
-2870  0712 a603          	ld	a,#3
-2872  0714 20ef          	jra	L412
-2873  0716               L7411:
-2874                     ; 912 	fs->org_clust = get_clust(dir);		/* File start cluster */
-2876  0716 96            	ldw	x,sp
-2877  0717 1c001e        	addw	x,#OFST-33
-2878  071a cd01b1        	call	L123_get_clust
-2880  071d 1e3e          	ldw	x,(OFST-1,sp)
-2881  071f 1c001e        	addw	x,#30
-2882  0722 cd0000        	call	c_rtol
-2884                     ; 913 	fs->fsize = ld_dword(dir+DIR_FileSize);	/* File size */
-2886  0725 96            	ldw	x,sp
-2887  0726 1c003a        	addw	x,#OFST-5
-2888  0729 cd000d        	call	L53_ld_dword
-2890  072c 1e3e          	ldw	x,(OFST-1,sp)
-2891  072e 1c001a        	addw	x,#26
-2892  0731 cd0000        	call	c_rtol
-2894                     ; 914 	fs->fptr = 0;						/* File pointer */
-2896  0734 1e3e          	ldw	x,(OFST-1,sp)
-2897  0736 4f            	clr	a
-2898  0737 e719          	ld	(25,x),a
-2899  0739 e718          	ld	(24,x),a
-2900  073b e717          	ld	(23,x),a
-2901  073d e716          	ld	(22,x),a
-2902                     ; 915 	fs->flag = FA_OPENED;
-2904  073f 4c            	inc	a
-2905  0740 e701          	ld	(1,x),a
-2906                     ; 917 	return FR_OK;
-2908  0742 4f            	clr	a
-2910  0743 20c0          	jra	L412
-3068                     ; 928 FRESULT pf_read (
-3068                     ; 929 	void* buff,		/* Pointer to the read buffer (NULL:Forward data to the stream)*/
-3068                     ; 930 	UINT btr,		/* Number of bytes to read */
-3068                     ; 931 	UINT* br		/* Pointer to number of bytes read */
-3068                     ; 932 )
-3068                     ; 933 {
-3069                     	switch	.text
-3070  0745               _pf_read:
-3072  0745 89            	pushw	x
-3073  0746 520f          	subw	sp,#15
-3074       0000000f      OFST:	set	15
-3077                     ; 938 	BYTE cs, *rbuff = buff;
-3079  0748 1f05          	ldw	(OFST-10,sp),x
-3081                     ; 939 	FATFS *fs = FatFs;
-3083  074a ce0000        	ldw	x,L3_FatFs
-3084  074d 1f0e          	ldw	(OFST-1,sp),x
-3086                     ; 942 	*br = 0;
-3088  074f 1e16          	ldw	x,(OFST+7,sp)
-3089  0751 905f          	clrw	y
-3090  0753 ff            	ldw	(x),y
-3091                     ; 943 	if (!fs) return FR_NOT_ENABLED;		/* Check file system */
-3093  0754 1e0e          	ldw	x,(OFST-1,sp)
-3094  0756 2604          	jrne	L3421
-3097  0758 a605          	ld	a,#5
-3099  075a 2008          	jra	L622
-3100  075c               L3421:
-3101                     ; 944 	if (!(fs->flag & FA_OPENED)) return FR_NOT_OPENED;	/* Check if opened */
-3103  075c e601          	ld	a,(1,x)
-3104  075e a501          	bcp	a,#1
-3105  0760 2605          	jrne	L5421
-3108  0762 a604          	ld	a,#4
-3110  0764               L622:
-3112  0764 5b11          	addw	sp,#17
-3113  0766 81            	ret	
-3114  0767               L5421:
-3115                     ; 946 	remain = fs->fsize - fs->fptr;
-3117  0767 1c001a        	addw	x,#26
-3118  076a cd0000        	call	c_ltor
-3120  076d 1e0e          	ldw	x,(OFST-1,sp)
-3121  076f 1c0016        	addw	x,#22
-3122  0772 cd0000        	call	c_lsub
-3124  0775 96            	ldw	x,sp
-3125  0776 1c0008        	addw	x,#OFST-7
-3126  0779 cd0000        	call	c_rtol
-3129                     ; 947 	if (btr > remain) btr = (UINT)remain;			/* Truncate btr by remaining bytes */
-3131  077c 1e14          	ldw	x,(OFST+5,sp)
-3132  077e cd0000        	call	c_uitolx
-3134  0781 96            	ldw	x,sp
-3135  0782 1c0008        	addw	x,#OFST-7
-3136  0785 cd0000        	call	c_lcmp
-3138  0788 2203cc08d5    	jrule	L3521
-3141  078d 1e0a          	ldw	x,(OFST-5,sp)
-3142  078f 1f14          	ldw	(OFST+5,sp),x
-3143  0791 cc08d5        	jra	L3521
-3144  0794               L1521:
-3145                     ; 950 		if ((fs->fptr % 512) == 0) {				/* On the sector boundary? */
-3147  0794 1e0e          	ldw	x,(OFST-1,sp)
-3148  0796 1c0016        	addw	x,#22
-3149  0799 cd0000        	call	c_ltor
-3151  079c b602          	ld	a,c_lreg+2
-3152  079e a401          	and	a,#1
-3153  07a0 b702          	ld	c_lreg+2,a
-3154  07a2 3f01          	clr	c_lreg+1
-3155  07a4 3f00          	clr	c_lreg
-3156  07a6 cd0000        	call	c_lrzmp
-3158  07a9 2703cc086d    	jrne	L7521
-3159                     ; 951 			cs = (BYTE)(fs->fptr / 512 & (fs->csize - 1));	/* Sector offset in the cluster */
-3161  07ae 1e0e          	ldw	x,(OFST-1,sp)
-3162  07b0 e602          	ld	a,(2,x)
-3163  07b2 4a            	dec	a
-3164  07b3 b703          	ld	c_lreg+3,a
-3165  07b5 3f02          	clr	c_lreg+2
-3166  07b7 3f01          	clr	c_lreg+1
-3167  07b9 3f00          	clr	c_lreg
-3168  07bb 96            	ldw	x,sp
-3169  07bc 5c            	incw	x
-3170  07bd cd0000        	call	c_rtol
-3173  07c0 1e0e          	ldw	x,(OFST-1,sp)
-3174  07c2 1c0016        	addw	x,#22
-3175  07c5 cd0000        	call	c_ltor
-3177  07c8 a609          	ld	a,#9
-3178  07ca cd0000        	call	c_lursh
-3180  07cd 96            	ldw	x,sp
-3181  07ce 5c            	incw	x
-3182  07cf cd0000        	call	c_land
-3184  07d2 b603          	ld	a,c_lreg+3
-3185  07d4 6b07          	ld	(OFST-8,sp),a
-3187                     ; 952 			if (!cs) {								/* On the cluster boundary? */
-3189  07d6 2658          	jrne	L1621
-3190                     ; 953 				if (fs->fptr == 0) {				/* On the top of the file? */
-3192  07d8 1e0e          	ldw	x,(OFST-1,sp)
-3193  07da 1c0016        	addw	x,#22
-3194  07dd cd0000        	call	c_lzmp
-3196  07e0 260f          	jrne	L3621
-3197                     ; 954 					clst = fs->org_clust;
-3199  07e2 1e0e          	ldw	x,(OFST-1,sp)
-3200  07e4 9093          	ldw	y,x
-3201  07e6 ee20          	ldw	x,(32,x)
-3202  07e8 1f0a          	ldw	(OFST-5,sp),x
-3203  07ea 93            	ldw	x,y
-3204  07eb ee1e          	ldw	x,(30,x)
-3205  07ed 1f08          	ldw	(OFST-7,sp),x
-3208  07ef 2017          	jra	L5621
-3209  07f1               L3621:
-3210                     ; 956 					clst = get_fat(fs->curr_clust);
-3212  07f1 1e0e          	ldw	x,(OFST-1,sp)
-3213  07f3 9093          	ldw	y,x
-3214  07f5 ee24          	ldw	x,(36,x)
-3215  07f7 89            	pushw	x
-3216  07f8 93            	ldw	x,y
-3217  07f9 ee22          	ldw	x,(34,x)
-3218  07fb 89            	pushw	x
-3219  07fc cd00e3        	call	L761_get_fat
-3221  07ff 5b04          	addw	sp,#4
-3222  0801 96            	ldw	x,sp
-3223  0802 1c0008        	addw	x,#OFST-7
-3224  0805 cd0000        	call	c_rtol
-3227  0808               L5621:
-3228                     ; 958 				if (clst <= 1) ABORT(FR_DISK_ERR);
-3230  0808 96            	ldw	x,sp
-3231  0809 1c0008        	addw	x,#OFST-7
-3232  080c cd0000        	call	c_ltor
-3234  080f ae0000        	ldw	x,#L02
-3235  0812 cd0000        	call	c_lcmp
-3237  0815 1e0e          	ldw	x,(OFST-1,sp)
-3238  0817 2407          	jruge	L7621
-3241  0819 6f01          	clr	(1,x)
-3244  081b a601          	ld	a,#1
-3246  081d cc0764        	jra	L622
-3247  0820               L7621:
-3248                     ; 959 				fs->curr_clust = clst;				/* Update current cluster */
-3251  0820 7b0b          	ld	a,(OFST-4,sp)
-3252  0822 e725          	ld	(37,x),a
-3253  0824 7b0a          	ld	a,(OFST-5,sp)
-3254  0826 e724          	ld	(36,x),a
-3255  0828 7b09          	ld	a,(OFST-6,sp)
-3256  082a e723          	ld	(35,x),a
-3257  082c 7b08          	ld	a,(OFST-7,sp)
-3258  082e e722          	ld	(34,x),a
-3259  0830               L1621:
-3260                     ; 961 			sect = clust2sect(fs->curr_clust);		/* Get current sector */
-3262  0830 1e0e          	ldw	x,(OFST-1,sp)
-3263  0832 9093          	ldw	y,x
-3264  0834 ee24          	ldw	x,(36,x)
-3265  0836 89            	pushw	x
-3266  0837 93            	ldw	x,y
-3267  0838 ee22          	ldw	x,(34,x)
-3268  083a 89            	pushw	x
-3269  083b cd015c        	call	L372_clust2sect
-3271  083e 5b04          	addw	sp,#4
-3272  0840 96            	ldw	x,sp
-3273  0841 1c0008        	addw	x,#OFST-7
-3274  0844 cd0000        	call	c_rtol
-3277                     ; 962 			if (!sect) ABORT(FR_DISK_ERR);
-3279  0847 96            	ldw	x,sp
-3280  0848 1c0008        	addw	x,#OFST-7
-3281  084b cd0000        	call	c_lzmp
-3283  084e 2609          	jrne	L1721
-3286  0850 1e0e          	ldw	x,(OFST-1,sp)
-3289  0852 a601          	ld	a,#1
-3290  0854 6f01          	clr	(1,x)
-3292  0856 cc0764        	jra	L622
-3293  0859               L1721:
-3294                     ; 963 			fs->dsect = sect + cs;
-3297  0859 96            	ldw	x,sp
-3298  085a 1c0008        	addw	x,#OFST-7
-3299  085d cd0000        	call	c_ltor
-3301  0860 7b07          	ld	a,(OFST-8,sp)
-3302  0862 cd0000        	call	c_ladc
-3304  0865 1e0e          	ldw	x,(OFST-1,sp)
-3305  0867 1c0026        	addw	x,#38
-3306  086a cd0000        	call	c_rtol
-3308  086d               L7521:
-3309                     ; 965 		rcnt = 512 - (UINT)fs->fptr % 512;			/* Get partial sector data from sector buffer */
-3311  086d 1e0e          	ldw	x,(OFST-1,sp)
-3312  086f ee18          	ldw	x,(24,x)
-3313  0871 02            	rlwa	x,a
-3314  0872 a401          	and	a,#1
-3315  0874 01            	rrwa	x,a
-3316  0875 1f03          	ldw	(OFST-12,sp),x
-3318  0877 ae0200        	ldw	x,#512
-3319  087a 72f003        	subw	x,(OFST-12,sp)
-3321                     ; 966 		if (rcnt > btr) rcnt = btr;
-3323  087d 1314          	cpw	x,(OFST+5,sp)
-3324  087f 2302          	jrule	L3721
-3327  0881 1e14          	ldw	x,(OFST+5,sp)
-3329  0883               L3721:
-3330  0883 1f0c          	ldw	(OFST-3,sp),x
-3331                     ; 967 		dr = disk_readp(rbuff, fs->dsect, (UINT)fs->fptr % 512, rcnt);
-3333  0885 89            	pushw	x
-3334  0886 1e10          	ldw	x,(OFST+1,sp)
-3335  0888 ee18          	ldw	x,(24,x)
-3336  088a 02            	rlwa	x,a
-3337  088b a401          	and	a,#1
-3338  088d 01            	rrwa	x,a
-3339  088e 89            	pushw	x
-3340  088f 1e12          	ldw	x,(OFST+3,sp)
-3341  0891 9093          	ldw	y,x
-3342  0893 ee28          	ldw	x,(40,x)
-3343  0895 89            	pushw	x
-3344  0896 93            	ldw	x,y
-3345  0897 ee26          	ldw	x,(38,x)
-3346  0899 89            	pushw	x
-3347  089a 1e0d          	ldw	x,(OFST-2,sp)
-3348  089c cd0000        	call	_disk_readp
-3350  089f 5b08          	addw	sp,#8
-3351  08a1 6b07          	ld	(OFST-8,sp),a
-3353                     ; 968 		if (dr) ABORT(FR_DISK_ERR);
-3355  08a3 2709          	jreq	L5721
-3358  08a5 1e0e          	ldw	x,(OFST-1,sp)
-3361  08a7 a601          	ld	a,#1
-3362  08a9 6f01          	clr	(1,x)
-3364  08ab cc0764        	jra	L622
-3365  08ae               L5721:
-3366                     ; 969 		fs->fptr += rcnt;							/* Advances file read pointer */
-3369  08ae 1e0e          	ldw	x,(OFST-1,sp)
-3370  08b0 160c          	ldw	y,(OFST-3,sp)
-3371  08b2 cd0000        	call	c_uitoly
-3373  08b5 1c0016        	addw	x,#22
-3374  08b8 cd0000        	call	c_lgadd
-3376                     ; 970 		btr -= rcnt; *br += rcnt;					/* Update read counter */
-3378  08bb 1e14          	ldw	x,(OFST+5,sp)
-3379  08bd 72f00c        	subw	x,(OFST-3,sp)
-3380  08c0 1f14          	ldw	(OFST+5,sp),x
-3383  08c2 1e16          	ldw	x,(OFST+7,sp)
-3384  08c4 9093          	ldw	y,x
-3385  08c6 fe            	ldw	x,(x)
-3386  08c7 72fb0c        	addw	x,(OFST-3,sp)
-3387  08ca 90ff          	ldw	(y),x
-3388                     ; 971 		if (rbuff) rbuff += rcnt;					/* Advances the data pointer if destination is memory */
-3390  08cc 1e05          	ldw	x,(OFST-10,sp)
-3391  08ce 2705          	jreq	L3521
-3394  08d0 72fb0c        	addw	x,(OFST-3,sp)
-3395  08d3 1f05          	ldw	(OFST-10,sp),x
-3397  08d5               L3521:
-3398                     ; 949 	while (btr)	{									/* Repeat until all data transferred */
-3400  08d5 1e14          	ldw	x,(OFST+5,sp)
-3401  08d7 2703cc0794    	jrne	L1521
-3402                     ; 974 	return FR_OK;
-3404  08dc 4f            	clr	a
-3406  08dd cc0764        	jra	L622
-3520                     ; 985 FRESULT pf_write (
-3520                     ; 986 	const void* buff,	/* Pointer to the data to be written */
-3520                     ; 987 	UINT btw,			/* Number of bytes to write (0:Finalize the current write operation) */
-3520                     ; 988 	UINT* bw			/* Pointer to number of bytes written */
-3520                     ; 989 )
-3520                     ; 990 {
-3521                     	switch	.text
-3522  08e0               _pf_write:
-3524  08e0 89            	pushw	x
-3525  08e1 520f          	subw	sp,#15
-3526       0000000f      OFST:	set	15
-3529                     ; 993 	const BYTE *p = buff;
-3531  08e3 1f05          	ldw	(OFST-10,sp),x
-3533                     ; 996 	FATFS *fs = FatFs;
-3535  08e5 ce0000        	ldw	x,L3_FatFs
-3536  08e8 1f0e          	ldw	(OFST-1,sp),x
-3538                     ; 999 	*bw = 0;
-3540  08ea 1e16          	ldw	x,(OFST+7,sp)
-3541  08ec 905f          	clrw	y
-3542  08ee ff            	ldw	(x),y
-3543                     ; 1000 	if (!fs) return FR_NOT_ENABLED;		/* Check file system */
-3545  08ef 1e0e          	ldw	x,(OFST-1,sp)
-3546  08f1 2604          	jrne	L1531
-3549  08f3 a605          	ld	a,#5
-3551  08f5 2008          	jra	L642
-3552  08f7               L1531:
-3553                     ; 1001 	if (!(fs->flag & FA_OPENED)) return FR_NOT_OPENED;	/* Check if opened */
-3555  08f7 e601          	ld	a,(1,x)
-3556  08f9 a501          	bcp	a,#1
-3557  08fb 2605          	jrne	L3531
-3560  08fd a604          	ld	a,#4
-3562  08ff               L642:
-3564  08ff 5b11          	addw	sp,#17
-3565  0901 81            	ret	
-3566  0902               L3531:
-3567                     ; 1003 	if (!btw) {		/* Finalize request */
-3569  0902 1e14          	ldw	x,(OFST+5,sp)
-3570  0904 2621          	jrne	L5531
-3571                     ; 1004 		if ((fs->flag & FA__WIP) && disk_writep(0, 0)) ABORT(FR_DISK_ERR);
-3573  0906 1e0e          	ldw	x,(OFST-1,sp)
-3574  0908 e601          	ld	a,(1,x)
-3575  090a a540          	bcp	a,#64
-3576  090c 2712          	jreq	L7531
-3578  090e 5f            	clrw	x
-3579  090f 89            	pushw	x
-3580  0910 89            	pushw	x
-3581  0911 cd0000        	call	_disk_writep
-3583  0914 5b04          	addw	sp,#4
-3584  0916 4d            	tnz	a
-3588  0917 2703cc0aa9    	jrne	LC008
-3589  091c 1e0e          	ldw	x,(OFST-1,sp)
-3590  091e e601          	ld	a,(1,x)
-3591  0920               L7531:
-3592                     ; 1005 		fs->flag &= ~FA__WIP;
-3595  0920 a4bf          	and	a,#191
-3596  0922 e701          	ld	(1,x),a
-3597                     ; 1006 		return FR_OK;
-3599  0924 cc0ac1        	jp	LC006
-3600  0927               L5531:
-3601                     ; 1008 		if (!(fs->flag & FA__WIP)) {	/* Round-down fptr to the sector boundary */
-3603  0927 1e0e          	ldw	x,(OFST-1,sp)
-3604  0929 e601          	ld	a,(1,x)
-3605  092b a540          	bcp	a,#64
-3606  092d 2608          	jrne	L1631
-3607                     ; 1009 			fs->fptr &= 0xFFFFFE00;
-3609  092f 6f19          	clr	(25,x)
-3610  0931 e618          	ld	a,(24,x)
-3611  0933 a4fe          	and	a,#254
-3612  0935 e718          	ld	(24,x),a
-3613  0937               L1631:
-3614                     ; 1012 	remain = fs->fsize - fs->fptr;
-3616  0937 1c001a        	addw	x,#26
-3617  093a cd0000        	call	c_ltor
-3619  093d 1e0e          	ldw	x,(OFST-1,sp)
-3620  093f 1c0016        	addw	x,#22
-3621  0942 cd0000        	call	c_lsub
-3623  0945 96            	ldw	x,sp
-3624  0946 1c0008        	addw	x,#OFST-7
-3625  0949 cd0000        	call	c_rtol
-3628                     ; 1013 	if (btw > remain) btw = (UINT)remain;			/* Truncate btw by remaining bytes */
-3630  094c 1e14          	ldw	x,(OFST+5,sp)
-3631  094e cd0000        	call	c_uitolx
-3633  0951 96            	ldw	x,sp
-3634  0952 1c0008        	addw	x,#OFST-7
-3635  0955 cd0000        	call	c_lcmp
-3637  0958 2203cc0aba    	jrule	L1731
-3640  095d 1e0a          	ldw	x,(OFST-5,sp)
-3641  095f 1f14          	ldw	(OFST+5,sp),x
-3642  0961 cc0aba        	jra	L1731
-3643  0964               L7631:
-3644                     ; 1016 		if ((UINT)fs->fptr % 512 == 0) {			/* On the sector boundary? */
-3646  0964 1e0e          	ldw	x,(OFST-1,sp)
-3647  0966 ee18          	ldw	x,(24,x)
-3648  0968 02            	rlwa	x,a
-3649  0969 a401          	and	a,#1
-3650  096b 01            	rrwa	x,a
-3651  096c 5d            	tnzw	x
-3652  096d 2703cc0a43    	jrne	L5731
-3653                     ; 1017 			cs = (BYTE)(fs->fptr / 512 & (fs->csize - 1));	/* Sector offset in the cluster */
-3655  0972 1e0e          	ldw	x,(OFST-1,sp)
-3656  0974 e602          	ld	a,(2,x)
-3657  0976 4a            	dec	a
-3658  0977 b703          	ld	c_lreg+3,a
-3659  0979 3f02          	clr	c_lreg+2
-3660  097b 3f01          	clr	c_lreg+1
-3661  097d 3f00          	clr	c_lreg
-3662  097f 96            	ldw	x,sp
-3663  0980 5c            	incw	x
-3664  0981 cd0000        	call	c_rtol
-3667  0984 1e0e          	ldw	x,(OFST-1,sp)
-3668  0986 1c0016        	addw	x,#22
-3669  0989 cd0000        	call	c_ltor
-3671  098c a609          	ld	a,#9
-3672  098e cd0000        	call	c_lursh
-3674  0991 96            	ldw	x,sp
-3675  0992 5c            	incw	x
-3676  0993 cd0000        	call	c_land
-3678  0996 b603          	ld	a,c_lreg+3
-3679  0998 6b07          	ld	(OFST-8,sp),a
-3681                     ; 1018 			if (!cs) {								/* On the cluster boundary? */
-3683  099a 2654          	jrne	L7731
-3684                     ; 1019 				if (fs->fptr == 0) {				/* On the top of the file? */
-3686  099c 1e0e          	ldw	x,(OFST-1,sp)
-3687  099e 1c0016        	addw	x,#22
-3688  09a1 cd0000        	call	c_lzmp
-3690  09a4 260f          	jrne	L1041
-3691                     ; 1020 					clst = fs->org_clust;
-3693  09a6 1e0e          	ldw	x,(OFST-1,sp)
-3694  09a8 9093          	ldw	y,x
-3695  09aa ee20          	ldw	x,(32,x)
-3696  09ac 1f0a          	ldw	(OFST-5,sp),x
-3697  09ae 93            	ldw	x,y
-3698  09af ee1e          	ldw	x,(30,x)
-3699  09b1 1f08          	ldw	(OFST-7,sp),x
-3702  09b3 2017          	jra	L3041
-3703  09b5               L1041:
-3704                     ; 1022 					clst = get_fat(fs->curr_clust);
-3706  09b5 1e0e          	ldw	x,(OFST-1,sp)
-3707  09b7 9093          	ldw	y,x
-3708  09b9 ee24          	ldw	x,(36,x)
-3709  09bb 89            	pushw	x
-3710  09bc 93            	ldw	x,y
-3711  09bd ee22          	ldw	x,(34,x)
-3712  09bf 89            	pushw	x
-3713  09c0 cd00e3        	call	L761_get_fat
-3715  09c3 5b04          	addw	sp,#4
-3716  09c5 96            	ldw	x,sp
-3717  09c6 1c0008        	addw	x,#OFST-7
-3718  09c9 cd0000        	call	c_rtol
-3721  09cc               L3041:
-3722                     ; 1024 				if (clst <= 1) ABORT(FR_DISK_ERR);
-3724  09cc 96            	ldw	x,sp
-3725  09cd 1c0008        	addw	x,#OFST-7
-3726  09d0 cd0000        	call	c_ltor
-3728  09d3 ae0000        	ldw	x,#L02
-3729  09d6 cd0000        	call	c_lcmp
-3731  09d9 1e0e          	ldw	x,(OFST-1,sp)
-3735  09db 2403cc0aab    	jrult	LC007
-3736                     ; 1025 				fs->curr_clust = clst;				/* Update current cluster */
-3739  09e0 7b0b          	ld	a,(OFST-4,sp)
-3740  09e2 e725          	ld	(37,x),a
-3741  09e4 7b0a          	ld	a,(OFST-5,sp)
-3742  09e6 e724          	ld	(36,x),a
-3743  09e8 7b09          	ld	a,(OFST-6,sp)
-3744  09ea e723          	ld	(35,x),a
-3745  09ec 7b08          	ld	a,(OFST-7,sp)
-3746  09ee e722          	ld	(34,x),a
-3747  09f0               L7731:
-3748                     ; 1027 			sect = clust2sect(fs->curr_clust);		/* Get current sector */
-3750  09f0 1e0e          	ldw	x,(OFST-1,sp)
-3751  09f2 9093          	ldw	y,x
-3752  09f4 ee24          	ldw	x,(36,x)
-3753  09f6 89            	pushw	x
-3754  09f7 93            	ldw	x,y
-3755  09f8 ee22          	ldw	x,(34,x)
-3756  09fa 89            	pushw	x
-3757  09fb cd015c        	call	L372_clust2sect
-3759  09fe 5b04          	addw	sp,#4
-3760  0a00 96            	ldw	x,sp
-3761  0a01 1c0008        	addw	x,#OFST-7
-3762  0a04 cd0000        	call	c_rtol
-3765                     ; 1028 			if (!sect) ABORT(FR_DISK_ERR);
-3767  0a07 96            	ldw	x,sp
-3768  0a08 1c0008        	addw	x,#OFST-7
-3769  0a0b cd0000        	call	c_lzmp
-3774  0a0e 2603cc0aa9    	jreq	LC008
-3775                     ; 1029 			fs->dsect = sect + cs;
-3778  0a13 96            	ldw	x,sp
-3779  0a14 1c0008        	addw	x,#OFST-7
-3780  0a17 cd0000        	call	c_ltor
-3782  0a1a 7b07          	ld	a,(OFST-8,sp)
-3783  0a1c cd0000        	call	c_ladc
-3785  0a1f 1e0e          	ldw	x,(OFST-1,sp)
-3786  0a21 1c0026        	addw	x,#38
-3787  0a24 cd0000        	call	c_rtol
-3789                     ; 1030 			if (disk_writep(0, fs->dsect)) ABORT(FR_DISK_ERR);	/* Initiate a sector write operation */
-3791  0a27 1e0e          	ldw	x,(OFST-1,sp)
-3792  0a29 9093          	ldw	y,x
-3793  0a2b ee28          	ldw	x,(40,x)
-3794  0a2d 89            	pushw	x
-3795  0a2e 93            	ldw	x,y
-3796  0a2f ee26          	ldw	x,(38,x)
-3797  0a31 89            	pushw	x
-3798  0a32 5f            	clrw	x
-3799  0a33 cd0000        	call	_disk_writep
-3801  0a36 5b04          	addw	sp,#4
-3802  0a38 4d            	tnz	a
-3806  0a39 266e          	jrne	LC008
-3807                     ; 1031 			fs->flag |= FA__WIP;
-3810  0a3b 1e0e          	ldw	x,(OFST-1,sp)
-3811  0a3d e601          	ld	a,(1,x)
-3812  0a3f aa40          	or	a,#64
-3813  0a41 e701          	ld	(1,x),a
-3814  0a43               L5731:
-3815                     ; 1033 		wcnt = 512 - (UINT)fs->fptr % 512;			/* Number of bytes to write to the sector */
-3817  0a43 1e0e          	ldw	x,(OFST-1,sp)
-3818  0a45 ee18          	ldw	x,(24,x)
-3819  0a47 02            	rlwa	x,a
-3820  0a48 a401          	and	a,#1
-3821  0a4a 01            	rrwa	x,a
-3822  0a4b 1f03          	ldw	(OFST-12,sp),x
-3824  0a4d ae0200        	ldw	x,#512
-3825  0a50 72f003        	subw	x,(OFST-12,sp)
-3827                     ; 1034 		if (wcnt > btw) wcnt = btw;
-3829  0a53 1314          	cpw	x,(OFST+5,sp)
-3830  0a55 2302          	jrule	L3141
-3833  0a57 1e14          	ldw	x,(OFST+5,sp)
-3835  0a59               L3141:
-3836  0a59 1f0c          	ldw	(OFST-3,sp),x
-3837                     ; 1035 		if (disk_writep(p, wcnt)) ABORT(FR_DISK_ERR);	/* Send data to the sector */
-3839  0a5b cd0000        	call	c_uitolx
-3841  0a5e be02          	ldw	x,c_lreg+2
-3842  0a60 89            	pushw	x
-3843  0a61 be00          	ldw	x,c_lreg
-3844  0a63 89            	pushw	x
-3845  0a64 1e09          	ldw	x,(OFST-6,sp)
-3846  0a66 cd0000        	call	_disk_writep
-3848  0a69 5b04          	addw	sp,#4
-3849  0a6b 4d            	tnz	a
-3853  0a6c 263b          	jrne	LC008
-3854                     ; 1036 		fs->fptr += wcnt; p += wcnt;				/* Update pointers and counters */
-3857  0a6e 1e0e          	ldw	x,(OFST-1,sp)
-3858  0a70 160c          	ldw	y,(OFST-3,sp)
-3859  0a72 cd0000        	call	c_uitoly
-3861  0a75 1c0016        	addw	x,#22
-3862  0a78 cd0000        	call	c_lgadd
-3866  0a7b 1e05          	ldw	x,(OFST-10,sp)
-3867  0a7d 72fb0c        	addw	x,(OFST-3,sp)
-3868  0a80 1f05          	ldw	(OFST-10,sp),x
-3870                     ; 1037 		btw -= wcnt; *bw += wcnt;
-3872  0a82 1e14          	ldw	x,(OFST+5,sp)
-3873  0a84 72f00c        	subw	x,(OFST-3,sp)
-3874  0a87 1f14          	ldw	(OFST+5,sp),x
-3877  0a89 1e16          	ldw	x,(OFST+7,sp)
-3878  0a8b 9093          	ldw	y,x
-3879  0a8d fe            	ldw	x,(x)
-3880  0a8e 72fb0c        	addw	x,(OFST-3,sp)
-3881  0a91 90ff          	ldw	(y),x
-3882                     ; 1038 		if ((UINT)fs->fptr % 512 == 0) {
-3884  0a93 1e0e          	ldw	x,(OFST-1,sp)
-3885  0a95 ee18          	ldw	x,(24,x)
-3886  0a97 02            	rlwa	x,a
-3887  0a98 a401          	and	a,#1
-3888  0a9a 01            	rrwa	x,a
-3889  0a9b 5d            	tnzw	x
-3890  0a9c 261c          	jrne	L1731
-3891                     ; 1039 			if (disk_writep(0, 0)) ABORT(FR_DISK_ERR);	/* Finalize the currtent secter write operation */
-3893  0a9e 5f            	clrw	x
-3894  0a9f 89            	pushw	x
-3895  0aa0 89            	pushw	x
-3896  0aa1 cd0000        	call	_disk_writep
-3898  0aa4 5b04          	addw	sp,#4
-3899  0aa6 4d            	tnz	a
-3900  0aa7 2709          	jreq	L1241
-3903  0aa9               LC008:
-3908  0aa9 1e0e          	ldw	x,(OFST-1,sp)
-3911  0aab               LC007:
-3913  0aab 6f01          	clr	(1,x)
-3919  0aad a601          	ld	a,#1
-3921  0aaf cc08ff        	jra	L642
-3922  0ab2               L1241:
-3923                     ; 1040 			fs->flag &= ~FA__WIP;
-3926  0ab2 1e0e          	ldw	x,(OFST-1,sp)
-3927  0ab4 e601          	ld	a,(1,x)
-3928  0ab6 a4bf          	and	a,#191
-3929  0ab8 e701          	ld	(1,x),a
-3930  0aba               L1731:
-3931                     ; 1015 	while (btw)	{									/* Repeat until all data transferred */
-3933  0aba 1e14          	ldw	x,(OFST+5,sp)
-3934  0abc 2703cc0964    	jrne	L7631
-3935                     ; 1044 	return FR_OK;
-3937  0ac1               LC006:
-3939  0ac1 4f            	clr	a
-3941  0ac2 cc08ff        	jra	L642
-3968                     	switch	.bss
-3969  0000               L3_FatFs:
-3970  0000 0000          	ds.b	2
-3971                     	xref	_disk_writep
-3972                     	xref	_disk_readp
-3973                     	xref	_disk_initialize
-3974                     	xdef	_pf_write
-3975                     	xdef	_pf_read
-3976                     	xdef	_pf_open
-3977                     	xdef	_pf_mount
-3978                     	xref.b	c_lreg
-3979                     	xref.b	c_x
-3999                     	xref	c_lgadd
-4000                     	xref	c_uitoly
-4001                     	xref	c_land
-4002                     	xref	c_lrzmp
-4003                     	xref	c_ladc
-4004                     	xref	c_ludv
-4005                     	xref	c_lsub
-4006                     	xref	c_lgmul
-4007                     	xref	c_lgadc
-4008                     	xref	c_lzmp
-4009                     	xref	c_lgor
-4010                     	xref	c_lglsh
-4011                     	xref	c_uitolx
-4012                     	xref	c_lmul
-4013                     	xref	c_lsbc
-4014                     	xref	c_lgsbc
-4015                     	xref	c_ladd
-4016                     	xref	c_lursh
-4017                     	xref	c_lcmp
-4018                     	xref	c_lor
-4019                     	xref	c_rtol
-4020                     	xref	c_llsh
-4021                     	xref	c_ltor
-4022                     	end
+2589  063b 1c000d        	addw	x,#OFST-44
+2590  063e cd0000        	call	c_lsub
+2592  0641 96            	ldw	x,sp
+2593  0642 1c0005        	addw	x,#OFST-52
+2594  0645 cd0000        	call	c_lsub
+2596  0648 96            	ldw	x,sp
+2597  0649 1c0009        	addw	x,#OFST-48
+2598  064c cd0000        	call	c_ludv
+2600  064f a602          	ld	a,#2
+2601  0651 cd0000        	call	c_ladc
+2603  0654 96            	ldw	x,sp
+2604  0655 1c0012        	addw	x,#OFST-39
+2605  0658 cd0000        	call	c_rtol
+2608                     ; 864 	fs->n_fatent = (CLUST)mclst;
+2610  065b 1e3a          	ldw	x,(OFST+1,sp)
+2611  065d 7b15          	ld	a,(OFST-36,sp)
+2612  065f e709          	ld	(9,x),a
+2613  0661 7b14          	ld	a,(OFST-37,sp)
+2614  0663 e708          	ld	(8,x),a
+2615  0665 7b13          	ld	a,(OFST-38,sp)
+2616  0667 e707          	ld	(7,x),a
+2617  0669 7b12          	ld	a,(OFST-39,sp)
+2618  066b e706          	ld	(6,x),a
+2619                     ; 866 	fmt = 0;							/* Determine the FAT sub type */
+2621  066d 0f11          	clr	(OFST-40,sp)
+2623                     ; 869 	if (PF_FS_FAT32 && mclst >= 0xFFF7) fmt = FS_FAT32;
+2625  066f 96            	ldw	x,sp
+2626  0670 1c0012        	addw	x,#OFST-39
+2627  0673 cd0000        	call	c_ltor
+2629  0676 ae0008        	ldw	x,#L471
+2630  0679 cd0000        	call	c_lcmp
+2632  067c 2504          	jrult	L3701
+2635  067e a603          	ld	a,#3
+2636  0680 6b11          	ld	(OFST-40,sp),a
+2638  0682               L3701:
+2639                     ; 870 	if (!fmt) return FR_NO_FILESYSTEM;
+2641  0682 7b11          	ld	a,(OFST-40,sp)
+2642  0684 2605          	jrne	L5701
+2645  0686               LC005:
+2647  0686 a606          	ld	a,#6
+2649  0688 cc054b        	jra	L002
+2650  068b               L5701:
+2651                     ; 871 	fs->fs_type = fmt;
+2653  068b 1e3a          	ldw	x,(OFST+1,sp)
+2654  068d f7            	ld	(x),a
+2655                     ; 874 		fs->dirbase = ld_dword(buf+(BPB_RootClus-13));	/* Root directory start cluster */
+2657  068e 96            	ldw	x,sp
+2658  068f 1c0035        	addw	x,#OFST-4
+2659  0692 cd000d        	call	L53_ld_dword
+2661  0695 1e3a          	ldw	x,(OFST+1,sp)
+2662  0697 1c000e        	addw	x,#14
+2663  069a cd0000        	call	c_rtol
+2665                     ; 878 	fs->database = fs->fatbase + fsize + fs->n_rootdir / 16;	/* Data start sector (lba) */
+2667  069d 1e3a          	ldw	x,(OFST+1,sp)
+2668  069f ee04          	ldw	x,(4,x)
+2669  06a1 54            	srlw	x
+2670  06a2 54            	srlw	x
+2671  06a3 54            	srlw	x
+2672  06a4 54            	srlw	x
+2673  06a5 cd0000        	call	c_uitolx
+2675  06a8 96            	ldw	x,sp
+2676  06a9 1c0009        	addw	x,#OFST-48
+2677  06ac cd0000        	call	c_rtol
+2680  06af 1e3a          	ldw	x,(OFST+1,sp)
+2681  06b1 1c000a        	addw	x,#10
+2682  06b4 cd0000        	call	c_ltor
+2684  06b7 96            	ldw	x,sp
+2685  06b8 1c000d        	addw	x,#OFST-44
+2686  06bb cd0000        	call	c_ladd
+2688  06be 96            	ldw	x,sp
+2689  06bf 1c0009        	addw	x,#OFST-48
+2690  06c2 cd0000        	call	c_ladd
+2692  06c5 1e3a          	ldw	x,(OFST+1,sp)
+2693  06c7 1c0012        	addw	x,#18
+2694  06ca cd0000        	call	c_rtol
+2696                     ; 880 	fs->flag = 0;
+2698  06cd 1e3a          	ldw	x,(OFST+1,sp)
+2699                     ; 881 	FatFs = fs;
+2701  06cf cf0000        	ldw	L3_FatFs,x
+2702  06d2 6f01          	clr	(1,x)
+2703                     ; 883 	return FR_OK;
+2705  06d4 4f            	clr	a
+2707  06d5 cc054b        	jra	L002
+2799                     ; 893 FRESULT pf_open (
+2799                     ; 894 	const char *path	/* Pointer to the file name */
+2799                     ; 895 )
+2799                     ; 896 {
+2800                     	switch	.text
+2801  06d8               _pf_open:
+2803  06d8 89            	pushw	x
+2804  06d9 523f          	subw	sp,#63
+2805       0000003f      OFST:	set	63
+2808                     ; 900 	FATFS *fs = FatFs;
+2810  06db ce0000        	ldw	x,L3_FatFs
+2811  06de 1f3e          	ldw	(OFST-1,sp),x
+2813                     ; 903 	if (!fs) return FR_NOT_ENABLED;		/* Check file system */
+2815  06e0 2604          	jrne	L3411
+2818  06e2 a605          	ld	a,#5
+2820  06e4 201a          	jra	L212
+2821  06e6               L3411:
+2822                     ; 905 	fs->flag = 0;
+2824  06e6 6f01          	clr	(1,x)
+2825                     ; 906 	dj.fn = sp;
+2827  06e8 96            	ldw	x,sp
+2828  06e9 5c            	incw	x
+2829  06ea 1f0f          	ldw	(OFST-48,sp),x
+2831                     ; 907 	res = follow_path(&dj, dir, path);	/* Follow the file path */
+2833  06ec 1e40          	ldw	x,(OFST+1,sp)
+2834  06ee 89            	pushw	x
+2835  06ef 96            	ldw	x,sp
+2836  06f0 1c0020        	addw	x,#OFST-31
+2837  06f3 89            	pushw	x
+2838  06f4 1d0011        	subw	x,#17
+2839  06f7 cd0419        	call	L376_follow_path
+2841  06fa 5b04          	addw	sp,#4
+2842  06fc 6b1d          	ld	(OFST-34,sp),a
+2844                     ; 908 	if (res != FR_OK) return res;		/* Follow failed */
+2846  06fe 2703          	jreq	L5411
+2850  0700               L212:
+2852  0700 5b41          	addw	sp,#65
+2853  0702 81            	ret	
+2854  0703               L5411:
+2855                     ; 909 	if (!dir[0] || (dir[DIR_Attr] & AM_DIR)) return FR_NO_FILE;	/* It is a directory */
+2857  0703 7b1e          	ld	a,(OFST-33,sp)
+2858  0705 2706          	jreq	L1511
+2860  0707 7b29          	ld	a,(OFST-22,sp)
+2861  0709 a510          	bcp	a,#16
+2862  070b 2704          	jreq	L7411
+2863  070d               L1511:
+2866  070d a603          	ld	a,#3
+2868  070f 20ef          	jra	L212
+2869  0711               L7411:
+2870                     ; 911 	fs->org_clust = get_clust(dir);		/* File start cluster */
+2872  0711 96            	ldw	x,sp
+2873  0712 1c001e        	addw	x,#OFST-33
+2874  0715 cd01b1        	call	L123_get_clust
+2876  0718 1e3e          	ldw	x,(OFST-1,sp)
+2877  071a 1c001e        	addw	x,#30
+2878  071d cd0000        	call	c_rtol
+2880                     ; 912 	fs->fsize = ld_dword(dir+DIR_FileSize);	/* File size */
+2882  0720 96            	ldw	x,sp
+2883  0721 1c003a        	addw	x,#OFST-5
+2884  0724 cd000d        	call	L53_ld_dword
+2886  0727 1e3e          	ldw	x,(OFST-1,sp)
+2887  0729 1c001a        	addw	x,#26
+2888  072c cd0000        	call	c_rtol
+2890                     ; 913 	fs->fptr = 0;						/* File pointer */
+2892  072f 1e3e          	ldw	x,(OFST-1,sp)
+2893  0731 4f            	clr	a
+2894  0732 e719          	ld	(25,x),a
+2895  0734 e718          	ld	(24,x),a
+2896  0736 e717          	ld	(23,x),a
+2897  0738 e716          	ld	(22,x),a
+2898                     ; 914 	fs->flag = FA_OPENED;
+2900  073a 4c            	inc	a
+2901  073b e701          	ld	(1,x),a
+2902                     ; 916 	return FR_OK;
+2904  073d 4f            	clr	a
+2906  073e 20c0          	jra	L212
+3064                     ; 927 FRESULT pf_read (
+3064                     ; 928 	void* buff,		/* Pointer to the read buffer (NULL:Forward data to the stream)*/
+3064                     ; 929 	UINT btr,		/* Number of bytes to read */
+3064                     ; 930 	UINT* br		/* Pointer to number of bytes read */
+3064                     ; 931 )
+3064                     ; 932 {
+3065                     	switch	.text
+3066  0740               _pf_read:
+3068  0740 89            	pushw	x
+3069  0741 520f          	subw	sp,#15
+3070       0000000f      OFST:	set	15
+3073                     ; 937 	BYTE cs, *rbuff = buff;
+3075  0743 1f05          	ldw	(OFST-10,sp),x
+3077                     ; 938 	FATFS *fs = FatFs;
+3079  0745 ce0000        	ldw	x,L3_FatFs
+3080  0748 1f0e          	ldw	(OFST-1,sp),x
+3082                     ; 941 	*br = 0;
+3084  074a 1e16          	ldw	x,(OFST+7,sp)
+3085  074c 905f          	clrw	y
+3086  074e ff            	ldw	(x),y
+3087                     ; 942 	if (!fs) return FR_NOT_ENABLED;		/* Check file system */
+3089  074f 1e0e          	ldw	x,(OFST-1,sp)
+3090  0751 2604          	jrne	L3421
+3093  0753 a605          	ld	a,#5
+3095  0755 2008          	jra	L422
+3096  0757               L3421:
+3097                     ; 943 	if (!(fs->flag & FA_OPENED)) return FR_NOT_OPENED;	/* Check if opened */
+3099  0757 e601          	ld	a,(1,x)
+3100  0759 a501          	bcp	a,#1
+3101  075b 2605          	jrne	L5421
+3104  075d a604          	ld	a,#4
+3106  075f               L422:
+3108  075f 5b11          	addw	sp,#17
+3109  0761 81            	ret	
+3110  0762               L5421:
+3111                     ; 945 	remain = fs->fsize - fs->fptr;
+3113  0762 1c001a        	addw	x,#26
+3114  0765 cd0000        	call	c_ltor
+3116  0768 1e0e          	ldw	x,(OFST-1,sp)
+3117  076a 1c0016        	addw	x,#22
+3118  076d cd0000        	call	c_lsub
+3120  0770 96            	ldw	x,sp
+3121  0771 1c0008        	addw	x,#OFST-7
+3122  0774 cd0000        	call	c_rtol
+3125                     ; 946 	if (btr > remain) btr = (UINT)remain;			/* Truncate btr by remaining bytes */
+3127  0777 1e14          	ldw	x,(OFST+5,sp)
+3128  0779 cd0000        	call	c_uitolx
+3130  077c 96            	ldw	x,sp
+3131  077d 1c0008        	addw	x,#OFST-7
+3132  0780 cd0000        	call	c_lcmp
+3134  0783 2203cc08d0    	jrule	L3521
+3137  0788 1e0a          	ldw	x,(OFST-5,sp)
+3138  078a 1f14          	ldw	(OFST+5,sp),x
+3139  078c cc08d0        	jra	L3521
+3140  078f               L1521:
+3141                     ; 949 		if ((fs->fptr % 512) == 0) {				/* On the sector boundary? */
+3143  078f 1e0e          	ldw	x,(OFST-1,sp)
+3144  0791 1c0016        	addw	x,#22
+3145  0794 cd0000        	call	c_ltor
+3147  0797 b602          	ld	a,c_lreg+2
+3148  0799 a401          	and	a,#1
+3149  079b b702          	ld	c_lreg+2,a
+3150  079d 3f01          	clr	c_lreg+1
+3151  079f 3f00          	clr	c_lreg
+3152  07a1 cd0000        	call	c_lrzmp
+3154  07a4 2703cc0868    	jrne	L7521
+3155                     ; 950 			cs = (BYTE)(fs->fptr / 512 & (fs->csize - 1));	/* Sector offset in the cluster */
+3157  07a9 1e0e          	ldw	x,(OFST-1,sp)
+3158  07ab e602          	ld	a,(2,x)
+3159  07ad 4a            	dec	a
+3160  07ae b703          	ld	c_lreg+3,a
+3161  07b0 3f02          	clr	c_lreg+2
+3162  07b2 3f01          	clr	c_lreg+1
+3163  07b4 3f00          	clr	c_lreg
+3164  07b6 96            	ldw	x,sp
+3165  07b7 5c            	incw	x
+3166  07b8 cd0000        	call	c_rtol
+3169  07bb 1e0e          	ldw	x,(OFST-1,sp)
+3170  07bd 1c0016        	addw	x,#22
+3171  07c0 cd0000        	call	c_ltor
+3173  07c3 a609          	ld	a,#9
+3174  07c5 cd0000        	call	c_lursh
+3176  07c8 96            	ldw	x,sp
+3177  07c9 5c            	incw	x
+3178  07ca cd0000        	call	c_land
+3180  07cd b603          	ld	a,c_lreg+3
+3181  07cf 6b07          	ld	(OFST-8,sp),a
+3183                     ; 951 			if (!cs) {								/* On the cluster boundary? */
+3185  07d1 2658          	jrne	L1621
+3186                     ; 952 				if (fs->fptr == 0) {				/* On the top of the file? */
+3188  07d3 1e0e          	ldw	x,(OFST-1,sp)
+3189  07d5 1c0016        	addw	x,#22
+3190  07d8 cd0000        	call	c_lzmp
+3192  07db 260f          	jrne	L3621
+3193                     ; 953 					clst = fs->org_clust;
+3195  07dd 1e0e          	ldw	x,(OFST-1,sp)
+3196  07df 9093          	ldw	y,x
+3197  07e1 ee20          	ldw	x,(32,x)
+3198  07e3 1f0a          	ldw	(OFST-5,sp),x
+3199  07e5 93            	ldw	x,y
+3200  07e6 ee1e          	ldw	x,(30,x)
+3201  07e8 1f08          	ldw	(OFST-7,sp),x
+3204  07ea 2017          	jra	L5621
+3205  07ec               L3621:
+3206                     ; 955 					clst = get_fat(fs->curr_clust);
+3208  07ec 1e0e          	ldw	x,(OFST-1,sp)
+3209  07ee 9093          	ldw	y,x
+3210  07f0 ee24          	ldw	x,(36,x)
+3211  07f2 89            	pushw	x
+3212  07f3 93            	ldw	x,y
+3213  07f4 ee22          	ldw	x,(34,x)
+3214  07f6 89            	pushw	x
+3215  07f7 cd00e3        	call	L761_get_fat
+3217  07fa 5b04          	addw	sp,#4
+3218  07fc 96            	ldw	x,sp
+3219  07fd 1c0008        	addw	x,#OFST-7
+3220  0800 cd0000        	call	c_rtol
+3223  0803               L5621:
+3224                     ; 957 				if (clst <= 1) ABORT(FR_DISK_ERR);
+3226  0803 96            	ldw	x,sp
+3227  0804 1c0008        	addw	x,#OFST-7
+3228  0807 cd0000        	call	c_ltor
+3230  080a ae0000        	ldw	x,#L02
+3231  080d cd0000        	call	c_lcmp
+3233  0810 1e0e          	ldw	x,(OFST-1,sp)
+3234  0812 2407          	jruge	L7621
+3237  0814 6f01          	clr	(1,x)
+3240  0816 a601          	ld	a,#1
+3242  0818 cc075f        	jra	L422
+3243  081b               L7621:
+3244                     ; 958 				fs->curr_clust = clst;				/* Update current cluster */
+3247  081b 7b0b          	ld	a,(OFST-4,sp)
+3248  081d e725          	ld	(37,x),a
+3249  081f 7b0a          	ld	a,(OFST-5,sp)
+3250  0821 e724          	ld	(36,x),a
+3251  0823 7b09          	ld	a,(OFST-6,sp)
+3252  0825 e723          	ld	(35,x),a
+3253  0827 7b08          	ld	a,(OFST-7,sp)
+3254  0829 e722          	ld	(34,x),a
+3255  082b               L1621:
+3256                     ; 960 			sect = clust2sect(fs->curr_clust);		/* Get current sector */
+3258  082b 1e0e          	ldw	x,(OFST-1,sp)
+3259  082d 9093          	ldw	y,x
+3260  082f ee24          	ldw	x,(36,x)
+3261  0831 89            	pushw	x
+3262  0832 93            	ldw	x,y
+3263  0833 ee22          	ldw	x,(34,x)
+3264  0835 89            	pushw	x
+3265  0836 cd015c        	call	L372_clust2sect
+3267  0839 5b04          	addw	sp,#4
+3268  083b 96            	ldw	x,sp
+3269  083c 1c0008        	addw	x,#OFST-7
+3270  083f cd0000        	call	c_rtol
+3273                     ; 961 			if (!sect) ABORT(FR_DISK_ERR);
+3275  0842 96            	ldw	x,sp
+3276  0843 1c0008        	addw	x,#OFST-7
+3277  0846 cd0000        	call	c_lzmp
+3279  0849 2609          	jrne	L1721
+3282  084b 1e0e          	ldw	x,(OFST-1,sp)
+3285  084d a601          	ld	a,#1
+3286  084f 6f01          	clr	(1,x)
+3288  0851 cc075f        	jra	L422
+3289  0854               L1721:
+3290                     ; 962 			fs->dsect = sect + cs;
+3293  0854 96            	ldw	x,sp
+3294  0855 1c0008        	addw	x,#OFST-7
+3295  0858 cd0000        	call	c_ltor
+3297  085b 7b07          	ld	a,(OFST-8,sp)
+3298  085d cd0000        	call	c_ladc
+3300  0860 1e0e          	ldw	x,(OFST-1,sp)
+3301  0862 1c0026        	addw	x,#38
+3302  0865 cd0000        	call	c_rtol
+3304  0868               L7521:
+3305                     ; 964 		rcnt = 512 - (UINT)fs->fptr % 512;			/* Get partial sector data from sector buffer */
+3307  0868 1e0e          	ldw	x,(OFST-1,sp)
+3308  086a ee18          	ldw	x,(24,x)
+3309  086c 02            	rlwa	x,a
+3310  086d a401          	and	a,#1
+3311  086f 01            	rrwa	x,a
+3312  0870 1f03          	ldw	(OFST-12,sp),x
+3314  0872 ae0200        	ldw	x,#512
+3315  0875 72f003        	subw	x,(OFST-12,sp)
+3317                     ; 965 		if (rcnt > btr) rcnt = btr;
+3319  0878 1314          	cpw	x,(OFST+5,sp)
+3320  087a 2302          	jrule	L3721
+3323  087c 1e14          	ldw	x,(OFST+5,sp)
+3325  087e               L3721:
+3326  087e 1f0c          	ldw	(OFST-3,sp),x
+3327                     ; 966 		dr = disk_readp(rbuff, fs->dsect, (UINT)fs->fptr % 512, rcnt);
+3329  0880 89            	pushw	x
+3330  0881 1e10          	ldw	x,(OFST+1,sp)
+3331  0883 ee18          	ldw	x,(24,x)
+3332  0885 02            	rlwa	x,a
+3333  0886 a401          	and	a,#1
+3334  0888 01            	rrwa	x,a
+3335  0889 89            	pushw	x
+3336  088a 1e12          	ldw	x,(OFST+3,sp)
+3337  088c 9093          	ldw	y,x
+3338  088e ee28          	ldw	x,(40,x)
+3339  0890 89            	pushw	x
+3340  0891 93            	ldw	x,y
+3341  0892 ee26          	ldw	x,(38,x)
+3342  0894 89            	pushw	x
+3343  0895 1e0d          	ldw	x,(OFST-2,sp)
+3344  0897 cd0000        	call	_disk_readp
+3346  089a 5b08          	addw	sp,#8
+3347  089c 6b07          	ld	(OFST-8,sp),a
+3349                     ; 967 		if (dr) ABORT(FR_DISK_ERR);
+3351  089e 2709          	jreq	L5721
+3354  08a0 1e0e          	ldw	x,(OFST-1,sp)
+3357  08a2 a601          	ld	a,#1
+3358  08a4 6f01          	clr	(1,x)
+3360  08a6 cc075f        	jra	L422
+3361  08a9               L5721:
+3362                     ; 968 		fs->fptr += rcnt;							/* Advances file read pointer */
+3365  08a9 1e0e          	ldw	x,(OFST-1,sp)
+3366  08ab 160c          	ldw	y,(OFST-3,sp)
+3367  08ad cd0000        	call	c_uitoly
+3369  08b0 1c0016        	addw	x,#22
+3370  08b3 cd0000        	call	c_lgadd
+3372                     ; 969 		btr -= rcnt; *br += rcnt;					/* Update read counter */
+3374  08b6 1e14          	ldw	x,(OFST+5,sp)
+3375  08b8 72f00c        	subw	x,(OFST-3,sp)
+3376  08bb 1f14          	ldw	(OFST+5,sp),x
+3379  08bd 1e16          	ldw	x,(OFST+7,sp)
+3380  08bf 9093          	ldw	y,x
+3381  08c1 fe            	ldw	x,(x)
+3382  08c2 72fb0c        	addw	x,(OFST-3,sp)
+3383  08c5 90ff          	ldw	(y),x
+3384                     ; 970 		if (rbuff) rbuff += rcnt;					/* Advances the data pointer if destination is memory */
+3386  08c7 1e05          	ldw	x,(OFST-10,sp)
+3387  08c9 2705          	jreq	L3521
+3390  08cb 72fb0c        	addw	x,(OFST-3,sp)
+3391  08ce 1f05          	ldw	(OFST-10,sp),x
+3393  08d0               L3521:
+3394                     ; 948 	while (btr)	{									/* Repeat until all data transferred */
+3396  08d0 1e14          	ldw	x,(OFST+5,sp)
+3397  08d2 2703cc078f    	jrne	L1521
+3398                     ; 973 	return FR_OK;
+3400  08d7 4f            	clr	a
+3402  08d8 cc075f        	jra	L422
+3516                     ; 984 FRESULT pf_write (
+3516                     ; 985 	const void* buff,	/* Pointer to the data to be written */
+3516                     ; 986 	UINT btw,			/* Number of bytes to write (0:Finalize the current write operation) */
+3516                     ; 987 	UINT* bw			/* Pointer to number of bytes written */
+3516                     ; 988 )
+3516                     ; 989 {
+3517                     	switch	.text
+3518  08db               _pf_write:
+3520  08db 89            	pushw	x
+3521  08dc 520f          	subw	sp,#15
+3522       0000000f      OFST:	set	15
+3525                     ; 992 	const BYTE *p = buff;
+3527  08de 1f05          	ldw	(OFST-10,sp),x
+3529                     ; 995 	FATFS *fs = FatFs;
+3531  08e0 ce0000        	ldw	x,L3_FatFs
+3532  08e3 1f0e          	ldw	(OFST-1,sp),x
+3534                     ; 998 	*bw = 0;
+3536  08e5 1e16          	ldw	x,(OFST+7,sp)
+3537  08e7 905f          	clrw	y
+3538  08e9 ff            	ldw	(x),y
+3539                     ; 999 	if (!fs) return FR_NOT_ENABLED;		/* Check file system */
+3541  08ea 1e0e          	ldw	x,(OFST-1,sp)
+3542  08ec 2604          	jrne	L1531
+3545  08ee a605          	ld	a,#5
+3547  08f0 2008          	jra	L442
+3548  08f2               L1531:
+3549                     ; 1000 	if (!(fs->flag & FA_OPENED)) return FR_NOT_OPENED;	/* Check if opened */
+3551  08f2 e601          	ld	a,(1,x)
+3552  08f4 a501          	bcp	a,#1
+3553  08f6 2605          	jrne	L3531
+3556  08f8 a604          	ld	a,#4
+3558  08fa               L442:
+3560  08fa 5b11          	addw	sp,#17
+3561  08fc 81            	ret	
+3562  08fd               L3531:
+3563                     ; 1002 	if (!btw) {		/* Finalize request */
+3565  08fd 1e14          	ldw	x,(OFST+5,sp)
+3566  08ff 2621          	jrne	L5531
+3567                     ; 1003 		if ((fs->flag & FA__WIP) && disk_writep(0, 0)) ABORT(FR_DISK_ERR);
+3569  0901 1e0e          	ldw	x,(OFST-1,sp)
+3570  0903 e601          	ld	a,(1,x)
+3571  0905 a540          	bcp	a,#64
+3572  0907 2712          	jreq	L7531
+3574  0909 5f            	clrw	x
+3575  090a 89            	pushw	x
+3576  090b 89            	pushw	x
+3577  090c cd0000        	call	_disk_writep
+3579  090f 5b04          	addw	sp,#4
+3580  0911 4d            	tnz	a
+3584  0912 2703cc0aa4    	jrne	LC008
+3585  0917 1e0e          	ldw	x,(OFST-1,sp)
+3586  0919 e601          	ld	a,(1,x)
+3587  091b               L7531:
+3588                     ; 1004 		fs->flag &= ~FA__WIP;
+3591  091b a4bf          	and	a,#191
+3592  091d e701          	ld	(1,x),a
+3593                     ; 1005 		return FR_OK;
+3595  091f cc0abc        	jp	LC006
+3596  0922               L5531:
+3597                     ; 1007 		if (!(fs->flag & FA__WIP)) {	/* Round-down fptr to the sector boundary */
+3599  0922 1e0e          	ldw	x,(OFST-1,sp)
+3600  0924 e601          	ld	a,(1,x)
+3601  0926 a540          	bcp	a,#64
+3602  0928 2608          	jrne	L1631
+3603                     ; 1008 			fs->fptr &= 0xFFFFFE00;
+3605  092a 6f19          	clr	(25,x)
+3606  092c e618          	ld	a,(24,x)
+3607  092e a4fe          	and	a,#254
+3608  0930 e718          	ld	(24,x),a
+3609  0932               L1631:
+3610                     ; 1011 	remain = fs->fsize - fs->fptr;
+3612  0932 1c001a        	addw	x,#26
+3613  0935 cd0000        	call	c_ltor
+3615  0938 1e0e          	ldw	x,(OFST-1,sp)
+3616  093a 1c0016        	addw	x,#22
+3617  093d cd0000        	call	c_lsub
+3619  0940 96            	ldw	x,sp
+3620  0941 1c0008        	addw	x,#OFST-7
+3621  0944 cd0000        	call	c_rtol
+3624                     ; 1012 	if (btw > remain) btw = (UINT)remain;			/* Truncate btw by remaining bytes */
+3626  0947 1e14          	ldw	x,(OFST+5,sp)
+3627  0949 cd0000        	call	c_uitolx
+3629  094c 96            	ldw	x,sp
+3630  094d 1c0008        	addw	x,#OFST-7
+3631  0950 cd0000        	call	c_lcmp
+3633  0953 2203cc0ab5    	jrule	L1731
+3636  0958 1e0a          	ldw	x,(OFST-5,sp)
+3637  095a 1f14          	ldw	(OFST+5,sp),x
+3638  095c cc0ab5        	jra	L1731
+3639  095f               L7631:
+3640                     ; 1015 		if ((UINT)fs->fptr % 512 == 0) {			/* On the sector boundary? */
+3642  095f 1e0e          	ldw	x,(OFST-1,sp)
+3643  0961 ee18          	ldw	x,(24,x)
+3644  0963 02            	rlwa	x,a
+3645  0964 a401          	and	a,#1
+3646  0966 01            	rrwa	x,a
+3647  0967 5d            	tnzw	x
+3648  0968 2703cc0a3e    	jrne	L5731
+3649                     ; 1016 			cs = (BYTE)(fs->fptr / 512 & (fs->csize - 1));	/* Sector offset in the cluster */
+3651  096d 1e0e          	ldw	x,(OFST-1,sp)
+3652  096f e602          	ld	a,(2,x)
+3653  0971 4a            	dec	a
+3654  0972 b703          	ld	c_lreg+3,a
+3655  0974 3f02          	clr	c_lreg+2
+3656  0976 3f01          	clr	c_lreg+1
+3657  0978 3f00          	clr	c_lreg
+3658  097a 96            	ldw	x,sp
+3659  097b 5c            	incw	x
+3660  097c cd0000        	call	c_rtol
+3663  097f 1e0e          	ldw	x,(OFST-1,sp)
+3664  0981 1c0016        	addw	x,#22
+3665  0984 cd0000        	call	c_ltor
+3667  0987 a609          	ld	a,#9
+3668  0989 cd0000        	call	c_lursh
+3670  098c 96            	ldw	x,sp
+3671  098d 5c            	incw	x
+3672  098e cd0000        	call	c_land
+3674  0991 b603          	ld	a,c_lreg+3
+3675  0993 6b07          	ld	(OFST-8,sp),a
+3677                     ; 1017 			if (!cs) {								/* On the cluster boundary? */
+3679  0995 2654          	jrne	L7731
+3680                     ; 1018 				if (fs->fptr == 0) {				/* On the top of the file? */
+3682  0997 1e0e          	ldw	x,(OFST-1,sp)
+3683  0999 1c0016        	addw	x,#22
+3684  099c cd0000        	call	c_lzmp
+3686  099f 260f          	jrne	L1041
+3687                     ; 1019 					clst = fs->org_clust;
+3689  09a1 1e0e          	ldw	x,(OFST-1,sp)
+3690  09a3 9093          	ldw	y,x
+3691  09a5 ee20          	ldw	x,(32,x)
+3692  09a7 1f0a          	ldw	(OFST-5,sp),x
+3693  09a9 93            	ldw	x,y
+3694  09aa ee1e          	ldw	x,(30,x)
+3695  09ac 1f08          	ldw	(OFST-7,sp),x
+3698  09ae 2017          	jra	L3041
+3699  09b0               L1041:
+3700                     ; 1021 					clst = get_fat(fs->curr_clust);
+3702  09b0 1e0e          	ldw	x,(OFST-1,sp)
+3703  09b2 9093          	ldw	y,x
+3704  09b4 ee24          	ldw	x,(36,x)
+3705  09b6 89            	pushw	x
+3706  09b7 93            	ldw	x,y
+3707  09b8 ee22          	ldw	x,(34,x)
+3708  09ba 89            	pushw	x
+3709  09bb cd00e3        	call	L761_get_fat
+3711  09be 5b04          	addw	sp,#4
+3712  09c0 96            	ldw	x,sp
+3713  09c1 1c0008        	addw	x,#OFST-7
+3714  09c4 cd0000        	call	c_rtol
+3717  09c7               L3041:
+3718                     ; 1023 				if (clst <= 1) ABORT(FR_DISK_ERR);
+3720  09c7 96            	ldw	x,sp
+3721  09c8 1c0008        	addw	x,#OFST-7
+3722  09cb cd0000        	call	c_ltor
+3724  09ce ae0000        	ldw	x,#L02
+3725  09d1 cd0000        	call	c_lcmp
+3727  09d4 1e0e          	ldw	x,(OFST-1,sp)
+3731  09d6 2403cc0aa6    	jrult	LC007
+3732                     ; 1024 				fs->curr_clust = clst;				/* Update current cluster */
+3735  09db 7b0b          	ld	a,(OFST-4,sp)
+3736  09dd e725          	ld	(37,x),a
+3737  09df 7b0a          	ld	a,(OFST-5,sp)
+3738  09e1 e724          	ld	(36,x),a
+3739  09e3 7b09          	ld	a,(OFST-6,sp)
+3740  09e5 e723          	ld	(35,x),a
+3741  09e7 7b08          	ld	a,(OFST-7,sp)
+3742  09e9 e722          	ld	(34,x),a
+3743  09eb               L7731:
+3744                     ; 1026 			sect = clust2sect(fs->curr_clust);		/* Get current sector */
+3746  09eb 1e0e          	ldw	x,(OFST-1,sp)
+3747  09ed 9093          	ldw	y,x
+3748  09ef ee24          	ldw	x,(36,x)
+3749  09f1 89            	pushw	x
+3750  09f2 93            	ldw	x,y
+3751  09f3 ee22          	ldw	x,(34,x)
+3752  09f5 89            	pushw	x
+3753  09f6 cd015c        	call	L372_clust2sect
+3755  09f9 5b04          	addw	sp,#4
+3756  09fb 96            	ldw	x,sp
+3757  09fc 1c0008        	addw	x,#OFST-7
+3758  09ff cd0000        	call	c_rtol
+3761                     ; 1027 			if (!sect) ABORT(FR_DISK_ERR);
+3763  0a02 96            	ldw	x,sp
+3764  0a03 1c0008        	addw	x,#OFST-7
+3765  0a06 cd0000        	call	c_lzmp
+3770  0a09 2603cc0aa4    	jreq	LC008
+3771                     ; 1028 			fs->dsect = sect + cs;
+3774  0a0e 96            	ldw	x,sp
+3775  0a0f 1c0008        	addw	x,#OFST-7
+3776  0a12 cd0000        	call	c_ltor
+3778  0a15 7b07          	ld	a,(OFST-8,sp)
+3779  0a17 cd0000        	call	c_ladc
+3781  0a1a 1e0e          	ldw	x,(OFST-1,sp)
+3782  0a1c 1c0026        	addw	x,#38
+3783  0a1f cd0000        	call	c_rtol
+3785                     ; 1029 			if (disk_writep(0, fs->dsect)) ABORT(FR_DISK_ERR);	/* Initiate a sector write operation */
+3787  0a22 1e0e          	ldw	x,(OFST-1,sp)
+3788  0a24 9093          	ldw	y,x
+3789  0a26 ee28          	ldw	x,(40,x)
+3790  0a28 89            	pushw	x
+3791  0a29 93            	ldw	x,y
+3792  0a2a ee26          	ldw	x,(38,x)
+3793  0a2c 89            	pushw	x
+3794  0a2d 5f            	clrw	x
+3795  0a2e cd0000        	call	_disk_writep
+3797  0a31 5b04          	addw	sp,#4
+3798  0a33 4d            	tnz	a
+3802  0a34 266e          	jrne	LC008
+3803                     ; 1030 			fs->flag |= FA__WIP;
+3806  0a36 1e0e          	ldw	x,(OFST-1,sp)
+3807  0a38 e601          	ld	a,(1,x)
+3808  0a3a aa40          	or	a,#64
+3809  0a3c e701          	ld	(1,x),a
+3810  0a3e               L5731:
+3811                     ; 1032 		wcnt = 512 - (UINT)fs->fptr % 512;			/* Number of bytes to write to the sector */
+3813  0a3e 1e0e          	ldw	x,(OFST-1,sp)
+3814  0a40 ee18          	ldw	x,(24,x)
+3815  0a42 02            	rlwa	x,a
+3816  0a43 a401          	and	a,#1
+3817  0a45 01            	rrwa	x,a
+3818  0a46 1f03          	ldw	(OFST-12,sp),x
+3820  0a48 ae0200        	ldw	x,#512
+3821  0a4b 72f003        	subw	x,(OFST-12,sp)
+3823                     ; 1033 		if (wcnt > btw) wcnt = btw;
+3825  0a4e 1314          	cpw	x,(OFST+5,sp)
+3826  0a50 2302          	jrule	L3141
+3829  0a52 1e14          	ldw	x,(OFST+5,sp)
+3831  0a54               L3141:
+3832  0a54 1f0c          	ldw	(OFST-3,sp),x
+3833                     ; 1034 		if (disk_writep(p, wcnt)) ABORT(FR_DISK_ERR);	/* Send data to the sector */
+3835  0a56 cd0000        	call	c_uitolx
+3837  0a59 be02          	ldw	x,c_lreg+2
+3838  0a5b 89            	pushw	x
+3839  0a5c be00          	ldw	x,c_lreg
+3840  0a5e 89            	pushw	x
+3841  0a5f 1e09          	ldw	x,(OFST-6,sp)
+3842  0a61 cd0000        	call	_disk_writep
+3844  0a64 5b04          	addw	sp,#4
+3845  0a66 4d            	tnz	a
+3849  0a67 263b          	jrne	LC008
+3850                     ; 1035 		fs->fptr += wcnt; p += wcnt;				/* Update pointers and counters */
+3853  0a69 1e0e          	ldw	x,(OFST-1,sp)
+3854  0a6b 160c          	ldw	y,(OFST-3,sp)
+3855  0a6d cd0000        	call	c_uitoly
+3857  0a70 1c0016        	addw	x,#22
+3858  0a73 cd0000        	call	c_lgadd
+3862  0a76 1e05          	ldw	x,(OFST-10,sp)
+3863  0a78 72fb0c        	addw	x,(OFST-3,sp)
+3864  0a7b 1f05          	ldw	(OFST-10,sp),x
+3866                     ; 1036 		btw -= wcnt; *bw += wcnt;
+3868  0a7d 1e14          	ldw	x,(OFST+5,sp)
+3869  0a7f 72f00c        	subw	x,(OFST-3,sp)
+3870  0a82 1f14          	ldw	(OFST+5,sp),x
+3873  0a84 1e16          	ldw	x,(OFST+7,sp)
+3874  0a86 9093          	ldw	y,x
+3875  0a88 fe            	ldw	x,(x)
+3876  0a89 72fb0c        	addw	x,(OFST-3,sp)
+3877  0a8c 90ff          	ldw	(y),x
+3878                     ; 1037 		if ((UINT)fs->fptr % 512 == 0) {
+3880  0a8e 1e0e          	ldw	x,(OFST-1,sp)
+3881  0a90 ee18          	ldw	x,(24,x)
+3882  0a92 02            	rlwa	x,a
+3883  0a93 a401          	and	a,#1
+3884  0a95 01            	rrwa	x,a
+3885  0a96 5d            	tnzw	x
+3886  0a97 261c          	jrne	L1731
+3887                     ; 1038 			if (disk_writep(0, 0)) ABORT(FR_DISK_ERR);	/* Finalize the currtent secter write operation */
+3889  0a99 5f            	clrw	x
+3890  0a9a 89            	pushw	x
+3891  0a9b 89            	pushw	x
+3892  0a9c cd0000        	call	_disk_writep
+3894  0a9f 5b04          	addw	sp,#4
+3895  0aa1 4d            	tnz	a
+3896  0aa2 2709          	jreq	L1241
+3899  0aa4               LC008:
+3904  0aa4 1e0e          	ldw	x,(OFST-1,sp)
+3907  0aa6               LC007:
+3909  0aa6 6f01          	clr	(1,x)
+3915  0aa8 a601          	ld	a,#1
+3917  0aaa cc08fa        	jra	L442
+3918  0aad               L1241:
+3919                     ; 1039 			fs->flag &= ~FA__WIP;
+3922  0aad 1e0e          	ldw	x,(OFST-1,sp)
+3923  0aaf e601          	ld	a,(1,x)
+3924  0ab1 a4bf          	and	a,#191
+3925  0ab3 e701          	ld	(1,x),a
+3926  0ab5               L1731:
+3927                     ; 1014 	while (btw)	{									/* Repeat until all data transferred */
+3929  0ab5 1e14          	ldw	x,(OFST+5,sp)
+3930  0ab7 2703cc095f    	jrne	L7631
+3931                     ; 1043 	return FR_OK;
+3933  0abc               LC006:
+3935  0abc 4f            	clr	a
+3937  0abd cc08fa        	jra	L442
+3964                     	switch	.bss
+3965  0000               L3_FatFs:
+3966  0000 0000          	ds.b	2
+3967                     	xref	_disk_writep
+3968                     	xref	_disk_readp
+3969                     	xref	_disk_initialize
+3970                     	xdef	_pf_write
+3971                     	xdef	_pf_read
+3972                     	xdef	_pf_open
+3973                     	xdef	_pf_mount
+3974                     	xref.b	c_lreg
+3975                     	xref.b	c_x
+3995                     	xref	c_lgadd
+3996                     	xref	c_uitoly
+3997                     	xref	c_land
+3998                     	xref	c_lrzmp
+3999                     	xref	c_ladc
+4000                     	xref	c_ludv
+4001                     	xref	c_lsub
+4002                     	xref	c_lgmul
+4003                     	xref	c_lgadc
+4004                     	xref	c_lzmp
+4005                     	xref	c_lgor
+4006                     	xref	c_lglsh
+4007                     	xref	c_uitolx
+4008                     	xref	c_lmul
+4009                     	xref	c_lsbc
+4010                     	xref	c_lgsbc
+4011                     	xref	c_ladd
+4012                     	xref	c_lursh
+4013                     	xref	c_lcmp
+4014                     	xref	c_lor
+4015                     	xref	c_rtol
+4016                     	xref	c_llsh
+4017                     	xref	c_ltor
+4018                     	end

@@ -791,7 +791,6 @@ static BYTE check_fs (	/* 0:The FAT boot record, 1:Valid boot record but not an 
 	if (ld_word(buf) != 0xAA55) {			/* Check record signature */
 		return 2;
 	}
-
 	if (!_FS_32ONLY && !disk_readp(buf, sect, BS_FilSysType, 2) && ld_word(buf) == 0x4146) {	/* Check FAT12/16 */
 		return 0;
 	}

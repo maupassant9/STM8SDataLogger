@@ -25,6 +25,8 @@
 
 #define TIMER_VALUE_FOR_SYSTICK (TIMER_INPUT_CLK_FREQ*SYS_TICK_VAL_IN_US)/1e6
 
+#define TIM4_PRESCALER_64 (0x06)
+
 /********************************************
 * Type definition 
 ********************************************/

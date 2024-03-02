@@ -56,23 +56,6 @@ Debug\diskio.o
 Debug\pff.o
 Debug\led.o
 Debug\mmcsd.o
-Debug\stm8s_adc1.o
-Debug\stm8s_awu.o
-Debug\stm8s_beep.o
-Debug\stm8s_clk.o
-Debug\stm8s_exti.o
-Debug\stm8s_flash.o
-Debug\stm8s_gpio.o
-Debug\stm8s_i2c.o
-Debug\stm8s_itc.o
-Debug\stm8s_iwdg.o
-Debug\stm8s_rst.o
-Debug\stm8s_spi.o
-Debug\stm8s_tim1.o
-Debug\stm8s_tim2.o
-Debug\stm8s_tim4.o
-Debug\stm8s_uart1.o
-Debug\stm8s_wwdg.o
 Debug\main.o
 #<END OBJECT_FILES>
 

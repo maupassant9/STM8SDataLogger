@@ -1,7 +1,7 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
-   2                     ; Parser V4.11.13 - 05 Feb 2019
-   3                     ; Generator (Limited) V4.4.9 - 06 Feb 2019
-   4                     ; Optimizer V4.4.9 - 06 Feb 2019
+   2                     ; Parser V4.12.9 - 19 Apr 2023
+   3                     ; Generator (Limited) V4.5.6 - 18 Jul 2023
+   4                     ; Optimizer V4.5.6 - 18 Jul 2023
   77                     ; 87 void FLASH_Unlock(FLASH_MemType_TypeDef FLASH_MemType)
   77                     ; 88 {
   79                     	switch	.text
@@ -657,217 +657,217 @@
 1735  0379 1f01          	ldw	(OFST-2,sp),x
 1737                     ; 577   while((flagstatus == 0x00) && (timeout != 0x00))
 1739  037b 7b03          	ld	a,(OFST+0,sp)
-1740  037d 2604          	jrne	L735
-1742  037f 1e01          	ldw	x,(OFST-2,sp)
-1743  0381 26ee          	jrne	L135
-1744  0383               L735:
+1740  037d 2603          	jrne	L735
+1742  037f 5d            	tnzw	x
+1743  0380 26ef          	jrne	L135
+1744  0382               L735:
 1745                     ; 584   if(timeout == 0x00 )
-1747  0383 1e01          	ldw	x,(OFST-2,sp)
-1748  0385 2602          	jrne	L145
+1747  0382 1e01          	ldw	x,(OFST-2,sp)
+1748  0384 2602          	jrne	L145
 1749                     ; 586     flagstatus = FLASH_STATUS_TIMEOUT;
-1751  0387 a602          	ld	a,#2
-1753  0389               L145:
+1751  0386 a602          	ld	a,#2
+1753  0388               L145:
 1754                     ; 589   return((FLASH_Status_TypeDef)flagstatus);
-1758  0389 5b03          	addw	sp,#3
-1759  038b 81            	ret	
+1758  0388 5b03          	addw	sp,#3
+1759  038a 81            	ret	
 1819                     ; 599 IN_RAM(void FLASH_EraseBlock(uint16_t BlockNum, FLASH_MemType_TypeDef FLASH_MemType))
 1819                     ; 600 {
 1820                     	switch	.text
-1821  038c               _FLASH_EraseBlock:
-1823  038c 89            	pushw	x
-1824  038d 5206          	subw	sp,#6
+1821  038b               _FLASH_EraseBlock:
+1823  038b 89            	pushw	x
+1824  038c 5206          	subw	sp,#6
 1825       00000006      OFST:	set	6
 1828                     ; 601   uint32_t startaddress = 0;
 1830                     ; 611   assert_param(IS_MEMORY_TYPE_OK(FLASH_MemType));
-1832  038f 7b0b          	ld	a,(OFST+5,sp)
-1833  0391 a1fd          	cp	a,#253
-1834  0393 2714          	jreq	L442
-1835  0395 a1f7          	cp	a,#247
-1836  0397 2710          	jreq	L442
-1837  0399 ae0263        	ldw	x,#611
-1838  039c 89            	pushw	x
-1839  039d 5f            	clrw	x
-1840  039e 89            	pushw	x
-1841  039f ae0010        	ldw	x,#L73
-1842  03a2 cd0000        	call	_assert_failed
-1844  03a5 5b04          	addw	sp,#4
-1845  03a7 7b0b          	ld	a,(OFST+5,sp)
-1846  03a9               L442:
+1832  038e 7b0b          	ld	a,(OFST+5,sp)
+1833  0390 a1fd          	cp	a,#253
+1834  0392 2714          	jreq	L442
+1835  0394 a1f7          	cp	a,#247
+1836  0396 2710          	jreq	L442
+1837  0398 ae0263        	ldw	x,#611
+1838  039b 89            	pushw	x
+1839  039c 5f            	clrw	x
+1840  039d 89            	pushw	x
+1841  039e ae0010        	ldw	x,#L73
+1842  03a1 cd0000        	call	_assert_failed
+1844  03a4 5b04          	addw	sp,#4
+1845  03a6 7b0b          	ld	a,(OFST+5,sp)
+1846  03a8               L442:
 1847                     ; 612   if(FLASH_MemType == FLASH_MEMTYPE_PROG)
-1849  03a9 a1fd          	cp	a,#253
-1850  03ab 261a          	jrne	L175
+1849  03a8 a1fd          	cp	a,#253
+1850  03aa 261a          	jrne	L175
 1851                     ; 614     assert_param(IS_FLASH_PROG_BLOCK_NUMBER_OK(BlockNum));
-1853  03ad 1e07          	ldw	x,(OFST+1,sp)
-1854  03af a30080        	cpw	x,#128
-1855  03b2 250e          	jrult	L252
-1856  03b4 ae0266        	ldw	x,#614
-1857  03b7 89            	pushw	x
-1858  03b8 5f            	clrw	x
-1859  03b9 89            	pushw	x
-1860  03ba ae0010        	ldw	x,#L73
-1861  03bd cd0000        	call	_assert_failed
-1863  03c0 5b04          	addw	sp,#4
-1864  03c2               L252:
+1853  03ac 1e07          	ldw	x,(OFST+1,sp)
+1854  03ae a30080        	cpw	x,#128
+1855  03b1 250e          	jrult	L252
+1856  03b3 ae0266        	ldw	x,#614
+1857  03b6 89            	pushw	x
+1858  03b7 5f            	clrw	x
+1859  03b8 89            	pushw	x
+1860  03b9 ae0010        	ldw	x,#L73
+1861  03bc cd0000        	call	_assert_failed
+1863  03bf 5b04          	addw	sp,#4
+1864  03c1               L252:
 1865                     ; 615     startaddress = FLASH_PROG_START_PHYSICAL_ADDRESS;
-1867  03c2 ae8000        	ldw	x,#32768
-1869  03c5 2018          	jra	L375
-1870  03c7               L175:
+1867  03c1 ae8000        	ldw	x,#32768
+1869  03c4 2018          	jra	L375
+1870  03c6               L175:
 1871                     ; 619     assert_param(IS_FLASH_DATA_BLOCK_NUMBER_OK(BlockNum));
-1873  03c7 1e07          	ldw	x,(OFST+1,sp)
-1874  03c9 a3000a        	cpw	x,#10
-1875  03cc 250e          	jrult	L062
-1876  03ce ae026b        	ldw	x,#619
-1877  03d1 89            	pushw	x
-1878  03d2 5f            	clrw	x
-1879  03d3 89            	pushw	x
-1880  03d4 ae0010        	ldw	x,#L73
-1881  03d7 cd0000        	call	_assert_failed
-1883  03da 5b04          	addw	sp,#4
-1884  03dc               L062:
+1873  03c6 1e07          	ldw	x,(OFST+1,sp)
+1874  03c8 a3000a        	cpw	x,#10
+1875  03cb 250e          	jrult	L062
+1876  03cd ae026b        	ldw	x,#619
+1877  03d0 89            	pushw	x
+1878  03d1 5f            	clrw	x
+1879  03d2 89            	pushw	x
+1880  03d3 ae0010        	ldw	x,#L73
+1881  03d6 cd0000        	call	_assert_failed
+1883  03d9 5b04          	addw	sp,#4
+1884  03db               L062:
 1885                     ; 620     startaddress = FLASH_DATA_START_PHYSICAL_ADDRESS;
-1887  03dc ae4000        	ldw	x,#16384
-1888  03df               L375:
-1889  03df 1f05          	ldw	(OFST-1,sp),x
-1890  03e1 5f            	clrw	x
-1891  03e2 1f03          	ldw	(OFST-3,sp),x
+1887  03db ae4000        	ldw	x,#16384
+1888  03de               L375:
+1889  03de 1f05          	ldw	(OFST-1,sp),x
+1890  03e0 5f            	clrw	x
+1891  03e1 1f03          	ldw	(OFST-3,sp),x
 1893                     ; 628     pwFlash = (PointerAttr uint32_t *)(MemoryAddressCast)(startaddress + ((uint32_t)BlockNum * FLASH_BLOCK_SIZE));
-1895  03e4 a640          	ld	a,#64
-1896  03e6 1e07          	ldw	x,(OFST+1,sp)
-1897  03e8 cd0000        	call	c_cmulx
-1899  03eb 96            	ldw	x,sp
-1900  03ec 1c0003        	addw	x,#OFST-3
-1901  03ef cd0000        	call	c_ladd
-1903  03f2 be02          	ldw	x,c_lreg+2
-1904  03f4 1f01          	ldw	(OFST-5,sp),x
+1895  03e3 a640          	ld	a,#64
+1896  03e5 1e07          	ldw	x,(OFST+1,sp)
+1897  03e7 cd0000        	call	c_cmulx
+1899  03ea 96            	ldw	x,sp
+1900  03eb 1c0003        	addw	x,#OFST-3
+1901  03ee cd0000        	call	c_ladd
+1903  03f1 be02          	ldw	x,c_lreg+2
+1904  03f3 1f01          	ldw	(OFST-5,sp),x
 1906                     ; 632   FLASH->CR2 |= FLASH_CR2_ERASE;
-1908  03f6 721a505b      	bset	20571,#5
+1908  03f5 721a505b      	bset	20571,#5
 1909                     ; 633   FLASH->NCR2 &= (uint8_t)(~FLASH_NCR2_NERASE);
-1911  03fa 721b505c      	bres	20572,#5
+1911  03f9 721b505c      	bres	20572,#5
 1912                     ; 637     *pwFlash = (uint32_t)0;
-1914  03fe 4f            	clr	a
-1915  03ff e703          	ld	(3,x),a
-1916  0401 e702          	ld	(2,x),a
-1917  0403 e701          	ld	(1,x),a
-1918  0405 f7            	ld	(x),a
+1914  03fd 4f            	clr	a
+1915  03fe e703          	ld	(3,x),a
+1916  0400 e702          	ld	(2,x),a
+1917  0402 e701          	ld	(1,x),a
+1918  0404 f7            	ld	(x),a
 1919                     ; 645 }
-1922  0406 5b08          	addw	sp,#8
-1923  0408 81            	ret	
+1922  0405 5b08          	addw	sp,#8
+1923  0407 81            	ret	
 2022                     ; 656 IN_RAM(void FLASH_ProgramBlock(uint16_t BlockNum, FLASH_MemType_TypeDef FLASH_MemType, 
 2022                     ; 657                         FLASH_ProgramMode_TypeDef FLASH_ProgMode, uint8_t *Buffer))
 2022                     ; 658 {
 2023                     	switch	.text
-2024  0409               _FLASH_ProgramBlock:
-2026  0409 89            	pushw	x
-2027  040a 5206          	subw	sp,#6
+2024  0408               _FLASH_ProgramBlock:
+2026  0408 89            	pushw	x
+2027  0409 5206          	subw	sp,#6
 2028       00000006      OFST:	set	6
 2031                     ; 659   uint16_t Count = 0;
 2033                     ; 660   uint32_t startaddress = 0;
 2035                     ; 663   assert_param(IS_MEMORY_TYPE_OK(FLASH_MemType));
-2037  040c 7b0b          	ld	a,(OFST+5,sp)
-2038  040e a1fd          	cp	a,#253
-2039  0410 2712          	jreq	L272
-2040  0412 a1f7          	cp	a,#247
-2041  0414 270e          	jreq	L272
-2042  0416 ae0297        	ldw	x,#663
-2043  0419 89            	pushw	x
-2044  041a 5f            	clrw	x
-2045  041b 89            	pushw	x
-2046  041c ae0010        	ldw	x,#L73
-2047  041f cd0000        	call	_assert_failed
-2049  0422 5b04          	addw	sp,#4
-2050  0424               L272:
+2037  040b 7b0b          	ld	a,(OFST+5,sp)
+2038  040d a1fd          	cp	a,#253
+2039  040f 2712          	jreq	L272
+2040  0411 a1f7          	cp	a,#247
+2041  0413 270e          	jreq	L272
+2042  0415 ae0297        	ldw	x,#663
+2043  0418 89            	pushw	x
+2044  0419 5f            	clrw	x
+2045  041a 89            	pushw	x
+2046  041b ae0010        	ldw	x,#L73
+2047  041e cd0000        	call	_assert_failed
+2049  0421 5b04          	addw	sp,#4
+2050  0423               L272:
 2051                     ; 664   assert_param(IS_FLASH_PROGRAM_MODE_OK(FLASH_ProgMode));
-2053  0424 7b0c          	ld	a,(OFST+6,sp)
-2054  0426 2712          	jreq	L203
-2055  0428 a110          	cp	a,#16
-2056  042a 270e          	jreq	L203
-2057  042c ae0298        	ldw	x,#664
-2058  042f 89            	pushw	x
-2059  0430 5f            	clrw	x
-2060  0431 89            	pushw	x
-2061  0432 ae0010        	ldw	x,#L73
-2062  0435 cd0000        	call	_assert_failed
-2064  0438 5b04          	addw	sp,#4
-2065  043a               L203:
+2053  0423 7b0c          	ld	a,(OFST+6,sp)
+2054  0425 2712          	jreq	L203
+2055  0427 a110          	cp	a,#16
+2056  0429 270e          	jreq	L203
+2057  042b ae0298        	ldw	x,#664
+2058  042e 89            	pushw	x
+2059  042f 5f            	clrw	x
+2060  0430 89            	pushw	x
+2061  0431 ae0010        	ldw	x,#L73
+2062  0434 cd0000        	call	_assert_failed
+2064  0437 5b04          	addw	sp,#4
+2065  0439               L203:
 2066                     ; 665   if(FLASH_MemType == FLASH_MEMTYPE_PROG)
-2068  043a 7b0b          	ld	a,(OFST+5,sp)
-2069  043c a1fd          	cp	a,#253
-2070  043e 261a          	jrne	L146
+2068  0439 7b0b          	ld	a,(OFST+5,sp)
+2069  043b a1fd          	cp	a,#253
+2070  043d 261a          	jrne	L146
 2071                     ; 667     assert_param(IS_FLASH_PROG_BLOCK_NUMBER_OK(BlockNum));
-2073  0440 1e07          	ldw	x,(OFST+1,sp)
-2074  0442 a30080        	cpw	x,#128
-2075  0445 250e          	jrult	L013
-2076  0447 ae029b        	ldw	x,#667
-2077  044a 89            	pushw	x
-2078  044b 5f            	clrw	x
-2079  044c 89            	pushw	x
-2080  044d ae0010        	ldw	x,#L73
-2081  0450 cd0000        	call	_assert_failed
-2083  0453 5b04          	addw	sp,#4
-2084  0455               L013:
+2073  043f 1e07          	ldw	x,(OFST+1,sp)
+2074  0441 a30080        	cpw	x,#128
+2075  0444 250e          	jrult	L013
+2076  0446 ae029b        	ldw	x,#667
+2077  0449 89            	pushw	x
+2078  044a 5f            	clrw	x
+2079  044b 89            	pushw	x
+2080  044c ae0010        	ldw	x,#L73
+2081  044f cd0000        	call	_assert_failed
+2083  0452 5b04          	addw	sp,#4
+2084  0454               L013:
 2085                     ; 668     startaddress = FLASH_PROG_START_PHYSICAL_ADDRESS;
-2087  0455 ae8000        	ldw	x,#32768
-2089  0458 2018          	jra	L346
-2090  045a               L146:
+2087  0454 ae8000        	ldw	x,#32768
+2089  0457 2018          	jra	L346
+2090  0459               L146:
 2091                     ; 672     assert_param(IS_FLASH_DATA_BLOCK_NUMBER_OK(BlockNum));
-2093  045a 1e07          	ldw	x,(OFST+1,sp)
-2094  045c a3000a        	cpw	x,#10
-2095  045f 250e          	jrult	L613
-2096  0461 ae02a0        	ldw	x,#672
-2097  0464 89            	pushw	x
-2098  0465 5f            	clrw	x
-2099  0466 89            	pushw	x
-2100  0467 ae0010        	ldw	x,#L73
-2101  046a cd0000        	call	_assert_failed
-2103  046d 5b04          	addw	sp,#4
-2104  046f               L613:
+2093  0459 1e07          	ldw	x,(OFST+1,sp)
+2094  045b a3000a        	cpw	x,#10
+2095  045e 250e          	jrult	L613
+2096  0460 ae02a0        	ldw	x,#672
+2097  0463 89            	pushw	x
+2098  0464 5f            	clrw	x
+2099  0465 89            	pushw	x
+2100  0466 ae0010        	ldw	x,#L73
+2101  0469 cd0000        	call	_assert_failed
+2103  046c 5b04          	addw	sp,#4
+2104  046e               L613:
 2105                     ; 673     startaddress = FLASH_DATA_START_PHYSICAL_ADDRESS;
-2107  046f ae4000        	ldw	x,#16384
-2108  0472               L346:
-2109  0472 1f03          	ldw	(OFST-3,sp),x
-2110  0474 5f            	clrw	x
-2111  0475 1f01          	ldw	(OFST-5,sp),x
+2107  046e ae4000        	ldw	x,#16384
+2108  0471               L346:
+2109  0471 1f03          	ldw	(OFST-3,sp),x
+2110  0473 5f            	clrw	x
+2111  0474 1f01          	ldw	(OFST-5,sp),x
 2113                     ; 677   startaddress = startaddress + ((uint32_t)BlockNum * FLASH_BLOCK_SIZE);
-2115  0477 a640          	ld	a,#64
-2116  0479 1e07          	ldw	x,(OFST+1,sp)
-2117  047b cd0000        	call	c_cmulx
-2119  047e 96            	ldw	x,sp
-2120  047f 5c            	incw	x
-2121  0480 cd0000        	call	c_lgadd
+2115  0476 a640          	ld	a,#64
+2116  0478 1e07          	ldw	x,(OFST+1,sp)
+2117  047a cd0000        	call	c_cmulx
+2119  047d 96            	ldw	x,sp
+2120  047e 5c            	incw	x
+2121  047f cd0000        	call	c_lgadd
 2124                     ; 680   if(FLASH_ProgMode == FLASH_PROGRAMMODE_STANDARD)
-2126  0483 7b0c          	ld	a,(OFST+6,sp)
-2127  0485 260a          	jrne	L546
+2126  0482 7b0c          	ld	a,(OFST+6,sp)
+2127  0484 260a          	jrne	L546
 2128                     ; 683     FLASH->CR2 |= FLASH_CR2_PRG;
-2130  0487 7210505b      	bset	20571,#0
+2130  0486 7210505b      	bset	20571,#0
 2131                     ; 684     FLASH->NCR2 &= (uint8_t)(~FLASH_NCR2_NPRG);
-2133  048b 7211505c      	bres	20572,#0
-2135  048f 2008          	jra	L746
-2136  0491               L546:
+2133  048a 7211505c      	bres	20572,#0
+2135  048e 2008          	jra	L746
+2136  0490               L546:
 2137                     ; 689     FLASH->CR2 |= FLASH_CR2_FPRG;
-2139  0491 7218505b      	bset	20571,#4
+2139  0490 7218505b      	bset	20571,#4
 2140                     ; 690     FLASH->NCR2 &= (uint8_t)(~FLASH_NCR2_NFPRG);
-2142  0495 7219505c      	bres	20572,#4
-2143  0499               L746:
+2142  0494 7219505c      	bres	20572,#4
+2143  0498               L746:
 2144                     ; 694   for(Count = 0; Count < FLASH_BLOCK_SIZE; Count++)
-2146  0499 5f            	clrw	x
-2147  049a 1f05          	ldw	(OFST-1,sp),x
-2149  049c               L156:
+2146  0498 5f            	clrw	x
+2147  0499 1f05          	ldw	(OFST-1,sp),x
+2149  049b               L156:
 2150                     ; 696     *((PointerAttr uint8_t*) (MemoryAddressCast)startaddress + Count) = ((uint8_t)(Buffer[Count]));
-2152  049c 1e0d          	ldw	x,(OFST+7,sp)
-2153  049e 72fb05        	addw	x,(OFST-1,sp)
-2154  04a1 f6            	ld	a,(x)
-2155  04a2 1e03          	ldw	x,(OFST-3,sp)
-2156  04a4 72fb05        	addw	x,(OFST-1,sp)
-2157  04a7 f7            	ld	(x),a
+2152  049b 1e0d          	ldw	x,(OFST+7,sp)
+2153  049d 72fb05        	addw	x,(OFST-1,sp)
+2154  04a0 f6            	ld	a,(x)
+2155  04a1 1e03          	ldw	x,(OFST-3,sp)
+2156  04a3 72fb05        	addw	x,(OFST-1,sp)
+2157  04a6 f7            	ld	(x),a
 2158                     ; 694   for(Count = 0; Count < FLASH_BLOCK_SIZE; Count++)
-2160  04a8 1e05          	ldw	x,(OFST-1,sp)
-2161  04aa 5c            	incw	x
-2162  04ab 1f05          	ldw	(OFST-1,sp),x
-2166  04ad a30040        	cpw	x,#64
-2167  04b0 25ea          	jrult	L156
+2160  04a7 1e05          	ldw	x,(OFST-1,sp)
+2161  04a9 5c            	incw	x
+2162  04aa 1f05          	ldw	(OFST-1,sp),x
+2166  04ac a30040        	cpw	x,#64
+2167  04af 25ea          	jrult	L156
 2168                     ; 698 }
-2171  04b2 5b08          	addw	sp,#8
-2172  04b4 81            	ret	
+2171  04b1 5b08          	addw	sp,#8
+2172  04b3 81            	ret	
 2185                     	xdef	_FLASH_WaitForLastOperation
 2186                     	xdef	_FLASH_ProgramBlock
 2187                     	xdef	_FLASH_EraseBlock

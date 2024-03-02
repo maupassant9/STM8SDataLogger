@@ -25,7 +25,7 @@
 #define __STM8S_EVAL_SPI_SD_H
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm8s_conf.h"
+#include "stm8s.h"
 /** @addtogroup Utilities
   * @{
   */
@@ -37,6 +37,15 @@
 /** @addtogroup Common
   * @{
   */
+#define SPI_FIRSTBIT_MSB	(0x00)
+#define SPI_BAUDRATEPRESCALER_64	(0x28)
+#define SPI_CLOCKPOLARITY_HIGH	(0x02)
+#define SPI_CLOCKPHASE_2EDGE	(0x01)
+#define SPI_DATADIRECTION_2LINES_FULLDUPLEX	(0x0)
+#define SPI_NSS_SOFT	(0x02)
+#define SPI_MODE_MASTER	(0x04)
+#define SPI_FLAG_RXNE   (0x01)
+#define SPI_FLAG_TXE	(0x02) 
 
 // MULTI_BLOCK_RW_AVIABLE = 0 : not available
 // MULTI_BLOCK_RW_AVIABLE = 1 : available
@@ -65,17 +74,17 @@
   * @brief  SD SPI Interface pins
   */
 #define SD_SPI_CLK                       CLK_PERIPHERAL_SPI
-#define SD_SPI_SCK_PIN                   GPIO_PIN_5                  /* PC.05 */
+#define SD_SPI_SCK_PIN                   (1<<5)                  /* PC.05 */
 #define SD_SPI_SCK_GPIO_PORT             GPIOC                       /* GPIOC */
-#define SD_SPI_MISO_PIN                  GPIO_PIN_7                  /* PC.05 */
+#define SD_SPI_MISO_PIN                  (1<<7)                  /* PC.05 */
 #define SD_SPI_MISO_GPIO_PORT            GPIOC                       /* GPIOC */
-#define SD_SPI_MOSI_PIN                  GPIO_PIN_6                  /* PC.06 */
+#define SD_SPI_MOSI_PIN                  (1<<6)                  /* PC.06 */
 #define SD_SPI_MOSI_GPIO_PORT            GPIOC                       /* GPIOC */
-#define SD_CS_PIN                        GPIO_PIN_4                  /* PE.05 */
+#define SD_CS_PIN                        (1<<4)                  /* PE.05 */
 #define SD_CS_GPIO_PORT                  GPIOC                       /* GPIOE */
 
 #if (CARD_DETECT_AVAILABLE == 1)
-#define SD_DETECT_PIN                    GPIO_PIN_4                  /* PE.04 */
+#define SD_DETECT_PIN                    (1<<4)                  /* PE.04 */
 #define SD_DETECT_GPIO_PORT              GPIOE                       /* GPIOE */  
 #endif
 
@@ -259,11 +268,11 @@ typedef struct
 /** 
   * @brief  Select SD Card: ChipSelect pin low   
   */  
-#define SD_CS_LOW()     GPIO_WriteLow(SD_CS_GPIO_PORT, SD_CS_PIN)
+#define SD_CS_LOW()     (SD_CS_GPIO_PORT->ODR &= ~SD_CS_PIN)//GPIO_WriteLow(SD_CS_GPIO_PORT, SD_CS_PIN)
 /** 
   * @brief  Deselect SD Card: ChipSelect pin high   
   */ 
-#define SD_CS_HIGH()    GPIO_WriteHigh(SD_CS_GPIO_PORT, SD_CS_PIN)
+#define SD_CS_HIGH()     (SD_CS_GPIO_PORT->ODR |= SD_CS_PIN)//GPIO_WriteHigh(SD_CS_GPIO_PORT, SD_CS_PIN)
 /**
   * @}
   */ 

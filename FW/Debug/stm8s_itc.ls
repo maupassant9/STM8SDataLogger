@@ -1,7 +1,7 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
-   2                     ; Parser V4.11.13 - 05 Feb 2019
-   3                     ; Generator (Limited) V4.4.9 - 06 Feb 2019
-   4                     ; Optimizer V4.4.9 - 06 Feb 2019
+   2                     ; Parser V4.12.9 - 19 Apr 2023
+   3                     ; Generator (Limited) V4.5.6 - 18 Jul 2023
+   4                     ; Optimizer V4.5.6 - 18 Jul 2023
   44                     ; 50 uint8_t ITC_GetCPUCC(void)
   44                     ; 51 {
   46                     	switch	.text
@@ -263,9 +263,9 @@
  682  00ab 7b04          	ld	a,(OFST+2,sp)
  683  00ad a102          	cp	a,#2
  684  00af 2719          	jreq	L45
- 685  00b1 4a            	dec	a
- 686  00b2 2716          	jreq	L45
- 687  00b4 7b04          	ld	a,(OFST+2,sp)
+ 685  00b1 a101          	cp	a,#1
+ 686  00b3 2715          	jreq	L45
+ 687  00b5 4d            	tnz	a
  688  00b6 2712          	jreq	L45
  689  00b8 a103          	cp	a,#3
  690  00ba 270e          	jreq	L45

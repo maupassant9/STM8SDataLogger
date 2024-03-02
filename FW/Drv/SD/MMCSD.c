@@ -109,7 +109,7 @@ uint8_t SD_Init(void)
   /*!< SD initialized and set to SPI mode properly */
   res = SD_GoIdleState();
   //if GoIdeal NO ERROR, change spi clk to much higher freq 8MHz
-  if(res = SD_RESPONSE_NO_ERROR){
+  if(res == SD_RESPONSE_NO_ERROR){
     SPI->CR1 &= 0xc7;
 		//SPI->CR1 |= 0x10;
   }
@@ -941,18 +941,18 @@ uint8_t SD_GoIdleState(void)
 uint8_t SD_WriteByte(uint8_t Data)
 {
   /*!< Wait until the transmit buffer is empty */
-  while (SPI_GetFlagStatus(SPI_FLAG_TXE) == RESET)
+  while ((SPI->SR & SPI_FLAG_TXE) == 0)
   {}
 
   /*!< Send the byte */
-  SPI_SendData(Data);
+  SPI->DR = (Data);
 
   /*!< Wait to receive a byte*/
-  while (SPI_GetFlagStatus(SPI_FLAG_RXNE) == RESET)
+  while ((SPI->SR & SPI_FLAG_RXNE) == 0)
   {}
 
   /*!< Return the byte read from the SPI bus */
-  return SPI_ReceiveData();
+  return SPI->DR;
 }
 
 /**
@@ -965,21 +965,20 @@ uint8_t SD_ReadByte(void)
   uint8_t Data = 0;
 
   /*!< Wait until the transmit buffer is empty */
-  while (SPI_GetFlagStatus(SPI_FLAG_TXE) == RESET)
+  while ((SPI->SR & SPI_FLAG_TXE) == 0)
   {}
   /*!< Send the byte */
-  SPI_SendData(SD_DUMMY_BYTE);
+  SPI->DR = SD_DUMMY_BYTE;
 
   /*!< Wait until a data is received */
-  while (SPI_GetFlagStatus(SPI_FLAG_RXNE) == RESET)
+  while ((SPI->SR & SPI_FLAG_RXNE) == 0)
   {}
   /*!< Get the received data */
-  Data = SPI_ReceiveData();
+  Data = (uint8_t)SPI->DR;
 
   /*!< Return the shifted data */
   return Data;
 }
-
 /**
   * @}
   */
@@ -1032,17 +1031,21 @@ void SD_LowLevel_Init(void)
   //                          SD_SPI_SCK_PIN), ENABLE);
 
   /* SD_SPI Configuration */
-  SPI_Init( SPI_FIRSTBIT_MSB, SPI_BAUDRATEPRESCALER_64, SPI_MODE_MASTER,
-           SPI_CLOCKPOLARITY_HIGH, SPI_CLOCKPHASE_2EDGE, SPI_DATADIRECTION_2LINES_FULLDUPLEX,
-           SPI_NSS_SOFT, 0x07);
-
-
+  SPI->CR1 = SPI_FIRSTBIT_MSB | SPI_BAUDRATEPRESCALER_64|SPI_CLOCKPOLARITY_HIGH | SPI_CLOCKPHASE_2EDGE;
+  /* Data direction configuration: BDM, BDOE and RXONLY bits */
+  SPI->CR2 = SPI_DATADIRECTION_2LINES_FULLDUPLEX|SPI_NSS_SOFT|SPI_CR2_SSI;
+  /* Master/Slave mode configuration */
+  SPI->CR1 |= SPI_MODE_MASTER;
+  /* CRC configuration */
+  SPI->CRCPR = 0x07;
   /* SD_SPI enable */
-  SPI_Cmd( ENABLE);
+  SPI->CR1 |= SPI_CR1_SPE;
 
   /* Set MSD ChipSelect pin in Output push-pull high level */
-  GPIO_Init(SD_CS_GPIO_PORT, SD_CS_PIN, GPIO_MODE_OUT_OD_HIZ_SLOW);
-  //GPIO_MODE_OUT_PP_HIGH_SLOW);
+  SD_CS_GPIO_PORT->CR2 &= (~SD_CS_PIN); //Reset corresponding bit
+  SD_CS_GPIO_PORT->ODR |= SD_CS_PIN; // high level
+  SD_CS_GPIO_PORT->DDR |= SD_CS_PIN; // output mode 
+  SD_CS_GPIO_PORT->CR1 &= ~SD_CS_PIN; //open drain here
 }
 
 
