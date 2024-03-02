@@ -109,7 +109,7 @@ uint8_t SD_Init(void)
   /*!< SD initialized and set to SPI mode properly */
   res = SD_GoIdleState();
   //if GoIdeal NO ERROR, change spi clk to much higher freq 8MHz
-  if(res = SD_RESPONSE_NO_ERROR){
+  if(res == SD_RESPONSE_NO_ERROR){
     SPI->CR1 &= 0xc7;
 		//SPI->CR1 |= 0x10;
   }
@@ -941,14 +941,14 @@ uint8_t SD_GoIdleState(void)
 uint8_t SD_WriteByte(uint8_t Data)
 {
   /*!< Wait until the transmit buffer is empty */
-  while (SPI->SR & (SPI_FLAG_TXE) == 0)
+  while ((SPI->SR & SPI_FLAG_TXE) == 0)
   {}
 
   /*!< Send the byte */
   SPI->DR = (Data);
 
   /*!< Wait to receive a byte*/
-  while (SPI->SR & (SPI_FLAG_RXNE) == 0)
+  while ((SPI->SR & SPI_FLAG_RXNE) == 0)
   {}
 
   /*!< Return the byte read from the SPI bus */
@@ -965,13 +965,13 @@ uint8_t SD_ReadByte(void)
   uint8_t Data = 0;
 
   /*!< Wait until the transmit buffer is empty */
-  while (SPI->SR&(SPI_FLAG_TXE) == 0)
+  while ((SPI->SR & SPI_FLAG_TXE) == 0)
   {}
   /*!< Send the byte */
   SPI->DR = SD_DUMMY_BYTE;
 
   /*!< Wait until a data is received */
-  while (SPI->SR&(SPI_FLAG_RXNE) == 0)
+  while ((SPI->SR & SPI_FLAG_RXNE) == 0)
   {}
   /*!< Get the received data */
   Data = (uint8_t)SPI->DR;
