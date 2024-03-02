@@ -115,7 +115,7 @@ void main( void )
 	enableInterrupts();
 
 	SetLedMode(0, LED_ON);
-	dly(10000);
+	dly(100000);
 	
 	///////////////////////////////
 	// Mount the file sys       ///

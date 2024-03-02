@@ -895,9 +895,9 @@ uint8_t SD_GoIdleState(void)
         do{
             SD_SendCmd(SD_CMD_55, (uint32_t)0, 0x01);
             SD_GetResponseVal(resp,0x01);
-						dly((uint32_t)10);
+						dly((uint32_t)100);
             SD_SendCmd(SD_ACMD_41&0x7f, (1UL<<30), 0x1);
-						dly((uint32_t)1000);
+						dly((uint32_t)10000);
             SD_GetResponseVal(resp,0x00);
         } while(resp[0]); //until resved 0x0
 
@@ -914,10 +914,10 @@ uint8_t SD_GoIdleState(void)
 		do{
 				SD_SendCmd(SD_CMD_55, 0, 0x01);
 				SD_GetResponseVal(resp,0x01);
-				dly((uint32_t)1000);
+				dly((uint32_t)10000);
 				SD_SendCmd(SD_ACMD_41&0x7f, 0UL, 0x1);
 				SD_GetResponseVal(resp,0x00);
-				dly((uint32_t)1000);
+				dly((uint32_t)10000);
 		} while(resp[0]);
 
 	}
@@ -1034,7 +1034,8 @@ void SD_LowLevel_Init(void)
   /* SD_SPI Configuration */
   SPI->CR1 = SPI_FIRSTBIT_MSB | SPI_BAUDRATEPRESCALER_64|SPI_CLOCKPOLARITY_HIGH | SPI_CLOCKPHASE_2EDGE;
   /* Data direction configuration: BDM, BDOE and RXONLY bits */
-  SPI->CR2 = SPI_DATADIRECTION_2LINES_FULLDUPLEX|SPI_NSS_SOFT|SPI_CR2_SSI;
+  SPI->CR2 = SPI_DATADIRECTION_2LINES_FULLDUPLEX|SPI_NSS_SOFT;
+  SPI->CR2 |= SPI_CR2_SSI;
   /* Master/Slave mode configuration */
   SPI->CR1 |= SPI_MODE_MASTER;
   /* CRC configuration */

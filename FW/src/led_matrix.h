@@ -28,8 +28,8 @@ enum led_mode_t {
     LED_MODE_MAX
 };
 
-#define LED_TOGGLE_SLOW_TICK (1000)
-#define LED_TOGGLE_FAST_TICK (300)
+#define LED_TOGGLE_SLOW_TICK (10000)
+#define LED_TOGGLE_FAST_TICK (1000)
 
 #define LED_MODE_ARRAY_ELE_NO ((NUM_OF_LEDS*2-7)/8)
 

@@ -127,7 +127,7 @@ DRESULT disk_writep (
 				for (byteLeft = 5000;
 					 (SD_ReadByte() != 0xFF) && byteLeft;
 					  byteLeft--) {	/* Wait for ready */
-					dly(1);
+					dly(10);
 				}
 				if(byteLeft) res = RES_OK;
 			}
