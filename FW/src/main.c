@@ -440,7 +440,8 @@ static void clkInit( void )
 {
 	//initialize cpu clk with HSI @ 16MHz
   CLK->CKDIVR = 0;//(CLK_PRESCALER_HSIDIV1|CLK_PRESCALER_CPUDIV1);
-
+  CLK->ECKR |= CLK_ECKR_HSEEN;
+  while(!(CLK->ECKR & CLK_ECKR_HSERDY));
   //enable the peripheral clock input
   //0. Timer 1: 
 	//1. Timer 4: used for delay service
