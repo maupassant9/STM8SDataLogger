@@ -55,7 +55,7 @@
                                      55 	.area GSINIT
                                      56 	.area GSFINAL
                                      57 	.area GSINIT
-                                     58 ;	../src/adc.c: 157: static uint8_t cntForChannel = 8;
+                                     58 ;	../src/adc.c: 158: static uint8_t cntForChannel = 8;
       000000 35 08u02u07      [ 1]   59 	mov	_NextChannel_cntForChannel_65536_329+0, #0x08
                                      60 ;--------------------------------------------------------
                                      61 ; Home
@@ -116,52 +116,52 @@
                                     116 ;	../src/adc.c: 79: }
       00004C 5B 04            [ 2]  117 	addw	sp, #4
       00004E 81               [ 4]  118 	ret
-                                    119 ;	../src/adc.c: 90: void adcInit( void )
+                                    119 ;	../src/adc.c: 91: void adcInit( void )
                                     120 ;	-----------------------------------------
                                     121 ;	 function adcInit
                                     122 ;	-----------------------------------------
       00004F                        123 _adcInit:
-                                    124 ;	../src/adc.c: 92: cnter = 0x00;
+                                    124 ;	../src/adc.c: 93: cnter = 0x00;
       00004F 5F               [ 1]  125 	clrw	x
       000050 CFu02u01         [ 2]  126 	ldw	_cnter+0, x
-                                    127 ;	../src/adc.c: 93: pCurrBuffer = (uint8_t *)adcBuffer0;
+                                    127 ;	../src/adc.c: 94: pCurrBuffer = (uint8_t *)adcBuffer0;
       000053 AEr00r01         [ 2]  128 	ldw	x, #(_adcBuffer0+0)
       000056 CFu02u03         [ 2]  129 	ldw	_pCurrBuffer+0, x
-                                    130 ;	../src/adc.c: 94: pCurrByte = (uint8_t *)adcBuffer0;
+                                    130 ;	../src/adc.c: 95: pCurrByte = (uint8_t *)adcBuffer0;
       000059 AEr00r01         [ 2]  131 	ldw	x, #(_adcBuffer0+0)
       00005C CFu02u05         [ 2]  132 	ldw	_pCurrByte+0, x
-                                    133 ;	../src/adc.c: 95: buffer_rdy = 0x00; //nenhum buffers are ready
+                                    133 ;	../src/adc.c: 96: buffer_rdy = 0x00; //nenhum buffers are ready
       00005F 72 5Fu00u00      [ 1]  134 	clr	_buffer_rdy+0
-                                    135 ;	../src/adc.c: 97: ADC1->CR1 = 0x20;
+                                    135 ;	../src/adc.c: 98: ADC1->CR1 = 0x20;
       000063 35 20 54 01      [ 1]  136 	mov	0x5401+0, #0x20
-                                    137 ;	../src/adc.c: 100: ADC1->CSR = NextChannel()|ADC1_CSR_EOCIE;
+                                    137 ;	../src/adc.c: 101: ADC1->CSR = NextChannel()|ADC1_CSR_EOCIE;
       000067 CDr00rD6         [ 4]  138 	call	_NextChannel
       00006A AA 20            [ 1]  139 	or	a, #0x20
       00006C C7 54 00         [ 1]  140 	ld	0x5400, a
-                                    141 ;	../src/adc.c: 102: ADC1->CR2 = (loggerCfg.isFullResultion<<3)|ADC1_CR2_EXTTRIG;//(ADC1_CR2_EXTTRIG | ADC1_CR2_ALIGN);
+                                    141 ;	../src/adc.c: 103: ADC1->CR2 = (loggerCfg.isFullResultion<<3)|ADC1_CR2_EXTTRIG;//(ADC1_CR2_EXTTRIG | ADC1_CR2_ALIGN);
       00006F C6u00u0E         [ 1]  142 	ld	a, _loggerCfg+14
       000072 48               [ 1]  143 	sll	a
       000073 48               [ 1]  144 	sll	a
       000074 48               [ 1]  145 	sll	a
       000075 AA 40            [ 1]  146 	or	a, #0x40
       000077 C7 54 02         [ 1]  147 	ld	0x5402, a
-                                    148 ;	../src/adc.c: 104: ADC1->CR3 = ADC1_CR3_DBUF;
+                                    148 ;	../src/adc.c: 105: ADC1->CR3 = ADC1_CR3_DBUF;
       00007A 35 80 54 03      [ 1]  149 	mov	0x5403+0, #0x80
-                                    150 ;	../src/adc.c: 106: ADC1->TDRL = 0x1f;
+                                    150 ;	../src/adc.c: 107: ADC1->TDRL = 0x1f;
       00007E 35 1F 54 07      [ 1]  151 	mov	0x5407+0, #0x1f
-                                    152 ;	../src/adc.c: 108: ADC1->CR1 |= ADC1_CR1_ADON;
+                                    152 ;	../src/adc.c: 109: ADC1->CR1 |= ADC1_CR1_ADON;
       000082 C6 54 01         [ 1]  153 	ld	a, 0x5401
       000085 AA 01            [ 1]  154 	or	a, #0x01
       000087 C7 54 01         [ 1]  155 	ld	0x5401, a
-                                    156 ;	../src/adc.c: 110: tim1Init();
-                                    157 ;	../src/adc.c: 111: }
+                                    156 ;	../src/adc.c: 111: tim1Init();
+                                    157 ;	../src/adc.c: 112: }
       00008A CCr00r00         [ 2]  158 	jp	_tim1Init
-                                    159 ;	../src/adc.c: 124: static void NextByte()
+                                    159 ;	../src/adc.c: 125: static void NextByte()
                                     160 ;	-----------------------------------------
                                     161 ;	 function NextByte
                                     162 ;	-----------------------------------------
       00008D                        163 _NextByte:
-                                    164 ;	../src/adc.c: 126: INC(cnter);
+                                    164 ;	../src/adc.c: 127: INC(cnter);
       00008D CEu02u01         [ 2]  165 	ldw	x, _cnter+0
       000090 A3 00 FF         [ 2]  166 	cpw	x, #0x00ff
       000093 26 03            [ 1]  167 	jrne	00109$
@@ -171,47 +171,47 @@
       000098 CEu02u01         [ 2]  171 	ldw	x, _cnter+0
       00009B 5C               [ 1]  172 	incw	x
       00009C                        173 00110$:
-                                    174 ;	../src/adc.c: 128: if(cnter == 0){ //an overflow occurred
+                                    174 ;	../src/adc.c: 129: if(cnter == 0){ //an overflow occurred
       00009C CFu02u01         [ 2]  175 	ldw	_cnter+0, x
       00009F 26 2A            [ 1]  176 	jrne	00105$
-                                    177 ;	../src/adc.c: 130: if(pCurrBuffer == (uint8_t *)adcBuffer0) {
+                                    177 ;	../src/adc.c: 131: if(pCurrBuffer == (uint8_t *)adcBuffer0) {
       0000A1 AEr00r01         [ 2]  178 	ldw	x, #(_adcBuffer0+0)
       0000A4 C3u02u03         [ 2]  179 	cpw	x, _pCurrBuffer+0
       0000A7 26 11            [ 1]  180 	jrne	00102$
-                                    181 ;	../src/adc.c: 131: RELEASE_BUFF_FOR_RD(0);
+                                    181 ;	../src/adc.c: 132: RELEASE_BUFF_FOR_RD(0);
       0000A9 72 10u00u00      [ 1]  182 	bset	_buffer_rdy+0, #0
-                                    183 ;	../src/adc.c: 132: pCurrBuffer = (uint8_t *)adcBuffer1;
+                                    183 ;	../src/adc.c: 133: pCurrBuffer = (uint8_t *)adcBuffer1;
       0000AD AEr01r01         [ 2]  184 	ldw	x, #(_adcBuffer1+0)
       0000B0 CFu02u03         [ 2]  185 	ldw	_pCurrBuffer+0, x
-                                    186 ;	../src/adc.c: 133: pCurrByte = (uint8_t *)adcBuffer1;
+                                    186 ;	../src/adc.c: 134: pCurrByte = (uint8_t *)adcBuffer1;
       0000B3 AEr01r01         [ 2]  187 	ldw	x, #(_adcBuffer1+0)
       0000B6 CFu02u05         [ 2]  188 	ldw	_pCurrByte+0, x
       0000B9 81               [ 4]  189 	ret
       0000BA                        190 00102$:
-                                    191 ;	../src/adc.c: 135: RELEASE_BUFF_FOR_RD(1);
+                                    191 ;	../src/adc.c: 136: RELEASE_BUFF_FOR_RD(1);
       0000BA 72 12u00u00      [ 1]  192 	bset	_buffer_rdy+0, #1
-                                    193 ;	../src/adc.c: 136: pCurrBuffer = (uint8_t *)adcBuffer0;
+                                    193 ;	../src/adc.c: 137: pCurrBuffer = (uint8_t *)adcBuffer0;
       0000BE AEr00r01         [ 2]  194 	ldw	x, #(_adcBuffer0+0)
       0000C1 CFu02u03         [ 2]  195 	ldw	_pCurrBuffer+0, x
-                                    196 ;	../src/adc.c: 137: pCurrByte =  (uint8_t *)adcBuffer0;
+                                    196 ;	../src/adc.c: 138: pCurrByte =  (uint8_t *)adcBuffer0;
       0000C4 AEr00r01         [ 2]  197 	ldw	x, #(_adcBuffer0+0)
       0000C7 CFu02u05         [ 2]  198 	ldw	_pCurrByte+0, x
       0000CA 81               [ 4]  199 	ret
       0000CB                        200 00105$:
-                                    201 ;	../src/adc.c: 140: pCurrByte = &pCurrBuffer[cnter];
+                                    201 ;	../src/adc.c: 141: pCurrByte = &pCurrBuffer[cnter];
       0000CB CEu02u03         [ 2]  202 	ldw	x, _pCurrBuffer+0
       0000CE 72 BBu02u01      [ 2]  203 	addw	x, _cnter+0
       0000D2 CFu02u05         [ 2]  204 	ldw	_pCurrByte+0, x
-                                    205 ;	../src/adc.c: 142: }
+                                    205 ;	../src/adc.c: 143: }
       0000D5 81               [ 4]  206 	ret
-                                    207 ;	../src/adc.c: 156: static uint8_t NextChannel(void){
+                                    207 ;	../src/adc.c: 157: static uint8_t NextChannel(void){
                                     208 ;	-----------------------------------------
                                     209 ;	 function NextChannel
                                     210 ;	-----------------------------------------
       0000D6                        211 _NextChannel:
       0000D6 89               [ 2]  212 	pushw	x
       0000D7                        213 00104$:
-                                    214 ;	../src/adc.c: 160: cntForChannel = ((8==cntForChannel)?0:(cntForChannel+1));
+                                    214 ;	../src/adc.c: 161: cntForChannel = ((8==cntForChannel)?0:(cntForChannel+1));
       0000D7 C6u02u07         [ 1]  215 	ld	a, _NextChannel_cntForChannel_65536_329+0
       0000DA A1 08            [ 1]  216 	cp	a, #0x08
       0000DC 26 03            [ 1]  217 	jrne	00108$
@@ -226,7 +226,7 @@
       0000E8 A2 00            [ 1]  226 	sbc	a, #0x00
       0000EA 84               [ 1]  227 	pop	a
       0000EB                        228 00109$:
-                                    229 ;	../src/adc.c: 161: if((0x01 << cntForChannel) & loggerCfg.channel){
+                                    229 ;	../src/adc.c: 162: if((0x01 << cntForChannel) & loggerCfg.channel){
       0000EB C7u02u07         [ 1]  230 	ld	_NextChannel_cntForChannel_65536_329+0, a
       0000EE 5F               [ 1]  231 	clrw	x
       0000EF 5C               [ 1]  232 	incw	x
@@ -247,22 +247,22 @@
       000103 95               [ 1]  247 	ld	xh, a
       000104 5D               [ 2]  248 	tnzw	x
       000105 27 D0            [ 1]  249 	jreq	00104$
-                                    250 ;	../src/adc.c: 163: return cntForChannel;
+                                    250 ;	../src/adc.c: 164: return cntForChannel;
       000107 C6u02u07         [ 1]  251 	ld	a, _NextChannel_cntForChannel_65536_329+0
-                                    252 ;	../src/adc.c: 166: }
+                                    252 ;	../src/adc.c: 167: }
       00010A 85               [ 2]  253 	popw	x
       00010B 81               [ 4]  254 	ret
-                                    255 ;	../src/adc.c: 179: static uint8_t GetChannelNo(void){
+                                    255 ;	../src/adc.c: 180: static uint8_t GetChannelNo(void){
                                     256 ;	-----------------------------------------
                                     257 ;	 function GetChannelNo
                                     258 ;	-----------------------------------------
       00010C                        259 _GetChannelNo:
       00010C 52 04            [ 2]  260 	sub	sp, #4
-                                    261 ;	../src/adc.c: 182: for(cnt = 0; cnt < 8; cnt++){
+                                    261 ;	../src/adc.c: 183: for(cnt = 0; cnt < 8; cnt++){
       00010E 0F 03            [ 1]  262 	clr	(0x03, sp)
       000110 0F 04            [ 1]  263 	clr	(0x04, sp)
       000112                        264 00104$:
-                                    265 ;	../src/adc.c: 183: if((0x01 << cnt) & loggerCfg.channel){
+                                    265 ;	../src/adc.c: 184: if((0x01 << cnt) & loggerCfg.channel){
       000112 5F               [ 1]  266 	clrw	x
       000113 5C               [ 1]  267 	incw	x
       000114 7B 04            [ 1]  268 	ld	a, (0x04, sp)
@@ -282,49 +282,49 @@
       000128 95               [ 1]  282 	ld	xh, a
       000129 5D               [ 2]  283 	tnzw	x
       00012A 27 02            [ 1]  284 	jreq	00105$
-                                    285 ;	../src/adc.c: 184: chNo++;
+                                    285 ;	../src/adc.c: 185: chNo++;
       00012C 0C 03            [ 1]  286 	inc	(0x03, sp)
       00012E                        287 00105$:
-                                    288 ;	../src/adc.c: 182: for(cnt = 0; cnt < 8; cnt++){
+                                    288 ;	../src/adc.c: 183: for(cnt = 0; cnt < 8; cnt++){
       00012E 0C 04            [ 1]  289 	inc	(0x04, sp)
       000130 7B 04            [ 1]  290 	ld	a, (0x04, sp)
       000132 A1 08            [ 1]  291 	cp	a, #0x08
       000134 25 DC            [ 1]  292 	jrc	00104$
-                                    293 ;	../src/adc.c: 187: return chNo;
+                                    293 ;	../src/adc.c: 188: return chNo;
       000136 7B 03            [ 1]  294 	ld	a, (0x03, sp)
-                                    295 ;	../src/adc.c: 188: }
+                                    295 ;	../src/adc.c: 189: }
       000138 5B 04            [ 2]  296 	addw	sp, #4
       00013A 81               [ 4]  297 	ret
-                                    298 ;	../src/adc.c: 246: void adcIsr (void)
+                                    298 ;	../src/adc.c: 247: void adcIsr (void)
                                     299 ;	-----------------------------------------
                                     300 ;	 function adcIsr
                                     301 ;	-----------------------------------------
       00013B                        302 _adcIsr:
       00013B 88               [ 1]  303 	push	a
-                                    304 ;	../src/adc.c: 250: currChannel = NextChannel();
+                                    304 ;	../src/adc.c: 251: currChannel = NextChannel();
       00013C CDr00rD6         [ 4]  305 	call	_NextChannel
       00013F 6B 01            [ 1]  306 	ld	(0x01, sp), a
-                                    307 ;	../src/adc.c: 251: if(loggerCfg.isFullResultion){
+                                    307 ;	../src/adc.c: 252: if(loggerCfg.isFullResultion){
       000141 C6u00u0E         [ 1]  308 	ld	a, _loggerCfg+14
       000144 27 0A            [ 1]  309 	jreq	00102$
-                                    310 ;	../src/adc.c: 252: *pCurrByte = ADC1->DRL;
+                                    310 ;	../src/adc.c: 253: *pCurrByte = ADC1->DRL;
       000146 CEu02u05         [ 2]  311 	ldw	x, _pCurrByte+0
       000149 C6 54 05         [ 1]  312 	ld	a, 0x5405
       00014C F7               [ 1]  313 	ld	(x), a
-                                    314 ;	../src/adc.c: 253: NextByte();
+                                    314 ;	../src/adc.c: 254: NextByte();
       00014D CDr00r8D         [ 4]  315 	call	_NextByte
       000150                        316 00102$:
-                                    317 ;	../src/adc.c: 255: *pCurrByte = ADC1->DRH;
+                                    317 ;	../src/adc.c: 256: *pCurrByte = ADC1->DRH;
       000150 CEu02u05         [ 2]  318 	ldw	x, _pCurrByte+0
       000153 C6 54 04         [ 1]  319 	ld	a, 0x5404
       000156 F7               [ 1]  320 	ld	(x), a
-                                    321 ;	../src/adc.c: 256: NextByte();
+                                    321 ;	../src/adc.c: 257: NextByte();
       000157 CDr00r8D         [ 4]  322 	call	_NextByte
-                                    323 ;	../src/adc.c: 260: ADC1->CSR = (currChannel|ADC1_CSR_EOCIE);
+                                    323 ;	../src/adc.c: 261: ADC1->CSR = (currChannel|ADC1_CSR_EOCIE);
       00015A 7B 01            [ 1]  324 	ld	a, (0x01, sp)
       00015C AA 20            [ 1]  325 	or	a, #0x20
       00015E C7 54 00         [ 1]  326 	ld	0x5400, a
-                                    327 ;	../src/adc.c: 262: }
+                                    327 ;	../src/adc.c: 263: }
       000161 84               [ 1]  328 	pop	a
       000162 81               [ 4]  329 	ret
                                     330 	.area CODE

@@ -10,18 +10,19 @@ Symbol Table
     _ADC1_IRQHandler                                               ****** GX
     _AWU_IRQHandler                                                ****** GX
     _CLK_IRQHandler                                                ****** GX
-  A _ConvertFileName                                               0002AF R
+  A _ConvertFileName                                               0002D0 R
     _EEPROM_EEC_IRQHandler                                         ****** GX
     _EXTI_PORTA_IRQHandler                                         ****** GX
     _EXTI_PORTB_IRQHandler                                         ****** GX
     _EXTI_PORTC_IRQHandler                                         ****** GX
     _EXTI_PORTD_IRQHandler                                         ****** GX
     _EXTI_PORTE_IRQHandler                                         ****** GX
-  A _GetCfg                                                        000328 R
-  A _GetNxtFileName                                                000212 R
+  A _GetCfg                                                        000349 R
+  A _GetNxtFileName                                                000233 R
     _I2C_IRQHandler                                                ****** GX
-  A _IsValidCfgBuf                                                 00042B R
+  A _IsValidCfgBuf                                                 00044C R
     _LedMatrixInit                                                 ****** GX
+    _ReadButtonState                                               ****** GX
     _SPI_IRQHandler                                                ****** GX
     _SetLedMode                                                    ****** GX
     _TIM1_CAP_COM_IRQHandler                                       ****** GX
@@ -33,7 +34,7 @@ Symbol Table
     _TRAP_IRQHandler                                               ****** GX
     _UART1_RX_IRQHandler                                           ****** GX
     _UART1_TX_IRQHandler                                           ****** GX
-  A _Wr2SD                                                         00016D R
+  A _Wr2SD                                                         00018E R
   8 ___str_0                                                       000000 R
   5 __interrupt_vect                                               000000 R
     __mulint                                                       ****** GX
@@ -46,23 +47,23 @@ Symbol Table
     _adcBuffer0                                                    ****** GX
     _adcBuffer1                                                    ****** GX
     _adcInit                                                       ****** GX
-  A _assert_failed                                                 000461 GR
+  A _assert_failed                                                 000482 GR
   2 _blkCnt                                                        000000 R
     _buffer_rdy                                                    ****** GX
   1 _cfg                                                           000000 R
-  A _clkInit                                                       000450 R
+  A _clkInit                                                       000471 R
     _dly                                                           ****** GX
   2 _fileBlkCnt                                                    000001 R
   2 _fileNoCnt                                                     000005 R
   1 _loggerCfg                                                     00000D GR
   A _main                                                          000000 GR
     _pf_mount                                                      ****** GX
-    _pf_open                                                       ****** GX
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 2.
 Hexadecimal [24-Bits]
 
 Symbol Table
 
+    _pf_open                                                       ****** GX
     _pf_read                                                       ****** GX
     _pf_write                                                      ****** GX
     _sysTickInit                                                   ****** GX
@@ -89,6 +90,6 @@ Area Table
    7 GSFINAL                                    size      3   flags    0
    8 CONST                                      size      4   flags    0
    9 INITIALIZER                                size      7   flags    0
-   A CODE                                       size    464   flags    0
+   A CODE                                       size    485   flags    0
    B CABS                                       size      0   flags    8
 

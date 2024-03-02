@@ -79,11 +79,11 @@ _SD_Init:
 	ldw	x, (0x03, sp)
 	incw	x
 	ldw	(0x03, sp), x
-	jrne	00119$
+	jrne	00124$
 	ldw	x, (0x01, sp)
 	incw	x
 	ldw	(0x01, sp), x
-00119$:
+00124$:
 	ldw	x, #0x0009
 	cpw	x, (0x03, sp)
 	clr	a
@@ -93,8 +93,17 @@ _SD_Init:
 	jrnc	00104$
 ;	../src/mmcsd.c: 110: res = SD_GoIdleState();
 	call	_SD_GoIdleState
+	ld	xl, a
+;	../src/mmcsd.c: 112: if(res == SD_RESPONSE_NO_ERROR){
+	tnz	a
+	jrne	00103$
+;	../src/mmcsd.c: 113: SPI->CR1 &= 0xc7;
+	ld	a, 0x5200
+	and	a, #0xc7
+	ld	0x5200, a
+00103$:
 ;	../src/mmcsd.c: 116: return (res);
-	clr	a
+	ld	a, xl
 ;	../src/mmcsd.c: 117: }
 	addw	sp, #4
 	ret
@@ -462,8 +471,8 @@ _SD_GoIdleState:
 	pushw	x
 	call	_SD_GetResponseVal
 	addw	sp, #3
-;	../src/mmcsd.c: 898: dly((uint32_t)100);
-	push	#0x64
+;	../src/mmcsd.c: 898: dly((uint32_t)10);
+	push	#0x0a
 	clrw	x
 	pushw	x
 	push	#0x00
@@ -478,9 +487,9 @@ _SD_GoIdleState:
 	push	#0x69
 	call	_SD_SendCmd
 	addw	sp, #6
-;	../src/mmcsd.c: 900: dly((uint32_t)10000);
-	push	#0x10
-	push	#0x27
+;	../src/mmcsd.c: 900: dly((uint32_t)1000);
+	push	#0xe8
+	push	#0x03
 	clrw	x
 	pushw	x
 	call	_dly
@@ -538,9 +547,9 @@ _SD_GoIdleState:
 	pushw	x
 	call	_SD_GetResponseVal
 	addw	sp, #3
-;	../src/mmcsd.c: 917: dly((uint32_t)10000);
-	push	#0x10
-	push	#0x27
+;	../src/mmcsd.c: 917: dly((uint32_t)1000);
+	push	#0xe8
+	push	#0x03
 	clrw	x
 	pushw	x
 	call	_dly
@@ -562,9 +571,9 @@ _SD_GoIdleState:
 	pushw	x
 	call	_SD_GetResponseVal
 	addw	sp, #3
-;	../src/mmcsd.c: 920: dly((uint32_t)10000);
-	push	#0x10
-	push	#0x27
+;	../src/mmcsd.c: 920: dly((uint32_t)1000);
+	push	#0xe8
+	push	#0x03
 	clrw	x
 	pushw	x
 	call	_dly
@@ -589,14 +598,20 @@ _SD_GoIdleState:
 ;	 function SD_WriteByte
 ;	-----------------------------------------
 _SD_WriteByte:
-;	../src/mmcsd.c: 944: while (SPI->SR & (SPI_FLAG_TXE) == 0)
+;	../src/mmcsd.c: 944: while ((SPI->SR & SPI_FLAG_TXE) == 0)
+00101$:
 	ld	a, 0x5203
+	bcp	a, #0x02
+	jreq	00101$
 ;	../src/mmcsd.c: 948: SPI->DR = (Data);
 	ldw	x, #0x5204
 	ld	a, (0x03, sp)
 	ld	(x), a
-;	../src/mmcsd.c: 951: while (SPI->SR & (SPI_FLAG_RXNE) == 0)
+;	../src/mmcsd.c: 951: while ((SPI->SR & SPI_FLAG_RXNE) == 0)
+00104$:
 	ld	a, 0x5203
+	srl	a
+	jrnc	00104$
 ;	../src/mmcsd.c: 955: return SPI->DR;
 	ld	a, 0x5204
 ;	../src/mmcsd.c: 956: }
@@ -606,12 +621,18 @@ _SD_WriteByte:
 ;	 function SD_ReadByte
 ;	-----------------------------------------
 _SD_ReadByte:
-;	../src/mmcsd.c: 968: while (SPI->SR&(SPI_FLAG_TXE) == 0)
+;	../src/mmcsd.c: 968: while ((SPI->SR & SPI_FLAG_TXE) == 0)
+00101$:
 	ld	a, 0x5203
+	bcp	a, #0x02
+	jreq	00101$
 ;	../src/mmcsd.c: 971: SPI->DR = SD_DUMMY_BYTE;
 	mov	0x5204+0, #0xff
-;	../src/mmcsd.c: 974: while (SPI->SR&(SPI_FLAG_RXNE) == 0)
+;	../src/mmcsd.c: 974: while ((SPI->SR & SPI_FLAG_RXNE) == 0)
+00104$:
 	ld	a, 0x5203
+	srl	a
+	jrnc	00104$
 ;	../src/mmcsd.c: 977: Data = (uint8_t)SPI->DR;
 	ld	a, 0x5204
 ;	../src/mmcsd.c: 980: return Data;

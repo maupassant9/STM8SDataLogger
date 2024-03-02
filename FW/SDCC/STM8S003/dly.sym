@@ -7,12 +7,18 @@ Symbol Table
     .__.ABS.                                                    =  000000 G
     .__.CPU.                                                    =  000000 L
     .__.H$L.                                                    =  000001 L
+  9 _ButtonInit                                                    0000C6 GR
+  9 _ButtonStateUpdate                                             000041 GR
+  1 _ButtonStateUpdate_button_sht_ticks_65536_326                  000006 R
+  1 _ButtonStateUpdate_prev_result_65536_326                       000005 R
+  9 _ReadButtonState                                               0000F4 GR
     _UpdateLeds                                                    ****** GX
-  9 _dly                                                           00001F GR
+  1 _buttonState                                                   000004 GR
+  9 _dly                                                           000022 GR
   1 _sysTick                                                       000000 GR
   9 _sysTickInit                                                   000000 GR
-  9 _systemTickIsr                                                 00003E GR
-  9 _tim4Init                                                      00000A R
+  9 _systemTickIsr                                                 0000D7 GR
+  9 _tim4Init                                                      00000D R
 
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 2.
@@ -21,14 +27,14 @@ Hexadecimal [24-Bits]
 Area Table
 
    0 _CODE                                      size      0   flags    0
-   1 DATA                                       size      4   flags    0
+   1 DATA                                       size      A   flags    0
    2 INITIALIZED                                size      0   flags    0
    3 DABS                                       size      0   flags    8
    4 HOME                                       size      0   flags    0
-   5 GSINIT                                     size      0   flags    0
+   5 GSINIT                                     size      B   flags    0
    6 GSFINAL                                    size      0   flags    0
    7 CONST                                      size      0   flags    0
    8 INITIALIZER                                size      0   flags    0
-   9 CODE                                       size     58   flags    0
+   9 CODE                                       size     FC   flags    0
    A CABS                                       size      0   flags    8
 

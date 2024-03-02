@@ -15,7 +15,7 @@
 /********************************************
 * Include 
 ********************************************/
-#include "stm8s_conf.h"
+//#include "stm8s_conf.h"
 #include "mmcsd.h"
 #include "pff.h"
 #include "stm8s.h"
@@ -104,6 +104,7 @@ void main( void )
 	FATFS fid;
 	FRESULT res = FR_OK;
 	fsm_t fsm;
+	enum button_state_t bs = BUTTON_NOT_PRESSED;
 	//////////////////////
 	//Init the hardware
 	/////////////////////
@@ -115,8 +116,13 @@ void main( void )
 	enableInterrupts();
 
 	SetLedMode(0, LED_ON);
-	dly(100000);
-	
+	dly(10000l);
+	SetLedMode(0, LED_OFF);
+	dly(2000l);
+
+	//wait for user press button to 
+	//start
+	while(BUTTON_LNG_PRESSED != ReadButtonState());
 	///////////////////////////////
 	// Mount the file sys       ///
 	// And get the configuration///
@@ -131,7 +137,6 @@ void main( void )
 		//init the cnters
 		fileBlkCnt = loggerCfg.fileSzInBlock;
 		fileNoCnt = loggerCfg.fileNo;
-		SetLedMode(1, LED_ON);
 		//open the first file to be written	
 		res |= pf_open(loggerCfg.firstFileName);
 		
@@ -144,7 +149,6 @@ void main( void )
 			//SetFsm(&fsm, S4_ERR, ERR_CARD_INIT);
 			fsm.state = S4_ERR;
 			fsm.error = ERR_CARD_INIT;
-			SetLedMode(1, LED_TOGGLE_FAST);
 		}
 			
 		disableInterrupts();
@@ -156,10 +160,13 @@ void main( void )
 		fsm.state = S4_ERR;
 		fsm.error = ERR_CARD_INIT;
 	}
-	SetLedMode(0, LED_TOGGLE_SLOW);
+	SetLedMode(0, LED_TOGGLE_FAST);
 	//Disable led auto toggle func	
 	while(1){
-	
+		bs = ReadButtonState();
+		if(BUTTON_LNG_PRESSED == bs){
+			fsm.state = S5_COMPLETE;
+		}
 	////////////////////
 	//State machine ////
 	////////////////////
@@ -209,13 +216,13 @@ void main( void )
 				break;
 				//error sstate
 			case S4_ERR:
+				SetLedMode(0, LED_OFF);
 				SetLedMode(1, LED_TOGGLE_FAST);
 				while(1); break;
 			case S5_COMPLETE:
-				SetLedMode(0, LED_ON);
+				SetLedMode(0, LED_OFF);
+				SetLedMode(1, LED_ON);
 				while(1);
-				break;
-			case S6_PAUSE:
 				break;
 			default: break;
 		}

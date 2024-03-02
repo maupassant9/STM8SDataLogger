@@ -19,26 +19,26 @@ Area                                    Addr        Size        Decimal Bytes (A
      00000003  l_GSFINAL                       
      00000007  l_INITIALIZED                   
      00000007  l_INITIALIZER                   
-     00000030  l_GSINIT                        
+     0000003B  l_GSINIT                        
      00000064  l_CONST                         
      0000006F  l_HOME                          
-     00000262  l_DATA                          
-     00000263  s_INITIALIZED                   
-     00001BFF  l_CODE                          
+     00000268  l_DATA                          
+     00000269  s_INITIALIZED                   
+     00001D3E  l_CODE                          
      00008000  s_HOME                          
      0000806F  s_GSINIT                        
-     0000809F  s_GSFINAL                       
-     000080A2  s_CONST                         
-     00008106  s_INITIALIZER                   
-     0000810D  s_CODE                          
-     00009D0C  s_SSEG                          
+     000080AA  s_GSFINAL                       
+     000080AD  s_CONST                         
+     00008111  s_INITIALIZER                   
+     00008118  s_CODE                          
+     00009E56  s_SSEG                          
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-DATA                                00000001    00000262 =         610. bytes (REL,CON)
+DATA                                00000001    00000268 =         616. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -46,14 +46,16 @@ DATA                                00000001    00000262 =         610. bytes (R
      00000002  _adcBuffer0                        adc
      00000102  _adcBuffer1                        adc
      0000020D  _sysTick                           dly
-     00000211  _led_ticks                         led_matrix
-     00000252  _loggerCfg                         main
+     00000211  _buttonState                       dly
+     00000217  _led_ticks                         led_matrix
+     00000258  _loggerCfg                         main
+
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-INITIALIZED                         00000263    00000007 =           7. bytes (REL,CON)
+INITIALIZED                         00000269    00000007 =           7. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -71,7 +73,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-GSINIT                              0000806F    00000030 =          48. bytes (REL,CON)
+GSINIT                              0000806F    0000003B =          59. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -80,7 +82,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-GSFINAL                             0000809F    00000003 =           3. bytes (REL,CON)
+GSFINAL                             000080AA    00000003 =           3. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -89,19 +91,19 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CONST                               000080A2    00000064 =         100. bytes (REL,CON)
+CONST                               000080AD    00000064 =         100. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     000080A2  _leds_anode                        leds
-     000080D2  _leds_cathode                      leds
+     000080AD  _leds_anode                        leds
+     000080DD  _leds_cathode                      leds
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 8.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-INITIALIZER                         00008106    00000007 =           7. bytes (REL,CON)
+INITIALIZER                         00008111    00000007 =           7. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -110,81 +112,84 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CODE                                0000810D    00001BFF =        7167. bytes (REL,CON)
+CODE                                00008118    00001D3E =        7486. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     0000815C  _adcInit                           adc
-     00008248  _adcIsr                            adc
-     00008270  _disk_initialize                   diskio
-     00008284  _disk_readp                        diskio
-     00008359  _disk_writep                       diskio
-     0000849A  _sysTickInit                       dly
-     000084B9  _dly                               dly
-     000084D8  _systemTickIsr                     dly
-     000084F2  _LedMatrixInit                     led_matrix
-     000084F5  _SetLedMode                        led_matrix
-     000085CA  _UpdateLeds                        led_matrix
-     00008652  _LedsInit                          leds
-     00008669  _UpdateLedState                    leds
-     0000869F  _SetLedRaw                         leds
-     00008762  _GetLedState                       leds
-     0000877F  _SetLedState                       leds
-     000087A9  _main                              main
-     00008C0A  _assert_failed                     main
-     00008C0D  _SD_Init                           mmcsd
-     00008C41  _SD_Detect                         mmcsd
-     00008C49  _SD_SendCmd                        mmcsd
-     00008CA5  _SD_GetDataResponse                mmcsd
-     00008CFF  _SD_GetResponse                    mmcsd
-     00008D2D  _SD_GetResponseVal                 mmcsd
-     00008D77  _SD_GoIdleState                    mmcsd
-     00008EA6  _SD_WriteByte                      mmcsd
-     00008EB6  _SD_ReadByte                       mmcsd
-     00008EC4  _SD_LowLevel_Init                  mmcsd
-     000094C5  _pf_mount                          pff
-     00009713  _pf_open                           pff
-     000097A4  _pf_read                           pff
-     00009992  _pf_write                          pff
-     00009C01  _TRAP_IRQHandler                   stm8s_it
-     00009C02  _TLI_IRQHandler                    stm8s_it
-     00009C03  _AWU_IRQHandler                    stm8s_it
-     00009C04  _CLK_IRQHandler                    stm8s_it
-     00009C05  _EXTI_PORTA_IRQHandler             stm8s_it
-     00009C06  _EXTI_PORTB_IRQHandler             stm8s_it
-     00009C07  _EXTI_PORTC_IRQHandler             stm8s_it
-     00009C08  _EXTI_PORTD_IRQHandler             stm8s_it
-     00009C09  _EXTI_PORTE_IRQHandler             stm8s_it
-     00009C0A  _SPI_IRQHandler                    stm8s_it
-     00009C0B  _TIM1_UPD_OVF_TRG_BRK_IRQHandler   stm8s_it
-     00009C0C  _TIM1_CAP_COM_IRQHandler           stm8s_it
-     00009C0D  _TIM2_UPD_OVF_BRK_IRQHandler       stm8s_it
-     00009C0E  _TIM2_CAP_COM_IRQHandler           stm8s_it
-     00009C0F  _UART1_TX_IRQHandler               stm8s_it
-     00009C10  _UART1_RX_IRQHandler               stm8s_it
-     00009C11  _I2C_IRQHandler                    stm8s_it
-     00009C12  _ADC1_IRQHandler                   stm8s_it
+     00008167  _adcInit                           adc
+     00008253  _adcIsr                            adc
+     0000827B  _disk_initialize                   diskio
+     0000828F  _disk_readp                        diskio
+     00008364  _disk_writep                       diskio
+     000084A5  _sysTickInit                       dly
+     000084C7  _dly                               dly
+     000084E6  _ButtonStateUpdate                 dly
+     0000856B  _ButtonInit                        dly
+     0000857C  _systemTickIsr                     dly
+     00008599  _ReadButtonState                   dly
+     000085A1  _LedMatrixInit                     led_matrix
+     000085A4  _SetLedMode                        led_matrix
+     000086D9  _UpdateLeds                        led_matrix
+     00008761  _LedsInit                          leds
+     00008778  _UpdateLedState                    leds
+     000087AE  _SetLedRaw                         leds
+     00008871  _GetLedState                       leds
+     0000888E  _SetLedState                       leds
+     000088B8  _main                              main
+     00008D3A  _assert_failed                     main
+     00008D3D  _SD_Init                           mmcsd
+     00008D7D  _SD_Detect                         mmcsd
+     00008D85  _SD_SendCmd                        mmcsd
+     00008DE1  _SD_GetDataResponse                mmcsd
+     00008E3B  _SD_GetResponse                    mmcsd
+     00008E69  _SD_GetResponseVal                 mmcsd
+     00008EB3  _SD_GoIdleState                    mmcsd
+     00008FE2  _SD_WriteByte                      mmcsd
+     00008FF9  _SD_ReadByte                       mmcsd
+     0000900E  _SD_LowLevel_Init                  mmcsd
+     0000960F  _pf_mount                          pff
+     0000985D  _pf_open                           pff
+     000098EE  _pf_read                           pff
+     00009ADC  _pf_write                          pff
+     00009D4B  _TRAP_IRQHandler                   stm8s_it
+     00009D4C  _TLI_IRQHandler                    stm8s_it
+     00009D4D  _AWU_IRQHandler                    stm8s_it
+     00009D4E  _CLK_IRQHandler                    stm8s_it
+     00009D4F  _EXTI_PORTA_IRQHandler             stm8s_it
+     00009D50  _EXTI_PORTB_IRQHandler             stm8s_it
+     00009D51  _EXTI_PORTC_IRQHandler             stm8s_it
+     00009D52  _EXTI_PORTD_IRQHandler             stm8s_it
+     00009D53  _EXTI_PORTE_IRQHandler             stm8s_it
+     00009D54  _SPI_IRQHandler                    stm8s_it
+     00009D55  _TIM1_UPD_OVF_TRG_BRK_IRQHandler   stm8s_it
+     00009D56  _TIM1_CAP_COM_IRQHandler           stm8s_it
+     00009D57  _TIM2_UPD_OVF_BRK_IRQHandler       stm8s_it
+     00009D58  _TIM2_CAP_COM_IRQHandler           stm8s_it
+     00009D59  _UART1_TX_IRQHandler               stm8s_it
 ASxxxx Linker V03.00 + NoICE + sdld,  page 10.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CODE                                0000810D    00001BFF =        7167. bytes (REL,CON)
+CODE                                00008118    00001D3E =        7486. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00009C17  _TIM4_UPD_OVF_IRQHandler           stm8s_it
-     00009C1C  _EEPROM_EEC_IRQHandler             stm8s_it
-     00009C1D  __mulint                           
-     00009C36  __divulong                         
-     00009C90  __mullong                          
+     00009D5A  _UART1_RX_IRQHandler               stm8s_it
+     00009D5B  _I2C_IRQHandler                    stm8s_it
+     00009D5C  _ADC1_IRQHandler                   stm8s_it
+     00009D61  _TIM4_UPD_OVF_IRQHandler           stm8s_it
+     00009D66  _EEPROM_EEC_IRQHandler             stm8s_it
+     00009D67  __mulint                           
+     00009D80  __divulong                         
+     00009DDA  __mullong                          
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 11.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-SSEG                                00009D0C    00000001 =           1. bytes (REL,CON)
+SSEG                                00009E56    00000001 =           1. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------

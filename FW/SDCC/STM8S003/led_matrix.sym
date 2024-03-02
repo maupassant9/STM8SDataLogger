@@ -7,13 +7,14 @@ Symbol Table
     .__.ABS.                                                    =  000000 G
     .__.CPU.                                                    =  000000 L
     .__.H$L.                                                    =  000001 L
+  9 _GetLedMode                                                    0000EC R
     _GetLedState                                                   ****** GX
   9 _LedMatrixInit                                                 000000 GR
     _LedsInit                                                      ****** GX
   9 _SetLedMode                                                    000003 GR
     _SetLedState                                                   ****** GX
     _UpdateLedState                                                ****** GX
-  9 _UpdateLeds                                                    0000D8 GR
+  9 _UpdateLeds                                                    000138 GR
   1 _led_ticks                                                     000000 GR
     _sysTick                                                       ****** GX
 
@@ -32,6 +33,6 @@ Area Table
    6 GSFINAL                                    size      0   flags    0
    7 CONST                                      size      0   flags    0
    8 INITIALIZER                                size      0   flags    0
-   9 CODE                                       size    160   flags    0
+   9 CODE                                       size    1C0   flags    0
    A CABS                                       size      0   flags    8
 

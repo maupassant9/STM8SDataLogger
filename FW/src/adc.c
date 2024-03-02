@@ -79,6 +79,7 @@ static void tim1Init( void )
 }
 
 
+
 /** adcInit 
   * @brief  Initialize the adc.
   * Tim1 is the source for ADC sampling

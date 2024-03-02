@@ -339,8 +339,8 @@
       000194 CEu00u00         [ 2]  339 	ldw	x, _disk_writep_byteLeft_65536_355+0
       000197 27 22            [ 1]  340 	jreq	00106$
       000199                        341 00204$:
-                                    342 ;	../src/diskio.c: 130: dly(10);
-      000199 4B 0A            [ 1]  343 	push	#0x0a
+                                    342 ;	../src/diskio.c: 130: dly(1);
+      000199 4B 01            [ 1]  343 	push	#0x01
       00019B 5F               [ 1]  344 	clrw	x
       00019C 89               [ 2]  345 	pushw	x
       00019D 4B 00            [ 1]  346 	push	#0x00

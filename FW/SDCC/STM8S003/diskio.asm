@@ -339,8 +339,8 @@ _disk_writep:
 	ldw	x, _disk_writep_byteLeft_65536_355+0
 	jreq	00106$
 00204$:
-;	../src/diskio.c: 130: dly(10);
-	push	#0x0a
+;	../src/diskio.c: 130: dly(1);
+	push	#0x01
 	clrw	x
 	pushw	x
 	push	#0x00

@@ -7,16 +7,16 @@ Symbol Table
     .__.ABS.                                                    =  000000 G
     .__.CPU.                                                    =  000000 L
     .__.H$L.                                                    =  000001 L
-  9 _SD_Detect                                                     000034 GR
-  9 _SD_GetDataResponse                                            000098 GR
-  9 _SD_GetResponse                                                0000F2 GR
-  9 _SD_GetResponseVal                                             000120 GR
-  9 _SD_GoIdleState                                                00016A GR
+  9 _SD_Detect                                                     000040 GR
+  9 _SD_GetDataResponse                                            0000A4 GR
+  9 _SD_GetResponse                                                0000FE GR
+  9 _SD_GetResponseVal                                             00012C GR
+  9 _SD_GoIdleState                                                000176 GR
   9 _SD_Init                                                       000000 GR
-  9 _SD_LowLevel_Init                                              0002B7 GR
-  9 _SD_ReadByte                                                   0002A9 GR
-  9 _SD_SendCmd                                                    00003C GR
-  9 _SD_WriteByte                                                  000299 GR
+  9 _SD_LowLevel_Init                                              0002D1 GR
+  9 _SD_ReadByte                                                   0002BC GR
+  9 _SD_SendCmd                                                    000048 GR
+  9 _SD_WriteByte                                                  0002A5 GR
     _dly                                                           ****** GX
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 2.
@@ -33,6 +33,6 @@ Area Table
    6 GSFINAL                                    size      0   flags    0
    7 CONST                                      size      0   flags    0
    8 INITIALIZER                                size      0   flags    0
-   9 CODE                                       size    2E0   flags    0
+   9 CODE                                       size    2FA   flags    0
    A CABS                                       size      0   flags    8
 

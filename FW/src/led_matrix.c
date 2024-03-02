@@ -18,7 +18,7 @@
 /********************************************
 * Internal Function Declaration 
 ********************************************/
-
+static enum let_mode_t GetLedMode(uint8_t ledID);
 
 /********************************************
 * Internal Types and Variables 
@@ -74,6 +74,7 @@ void SetLedMode(uint8_t ledID, enum led_mode_t mode)
 
 	if(mode >= LED_MODE_MAX) return;
 	if(ledID >= NUM_OF_LEDS) return;
+	if(GetLedMode(ledID) == mode) return;
 
 	switch(mode){
 	case LED_ON:
@@ -88,6 +89,15 @@ void SetLedMode(uint8_t ledID, enum led_mode_t mode)
 		nxtTick = (nxtTick%2)?nxtTick:(nxtTick+1);
 		led_ticks[ledID] = nxtTick;break;
 	}
+}
+
+static enum let_mode_t GetLedMode(uint8_t ledID)
+{
+	uint32_t tick = led_ticks[ledID];
+
+	if(0 == tick) return GetLedState(ledID)?LED_ON:LED_OFF;
+	if(tick % 2) return LED_TOGGLE_FAST;
+	return LED_TOGGLE_SLOW; 
 }
 
 

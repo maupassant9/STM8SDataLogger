@@ -33,6 +33,7 @@
 * Internal Types and Variables 
 ********************************************/
 volatile uint32_t sysTick;
+volatile enum button_state_t buttonState;
 /********************************************
 * External Variables 
 ********************************************/
@@ -44,7 +45,9 @@ static void tim4Init( void );
 void sysTickInit( void )
 {
 	sysTick = 0;
+	ButtonInit();
 	tim4Init();
+	
 }
 
 
@@ -83,6 +86,43 @@ void dly(uint32_t dt)
 }
 
 
+void ButtonStateUpdate(){
+	static bool prev_result = FALSE;
+	static uint32_t button_sht_ticks = 0;
+	bool current_result = (0 == (BUTTON_PIN_PORT->IDR & BUTTON_PIN_NO));
+	
+	//edge detect: button pressed
+	if(current_result && !prev_result){
+		prev_result = current_result;
+		button_sht_ticks = 0;
+		return;
+	}
+	//edge detect: button released
+	if(!current_result && prev_result){
+		prev_result = current_result;
+		//generate the event here
+		if(button_sht_ticks > 2000) buttonState = BUTTON_LNG_PRESSED;
+		else if(button_sht_ticks > 500) buttonState = BUTTON_SHT_PRESSED;
+		else buttonState = BUTTON_NOT_PRESSED;
+		button_sht_ticks = 0;
+		return;
+	}
+
+	//keep pressed:
+	if(current_result){
+		button_sht_ticks++;
+	} else {
+		button_sht_ticks = 0;
+	}
+}
+
+void ButtonInit(){
+	BUTTON_PIN_PORT->CR2 &= (~BUTTON_PIN_NO); //Reset corresponding bit
+	BUTTON_PIN_PORT->DDR &= BUTTON_PIN_NO; // Input mode 
+	BUTTON_PIN_PORT->CR1 &= ~BUTTON_PIN_NO; //open drain here
+}
+
+
 /*------------------------------------------------ 
 * FuncName(); 
 * Descriptions here. 
@@ -99,8 +139,13 @@ void systemTickIsr (void)
 	sysTick++;
 	TIM4->SR1 = ~TIM4_SR1_UIF;
 	UpdateLeds();
+	ButtonStateUpdate();
 }
 
 
-
-
+enum button_state_t ReadButtonState()
+{
+	enum button_state_t bs = buttonState;
+	buttonState = BUTTON_NOT_PRESSED;
+	return bs;
+}

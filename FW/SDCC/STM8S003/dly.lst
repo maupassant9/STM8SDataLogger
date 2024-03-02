@@ -9,121 +9,256 @@
                                       9 ; Public variables in this module
                                      10 ;--------------------------------------------------------
                                      11 	.globl _UpdateLeds
-                                     12 	.globl _sysTick
-                                     13 	.globl _sysTickInit
-                                     14 	.globl _dly
-                                     15 	.globl _systemTickIsr
-                                     16 ;--------------------------------------------------------
-                                     17 ; ram data
-                                     18 ;--------------------------------------------------------
-                                     19 	.area DATA
-      000000                         20 _sysTick::
-      000000                         21 	.ds 4
+                                     12 	.globl _buttonState
+                                     13 	.globl _sysTick
+                                     14 	.globl _sysTickInit
+                                     15 	.globl _dly
+                                     16 	.globl _ButtonStateUpdate
+                                     17 	.globl _ButtonInit
+                                     18 	.globl _systemTickIsr
+                                     19 	.globl _ReadButtonState
+                                     20 ;--------------------------------------------------------
+                                     21 ; ram data
                                      22 ;--------------------------------------------------------
-                                     23 ; ram data
-                                     24 ;--------------------------------------------------------
-                                     25 	.area INITIALIZED
-                                     26 ;--------------------------------------------------------
-                                     27 ; absolute external ram data
-                                     28 ;--------------------------------------------------------
-                                     29 	.area DABS (ABS)
-                                     30 
-                                     31 ; default segment ordering for linker
-                                     32 	.area HOME
-                                     33 	.area GSINIT
-                                     34 	.area GSFINAL
-                                     35 	.area CONST
-                                     36 	.area INITIALIZER
-                                     37 	.area CODE
-                                     38 
-                                     39 ;--------------------------------------------------------
-                                     40 ; global & static initialisations
-                                     41 ;--------------------------------------------------------
+                                     23 	.area DATA
+      000000                         24 _sysTick::
+      000000                         25 	.ds 4
+      000004                         26 _buttonState::
+      000004                         27 	.ds 1
+      000005                         28 _ButtonStateUpdate_prev_result_65536_326:
+      000005                         29 	.ds 1
+      000006                         30 _ButtonStateUpdate_button_sht_ticks_65536_326:
+      000006                         31 	.ds 4
+                                     32 ;--------------------------------------------------------
+                                     33 ; ram data
+                                     34 ;--------------------------------------------------------
+                                     35 	.area INITIALIZED
+                                     36 ;--------------------------------------------------------
+                                     37 ; absolute external ram data
+                                     38 ;--------------------------------------------------------
+                                     39 	.area DABS (ABS)
+                                     40 
+                                     41 ; default segment ordering for linker
                                      42 	.area HOME
                                      43 	.area GSINIT
                                      44 	.area GSFINAL
-                                     45 	.area GSINIT
-                                     46 ;--------------------------------------------------------
-                                     47 ; Home
-                                     48 ;--------------------------------------------------------
-                                     49 	.area HOME
-                                     50 	.area HOME
+                                     45 	.area CONST
+                                     46 	.area INITIALIZER
+                                     47 	.area CODE
+                                     48 
+                                     49 ;--------------------------------------------------------
+                                     50 ; global & static initialisations
                                      51 ;--------------------------------------------------------
-                                     52 ; code
-                                     53 ;--------------------------------------------------------
-                                     54 	.area CODE
-                                     55 ;	../src/dly.c: 44: void sysTickInit( void )
-                                     56 ;	-----------------------------------------
-                                     57 ;	 function sysTickInit
-                                     58 ;	-----------------------------------------
-      000000                         59 _sysTickInit:
-                                     60 ;	../src/dly.c: 46: sysTick = 0;
-      000000 5F               [ 1]   61 	clrw	x
-      000001 CFu00u02         [ 2]   62 	ldw	_sysTick+2, x
-      000004 CFu00u00         [ 2]   63 	ldw	_sysTick+0, x
-                                     64 ;	../src/dly.c: 47: tim4Init();
-                                     65 ;	../src/dly.c: 48: }
-      000007 CCr00r0A         [ 2]   66 	jp	_tim4Init
-                                     67 ;	../src/dly.c: 59: static void tim4Init( void )
-                                     68 ;	-----------------------------------------
-                                     69 ;	 function tim4Init
-                                     70 ;	-----------------------------------------
-      00000A                         71 _tim4Init:
-                                     72 ;	../src/dly.c: 61: TIM4->PSCR = TIM4_PRESCALER_64; //tim_clk = 250K, time_resolution = 4us
-      00000A 35 06 53 47      [ 1]   73 	mov	0x5347+0, #0x06
-                                     74 ;	../src/dly.c: 62: TIM4->CR1 = (TIM4_CR1_ARPE);
-      00000E 35 80 53 40      [ 1]   75 	mov	0x5340+0, #0x80
-                                     76 ;	../src/dly.c: 63: TIM4->IER = TIM4_IER_UIE;
-      000012 35 01 53 43      [ 1]   77 	mov	0x5343+0, #0x01
-                                     78 ;	../src/dly.c: 64: TIM4->ARR = TIMER_VALUE_FOR_SYSTICK;
-      000016 35 19 53 48      [ 1]   79 	mov	0x5348+0, #0x19
-                                     80 ;	../src/dly.c: 65: TIM4->CR1 |= TIM4_CR1_CEN;
-      00001A 72 10 53 40      [ 1]   81 	bset	21312, #0
-                                     82 ;	../src/dly.c: 66: }
-      00001E 81               [ 4]   83 	ret
-                                     84 ;	../src/dly.c: 79: void dly(uint32_t dt)
-                                     85 ;	-----------------------------------------
-                                     86 ;	 function dly
-                                     87 ;	-----------------------------------------
-      00001F                         88 _dly:
-                                     89 ;	../src/dly.c: 81: uint32_t destSysTick = sysTick+dt;
-      00001F 90 CEu00u02      [ 2]   90 	ldw	y, _sysTick+2
-      000023 72 F9 05         [ 2]   91 	addw	y, (0x05, sp)
-      000026 CEu00u00         [ 2]   92 	ldw	x, _sysTick+0
-      000029 24 01            [ 1]   93 	jrnc	00111$
-      00002B 5C               [ 1]   94 	incw	x
-      00002C                         95 00111$:
-      00002C 72 FB 03         [ 2]   96 	addw	x, (0x03, sp)
-                                     97 ;	../src/dly.c: 82: while(destSysTick!=sysTick);
-      00002F                         98 00101$:
-      00002F 90 C3u00u02      [ 2]   99 	cpw	y, _sysTick+2
-      000033 26 FA            [ 1]  100 	jrne	00101$
-      000035 C3u00u00         [ 2]  101 	cpw	x, _sysTick+0
-      000038 26 F5            [ 1]  102 	jrne	00101$
-      00003A 81               [ 4]  103 	ret
-      00003B 20 F2            [ 2]  104 	jra	00101$
-                                    105 ;	../src/dly.c: 83: }
-      00003D 81               [ 4]  106 	ret
-                                    107 ;	../src/dly.c: 97: void systemTickIsr (void)
-                                    108 ;	-----------------------------------------
-                                    109 ;	 function systemTickIsr
-                                    110 ;	-----------------------------------------
-      00003E                        111 _systemTickIsr:
-                                    112 ;	../src/dly.c: 99: sysTick++;
-      00003E CEu00u02         [ 2]  113 	ldw	x, _sysTick+2
-      000041 90 CEu00u00      [ 2]  114 	ldw	y, _sysTick+0
-      000045 5C               [ 1]  115 	incw	x
-      000046 26 02            [ 1]  116 	jrne	00103$
-      000048 90 5C            [ 1]  117 	incw	y
-      00004A                        118 00103$:
-      00004A CFu00u02         [ 2]  119 	ldw	_sysTick+2, x
-      00004D 90 CFu00u00      [ 2]  120 	ldw	_sysTick+0, y
-                                    121 ;	../src/dly.c: 100: TIM4->SR1 = ~TIM4_SR1_UIF;
-      000051 35 FE 53 44      [ 1]  122 	mov	0x5344+0, #0xfe
-                                    123 ;	../src/dly.c: 101: UpdateLeds();
-                                    124 ;	../src/dly.c: 102: }
-      000055 CCr00r00         [ 2]  125 	jp	_UpdateLeds
-                                    126 	.area CODE
-                                    127 	.area CONST
-                                    128 	.area INITIALIZER
-                                    129 	.area CABS (ABS)
+                                     52 	.area HOME
+                                     53 	.area GSINIT
+                                     54 	.area GSFINAL
+                                     55 	.area GSINIT
+                                     56 ;	../src/dly.c: 90: static bool prev_result = FALSE;
+      000000 72 5Fu00u05      [ 1]   57 	clr	_ButtonStateUpdate_prev_result_65536_326+0
+                                     58 ;	../src/dly.c: 91: static uint32_t button_sht_ticks = 0;
+      000004 5F               [ 1]   59 	clrw	x
+      000005 CFu00u08         [ 2]   60 	ldw	_ButtonStateUpdate_button_sht_ticks_65536_326+2, x
+      000008 CFu00u06         [ 2]   61 	ldw	_ButtonStateUpdate_button_sht_ticks_65536_326+0, x
+                                     62 ;--------------------------------------------------------
+                                     63 ; Home
+                                     64 ;--------------------------------------------------------
+                                     65 	.area HOME
+                                     66 	.area HOME
+                                     67 ;--------------------------------------------------------
+                                     68 ; code
+                                     69 ;--------------------------------------------------------
+                                     70 	.area CODE
+                                     71 ;	../src/dly.c: 45: void sysTickInit( void )
+                                     72 ;	-----------------------------------------
+                                     73 ;	 function sysTickInit
+                                     74 ;	-----------------------------------------
+      000000                         75 _sysTickInit:
+                                     76 ;	../src/dly.c: 47: sysTick = 0;
+      000000 5F               [ 1]   77 	clrw	x
+      000001 CFu00u02         [ 2]   78 	ldw	_sysTick+2, x
+      000004 CFu00u00         [ 2]   79 	ldw	_sysTick+0, x
+                                     80 ;	../src/dly.c: 48: ButtonInit();
+      000007 CDr00rC6         [ 4]   81 	call	_ButtonInit
+                                     82 ;	../src/dly.c: 49: tim4Init();
+                                     83 ;	../src/dly.c: 51: }
+      00000A CCr00r0D         [ 2]   84 	jp	_tim4Init
+                                     85 ;	../src/dly.c: 62: static void tim4Init( void )
+                                     86 ;	-----------------------------------------
+                                     87 ;	 function tim4Init
+                                     88 ;	-----------------------------------------
+      00000D                         89 _tim4Init:
+                                     90 ;	../src/dly.c: 64: TIM4->PSCR = TIM4_PRESCALER_64; //tim_clk = 250K, time_resolution = 4us
+      00000D 35 06 53 47      [ 1]   91 	mov	0x5347+0, #0x06
+                                     92 ;	../src/dly.c: 65: TIM4->CR1 = (TIM4_CR1_ARPE);
+      000011 35 80 53 40      [ 1]   93 	mov	0x5340+0, #0x80
+                                     94 ;	../src/dly.c: 66: TIM4->IER = TIM4_IER_UIE;
+      000015 35 01 53 43      [ 1]   95 	mov	0x5343+0, #0x01
+                                     96 ;	../src/dly.c: 67: TIM4->ARR = TIMER_VALUE_FOR_SYSTICK;
+      000019 35 FA 53 48      [ 1]   97 	mov	0x5348+0, #0xfa
+                                     98 ;	../src/dly.c: 68: TIM4->CR1 |= TIM4_CR1_CEN;
+      00001D 72 10 53 40      [ 1]   99 	bset	21312, #0
+                                    100 ;	../src/dly.c: 69: }
+      000021 81               [ 4]  101 	ret
+                                    102 ;	../src/dly.c: 82: void dly(uint32_t dt)
+                                    103 ;	-----------------------------------------
+                                    104 ;	 function dly
+                                    105 ;	-----------------------------------------
+      000022                        106 _dly:
+                                    107 ;	../src/dly.c: 84: uint32_t destSysTick = sysTick+dt;
+      000022 90 CEu00u02      [ 2]  108 	ldw	y, _sysTick+2
+      000026 72 F9 05         [ 2]  109 	addw	y, (0x05, sp)
+      000029 CEu00u00         [ 2]  110 	ldw	x, _sysTick+0
+      00002C 24 01            [ 1]  111 	jrnc	00111$
+      00002E 5C               [ 1]  112 	incw	x
+      00002F                        113 00111$:
+      00002F 72 FB 03         [ 2]  114 	addw	x, (0x03, sp)
+                                    115 ;	../src/dly.c: 85: while(destSysTick!=sysTick);
+      000032                        116 00101$:
+      000032 90 C3u00u02      [ 2]  117 	cpw	y, _sysTick+2
+      000036 26 FA            [ 1]  118 	jrne	00101$
+      000038 C3u00u00         [ 2]  119 	cpw	x, _sysTick+0
+      00003B 26 F5            [ 1]  120 	jrne	00101$
+      00003D 81               [ 4]  121 	ret
+      00003E 20 F2            [ 2]  122 	jra	00101$
+                                    123 ;	../src/dly.c: 86: }
+      000040 81               [ 4]  124 	ret
+                                    125 ;	../src/dly.c: 89: void ButtonStateUpdate(){
+                                    126 ;	-----------------------------------------
+                                    127 ;	 function ButtonStateUpdate
+                                    128 ;	-----------------------------------------
+      000041                        129 _ButtonStateUpdate:
+                                    130 ;	../src/dly.c: 92: bool current_result = (0 == (BUTTON_PIN_PORT->IDR & BUTTON_PIN_NO));
+      000041 C6 50 10         [ 1]  131 	ld	a, 0x5010
+      000044 A4 10            [ 1]  132 	and	a, #0x10
+      000046 A0 00            [ 1]  133 	sub	a, #0x00
+      000048 26 02            [ 1]  134 	jrne	00154$
+      00004A 4C               [ 1]  135 	inc	a
+      00004B 21                     136 	.byte 0x21
+      00004C                        137 00154$:
+      00004C 4F               [ 1]  138 	clr	a
+      00004D                        139 00155$:
+                                    140 ;	../src/dly.c: 95: if(current_result && !prev_result){
+      00004D 4D               [ 1]  141 	tnz	a
+      00004E 27 11            [ 1]  142 	jreq	00102$
+      000050 72 5Du00u05      [ 1]  143 	tnz	_ButtonStateUpdate_prev_result_65536_326+0
+      000054 26 0B            [ 1]  144 	jrne	00102$
+                                    145 ;	../src/dly.c: 96: prev_result = current_result;
+      000056 C7u00u05         [ 1]  146 	ld	_ButtonStateUpdate_prev_result_65536_326+0, a
+                                    147 ;	../src/dly.c: 97: button_sht_ticks = 0;
+      000059 5F               [ 1]  148 	clrw	x
+      00005A CFu00u08         [ 2]  149 	ldw	_ButtonStateUpdate_button_sht_ticks_65536_326+2, x
+      00005D CFu00u06         [ 2]  150 	ldw	_ButtonStateUpdate_button_sht_ticks_65536_326+0, x
+                                    151 ;	../src/dly.c: 98: return;
+      000060 81               [ 4]  152 	ret
+      000061                        153 00102$:
+                                    154 ;	../src/dly.c: 101: if(!current_result && prev_result){
+      000061 4D               [ 1]  155 	tnz	a
+      000062 26 41            [ 1]  156 	jrne	00111$
+      000064 72 5Du00u05      [ 1]  157 	tnz	_ButtonStateUpdate_prev_result_65536_326+0
+      000068 27 3B            [ 1]  158 	jreq	00111$
+                                    159 ;	../src/dly.c: 102: prev_result = current_result;
+      00006A C7u00u05         [ 1]  160 	ld	_ButtonStateUpdate_prev_result_65536_326+0, a
+                                    161 ;	../src/dly.c: 104: if(button_sht_ticks > 2000) buttonState = BUTTON_LNG_PRESSED;
+      00006D AE 07 D0         [ 2]  162 	ldw	x, #0x07d0
+      000070 C3u00u08         [ 2]  163 	cpw	x, _ButtonStateUpdate_button_sht_ticks_65536_326+2
+      000073 4F               [ 1]  164 	clr	a
+      000074 C2u00u07         [ 1]  165 	sbc	a, _ButtonStateUpdate_button_sht_ticks_65536_326+1
+      000077 4F               [ 1]  166 	clr	a
+      000078 C2u00u06         [ 1]  167 	sbc	a, _ButtonStateUpdate_button_sht_ticks_65536_326+0
+      00007B 24 06            [ 1]  168 	jrnc	00108$
+      00007D 35 02u00u04      [ 1]  169 	mov	_buttonState+0, #0x02
+      000081 20 1A            [ 2]  170 	jra	00109$
+      000083                        171 00108$:
+                                    172 ;	../src/dly.c: 105: else if(button_sht_ticks > 500) buttonState = BUTTON_SHT_PRESSED;
+      000083 AE 01 F4         [ 2]  173 	ldw	x, #0x01f4
+      000086 C3u00u08         [ 2]  174 	cpw	x, _ButtonStateUpdate_button_sht_ticks_65536_326+2
+      000089 4F               [ 1]  175 	clr	a
+      00008A C2u00u07         [ 1]  176 	sbc	a, _ButtonStateUpdate_button_sht_ticks_65536_326+1
+      00008D 4F               [ 1]  177 	clr	a
+      00008E C2u00u06         [ 1]  178 	sbc	a, _ButtonStateUpdate_button_sht_ticks_65536_326+0
+      000091 24 06            [ 1]  179 	jrnc	00105$
+      000093 35 01u00u04      [ 1]  180 	mov	_buttonState+0, #0x01
+      000097 20 04            [ 2]  181 	jra	00109$
+      000099                        182 00105$:
+                                    183 ;	../src/dly.c: 106: else buttonState = BUTTON_NOT_PRESSED;
+      000099 72 5Fu00u04      [ 1]  184 	clr	_buttonState+0
+      00009D                        185 00109$:
+                                    186 ;	../src/dly.c: 107: button_sht_ticks = 0;
+      00009D 5F               [ 1]  187 	clrw	x
+      00009E CFu00u08         [ 2]  188 	ldw	_ButtonStateUpdate_button_sht_ticks_65536_326+2, x
+      0000A1 CFu00u06         [ 2]  189 	ldw	_ButtonStateUpdate_button_sht_ticks_65536_326+0, x
+                                    190 ;	../src/dly.c: 108: return;
+      0000A4 81               [ 4]  191 	ret
+      0000A5                        192 00111$:
+                                    193 ;	../src/dly.c: 112: if(current_result){
+      0000A5 4D               [ 1]  194 	tnz	a
+      0000A6 27 16            [ 1]  195 	jreq	00114$
+                                    196 ;	../src/dly.c: 113: button_sht_ticks++;
+      0000A8 CEu00u08         [ 2]  197 	ldw	x, _ButtonStateUpdate_button_sht_ticks_65536_326+2
+      0000AB 1C 00 01         [ 2]  198 	addw	x, #0x0001
+      0000AE 90 CEu00u06      [ 2]  199 	ldw	y, _ButtonStateUpdate_button_sht_ticks_65536_326+0
+      0000B2 24 02            [ 1]  200 	jrnc	00163$
+      0000B4 90 5C            [ 1]  201 	incw	y
+      0000B6                        202 00163$:
+      0000B6 CFu00u08         [ 2]  203 	ldw	_ButtonStateUpdate_button_sht_ticks_65536_326+2, x
+      0000B9 90 CFu00u06      [ 2]  204 	ldw	_ButtonStateUpdate_button_sht_ticks_65536_326+0, y
+      0000BD 81               [ 4]  205 	ret
+      0000BE                        206 00114$:
+                                    207 ;	../src/dly.c: 115: button_sht_ticks = 0;
+      0000BE 5F               [ 1]  208 	clrw	x
+      0000BF CFu00u08         [ 2]  209 	ldw	_ButtonStateUpdate_button_sht_ticks_65536_326+2, x
+      0000C2 CFu00u06         [ 2]  210 	ldw	_ButtonStateUpdate_button_sht_ticks_65536_326+0, x
+                                    211 ;	../src/dly.c: 117: }
+      0000C5 81               [ 4]  212 	ret
+                                    213 ;	../src/dly.c: 119: void ButtonInit(){
+                                    214 ;	-----------------------------------------
+                                    215 ;	 function ButtonInit
+                                    216 ;	-----------------------------------------
+      0000C6                        217 _ButtonInit:
+                                    218 ;	../src/dly.c: 120: BUTTON_PIN_PORT->CR2 &= (~BUTTON_PIN_NO); //Reset corresponding bit
+      0000C6 72 19 50 13      [ 1]  219 	bres	20499, #4
+                                    220 ;	../src/dly.c: 121: BUTTON_PIN_PORT->DDR &= BUTTON_PIN_NO; // Input mode 
+      0000CA C6 50 11         [ 1]  221 	ld	a, 0x5011
+      0000CD A4 10            [ 1]  222 	and	a, #0x10
+      0000CF C7 50 11         [ 1]  223 	ld	0x5011, a
+                                    224 ;	../src/dly.c: 122: BUTTON_PIN_PORT->CR1 &= ~BUTTON_PIN_NO; //open drain here
+      0000D2 72 19 50 12      [ 1]  225 	bres	20498, #4
+                                    226 ;	../src/dly.c: 123: }
+      0000D6 81               [ 4]  227 	ret
+                                    228 ;	../src/dly.c: 137: void systemTickIsr (void)
+                                    229 ;	-----------------------------------------
+                                    230 ;	 function systemTickIsr
+                                    231 ;	-----------------------------------------
+      0000D7                        232 _systemTickIsr:
+                                    233 ;	../src/dly.c: 139: sysTick++;
+      0000D7 CEu00u02         [ 2]  234 	ldw	x, _sysTick+2
+      0000DA 90 CEu00u00      [ 2]  235 	ldw	y, _sysTick+0
+      0000DE 5C               [ 1]  236 	incw	x
+      0000DF 26 02            [ 1]  237 	jrne	00103$
+      0000E1 90 5C            [ 1]  238 	incw	y
+      0000E3                        239 00103$:
+      0000E3 CFu00u02         [ 2]  240 	ldw	_sysTick+2, x
+      0000E6 90 CFu00u00      [ 2]  241 	ldw	_sysTick+0, y
+                                    242 ;	../src/dly.c: 140: TIM4->SR1 = ~TIM4_SR1_UIF;
+      0000EA 35 FE 53 44      [ 1]  243 	mov	0x5344+0, #0xfe
+                                    244 ;	../src/dly.c: 141: UpdateLeds();
+      0000EE CDr00r00         [ 4]  245 	call	_UpdateLeds
+                                    246 ;	../src/dly.c: 142: ButtonStateUpdate();
+                                    247 ;	../src/dly.c: 143: }
+      0000F1 CCr00r41         [ 2]  248 	jp	_ButtonStateUpdate
+                                    249 ;	../src/dly.c: 146: enum button_state_t ReadButtonState()
+                                    250 ;	-----------------------------------------
+                                    251 ;	 function ReadButtonState
+                                    252 ;	-----------------------------------------
+      0000F4                        253 _ReadButtonState:
+                                    254 ;	../src/dly.c: 148: enum button_state_t bs = buttonState;
+      0000F4 C6u00u04         [ 1]  255 	ld	a, _buttonState+0
+                                    256 ;	../src/dly.c: 149: buttonState = BUTTON_NOT_PRESSED;
+      0000F7 72 5Fu00u04      [ 1]  257 	clr	_buttonState+0
+                                    258 ;	../src/dly.c: 150: return bs;
+                                    259 ;	../src/dly.c: 151: }
+      0000FB 81               [ 4]  260 	ret
+                                    261 	.area CODE
+                                    262 	.area CONST
+                                    263 	.area INITIALIZER
+                                    264 	.area CABS (ABS)
