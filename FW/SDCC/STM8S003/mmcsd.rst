@@ -56,1177 +56,595 @@
                                      56 ; code
                                      57 ;--------------------------------------------------------
                                      58 	.area CODE
-                           000000    59 	G$SD_Init$0$0 ==.
-                           000000    60 	C$mmcsd.c$90$0_0$332 ==.
-                                     61 ;	../src/mmcsd.c: 90: uint8_t SD_Init(void)
-                                     62 ; genLabel
-                                     63 ;	-----------------------------------------
-                                     64 ;	 function SD_Init
-                                     65 ;	-----------------------------------------
-                                     66 ;	Register assignment might be sub-optimal.
-                                     67 ;	Stack space usage: 4 bytes.
-      008DC7                         68 _SD_Init:
-      008DC7 52 04            [ 2]   69 	sub	sp, #4
-                           000002    70 	C$mmcsd.c$96$1_0$332 ==.
-                                     71 ;	../src/mmcsd.c: 96: SD_LowLevel_Init();
-                                     72 ; genCall
-      008DC9 CD 90 F3         [ 4]   73 	call	_SD_LowLevel_Init
-                           000005    74 	C$mmcsd.c$99$1_0$332 ==.
-                                     75 ;	../src/mmcsd.c: 99: SD_CS_LOW();
-                                     76 ; genPointerGet
-      008DCC C6 50 0A         [ 1]   77 	ld	a, 0x500a
-                                     78 ; genAnd
-      008DCF A4 EF            [ 1]   79 	and	a, #0xef
-                                     80 ; genPointerSet
-      008DD1 C7 50 0A         [ 1]   81 	ld	0x500a, a
-                           00000D    82 	C$mmcsd.c$103$2_0$333 ==.
-                                     83 ;	../src/mmcsd.c: 103: for (i = 0; i <= 9; i++)
-                                     84 ; genAssign
-      008DD4 5F               [ 1]   85 	clrw	x
-      008DD5 90 5F            [ 1]   86 	clrw	y
-                                     87 ; genAssign
-      008DD7 1F 03            [ 2]   88 	ldw	(0x03, sp), x
-      008DD9 17 01            [ 2]   89 	ldw	(0x01, sp), y
-                                     90 ; genLabel
-      008DDB                         91 00104$:
-                           000014    92 	C$mmcsd.c$106$3_0$334 ==.
-                                     93 ;	../src/mmcsd.c: 106: SD_WriteByte(SD_DUMMY_BYTE);
-                                     94 ; genIPush
-      008DDB 4B FF            [ 1]   95 	push	#0xff
-                                     96 ; genCall
-      008DDD CD 90 D5         [ 4]   97 	call	_SD_WriteByte
-      008DE0 84               [ 1]   98 	pop	a
-                           00001A    99 	C$mmcsd.c$103$2_0$333 ==.
-                                    100 ;	../src/mmcsd.c: 103: for (i = 0; i <= 9; i++)
-                                    101 ; genPlus
-      008DE1 1E 03            [ 2]  102 	ldw	x, (0x03, sp)
-      008DE3 5C               [ 1]  103 	incw	x
-      008DE4 1F 03            [ 2]  104 	ldw	(0x03, sp), x
-      008DE6 26 05            [ 1]  105 	jrne	00119$
-      008DE8 1E 01            [ 2]  106 	ldw	x, (0x01, sp)
-      008DEA 5C               [ 1]  107 	incw	x
-      008DEB 1F 01            [ 2]  108 	ldw	(0x01, sp), x
-      008DED                        109 00119$:
-                                    110 ; genCmp
-                                    111 ; genCmpTop
-      008DED AE 00 09         [ 2]  112 	ldw	x, #0x0009
-      008DF0 13 03            [ 2]  113 	cpw	x, (0x03, sp)
-      008DF2 4F               [ 1]  114 	clr	a
-      008DF3 12 02            [ 1]  115 	sbc	a, (0x02, sp)
-      008DF5 4F               [ 1]  116 	clr	a
-      008DF6 12 01            [ 1]  117 	sbc	a, (0x01, sp)
-      008DF8 25 03            [ 1]  118 	jrc	00120$
-      008DFA CC 8D DB         [ 2]  119 	jp	00104$
-      008DFD                        120 00120$:
-                                    121 ; skipping generated iCode
-                           000036   122 	C$mmcsd.c$110$1_0$332 ==.
-                                    123 ;	../src/mmcsd.c: 110: res = SD_GoIdleState();
-                                    124 ; genCall
-      008DFD CD 8F 86         [ 4]  125 	call	_SD_GoIdleState
-                           000039   126 	C$mmcsd.c$116$1_0$332 ==.
-                                    127 ;	../src/mmcsd.c: 116: return (res);
-                                    128 ; genReturn
-      008E00 4F               [ 1]  129 	clr	a
-                                    130 ; genLabel
-      008E01                        131 00106$:
-                           00003A   132 	C$mmcsd.c$117$1_0$332 ==.
-                                    133 ;	../src/mmcsd.c: 117: }
-                                    134 ; genEndFunction
-      008E01 5B 04            [ 2]  135 	addw	sp, #4
-                           00003C   136 	C$mmcsd.c$117$1_0$332 ==.
-                           00003C   137 	XG$SD_Init$0$0 ==.
-      008E03 81               [ 4]  138 	ret
-                           00003D   139 	G$SD_Detect$0$0 ==.
-                           00003D   140 	C$mmcsd.c$124$1_0$337 ==.
-                                    141 ;	../src/mmcsd.c: 124: uint8_t SD_Detect(void)
-                                    142 ; genLabel
-                                    143 ;	-----------------------------------------
-                                    144 ;	 function SD_Detect
-                                    145 ;	-----------------------------------------
-                                    146 ;	Register assignment is optimal.
-                                    147 ;	Stack space usage: 1 bytes.
-      008E04                        148 _SD_Detect:
-      008E04 88               [ 1]  149 	push	a
-                           00003E   150 	C$mmcsd.c$126$2_0$337 ==.
-                                    151 ;	../src/mmcsd.c: 126: __IO uint8_t status = SD_PRESENT;
-                                    152 ; genAssign
-      008E05 A6 01            [ 1]  153 	ld	a, #0x01
-      008E07 6B 01            [ 1]  154 	ld	(0x01, sp), a
-                           000042   155 	C$mmcsd.c$136$1_0$337 ==.
-                                    156 ;	../src/mmcsd.c: 136: return SD_PRESENT;
-                                    157 ; genReturn
-      008E09 A6 01            [ 1]  158 	ld	a, #0x01
-                                    159 ; genLabel
-      008E0B                        160 00101$:
-                           000044   161 	C$mmcsd.c$138$1_0$337 ==.
-                                    162 ;	../src/mmcsd.c: 138: }
-                                    163 ; genEndFunction
-      008E0B 5B 01            [ 2]  164 	addw	sp, #1
-                           000046   165 	C$mmcsd.c$138$1_0$337 ==.
-                           000046   166 	XG$SD_Detect$0$0 ==.
-      008E0D 81               [ 4]  167 	ret
-                           000047   168 	G$SD_SendCmd$0$0 ==.
-                           000047   169 	C$mmcsd.c$663$1_0$339 ==.
-                                    170 ;	../src/mmcsd.c: 663: void SD_SendCmd(uint8_t Cmd, uint32_t Arg, uint8_t Crc)
-                                    171 ; genLabel
-                                    172 ;	-----------------------------------------
-                                    173 ;	 function SD_SendCmd
-                                    174 ;	-----------------------------------------
-                                    175 ;	Register assignment might be sub-optimal.
-                                    176 ;	Stack space usage: 10 bytes.
-      008E0E                        177 _SD_SendCmd:
-      008E0E 52 0A            [ 2]  178 	sub	sp, #10
-                           000049   179 	C$mmcsd.c$669$1_0$339 ==.
-                                    180 ;	../src/mmcsd.c: 669: Frame[0] = (uint8_t)(Cmd | 0x40); /*!< Construct byte 1 */
-                                    181 ; skipping iCode since result will be rematerialized
-                                    182 ; genAssign
-      008E10 7B 0D            [ 1]  183 	ld	a, (0x0d, sp)
-                                    184 ; genOr
-      008E12 AA 40            [ 1]  185 	or	a, #0x40
-                                    186 ; genPointerSet
-      008E14 6B 01            [ 1]  187 	ld	(0x01, sp), a
-                           00004F   188 	C$mmcsd.c$671$1_0$339 ==.
-                                    189 ;	../src/mmcsd.c: 671: Frame[1] = (uint8_t)(Arg >> 24); /*!< Construct byte 2 */
-                                    190 ; genPlus
-      008E16 96               [ 1]  191 	ldw	x, sp
-      008E17 5C               [ 1]  192 	incw	x
-      008E18 5C               [ 1]  193 	incw	x
-                                    194 ; genRightShiftLiteral
-      008E19 7B 0E            [ 1]  195 	ld	a, (0x0e, sp)
-      008E1B 90 5F            [ 1]  196 	clrw	y
-      008E1D 0F 07            [ 1]  197 	clr	(0x07, sp)
-                                    198 ; genCast
-                                    199 ; genAssign
-                                    200 ; genPointerSet
-      008E1F F7               [ 1]  201 	ld	(x), a
-                           000059   202 	C$mmcsd.c$673$1_0$339 ==.
-                                    203 ;	../src/mmcsd.c: 673: Frame[2] = (uint8_t)(Arg >> 16); /*!< Construct byte 3 */
-                                    204 ; genPlus
-      008E20 96               [ 1]  205 	ldw	x, sp
-      008E21 1C 00 03         [ 2]  206 	addw	x, #3
-                                    207 ; genRightShiftLiteral
-      008E24 16 0E            [ 2]  208 	ldw	y, (0x0e, sp)
-      008E26 4F               [ 1]  209 	clr	a
-      008E27 0F 07            [ 1]  210 	clr	(0x07, sp)
-                                    211 ; genCast
-                                    212 ; genAssign
-      008E29 90 9F            [ 1]  213 	ld	a, yl
-                                    214 ; genPointerSet
-      008E2B F7               [ 1]  215 	ld	(x), a
-                           000065   216 	C$mmcsd.c$675$1_0$339 ==.
-                                    217 ;	../src/mmcsd.c: 675: Frame[3] = (uint8_t)(Arg >> 8); /*!< Construct byte 4 */
-                                    218 ; genPlus
-      008E2C 96               [ 1]  219 	ldw	x, sp
-      008E2D 1C 00 04         [ 2]  220 	addw	x, #4
-                                    221 ; genCast
-                                    222 ; genAssign
-      008E30 16 10            [ 2]  223 	ldw	y, (0x10, sp)
-                                    224 ; genRightShiftLiteral
-      008E32 4F               [ 1]  225 	clr	a
-                                    226 ; genCast
-                                    227 ; genAssign
-      008E33 90 9E            [ 1]  228 	ld	a, yh
-                                    229 ; genPointerSet
-      008E35 F7               [ 1]  230 	ld	(x), a
-                           00006F   231 	C$mmcsd.c$677$1_0$339 ==.
-                                    232 ;	../src/mmcsd.c: 677: Frame[4] = (uint8_t)(Arg); /*!< Construct byte 5 */
-                                    233 ; genPlus
-      008E36 96               [ 1]  234 	ldw	x, sp
-      008E37 1C 00 05         [ 2]  235 	addw	x, #5
-                                    236 ; genCast
-                                    237 ; genAssign
-      008E3A 7B 11            [ 1]  238 	ld	a, (0x11, sp)
-                                    239 ; genPointerSet
-      008E3C F7               [ 1]  240 	ld	(x), a
-                           000076   241 	C$mmcsd.c$679$1_0$339 ==.
-                                    242 ;	../src/mmcsd.c: 679: Frame[5] = (Crc); /*!< Construct CRC: byte 6 */
-                                    243 ; genPlus
-      008E3D 96               [ 1]  244 	ldw	x, sp
-      008E3E 1C 00 06         [ 2]  245 	addw	x, #6
-                                    246 ; genPointerSet
-      008E41 7B 12            [ 1]  247 	ld	a, (0x12, sp)
-      008E43 F7               [ 1]  248 	ld	(x), a
-                           00007D   249 	C$mmcsd.c$681$2_0$340 ==.
-                                    250 ;	../src/mmcsd.c: 681: for (i = 0; i < 6; i++)
-                                    251 ; genAssign
-      008E44 5F               [ 1]  252 	clrw	x
-      008E45 90 5F            [ 1]  253 	clrw	y
-                                    254 ; skipping iCode since result will be rematerialized
-                                    255 ; genAssign
-      008E47 1F 09            [ 2]  256 	ldw	(0x09, sp), x
-                                    257 ; genLabel
-      008E49                        258 00102$:
-                           000082   259 	C$mmcsd.c$683$3_0$341 ==.
-                                    260 ;	../src/mmcsd.c: 683: SD_WriteByte(Frame[i]); /*!< Send the Cmd bytes */
-                                    261 ; genPlus
-      008E49 96               [ 1]  262 	ldw	x, sp
-      008E4A 5C               [ 1]  263 	incw	x
-      008E4B 72 FB 09         [ 2]  264 	addw	x, (0x09, sp)
-                                    265 ; genPointerGet
-      008E4E F6               [ 1]  266 	ld	a, (x)
-                                    267 ; genIPush
-      008E4F 90 89            [ 2]  268 	pushw	y
-      008E51 88               [ 1]  269 	push	a
-                                    270 ; genCall
-      008E52 CD 90 D5         [ 4]  271 	call	_SD_WriteByte
-      008E55 84               [ 1]  272 	pop	a
-      008E56 90 85            [ 2]  273 	popw	y
-                           000091   274 	C$mmcsd.c$681$2_0$340 ==.
-                                    275 ;	../src/mmcsd.c: 681: for (i = 0; i < 6; i++)
-                                    276 ; genPlus
-      008E58 1E 09            [ 2]  277 	ldw	x, (0x09, sp)
-      008E5A 5C               [ 1]  278 	incw	x
-      008E5B 1F 09            [ 2]  279 	ldw	(0x09, sp), x
-      008E5D 26 02            [ 1]  280 	jrne	00112$
-      008E5F 90 5C            [ 1]  281 	incw	y
-      008E61                        282 00112$:
-                                    283 ; genCmp
-                                    284 ; genCmpTop
-      008E61 1E 09            [ 2]  285 	ldw	x, (0x09, sp)
-      008E63 A3 00 06         [ 2]  286 	cpw	x, #0x0006
-      008E66 90 9F            [ 1]  287 	ld	a, yl
-      008E68 A2 00            [ 1]  288 	sbc	a, #0x00
-      008E6A 90 9E            [ 1]  289 	ld	a, yh
-      008E6C A2 00            [ 1]  290 	sbc	a, #0x00
-      008E6E 24 03            [ 1]  291 	jrnc	00113$
-      008E70 CC 8E 49         [ 2]  292 	jp	00102$
-      008E73                        293 00113$:
-                                    294 ; skipping generated iCode
-                                    295 ; genLabel
-      008E73                        296 00104$:
-                           0000AC   297 	C$mmcsd.c$685$2_0$339 ==.
-                                    298 ;	../src/mmcsd.c: 685: }
-                                    299 ; genEndFunction
-      008E73 5B 0A            [ 2]  300 	addw	sp, #10
-                           0000AE   301 	C$mmcsd.c$685$2_0$339 ==.
-                           0000AE   302 	XG$SD_SendCmd$0$0 ==.
-      008E75 81               [ 4]  303 	ret
-                           0000AF   304 	G$SD_GetDataResponse$0$0 ==.
-                           0000AF   305 	C$mmcsd.c$699$2_0$343 ==.
-                                    306 ;	../src/mmcsd.c: 699: uint8_t SD_GetDataResponse(void)
-                                    307 ; genLabel
-                                    308 ;	-----------------------------------------
-                                    309 ;	 function SD_GetDataResponse
-                                    310 ;	-----------------------------------------
-                                    311 ;	Register assignment might be sub-optimal.
-                                    312 ;	Stack space usage: 5 bytes.
-      008E76                        313 _SD_GetDataResponse:
-      008E76 52 05            [ 2]  314 	sub	sp, #5
-                           0000B1   315 	C$mmcsd.c$701$2_0$343 ==.
-                                    316 ;	../src/mmcsd.c: 701: uint32_t i = 0;
-                                    317 ; genAssign
-      008E78 5F               [ 1]  318 	clrw	x
-      008E79 90 5F            [ 1]  319 	clrw	y
-                           0000B4   320 	C$mmcsd.c$702$2_0$343 ==.
-                                    321 ;	../src/mmcsd.c: 702: uint8_t response = 0, rvalue = 0;
-                                    322 ; genAssign
-      008E7B 0F 01            [ 1]  323 	clr	(0x01, sp)
-                           0000B6   324 	C$mmcsd.c$704$1_0$343 ==.
-                                    325 ;	../src/mmcsd.c: 704: while (i <= 64)
-                                    326 ; genAssign
-      008E7D 1F 04            [ 2]  327 	ldw	(0x04, sp), x
-      008E7F 17 02            [ 2]  328 	ldw	(0x02, sp), y
-                                    329 ; genLabel
-      008E81                        330 00108$:
-                                    331 ; genCmp
-                                    332 ; genCmpTop
-      008E81 AE 00 40         [ 2]  333 	ldw	x, #0x0040
-      008E84 13 04            [ 2]  334 	cpw	x, (0x04, sp)
-      008E86 4F               [ 1]  335 	clr	a
-      008E87 12 03            [ 1]  336 	sbc	a, (0x03, sp)
-      008E89 4F               [ 1]  337 	clr	a
-      008E8A 12 02            [ 1]  338 	sbc	a, (0x02, sp)
-      008E8C 24 03            [ 1]  339 	jrnc	00156$
-      008E8E CC 8E DD         [ 2]  340 	jp	00111$
-      008E91                        341 00156$:
-                                    342 ; skipping generated iCode
-                           0000CA   343 	C$mmcsd.c$707$2_0$344 ==.
-                                    344 ;	../src/mmcsd.c: 707: response = SD_ReadByte();
-                                    345 ; genCall
-      008E91 CD 90 E5         [ 4]  346 	call	_SD_ReadByte
-                                    347 ; genAssign
-                           0000CD   348 	C$mmcsd.c$709$2_0$344 ==.
-                                    349 ;	../src/mmcsd.c: 709: response &= 0x1F;
-                                    350 ; genAnd
-      008E94 A4 1F            [ 1]  351 	and	a, #0x1f
-      008E96 6B 01            [ 1]  352 	ld	(0x01, sp), a
-                           0000D1   353 	C$mmcsd.c$710$2_0$344 ==.
-                                    354 ;	../src/mmcsd.c: 710: switch (response)
-                                    355 ; genCmpEQorNE
-      008E98 7B 01            [ 1]  356 	ld	a, (0x01, sp)
-      008E9A A1 05            [ 1]  357 	cp	a, #0x05
-      008E9C 26 03            [ 1]  358 	jrne	00158$
-      008E9E CC 8E B6         [ 2]  359 	jp	00101$
-      008EA1                        360 00158$:
-                                    361 ; skipping generated iCode
-                                    362 ; genCmpEQorNE
-      008EA1 7B 01            [ 1]  363 	ld	a, (0x01, sp)
-      008EA3 A1 0B            [ 1]  364 	cp	a, #0x0b
-      008EA5 26 03            [ 1]  365 	jrne	00161$
-      008EA7 CC 8E BB         [ 2]  366 	jp	00102$
-      008EAA                        367 00161$:
-                                    368 ; skipping generated iCode
-                                    369 ; genCmpEQorNE
-      008EAA 7B 01            [ 1]  370 	ld	a, (0x01, sp)
-      008EAC A1 0D            [ 1]  371 	cp	a, #0x0d
-      008EAE 26 03            [ 1]  372 	jrne	00164$
-      008EB0 CC 8E C0         [ 2]  373 	jp	00103$
-      008EB3                        374 00164$:
-                                    375 ; skipping generated iCode
-                                    376 ; genGoto
-      008EB3 CC 8E C5         [ 2]  377 	jp	00104$
-                           0000EF   378 	C$mmcsd.c$712$3_0$345 ==.
-                                    379 ;	../src/mmcsd.c: 712: case SD_DATA_OK:
-                                    380 ; genLabel
-      008EB6                        381 00101$:
-                           0000EF   382 	C$mmcsd.c$714$4_0$346 ==.
-                                    383 ;	../src/mmcsd.c: 714: rvalue = SD_DATA_OK;
-                                    384 ; genAssign
-      008EB6 A6 05            [ 1]  385 	ld	a, #0x05
-                           0000F1   386 	C$mmcsd.c$715$4_0$346 ==.
-                                    387 ;	../src/mmcsd.c: 715: break;
-                                    388 ; genGoto
-      008EB8 CC 8E C7         [ 2]  389 	jp	00105$
-                           0000F4   390 	C$mmcsd.c$717$3_0$345 ==.
-                                    391 ;	../src/mmcsd.c: 717: case SD_DATA_CRC_ERROR:
-                                    392 ; genLabel
-      008EBB                        393 00102$:
-                           0000F4   394 	C$mmcsd.c$718$3_0$345 ==.
-                                    395 ;	../src/mmcsd.c: 718: return SD_DATA_CRC_ERROR;
-                                    396 ; genReturn
-      008EBB A6 0B            [ 1]  397 	ld	a, #0x0b
-      008EBD CC 8E E8         [ 2]  398 	jp	00114$
-                           0000F9   399 	C$mmcsd.c$719$3_0$345 ==.
-                                    400 ;	../src/mmcsd.c: 719: case SD_DATA_WRITE_ERROR:
-                                    401 ; genLabel
-      008EC0                        402 00103$:
-                           0000F9   403 	C$mmcsd.c$720$3_0$345 ==.
-                                    404 ;	../src/mmcsd.c: 720: return SD_DATA_WRITE_ERROR;
-                                    405 ; genReturn
-      008EC0 A6 0D            [ 1]  406 	ld	a, #0x0d
-      008EC2 CC 8E E8         [ 2]  407 	jp	00114$
-                           0000FE   408 	C$mmcsd.c$721$3_0$345 ==.
-                                    409 ;	../src/mmcsd.c: 721: default:
-                                    410 ; genLabel
-      008EC5                        411 00104$:
-                           0000FE   412 	C$mmcsd.c$723$4_0$347 ==.
-                                    413 ;	../src/mmcsd.c: 723: rvalue = SD_DATA_OTHER_ERROR;
-                                    414 ; genAssign
-      008EC5 A6 FF            [ 1]  415 	ld	a, #0xff
-                           000100   416 	C$mmcsd.c$726$2_0$344 ==.
-                                    417 ;	../src/mmcsd.c: 726: }
-                                    418 ; genLabel
-      008EC7                        419 00105$:
-                           000100   420 	C$mmcsd.c$728$2_0$344 ==.
-                                    421 ;	../src/mmcsd.c: 728: if (rvalue == SD_DATA_OK)
-                                    422 ; genCmpEQorNE
-      008EC7 A1 05            [ 1]  423 	cp	a, #0x05
-      008EC9 26 03            [ 1]  424 	jrne	00167$
-      008ECB CC 8E DD         [ 2]  425 	jp	00111$
-      008ECE                        426 00167$:
-                                    427 ; skipping generated iCode
-                           000107   428 	C$mmcsd.c$731$2_0$344 ==.
-                                    429 ;	../src/mmcsd.c: 731: i++;
-                                    430 ; genPlus
-      008ECE 1E 04            [ 2]  431 	ldw	x, (0x04, sp)
-      008ED0 5C               [ 1]  432 	incw	x
-      008ED1 1F 04            [ 2]  433 	ldw	(0x04, sp), x
-      008ED3 26 05            [ 1]  434 	jrne	00169$
-      008ED5 1E 02            [ 2]  435 	ldw	x, (0x02, sp)
-      008ED7 5C               [ 1]  436 	incw	x
-      008ED8 1F 02            [ 2]  437 	ldw	(0x02, sp), x
-      008EDA                        438 00169$:
-                                    439 ; genGoto
-      008EDA CC 8E 81         [ 2]  440 	jp	00108$
-                           000116   441 	C$mmcsd.c$735$1_0$343 ==.
-                                    442 ;	../src/mmcsd.c: 735: while (SD_ReadByte() == 0);
-                                    443 ; genLabel
-      008EDD                        444 00111$:
-                                    445 ; genCall
-      008EDD CD 90 E5         [ 4]  446 	call	_SD_ReadByte
-                                    447 ; genIfx
-      008EE0 4D               [ 1]  448 	tnz	a
-      008EE1 26 03            [ 1]  449 	jrne	00170$
-      008EE3 CC 8E DD         [ 2]  450 	jp	00111$
-      008EE6                        451 00170$:
-                           00011F   452 	C$mmcsd.c$738$1_0$343 ==.
-                                    453 ;	../src/mmcsd.c: 738: return response;
-                                    454 ; genReturn
-      008EE6 7B 01            [ 1]  455 	ld	a, (0x01, sp)
-                                    456 ; genLabel
-      008EE8                        457 00114$:
-                           000121   458 	C$mmcsd.c$739$1_0$343 ==.
-                                    459 ;	../src/mmcsd.c: 739: }
-                                    460 ; genEndFunction
-      008EE8 5B 05            [ 2]  461 	addw	sp, #5
-                           000123   462 	C$mmcsd.c$739$1_0$343 ==.
-                           000123   463 	XG$SD_GetDataResponse$0$0 ==.
-      008EEA 81               [ 4]  464 	ret
-                           000124   465 	G$SD_GetResponse$0$0 ==.
-                           000124   466 	C$mmcsd.c$748$1_0$349 ==.
-                                    467 ;	../src/mmcsd.c: 748: uint8_t SD_GetResponse(uint8_t Response)
-                                    468 ; genLabel
-                                    469 ;	-----------------------------------------
-                                    470 ;	 function SD_GetResponse
-                                    471 ;	-----------------------------------------
-                                    472 ;	Register assignment might be sub-optimal.
-                                    473 ;	Stack space usage: 4 bytes.
-      008EEB                        474 _SD_GetResponse:
-      008EEB 52 04            [ 2]  475 	sub	sp, #4
-                           000126   476 	C$mmcsd.c$750$2_0$349 ==.
-                                    477 ;	../src/mmcsd.c: 750: uint32_t Count = 0xFFF;
-                                    478 ; genAssign
-      008EED 90 AE 0F FF      [ 2]  479 	ldw	y, #0x0fff
-      008EF1 5F               [ 1]  480 	clrw	x
-                           00012B   481 	C$mmcsd.c$753$1_0$349 ==.
-                                    482 ;	../src/mmcsd.c: 753: while ((SD_ReadByte() != Response) && Count) 
-                                    483 ; genAssign
-      008EF2 17 03            [ 2]  484 	ldw	(0x03, sp), y
-                                    485 ; genLabel
-      008EF4                        486 00102$:
-                                    487 ; genCall
-      008EF4 89               [ 2]  488 	pushw	x
-      008EF5 CD 90 E5         [ 4]  489 	call	_SD_ReadByte
-      008EF8 85               [ 2]  490 	popw	x
-                                    491 ; genCmpEQorNE
-      008EF9 11 07            [ 1]  492 	cp	a, (0x07, sp)
-      008EFB 26 03            [ 1]  493 	jrne	00132$
-      008EFD CC 8F 18         [ 2]  494 	jp	00114$
-      008F00                        495 00132$:
-                                    496 ; skipping generated iCode
-                                    497 ; genIfx
-      008F00 16 03            [ 2]  498 	ldw	y, (0x03, sp)
-      008F02 26 06            [ 1]  499 	jrne	00134$
-      008F04 5D               [ 2]  500 	tnzw	x
-      008F05 26 03            [ 1]  501 	jrne	00134$
-      008F07 CC 8F 18         [ 2]  502 	jp	00114$
-      008F0A                        503 00134$:
-                           000143   504 	C$mmcsd.c$755$2_0$350 ==.
-                                    505 ;	../src/mmcsd.c: 755: Count--;
-                                    506 ; genMinus
-      008F0A 16 03            [ 2]  507 	ldw	y, (0x03, sp)
-      008F0C 72 A2 00 01      [ 2]  508 	subw	y, #0x0001
-      008F10 17 03            [ 2]  509 	ldw	(0x03, sp), y
-      008F12 24 01            [ 1]  510 	jrnc	00135$
-      008F14 5A               [ 2]  511 	decw	x
-      008F15                        512 00135$:
-                                    513 ; genGoto
-      008F15 CC 8E F4         [ 2]  514 	jp	00102$
-                                    515 ; genLabel
-      008F18                        516 00114$:
-                                    517 ; genAssign
-      008F18 16 03            [ 2]  518 	ldw	y, (0x03, sp)
-                           000153   519 	C$mmcsd.c$757$1_0$349 ==.
-                                    520 ;	../src/mmcsd.c: 757: if (Count == 0)
-                                    521 ; genIfx
-      008F1A 90 5D            [ 2]  522 	tnzw	y
-      008F1C 26 03            [ 1]  523 	jrne	00136$
-      008F1E 5D               [ 2]  524 	tnzw	x
-      008F1F 27 03            [ 1]  525 	jreq	00137$
-      008F21                        526 00136$:
-      008F21 CC 8F 29         [ 2]  527 	jp	00106$
-      008F24                        528 00137$:
-                           00015D   529 	C$mmcsd.c$760$2_0$351 ==.
-                                    530 ;	../src/mmcsd.c: 760: return SD_RESPONSE_FAILURE;
-                                    531 ; genReturn
-      008F24 A6 FF            [ 1]  532 	ld	a, #0xff
-      008F26 CC 8F 2A         [ 2]  533 	jp	00108$
-                                    534 ; genLabel
-      008F29                        535 00106$:
-                           000162   536 	C$mmcsd.c$765$2_0$352 ==.
-                                    537 ;	../src/mmcsd.c: 765: return SD_RESPONSE_NO_ERROR;
-                                    538 ; genReturn
-      008F29 4F               [ 1]  539 	clr	a
-                                    540 ; genLabel
-      008F2A                        541 00108$:
-                           000163   542 	C$mmcsd.c$767$1_0$349 ==.
-                                    543 ;	../src/mmcsd.c: 767: }
-                                    544 ; genEndFunction
-      008F2A 5B 04            [ 2]  545 	addw	sp, #4
-                           000165   546 	C$mmcsd.c$767$1_0$349 ==.
-                           000165   547 	XG$SD_GetResponse$0$0 ==.
-      008F2C 81               [ 4]  548 	ret
-                           000166   549 	G$SD_GetResponseVal$0$0 ==.
-                           000166   550 	C$mmcsd.c$772$1_0$354 ==.
-                                    551 ;	../src/mmcsd.c: 772: void SD_GetResponseVal(uint8_t *pResp, uint8_t response)
-                                    552 ; genLabel
-                                    553 ;	-----------------------------------------
-                                    554 ;	 function SD_GetResponseVal
-                                    555 ;	-----------------------------------------
-                                    556 ;	Register assignment might be sub-optimal.
-                                    557 ;	Stack space usage: 0 bytes.
-      008F2D                        558 _SD_GetResponseVal:
-                           000166   559 	C$mmcsd.c$775$1_0$354 ==.
-                                    560 ;	../src/mmcsd.c: 775: if(SD_GetResponse(response) == SD_RESPONSE_FAILURE)
-                                    561 ; genIPush
-      008F2D 7B 05            [ 1]  562 	ld	a, (0x05, sp)
-      008F2F 88               [ 1]  563 	push	a
-                                    564 ; genCall
-      008F30 CD 8E EB         [ 4]  565 	call	_SD_GetResponse
-      008F33 5B 01            [ 2]  566 	addw	sp, #1
-                           00016E   567 	C$mmcsd.c$777$1_0$354 ==.
-                                    568 ;	../src/mmcsd.c: 777: *pResp++ = 0xff;
-                                    569 ; genAssign
-      008F35 16 03            [ 2]  570 	ldw	y, (0x03, sp)
-                                    571 ; genPlus
-      008F37 93               [ 1]  572 	ldw	x, y
-      008F38 5C               [ 1]  573 	incw	x
-                           000172   574 	C$mmcsd.c$775$1_0$354 ==.
-                                    575 ;	../src/mmcsd.c: 775: if(SD_GetResponse(response) == SD_RESPONSE_FAILURE)
-                                    576 ; genCmpEQorNE
-      008F39 4C               [ 1]  577 	inc	a
-      008F3A 26 03            [ 1]  578 	jrne	00112$
-      008F3C CC 8F 42         [ 2]  579 	jp	00113$
-      008F3F                        580 00112$:
-      008F3F CC 8F 4B         [ 2]  581 	jp	00102$
-      008F42                        582 00113$:
-                                    583 ; skipping generated iCode
-                           00017B   584 	C$mmcsd.c$777$2_0$355 ==.
-                                    585 ;	../src/mmcsd.c: 777: *pResp++ = 0xff;
-                                    586 ; genPointerSet
-      008F42 A6 FF            [ 1]  587 	ld	a, #0xff
-      008F44 90 F7            [ 1]  588 	ld	(y), a
-                                    589 ; genAssign
-      008F46 1F 03            [ 2]  590 	ldw	(0x03, sp), x
-                                    591 ; genGoto
-      008F48 CC 8F 51         [ 2]  592 	jp	00103$
-                                    593 ; genLabel
-      008F4B                        594 00102$:
-                           000184   595 	C$mmcsd.c$779$2_0$356 ==.
-                                    596 ;	../src/mmcsd.c: 779: *pResp++ = response;
-                                    597 ; genPointerSet
-      008F4B 7B 05            [ 1]  598 	ld	a, (0x05, sp)
-      008F4D 90 F7            [ 1]  599 	ld	(y), a
-                                    600 ; genAssign
-      008F4F 1F 03            [ 2]  601 	ldw	(0x03, sp), x
-                                    602 ; genLabel
-      008F51                        603 00103$:
-                           00018A   604 	C$mmcsd.c$782$1_0$354 ==.
-                                    605 ;	../src/mmcsd.c: 782: *pResp++ = SD_ReadByte();
-                                    606 ; genAssign
-      008F51 1E 03            [ 2]  607 	ldw	x, (0x03, sp)
-                                    608 ; genCall
-      008F53 89               [ 2]  609 	pushw	x
-      008F54 CD 90 E5         [ 4]  610 	call	_SD_ReadByte
-      008F57 85               [ 2]  611 	popw	x
-                                    612 ; genPointerSet
-      008F58 F7               [ 1]  613 	ld	(x), a
-                                    614 ; genPlus
-      008F59 5C               [ 1]  615 	incw	x
-                                    616 ; genAssign
-      008F5A 1F 03            [ 2]  617 	ldw	(0x03, sp), x
-                           000195   618 	C$mmcsd.c$783$1_0$354 ==.
-                                    619 ;	../src/mmcsd.c: 783: *pResp++ = SD_ReadByte();
-                                    620 ; genAssign
-      008F5C 1E 03            [ 2]  621 	ldw	x, (0x03, sp)
-                                    622 ; genCall
-      008F5E 89               [ 2]  623 	pushw	x
-      008F5F CD 90 E5         [ 4]  624 	call	_SD_ReadByte
-      008F62 85               [ 2]  625 	popw	x
-                                    626 ; genPointerSet
-      008F63 F7               [ 1]  627 	ld	(x), a
-                                    628 ; genPlus
-      008F64 5C               [ 1]  629 	incw	x
-                                    630 ; genAssign
-      008F65 1F 03            [ 2]  631 	ldw	(0x03, sp), x
-                           0001A0   632 	C$mmcsd.c$784$1_0$354 ==.
-                                    633 ;	../src/mmcsd.c: 784: *pResp++ = SD_ReadByte();
-                                    634 ; genAssign
-      008F67 1E 03            [ 2]  635 	ldw	x, (0x03, sp)
-                                    636 ; genCall
-      008F69 89               [ 2]  637 	pushw	x
-      008F6A CD 90 E5         [ 4]  638 	call	_SD_ReadByte
-      008F6D 85               [ 2]  639 	popw	x
-                                    640 ; genPointerSet
-      008F6E F7               [ 1]  641 	ld	(x), a
-                                    642 ; genPlus
-      008F6F 5C               [ 1]  643 	incw	x
-                                    644 ; genAssign
-      008F70 1F 03            [ 2]  645 	ldw	(0x03, sp), x
-                           0001AB   646 	C$mmcsd.c$785$1_0$354 ==.
-                                    647 ;	../src/mmcsd.c: 785: *pResp++ = SD_ReadByte();
-                                    648 ; genAssign
-      008F72 1E 03            [ 2]  649 	ldw	x, (0x03, sp)
-                                    650 ; genCall
-      008F74 89               [ 2]  651 	pushw	x
-      008F75 CD 90 E5         [ 4]  652 	call	_SD_ReadByte
-      008F78 85               [ 2]  653 	popw	x
-                                    654 ; genPointerSet
-      008F79 F7               [ 1]  655 	ld	(x), a
-                                    656 ; genPlus
-      008F7A 5C               [ 1]  657 	incw	x
-                                    658 ; genAssign
-      008F7B 1F 03            [ 2]  659 	ldw	(0x03, sp), x
-                           0001B6   660 	C$mmcsd.c$786$1_0$354 ==.
-                                    661 ;	../src/mmcsd.c: 786: *pResp = SD_ReadByte();
-                                    662 ; genAssign
-      008F7D 1E 03            [ 2]  663 	ldw	x, (0x03, sp)
-                                    664 ; genCall
-      008F7F 89               [ 2]  665 	pushw	x
-      008F80 CD 90 E5         [ 4]  666 	call	_SD_ReadByte
-      008F83 85               [ 2]  667 	popw	x
-                                    668 ; genPointerSet
-      008F84 F7               [ 1]  669 	ld	(x), a
-                                    670 ; genLabel
-      008F85                        671 00104$:
-                           0001BE   672 	C$mmcsd.c$787$1_0$354 ==.
-                                    673 ;	../src/mmcsd.c: 787: }
-                                    674 ; genEndFunction
-                           0001BE   675 	C$mmcsd.c$787$1_0$354 ==.
-                           0001BE   676 	XG$SD_GetResponseVal$0$0 ==.
-      008F85 81               [ 4]  677 	ret
-                           0001BF   678 	G$SD_GoIdleState$0$0 ==.
-                           0001BF   679 	C$mmcsd.c$871$1_0$358 ==.
-                                    680 ;	../src/mmcsd.c: 871: uint8_t SD_GoIdleState(void)
-                                    681 ; genLabel
-                                    682 ;	-----------------------------------------
-                                    683 ;	 function SD_GoIdleState
-                                    684 ;	-----------------------------------------
-                                    685 ;	Register assignment might be sub-optimal.
-                                    686 ;	Stack space usage: 6 bytes.
-      008F86                        687 _SD_GoIdleState:
-      008F86 52 06            [ 2]  688 	sub	sp, #6
-                           0001C1   689 	C$mmcsd.c$874$2_0$358 ==.
-                                    690 ;	../src/mmcsd.c: 874: uint8_t resp[6] = {0};
-                                    691 ; skipping iCode since result will be rematerialized
-                                    692 ; genPointerSet
-      008F88 0F 01            [ 1]  693 	clr	(0x01, sp)
-                                    694 ; genPlus
-      008F8A 96               [ 1]  695 	ldw	x, sp
-      008F8B 5C               [ 1]  696 	incw	x
-      008F8C 5C               [ 1]  697 	incw	x
-                                    698 ; genPointerSet
-      008F8D 7F               [ 1]  699 	clr	(x)
-                                    700 ; genPlus
-      008F8E 96               [ 1]  701 	ldw	x, sp
-      008F8F 1C 00 03         [ 2]  702 	addw	x, #3
-                                    703 ; genPointerSet
-      008F92 7F               [ 1]  704 	clr	(x)
-                                    705 ; genPlus
-      008F93 96               [ 1]  706 	ldw	x, sp
-      008F94 1C 00 04         [ 2]  707 	addw	x, #4
-                                    708 ; genPointerSet
-      008F97 7F               [ 1]  709 	clr	(x)
-                                    710 ; genPlus
-      008F98 96               [ 1]  711 	ldw	x, sp
-      008F99 1C 00 05         [ 2]  712 	addw	x, #5
-                                    713 ; genPointerSet
-      008F9C 7F               [ 1]  714 	clr	(x)
-                                    715 ; genPlus
-      008F9D 96               [ 1]  716 	ldw	x, sp
-      008F9E 1C 00 06         [ 2]  717 	addw	x, #6
-                                    718 ; genPointerSet
-      008FA1 7F               [ 1]  719 	clr	(x)
-                           0001DB   720 	C$mmcsd.c$876$1_0$358 ==.
-                                    721 ;	../src/mmcsd.c: 876: SD_CS_LOW();
-                                    722 ; genPointerGet
-      008FA2 C6 50 0A         [ 1]  723 	ld	a, 0x500a
-                                    724 ; genAnd
-      008FA5 A4 EF            [ 1]  725 	and	a, #0xef
-                                    726 ; genPointerSet
-      008FA7 C7 50 0A         [ 1]  727 	ld	0x500a, a
-                           0001E3   728 	C$mmcsd.c$879$1_0$358 ==.
-                                    729 ;	../src/mmcsd.c: 879: SD_SendCmd(SD_CMD_GO_IDLE_STATE, (uint32_t)0, 0x95);
-                                    730 ; genIPush
-      008FAA 4B 95            [ 1]  731 	push	#0x95
-                                    732 ; genIPush
-      008FAC 5F               [ 1]  733 	clrw	x
-      008FAD 89               [ 2]  734 	pushw	x
-      008FAE 5F               [ 1]  735 	clrw	x
-      008FAF 89               [ 2]  736 	pushw	x
-                                    737 ; genIPush
-      008FB0 4B 00            [ 1]  738 	push	#0x00
-                                    739 ; genCall
-      008FB2 CD 8E 0E         [ 4]  740 	call	_SD_SendCmd
-      008FB5 5B 06            [ 2]  741 	addw	sp, #6
-                           0001F0   742 	C$mmcsd.c$882$1_0$358 ==.
-                                    743 ;	../src/mmcsd.c: 882: if (SD_GetResponse(SD_IN_IDLE_STATE))
-                                    744 ; genIPush
-      008FB7 4B 01            [ 1]  745 	push	#0x01
-                                    746 ; genCall
-      008FB9 CD 8E EB         [ 4]  747 	call	_SD_GetResponse
-      008FBC 5B 01            [ 2]  748 	addw	sp, #1
-                                    749 ; genIfx
-      008FBE 4D               [ 1]  750 	tnz	a
-      008FBF 26 03            [ 1]  751 	jrne	00157$
-      008FC1 CC 8F C9         [ 2]  752 	jp	00102$
-      008FC4                        753 00157$:
-                           0001FD   754 	C$mmcsd.c$885$2_0$359 ==.
-                                    755 ;	../src/mmcsd.c: 885: return SD_RESPONSE_FAILURE;
-                                    756 ; genReturn
-      008FC4 A6 FF            [ 1]  757 	ld	a, #0xff
-      008FC6 CC 90 D2         [ 2]  758 	jp	00116$
-                                    759 ; genLabel
-      008FC9                        760 00102$:
-                           000202   761 	C$mmcsd.c$888$1_0$358 ==.
-                                    762 ;	../src/mmcsd.c: 888: SD_SendCmd(SD_CMD_IF_COND, (uint32_t)0x156, 0x43);
-                                    763 ; genIPush
-      008FC9 4B 43            [ 1]  764 	push	#0x43
-                                    765 ; genIPush
-      008FCB 4B 56            [ 1]  766 	push	#0x56
-      008FCD 4B 01            [ 1]  767 	push	#0x01
-      008FCF 5F               [ 1]  768 	clrw	x
-      008FD0 89               [ 2]  769 	pushw	x
-                                    770 ; genIPush
-      008FD1 4B 08            [ 1]  771 	push	#0x08
-                                    772 ; genCall
-      008FD3 CD 8E 0E         [ 4]  773 	call	_SD_SendCmd
-      008FD6 5B 06            [ 2]  774 	addw	sp, #6
-                           000211   775 	C$mmcsd.c$889$1_0$358 ==.
-                                    776 ;	../src/mmcsd.c: 889: SD_GetResponseVal(resp,0x01);
-                                    777 ; skipping iCode since result will be rematerialized
-                                    778 ; skipping iCode since result will be rematerialized
-                                    779 ; genIPush
-      008FD8 4B 01            [ 1]  780 	push	#0x01
-                                    781 ; genIPush
-      008FDA 96               [ 1]  782 	ldw	x, sp
-      008FDB 5C               [ 1]  783 	incw	x
-      008FDC 5C               [ 1]  784 	incw	x
-      008FDD 89               [ 2]  785 	pushw	x
-                                    786 ; genCall
-      008FDE CD 8F 2D         [ 4]  787 	call	_SD_GetResponseVal
-      008FE1 5B 03            [ 2]  788 	addw	sp, #3
-                           00021C   789 	C$mmcsd.c$890$1_0$358 ==.
-                                    790 ;	../src/mmcsd.c: 890: if(resp[0]==0x01){
-                                    791 ; genPointerGet
-      008FE3 7B 01            [ 1]  792 	ld	a, (0x01, sp)
-                                    793 ; genCmpEQorNE
-      008FE5 4A               [ 1]  794 	dec	a
-      008FE6 26 03            [ 1]  795 	jrne	00159$
-      008FE8 CC 8F EE         [ 2]  796 	jp	00160$
-      008FEB                        797 00159$:
-      008FEB CC 90 75         [ 2]  798 	jp	00123$
-      008FEE                        799 00160$:
-                                    800 ; skipping generated iCode
-                           000227   801 	C$mmcsd.c$892$2_0$360 ==.
-                                    802 ;	../src/mmcsd.c: 892: if ((resp[3] == 0x01)&&(resp[4] == 0x56)){
-                                    803 ; skipping iCode since result will be rematerialized
-                                    804 ; genPointerGet
-      008FEE 7B 04            [ 1]  805 	ld	a, (0x04, sp)
-                                    806 ; genCmpEQorNE
-      008FF0 4A               [ 1]  807 	dec	a
-      008FF1 26 03            [ 1]  808 	jrne	00162$
-      008FF3 CC 8F F9         [ 2]  809 	jp	00163$
-      008FF6                        810 00162$:
-      008FF6 CC 90 70         [ 2]  811 	jp	00107$
-      008FF9                        812 00163$:
-                                    813 ; skipping generated iCode
-                                    814 ; skipping iCode since result will be rematerialized
-                                    815 ; genPointerGet
-      008FF9 7B 05            [ 1]  816 	ld	a, (0x05, sp)
-                                    817 ; genCmpEQorNE
-      008FFB A1 56            [ 1]  818 	cp	a, #0x56
-      008FFD 26 03            [ 1]  819 	jrne	00165$
-      008FFF CC 90 05         [ 2]  820 	jp	00166$
-      009002                        821 00165$:
-      009002 CC 90 70         [ 2]  822 	jp	00107$
-      009005                        823 00166$:
-                                    824 ; skipping generated iCode
-                           00023E   825 	C$mmcsd.c$895$4_0$362 ==.
-                                    826 ;	../src/mmcsd.c: 895: do{
-                                    827 ; skipping iCode since result will be rematerialized
-                                    828 ; skipping iCode since result will be rematerialized
-                                    829 ; genLabel
-      009005                        830 00103$:
-                           00023E   831 	C$mmcsd.c$896$4_0$362 ==.
-                                    832 ;	../src/mmcsd.c: 896: SD_SendCmd(SD_CMD_55, (uint32_t)0, 0x01);
-                                    833 ; genIPush
-      009005 4B 01            [ 1]  834 	push	#0x01
-                                    835 ; genIPush
-      009007 5F               [ 1]  836 	clrw	x
-      009008 89               [ 2]  837 	pushw	x
-      009009 5F               [ 1]  838 	clrw	x
-      00900A 89               [ 2]  839 	pushw	x
-                                    840 ; genIPush
-      00900B 4B 37            [ 1]  841 	push	#0x37
-                                    842 ; genCall
-      00900D CD 8E 0E         [ 4]  843 	call	_SD_SendCmd
-      009010 5B 06            [ 2]  844 	addw	sp, #6
-                           00024B   845 	C$mmcsd.c$897$4_0$362 ==.
-                                    846 ;	../src/mmcsd.c: 897: SD_GetResponseVal(resp,0x01);
-                                    847 ; skipping iCode since result will be rematerialized
-                                    848 ; genIPush
-      009012 4B 01            [ 1]  849 	push	#0x01
-                                    850 ; genIPush
-      009014 96               [ 1]  851 	ldw	x, sp
-      009015 5C               [ 1]  852 	incw	x
-      009016 5C               [ 1]  853 	incw	x
-      009017 89               [ 2]  854 	pushw	x
-                                    855 ; genCall
-      009018 CD 8F 2D         [ 4]  856 	call	_SD_GetResponseVal
-      00901B 5B 03            [ 2]  857 	addw	sp, #3
-                           000256   858 	C$mmcsd.c$898$4_0$362 ==.
-                                    859 ;	../src/mmcsd.c: 898: dly((uint32_t)10);
-                                    860 ; genIPush
-      00901D 4B 0A            [ 1]  861 	push	#0x0a
-      00901F 5F               [ 1]  862 	clrw	x
-      009020 89               [ 2]  863 	pushw	x
-      009021 4B 00            [ 1]  864 	push	#0x00
-                                    865 ; genCall
-      009023 CD 88 BE         [ 4]  866 	call	_dly
-      009026 5B 04            [ 2]  867 	addw	sp, #4
-                           000261   868 	C$mmcsd.c$899$4_0$362 ==.
-                                    869 ;	../src/mmcsd.c: 899: SD_SendCmd(SD_ACMD_41&0x7f, (1UL<<30), 0x1);
-                                    870 ; genIPush
-      009028 4B 01            [ 1]  871 	push	#0x01
-                                    872 ; genIPush
-      00902A 5F               [ 1]  873 	clrw	x
-      00902B 89               [ 2]  874 	pushw	x
-      00902C 4B 00            [ 1]  875 	push	#0x00
-      00902E 4B 40            [ 1]  876 	push	#0x40
-                                    877 ; genIPush
-      009030 4B 69            [ 1]  878 	push	#0x69
-                                    879 ; genCall
-      009032 CD 8E 0E         [ 4]  880 	call	_SD_SendCmd
-      009035 5B 06            [ 2]  881 	addw	sp, #6
-                           000270   882 	C$mmcsd.c$900$4_0$362 ==.
-                                    883 ;	../src/mmcsd.c: 900: dly((uint32_t)1000);
-                                    884 ; genIPush
-      009037 4B E8            [ 1]  885 	push	#0xe8
-      009039 4B 03            [ 1]  886 	push	#0x03
-      00903B 5F               [ 1]  887 	clrw	x
-      00903C 89               [ 2]  888 	pushw	x
-                                    889 ; genCall
-      00903D CD 88 BE         [ 4]  890 	call	_dly
-      009040 5B 04            [ 2]  891 	addw	sp, #4
-                           00027B   892 	C$mmcsd.c$901$4_0$362 ==.
-                                    893 ;	../src/mmcsd.c: 901: SD_GetResponseVal(resp,0x00);
-                                    894 ; genCast
-                                    895 ; genAssign
-      009042 96               [ 1]  896 	ldw	x, sp
-      009043 5C               [ 1]  897 	incw	x
-                                    898 ; genIPush
-      009044 4B 00            [ 1]  899 	push	#0x00
-                                    900 ; genIPush
-      009046 89               [ 2]  901 	pushw	x
-                                    902 ; genCall
-      009047 CD 8F 2D         [ 4]  903 	call	_SD_GetResponseVal
-      00904A 5B 03            [ 2]  904 	addw	sp, #3
-                           000285   905 	C$mmcsd.c$902$3_0$361 ==.
-                                    906 ;	../src/mmcsd.c: 902: } while(resp[0]); //until resved 0x0
-                                    907 ; genPointerGet
-      00904C 7B 01            [ 1]  908 	ld	a, (0x01, sp)
-                                    909 ; genIfx
-      00904E 4D               [ 1]  910 	tnz	a
-      00904F 27 03            [ 1]  911 	jreq	00167$
-      009051 CC 90 05         [ 2]  912 	jp	00103$
-      009054                        913 00167$:
-                           00028D   914 	C$mmcsd.c$904$3_0$361 ==.
-                                    915 ;	../src/mmcsd.c: 904: SD_SendCmd(SD_CMD_58, (uint32_t)0,0x01);
-                                    916 ; genIPush
-      009054 4B 01            [ 1]  917 	push	#0x01
-                                    918 ; genIPush
-      009056 5F               [ 1]  919 	clrw	x
-      009057 89               [ 2]  920 	pushw	x
-      009058 5F               [ 1]  921 	clrw	x
-      009059 89               [ 2]  922 	pushw	x
-                                    923 ; genIPush
-      00905A 4B 3A            [ 1]  924 	push	#0x3a
-                                    925 ; genCall
-      00905C CD 8E 0E         [ 4]  926 	call	_SD_SendCmd
-      00905F 5B 06            [ 2]  927 	addw	sp, #6
-                           00029A   928 	C$mmcsd.c$905$3_0$361 ==.
-                                    929 ;	../src/mmcsd.c: 905: SD_GetResponseVal(resp,58);
-                                    930 ; skipping iCode since result will be rematerialized
-                                    931 ; skipping iCode since result will be rematerialized
-                                    932 ; genIPush
-      009061 4B 3A            [ 1]  933 	push	#0x3a
-                                    934 ; genIPush
-      009063 96               [ 1]  935 	ldw	x, sp
-      009064 5C               [ 1]  936 	incw	x
-      009065 5C               [ 1]  937 	incw	x
-      009066 89               [ 2]  938 	pushw	x
-                                    939 ; genCall
-      009067 CD 8F 2D         [ 4]  940 	call	_SD_GetResponseVal
-      00906A 5B 03            [ 2]  941 	addw	sp, #3
-                           0002A5   942 	C$mmcsd.c$906$3_0$361 ==.
-                                    943 ;	../src/mmcsd.c: 906: return SD_RESPONSE_NO_ERROR;
-                                    944 ; genReturn
-      00906C 4F               [ 1]  945 	clr	a
-      00906D CC 90 D2         [ 2]  946 	jp	00116$
-                                    947 ; genLabel
-      009070                        948 00107$:
-                           0002A9   949 	C$mmcsd.c$909$3_0$363 ==.
-                                    950 ;	../src/mmcsd.c: 909: return SD_RESPONSE_FAILURE;
-                                    951 ; genReturn
-      009070 A6 FF            [ 1]  952 	ld	a, #0xff
-      009072 CC 90 D2         [ 2]  953 	jp	00116$
-                           0002AE   954 	C$mmcsd.c$914$1_0$358 ==.
-                                    955 ;	../src/mmcsd.c: 914: do{
-                                    956 ; genLabel
-      009075                        957 00123$:
-                                    958 ; skipping iCode since result will be rematerialized
-                                    959 ; skipping iCode since result will be rematerialized
-                                    960 ; genLabel
-      009075                        961 00110$:
-                           0002AE   962 	C$mmcsd.c$915$3_0$365 ==.
-                                    963 ;	../src/mmcsd.c: 915: SD_SendCmd(SD_CMD_55, 0, 0x01);
-                                    964 ; genIPush
-      009075 4B 01            [ 1]  965 	push	#0x01
-                                    966 ; genIPush
-      009077 5F               [ 1]  967 	clrw	x
-      009078 89               [ 2]  968 	pushw	x
-      009079 5F               [ 1]  969 	clrw	x
-      00907A 89               [ 2]  970 	pushw	x
-                                    971 ; genIPush
-      00907B 4B 37            [ 1]  972 	push	#0x37
-                                    973 ; genCall
-      00907D CD 8E 0E         [ 4]  974 	call	_SD_SendCmd
-      009080 5B 06            [ 2]  975 	addw	sp, #6
-                           0002BB   976 	C$mmcsd.c$916$3_0$365 ==.
-                                    977 ;	../src/mmcsd.c: 916: SD_GetResponseVal(resp,0x01);
-                                    978 ; skipping iCode since result will be rematerialized
-                                    979 ; genIPush
-      009082 4B 01            [ 1]  980 	push	#0x01
-                                    981 ; genIPush
-      009084 96               [ 1]  982 	ldw	x, sp
-      009085 5C               [ 1]  983 	incw	x
-      009086 5C               [ 1]  984 	incw	x
-      009087 89               [ 2]  985 	pushw	x
-                                    986 ; genCall
-      009088 CD 8F 2D         [ 4]  987 	call	_SD_GetResponseVal
-      00908B 5B 03            [ 2]  988 	addw	sp, #3
-                           0002C6   989 	C$mmcsd.c$917$3_0$365 ==.
-                                    990 ;	../src/mmcsd.c: 917: dly((uint32_t)1000);
-                                    991 ; genIPush
-      00908D 4B E8            [ 1]  992 	push	#0xe8
-      00908F 4B 03            [ 1]  993 	push	#0x03
-      009091 5F               [ 1]  994 	clrw	x
-      009092 89               [ 2]  995 	pushw	x
-                                    996 ; genCall
-      009093 CD 88 BE         [ 4]  997 	call	_dly
-      009096 5B 04            [ 2]  998 	addw	sp, #4
-                           0002D1   999 	C$mmcsd.c$918$3_0$365 ==.
-                                   1000 ;	../src/mmcsd.c: 918: SD_SendCmd(SD_ACMD_41&0x7f, 0UL, 0x1);
-                                   1001 ; genIPush
-      009098 4B 01            [ 1] 1002 	push	#0x01
-                                   1003 ; genIPush
-      00909A 5F               [ 1] 1004 	clrw	x
-      00909B 89               [ 2] 1005 	pushw	x
-      00909C 5F               [ 1] 1006 	clrw	x
-      00909D 89               [ 2] 1007 	pushw	x
-                                   1008 ; genIPush
-      00909E 4B 69            [ 1] 1009 	push	#0x69
-                                   1010 ; genCall
-      0090A0 CD 8E 0E         [ 4] 1011 	call	_SD_SendCmd
-      0090A3 5B 06            [ 2] 1012 	addw	sp, #6
-                           0002DE  1013 	C$mmcsd.c$919$3_0$365 ==.
-                                   1014 ;	../src/mmcsd.c: 919: SD_GetResponseVal(resp,0x00);
-                                   1015 ; skipping iCode since result will be rematerialized
-                                   1016 ; genIPush
-      0090A5 4B 00            [ 1] 1017 	push	#0x00
-                                   1018 ; genIPush
-      0090A7 96               [ 1] 1019 	ldw	x, sp
-      0090A8 5C               [ 1] 1020 	incw	x
-      0090A9 5C               [ 1] 1021 	incw	x
-      0090AA 89               [ 2] 1022 	pushw	x
-                                   1023 ; genCall
-      0090AB CD 8F 2D         [ 4] 1024 	call	_SD_GetResponseVal
-      0090AE 5B 03            [ 2] 1025 	addw	sp, #3
-                           0002E9  1026 	C$mmcsd.c$920$3_0$365 ==.
-                                   1027 ;	../src/mmcsd.c: 920: dly((uint32_t)1000);
-                                   1028 ; genIPush
-      0090B0 4B E8            [ 1] 1029 	push	#0xe8
-      0090B2 4B 03            [ 1] 1030 	push	#0x03
-      0090B4 5F               [ 1] 1031 	clrw	x
-      0090B5 89               [ 2] 1032 	pushw	x
-                                   1033 ; genCall
-      0090B6 CD 88 BE         [ 4] 1034 	call	_dly
-      0090B9 5B 04            [ 2] 1035 	addw	sp, #4
-                           0002F4  1036 	C$mmcsd.c$921$2_0$364 ==.
-                                   1037 ;	../src/mmcsd.c: 921: } while(resp[0]);
-                                   1038 ; genPointerGet
-      0090BB 7B 01            [ 1] 1039 	ld	a, (0x01, sp)
-                                   1040 ; genIfx
-      0090BD 4D               [ 1] 1041 	tnz	a
-      0090BE 27 03            [ 1] 1042 	jreq	00168$
-      0090C0 CC 90 75         [ 2] 1043 	jp	00110$
-      0090C3                       1044 00168$:
-                           0002FC  1045 	C$mmcsd.c$926$1_0$358 ==.
-                                   1046 ;	../src/mmcsd.c: 926: SD_CS_HIGH();
-                                   1047 ; genPointerGet
-      0090C3 C6 50 0A         [ 1] 1048 	ld	a, 0x500a
-                                   1049 ; genOr
-      0090C6 AA 10            [ 1] 1050 	or	a, #0x10
-                                   1051 ; genPointerSet
-      0090C8 C7 50 0A         [ 1] 1052 	ld	0x500a, a
-                           000304  1053 	C$mmcsd.c$929$1_0$358 ==.
-                                   1054 ;	../src/mmcsd.c: 929: SD_WriteByte(SD_DUMMY_BYTE);
-                                   1055 ; genIPush
-      0090CB 4B FF            [ 1] 1056 	push	#0xff
-                                   1057 ; genCall
-      0090CD CD 90 D5         [ 4] 1058 	call	_SD_WriteByte
-      0090D0 84               [ 1] 1059 	pop	a
-                           00030A  1060 	C$mmcsd.c$931$1_0$358 ==.
-                                   1061 ;	../src/mmcsd.c: 931: return SD_RESPONSE_NO_ERROR;
-                                   1062 ; genReturn
-      0090D1 4F               [ 1] 1063 	clr	a
-                                   1064 ; genLabel
-      0090D2                       1065 00116$:
-                           00030B  1066 	C$mmcsd.c$932$1_0$358 ==.
-                                   1067 ;	../src/mmcsd.c: 932: }
-                                   1068 ; genEndFunction
-      0090D2 5B 06            [ 2] 1069 	addw	sp, #6
-                           00030D  1070 	C$mmcsd.c$932$1_0$358 ==.
-                           00030D  1071 	XG$SD_GoIdleState$0$0 ==.
-      0090D4 81               [ 4] 1072 	ret
-                           00030E  1073 	G$SD_WriteByte$0$0 ==.
-                           00030E  1074 	C$mmcsd.c$941$1_0$367 ==.
-                                   1075 ;	../src/mmcsd.c: 941: uint8_t SD_WriteByte(uint8_t Data)
-                                   1076 ; genLabel
-                                   1077 ;	-----------------------------------------
-                                   1078 ;	 function SD_WriteByte
-                                   1079 ;	-----------------------------------------
-                                   1080 ;	Register assignment is optimal.
-                                   1081 ;	Stack space usage: 0 bytes.
-      0090D5                       1082 _SD_WriteByte:
-                           00030E  1083 	C$mmcsd.c$944$1_0$367 ==.
-                                   1084 ;	../src/mmcsd.c: 944: while (SPI->SR & (SPI_FLAG_TXE) == 0)
-                                   1085 ; genPointerGet
-                                   1086 ; Dummy read
-      0090D5 C6 52 03         [ 1] 1087 	ld	a, 0x5203
-                           000311  1088 	C$mmcsd.c$948$1_0$367 ==.
-                                   1089 ;	../src/mmcsd.c: 948: SPI->DR = (Data);
-                                   1090 ; genPointerSet
-      0090D8 AE 52 04         [ 2] 1091 	ldw	x, #0x5204
-      0090DB 7B 03            [ 1] 1092 	ld	a, (0x03, sp)
-      0090DD F7               [ 1] 1093 	ld	(x), a
-                           000317  1094 	C$mmcsd.c$951$1_0$367 ==.
-                                   1095 ;	../src/mmcsd.c: 951: while (SPI->SR & (SPI_FLAG_RXNE) == 0)
-                                   1096 ; genPointerGet
-                                   1097 ; Dummy read
-      0090DE C6 52 03         [ 1] 1098 	ld	a, 0x5203
-                           00031A  1099 	C$mmcsd.c$955$1_0$367 ==.
-                                   1100 ;	../src/mmcsd.c: 955: return SPI->DR;
-                                   1101 ; genPointerGet
-      0090E1 C6 52 04         [ 1] 1102 	ld	a, 0x5204
-                                   1103 ; genReturn
-                                   1104 ; genLabel
-      0090E4                       1105 00107$:
-                           00031D  1106 	C$mmcsd.c$956$1_0$367 ==.
-                                   1107 ;	../src/mmcsd.c: 956: }
-                                   1108 ; genEndFunction
-                           00031D  1109 	C$mmcsd.c$956$1_0$367 ==.
-                           00031D  1110 	XG$SD_WriteByte$0$0 ==.
-      0090E4 81               [ 4] 1111 	ret
-                           00031E  1112 	G$SD_ReadByte$0$0 ==.
-                           00031E  1113 	C$mmcsd.c$963$1_0$371 ==.
-                                   1114 ;	../src/mmcsd.c: 963: uint8_t SD_ReadByte(void)
-                                   1115 ; genLabel
-                                   1116 ;	-----------------------------------------
-                                   1117 ;	 function SD_ReadByte
-                                   1118 ;	-----------------------------------------
-                                   1119 ;	Register assignment is optimal.
-                                   1120 ;	Stack space usage: 0 bytes.
-      0090E5                       1121 _SD_ReadByte:
-                           00031E  1122 	C$mmcsd.c$968$1_0$371 ==.
-                                   1123 ;	../src/mmcsd.c: 968: while (SPI->SR&(SPI_FLAG_TXE) == 0)
-                                   1124 ; genPointerGet
-                                   1125 ; Dummy read
-      0090E5 C6 52 03         [ 1] 1126 	ld	a, 0x5203
-                           000321  1127 	C$mmcsd.c$971$1_0$371 ==.
-                                   1128 ;	../src/mmcsd.c: 971: SPI->DR = SD_DUMMY_BYTE;
-                                   1129 ; genPointerSet
-      0090E8 35 FF 52 04      [ 1] 1130 	mov	0x5204+0, #0xff
-                           000325  1131 	C$mmcsd.c$974$1_0$371 ==.
-                                   1132 ;	../src/mmcsd.c: 974: while (SPI->SR&(SPI_FLAG_RXNE) == 0)
-                                   1133 ; genPointerGet
-                                   1134 ; Dummy read
-      0090EC C6 52 03         [ 1] 1135 	ld	a, 0x5203
-                           000328  1136 	C$mmcsd.c$977$1_0$371 ==.
-                                   1137 ;	../src/mmcsd.c: 977: Data = (uint8_t)SPI->DR;
-                                   1138 ; genPointerGet
-      0090EF C6 52 04         [ 1] 1139 	ld	a, 0x5204
-                           00032B  1140 	C$mmcsd.c$980$1_0$371 ==.
-                                   1141 ;	../src/mmcsd.c: 980: return Data;
-                                   1142 ; genReturn
-                                   1143 ; genLabel
-      0090F2                       1144 00107$:
-                           00032B  1145 	C$mmcsd.c$981$1_0$371 ==.
-                                   1146 ;	../src/mmcsd.c: 981: }
-                                   1147 ; genEndFunction
-                           00032B  1148 	C$mmcsd.c$981$1_0$371 ==.
-                           00032B  1149 	XG$SD_ReadByte$0$0 ==.
-      0090F2 81               [ 4] 1150 	ret
-                           00032C  1151 	G$SD_LowLevel_Init$0$0 ==.
-                           00032C  1152 	C$mmcsd.c$1025$1_0$375 ==.
-                                   1153 ;	../src/mmcsd.c: 1025: void SD_LowLevel_Init(void)
-                                   1154 ; genLabel
-                                   1155 ;	-----------------------------------------
-                                   1156 ;	 function SD_LowLevel_Init
-                                   1157 ;	-----------------------------------------
-                                   1158 ;	Register assignment is optimal.
-                                   1159 ;	Stack space usage: 0 bytes.
-      0090F3                       1160 _SD_LowLevel_Init:
-                           00032C  1161 	C$mmcsd.c$1035$1_0$375 ==.
-                                   1162 ;	../src/mmcsd.c: 1035: SPI->CR1 = SPI_FIRSTBIT_MSB | SPI_BAUDRATEPRESCALER_64|SPI_CLOCKPOLARITY_HIGH | SPI_CLOCKPHASE_2EDGE;
-                                   1163 ; genPointerSet
-      0090F3 35 2B 52 00      [ 1] 1164 	mov	0x5200+0, #0x2b
-                           000330  1165 	C$mmcsd.c$1037$1_0$375 ==.
-                                   1166 ;	../src/mmcsd.c: 1037: SPI->CR2 = SPI_DATADIRECTION_2LINES_FULLDUPLEX|SPI_NSS_SOFT|SPI_CR2_SSI;
-                                   1167 ; genPointerSet
-      0090F7 35 03 52 01      [ 1] 1168 	mov	0x5201+0, #0x03
-                           000334  1169 	C$mmcsd.c$1039$1_0$375 ==.
-                                   1170 ;	../src/mmcsd.c: 1039: SPI->CR1 |= SPI_MODE_MASTER;
-                                   1171 ; genPointerGet
-      0090FB C6 52 00         [ 1] 1172 	ld	a, 0x5200
-                                   1173 ; genOr
-      0090FE AA 04            [ 1] 1174 	or	a, #0x04
-                                   1175 ; genPointerSet
-      009100 C7 52 00         [ 1] 1176 	ld	0x5200, a
-                           00033C  1177 	C$mmcsd.c$1041$1_0$375 ==.
-                                   1178 ;	../src/mmcsd.c: 1041: SPI->CRCPR = 0x07;
-                                   1179 ; genPointerSet
-      009103 35 07 52 05      [ 1] 1180 	mov	0x5205+0, #0x07
-                           000340  1181 	C$mmcsd.c$1044$1_0$375 ==.
-                                   1182 ;	../src/mmcsd.c: 1044: SPI->CR1 |= SPI_CR1_SPE;
-                                   1183 ; genPointerGet
-      009107 C6 52 00         [ 1] 1184 	ld	a, 0x5200
-                                   1185 ; genOr
-      00910A AA 40            [ 1] 1186 	or	a, #0x40
-                                   1187 ; genPointerSet
-      00910C C7 52 00         [ 1] 1188 	ld	0x5200, a
-                           000348  1189 	C$mmcsd.c$1048$1_0$375 ==.
-                                   1190 ;	../src/mmcsd.c: 1048: SD_CS_GPIO_PORT->CR2 &= (~SD_CS_PIN); //Reset corresponding bit
-                                   1191 ; genPointerGet
-      00910F C6 50 0E         [ 1] 1192 	ld	a, 0x500e
-                                   1193 ; genAnd
-      009112 A4 EF            [ 1] 1194 	and	a, #0xef
-                                   1195 ; genPointerSet
-      009114 C7 50 0E         [ 1] 1196 	ld	0x500e, a
-                           000350  1197 	C$mmcsd.c$1049$1_0$375 ==.
-                                   1198 ;	../src/mmcsd.c: 1049: SD_CS_GPIO_PORT->ODR |= SD_CS_PIN; // high level
-                                   1199 ; genPointerGet
-      009117 C6 50 0A         [ 1] 1200 	ld	a, 0x500a
-                                   1201 ; genOr
-      00911A AA 10            [ 1] 1202 	or	a, #0x10
-                                   1203 ; genPointerSet
-      00911C C7 50 0A         [ 1] 1204 	ld	0x500a, a
-                           000358  1205 	C$mmcsd.c$1050$1_0$375 ==.
-                                   1206 ;	../src/mmcsd.c: 1050: SD_CS_GPIO_PORT->DDR |= SD_CS_PIN; // output mode 
-                                   1207 ; genPointerGet
-      00911F C6 50 0C         [ 1] 1208 	ld	a, 0x500c
-                                   1209 ; genOr
-      009122 AA 10            [ 1] 1210 	or	a, #0x10
-                                   1211 ; genPointerSet
-      009124 C7 50 0C         [ 1] 1212 	ld	0x500c, a
-                           000360  1213 	C$mmcsd.c$1051$1_0$375 ==.
-                                   1214 ;	../src/mmcsd.c: 1051: SD_CS_GPIO_PORT->CR1 &= ~SD_CS_PIN; //open drain here
-                                   1215 ; genPointerGet
-      009127 C6 50 0D         [ 1] 1216 	ld	a, 0x500d
-                                   1217 ; genAnd
-      00912A A4 EF            [ 1] 1218 	and	a, #0xef
-                                   1219 ; genPointerSet
-      00912C C7 50 0D         [ 1] 1220 	ld	0x500d, a
-                                   1221 ; genLabel
-      00912F                       1222 00101$:
-                           000368  1223 	C$mmcsd.c$1052$1_0$375 ==.
-                                   1224 ;	../src/mmcsd.c: 1052: }
-                                   1225 ; genEndFunction
-                           000368  1226 	C$mmcsd.c$1052$1_0$375 ==.
-                           000368  1227 	XG$SD_LowLevel_Init$0$0 ==.
-      00912F 81               [ 4] 1228 	ret
-                                   1229 	.area CODE
-                                   1230 	.area CONST
-                                   1231 	.area INITIALIZER
-                                   1232 	.area CABS (ABS)
+                                     59 ;	../src/mmcsd.c: 90: uint8_t SD_Init(void)
+                                     60 ;	-----------------------------------------
+                                     61 ;	 function SD_Init
+                                     62 ;	-----------------------------------------
+      008C0D                         63 _SD_Init:
+      008C0D 52 04            [ 2]   64 	sub	sp, #4
+                                     65 ;	../src/mmcsd.c: 96: SD_LowLevel_Init();
+      008C0F CD 8E C4         [ 4]   66 	call	_SD_LowLevel_Init
+                                     67 ;	../src/mmcsd.c: 99: SD_CS_LOW();
+      008C12 72 19 50 0A      [ 1]   68 	bres	20490, #4
+                                     69 ;	../src/mmcsd.c: 103: for (i = 0; i <= 9; i++)
+      008C16 5F               [ 1]   70 	clrw	x
+      008C17 1F 03            [ 2]   71 	ldw	(0x03, sp), x
+      008C19 1F 01            [ 2]   72 	ldw	(0x01, sp), x
+      008C1B                         73 00104$:
+                                     74 ;	../src/mmcsd.c: 106: SD_WriteByte(SD_DUMMY_BYTE);
+      008C1B 4B FF            [ 1]   75 	push	#0xff
+      008C1D CD 8E A6         [ 4]   76 	call	_SD_WriteByte
+      008C20 84               [ 1]   77 	pop	a
+                                     78 ;	../src/mmcsd.c: 103: for (i = 0; i <= 9; i++)
+      008C21 1E 03            [ 2]   79 	ldw	x, (0x03, sp)
+      008C23 5C               [ 1]   80 	incw	x
+      008C24 1F 03            [ 2]   81 	ldw	(0x03, sp), x
+      008C26 26 05            [ 1]   82 	jrne	00119$
+      008C28 1E 01            [ 2]   83 	ldw	x, (0x01, sp)
+      008C2A 5C               [ 1]   84 	incw	x
+      008C2B 1F 01            [ 2]   85 	ldw	(0x01, sp), x
+      008C2D                         86 00119$:
+      008C2D AE 00 09         [ 2]   87 	ldw	x, #0x0009
+      008C30 13 03            [ 2]   88 	cpw	x, (0x03, sp)
+      008C32 4F               [ 1]   89 	clr	a
+      008C33 12 02            [ 1]   90 	sbc	a, (0x02, sp)
+      008C35 4F               [ 1]   91 	clr	a
+      008C36 12 01            [ 1]   92 	sbc	a, (0x01, sp)
+      008C38 24 E1            [ 1]   93 	jrnc	00104$
+                                     94 ;	../src/mmcsd.c: 110: res = SD_GoIdleState();
+      008C3A CD 8D 77         [ 4]   95 	call	_SD_GoIdleState
+                                     96 ;	../src/mmcsd.c: 116: return (res);
+      008C3D 4F               [ 1]   97 	clr	a
+                                     98 ;	../src/mmcsd.c: 117: }
+      008C3E 5B 04            [ 2]   99 	addw	sp, #4
+      008C40 81               [ 4]  100 	ret
+                                    101 ;	../src/mmcsd.c: 124: uint8_t SD_Detect(void)
+                                    102 ;	-----------------------------------------
+                                    103 ;	 function SD_Detect
+                                    104 ;	-----------------------------------------
+      008C41                        105 _SD_Detect:
+      008C41 88               [ 1]  106 	push	a
+                                    107 ;	../src/mmcsd.c: 126: __IO uint8_t status = SD_PRESENT;
+                                    108 ;	../src/mmcsd.c: 136: return SD_PRESENT;
+      008C42 A6 01            [ 1]  109 	ld	a, #0x01
+      008C44 6B 01            [ 1]  110 	ld	(0x01, sp), a
+                                    111 ;	../src/mmcsd.c: 138: }
+      008C46 5B 01            [ 2]  112 	addw	sp, #1
+      008C48 81               [ 4]  113 	ret
+                                    114 ;	../src/mmcsd.c: 663: void SD_SendCmd(uint8_t Cmd, uint32_t Arg, uint8_t Crc)
+                                    115 ;	-----------------------------------------
+                                    116 ;	 function SD_SendCmd
+                                    117 ;	-----------------------------------------
+      008C49                        118 _SD_SendCmd:
+      008C49 52 0A            [ 2]  119 	sub	sp, #10
+                                    120 ;	../src/mmcsd.c: 669: Frame[0] = (uint8_t)(Cmd | 0x40); /*!< Construct byte 1 */
+      008C4B 7B 0D            [ 1]  121 	ld	a, (0x0d, sp)
+      008C4D AA 40            [ 1]  122 	or	a, #0x40
+      008C4F 6B 01            [ 1]  123 	ld	(0x01, sp), a
+                                    124 ;	../src/mmcsd.c: 671: Frame[1] = (uint8_t)(Arg >> 24); /*!< Construct byte 2 */
+      008C51 96               [ 1]  125 	ldw	x, sp
+      008C52 5C               [ 1]  126 	incw	x
+      008C53 5C               [ 1]  127 	incw	x
+      008C54 7B 0E            [ 1]  128 	ld	a, (0x0e, sp)
+      008C56 0F 07            [ 1]  129 	clr	(0x07, sp)
+      008C58 F7               [ 1]  130 	ld	(x), a
+                                    131 ;	../src/mmcsd.c: 673: Frame[2] = (uint8_t)(Arg >> 16); /*!< Construct byte 3 */
+      008C59 96               [ 1]  132 	ldw	x, sp
+      008C5A 1C 00 03         [ 2]  133 	addw	x, #3
+      008C5D 16 0E            [ 2]  134 	ldw	y, (0x0e, sp)
+      008C5F 0F 07            [ 1]  135 	clr	(0x07, sp)
+      008C61 90 9F            [ 1]  136 	ld	a, yl
+      008C63 F7               [ 1]  137 	ld	(x), a
+                                    138 ;	../src/mmcsd.c: 675: Frame[3] = (uint8_t)(Arg >> 8); /*!< Construct byte 4 */
+      008C64 96               [ 1]  139 	ldw	x, sp
+      008C65 1C 00 04         [ 2]  140 	addw	x, #4
+      008C68 16 10            [ 2]  141 	ldw	y, (0x10, sp)
+      008C6A 90 9E            [ 1]  142 	ld	a, yh
+      008C6C F7               [ 1]  143 	ld	(x), a
+                                    144 ;	../src/mmcsd.c: 677: Frame[4] = (uint8_t)(Arg); /*!< Construct byte 5 */
+      008C6D 96               [ 1]  145 	ldw	x, sp
+      008C6E 7B 11            [ 1]  146 	ld	a, (0x11, sp)
+      008C70 E7 05            [ 1]  147 	ld	(5, x), a
+                                    148 ;	../src/mmcsd.c: 679: Frame[5] = (Crc); /*!< Construct CRC: byte 6 */
+      008C72 96               [ 1]  149 	ldw	x, sp
+      008C73 7B 12            [ 1]  150 	ld	a, (0x12, sp)
+      008C75 E7 06            [ 1]  151 	ld	(6, x), a
+                                    152 ;	../src/mmcsd.c: 681: for (i = 0; i < 6; i++)
+      008C77 5F               [ 1]  153 	clrw	x
+      008C78 1F 09            [ 2]  154 	ldw	(0x09, sp), x
+      008C7A 1F 07            [ 2]  155 	ldw	(0x07, sp), x
+      008C7C                        156 00102$:
+                                    157 ;	../src/mmcsd.c: 683: SD_WriteByte(Frame[i]); /*!< Send the Cmd bytes */
+      008C7C 96               [ 1]  158 	ldw	x, sp
+      008C7D 5C               [ 1]  159 	incw	x
+      008C7E 72 FB 09         [ 2]  160 	addw	x, (0x09, sp)
+      008C81 F6               [ 1]  161 	ld	a, (x)
+      008C82 88               [ 1]  162 	push	a
+      008C83 CD 8E A6         [ 4]  163 	call	_SD_WriteByte
+      008C86 84               [ 1]  164 	pop	a
+                                    165 ;	../src/mmcsd.c: 681: for (i = 0; i < 6; i++)
+      008C87 1E 09            [ 2]  166 	ldw	x, (0x09, sp)
+      008C89 5C               [ 1]  167 	incw	x
+      008C8A 1F 09            [ 2]  168 	ldw	(0x09, sp), x
+      008C8C 26 05            [ 1]  169 	jrne	00112$
+      008C8E 1E 07            [ 2]  170 	ldw	x, (0x07, sp)
+      008C90 5C               [ 1]  171 	incw	x
+      008C91 1F 07            [ 2]  172 	ldw	(0x07, sp), x
+      008C93                        173 00112$:
+      008C93 1E 09            [ 2]  174 	ldw	x, (0x09, sp)
+      008C95 A3 00 06         [ 2]  175 	cpw	x, #0x0006
+      008C98 7B 08            [ 1]  176 	ld	a, (0x08, sp)
+      008C9A A2 00            [ 1]  177 	sbc	a, #0x00
+      008C9C 7B 07            [ 1]  178 	ld	a, (0x07, sp)
+      008C9E A2 00            [ 1]  179 	sbc	a, #0x00
+      008CA0 25 DA            [ 1]  180 	jrc	00102$
+                                    181 ;	../src/mmcsd.c: 685: }
+      008CA2 5B 0A            [ 2]  182 	addw	sp, #10
+      008CA4 81               [ 4]  183 	ret
+                                    184 ;	../src/mmcsd.c: 699: uint8_t SD_GetDataResponse(void)
+                                    185 ;	-----------------------------------------
+                                    186 ;	 function SD_GetDataResponse
+                                    187 ;	-----------------------------------------
+      008CA5                        188 _SD_GetDataResponse:
+      008CA5 52 05            [ 2]  189 	sub	sp, #5
+                                    190 ;	../src/mmcsd.c: 702: uint8_t response = 0, rvalue = 0;
+      008CA7 0F 01            [ 1]  191 	clr	(0x01, sp)
+                                    192 ;	../src/mmcsd.c: 704: while (i <= 64)
+      008CA9 5F               [ 1]  193 	clrw	x
+      008CAA 1F 04            [ 2]  194 	ldw	(0x04, sp), x
+      008CAC 1F 02            [ 2]  195 	ldw	(0x02, sp), x
+      008CAE                        196 00108$:
+      008CAE AE 00 40         [ 2]  197 	ldw	x, #0x0040
+      008CB1 13 04            [ 2]  198 	cpw	x, (0x04, sp)
+      008CB3 4F               [ 1]  199 	clr	a
+      008CB4 12 03            [ 1]  200 	sbc	a, (0x03, sp)
+      008CB6 4F               [ 1]  201 	clr	a
+      008CB7 12 02            [ 1]  202 	sbc	a, (0x02, sp)
+      008CB9 25 39            [ 1]  203 	jrc	00111$
+                                    204 ;	../src/mmcsd.c: 707: response = SD_ReadByte();
+      008CBB CD 8E B6         [ 4]  205 	call	_SD_ReadByte
+                                    206 ;	../src/mmcsd.c: 709: response &= 0x1F;
+      008CBE A4 1F            [ 1]  207 	and	a, #0x1f
+                                    208 ;	../src/mmcsd.c: 710: switch (response)
+      008CC0 6B 01            [ 1]  209 	ld	(0x01, sp), a
+      008CC2 A1 05            [ 1]  210 	cp	a, #0x05
+      008CC4 27 0E            [ 1]  211 	jreq	00101$
+      008CC6 7B 01            [ 1]  212 	ld	a, (0x01, sp)
+      008CC8 A1 0B            [ 1]  213 	cp	a, #0x0b
+      008CCA 27 0C            [ 1]  214 	jreq	00102$
+      008CCC 7B 01            [ 1]  215 	ld	a, (0x01, sp)
+      008CCE A1 0D            [ 1]  216 	cp	a, #0x0d
+      008CD0 27 0A            [ 1]  217 	jreq	00103$
+      008CD2 20 0C            [ 2]  218 	jra	00104$
+                                    219 ;	../src/mmcsd.c: 712: case SD_DATA_OK:
+      008CD4                        220 00101$:
+                                    221 ;	../src/mmcsd.c: 714: rvalue = SD_DATA_OK;
+      008CD4 A6 05            [ 1]  222 	ld	a, #0x05
+                                    223 ;	../src/mmcsd.c: 715: break;
+      008CD6 20 0A            [ 2]  224 	jra	00105$
+                                    225 ;	../src/mmcsd.c: 717: case SD_DATA_CRC_ERROR:
+      008CD8                        226 00102$:
+                                    227 ;	../src/mmcsd.c: 718: return SD_DATA_CRC_ERROR;
+      008CD8 A6 0B            [ 1]  228 	ld	a, #0x0b
+      008CDA 20 20            [ 2]  229 	jra	00114$
+                                    230 ;	../src/mmcsd.c: 719: case SD_DATA_WRITE_ERROR:
+      008CDC                        231 00103$:
+                                    232 ;	../src/mmcsd.c: 720: return SD_DATA_WRITE_ERROR;
+      008CDC A6 0D            [ 1]  233 	ld	a, #0x0d
+      008CDE 20 1C            [ 2]  234 	jra	00114$
+                                    235 ;	../src/mmcsd.c: 721: default:
+      008CE0                        236 00104$:
+                                    237 ;	../src/mmcsd.c: 723: rvalue = SD_DATA_OTHER_ERROR;
+      008CE0 A6 FF            [ 1]  238 	ld	a, #0xff
+                                    239 ;	../src/mmcsd.c: 726: }
+      008CE2                        240 00105$:
+                                    241 ;	../src/mmcsd.c: 728: if (rvalue == SD_DATA_OK)
+      008CE2 A1 05            [ 1]  242 	cp	a, #0x05
+      008CE4 27 0E            [ 1]  243 	jreq	00111$
+                                    244 ;	../src/mmcsd.c: 731: i++;
+      008CE6 1E 04            [ 2]  245 	ldw	x, (0x04, sp)
+      008CE8 5C               [ 1]  246 	incw	x
+      008CE9 1F 04            [ 2]  247 	ldw	(0x04, sp), x
+      008CEB 26 C1            [ 1]  248 	jrne	00108$
+      008CED 1E 02            [ 2]  249 	ldw	x, (0x02, sp)
+      008CEF 5C               [ 1]  250 	incw	x
+      008CF0 1F 02            [ 2]  251 	ldw	(0x02, sp), x
+      008CF2 20 BA            [ 2]  252 	jra	00108$
+                                    253 ;	../src/mmcsd.c: 735: while (SD_ReadByte() == 0);
+      008CF4                        254 00111$:
+      008CF4 CD 8E B6         [ 4]  255 	call	_SD_ReadByte
+      008CF7 4D               [ 1]  256 	tnz	a
+      008CF8 27 FA            [ 1]  257 	jreq	00111$
+                                    258 ;	../src/mmcsd.c: 738: return response;
+      008CFA 7B 01            [ 1]  259 	ld	a, (0x01, sp)
+      008CFC                        260 00114$:
+                                    261 ;	../src/mmcsd.c: 739: }
+      008CFC 5B 05            [ 2]  262 	addw	sp, #5
+      008CFE 81               [ 4]  263 	ret
+                                    264 ;	../src/mmcsd.c: 748: uint8_t SD_GetResponse(uint8_t Response)
+                                    265 ;	-----------------------------------------
+                                    266 ;	 function SD_GetResponse
+                                    267 ;	-----------------------------------------
+      008CFF                        268 _SD_GetResponse:
+                                    269 ;	../src/mmcsd.c: 753: while ((SD_ReadByte() != Response) && Count) 
+      008CFF AE 0F FF         [ 2]  270 	ldw	x, #0x0fff
+      008D02 90 5F            [ 1]  271 	clrw	y
+      008D04                        272 00102$:
+      008D04 89               [ 2]  273 	pushw	x
+      008D05 90 89            [ 2]  274 	pushw	y
+      008D07 CD 8E B6         [ 4]  275 	call	_SD_ReadByte
+      008D0A 90 85            [ 2]  276 	popw	y
+      008D0C 85               [ 2]  277 	popw	x
+      008D0D 11 03            [ 1]  278 	cp	a, (0x03, sp)
+      008D0F 27 10            [ 1]  279 	jreq	00104$
+      008D11 5D               [ 2]  280 	tnzw	x
+      008D12 26 04            [ 1]  281 	jrne	00134$
+      008D14 90 5D            [ 2]  282 	tnzw	y
+      008D16 27 09            [ 1]  283 	jreq	00104$
+      008D18                        284 00134$:
+                                    285 ;	../src/mmcsd.c: 755: Count--;
+      008D18 1D 00 01         [ 2]  286 	subw	x, #0x0001
+      008D1B 24 E7            [ 1]  287 	jrnc	00102$
+      008D1D 90 5A            [ 2]  288 	decw	y
+      008D1F 20 E3            [ 2]  289 	jra	00102$
+      008D21                        290 00104$:
+                                    291 ;	../src/mmcsd.c: 757: if (Count == 0)
+      008D21 5D               [ 2]  292 	tnzw	x
+      008D22 26 07            [ 1]  293 	jrne	00106$
+      008D24 90 5D            [ 2]  294 	tnzw	y
+      008D26 26 03            [ 1]  295 	jrne	00106$
+                                    296 ;	../src/mmcsd.c: 760: return SD_RESPONSE_FAILURE;
+      008D28 A6 FF            [ 1]  297 	ld	a, #0xff
+      008D2A 81               [ 4]  298 	ret
+      008D2B                        299 00106$:
+                                    300 ;	../src/mmcsd.c: 765: return SD_RESPONSE_NO_ERROR;
+      008D2B 4F               [ 1]  301 	clr	a
+                                    302 ;	../src/mmcsd.c: 767: }
+      008D2C 81               [ 4]  303 	ret
+                                    304 ;	../src/mmcsd.c: 772: void SD_GetResponseVal(uint8_t *pResp, uint8_t response)
+                                    305 ;	-----------------------------------------
+                                    306 ;	 function SD_GetResponseVal
+                                    307 ;	-----------------------------------------
+      008D2D                        308 _SD_GetResponseVal:
+                                    309 ;	../src/mmcsd.c: 775: if(SD_GetResponse(response) == SD_RESPONSE_FAILURE)
+      008D2D 7B 05            [ 1]  310 	ld	a, (0x05, sp)
+      008D2F 88               [ 1]  311 	push	a
+      008D30 CD 8C FF         [ 4]  312 	call	_SD_GetResponse
+      008D33 5B 01            [ 2]  313 	addw	sp, #1
+                                    314 ;	../src/mmcsd.c: 777: *pResp++ = 0xff;
+      008D35 16 03            [ 2]  315 	ldw	y, (0x03, sp)
+      008D37 93               [ 1]  316 	ldw	x, y
+      008D38 5C               [ 1]  317 	incw	x
+                                    318 ;	../src/mmcsd.c: 775: if(SD_GetResponse(response) == SD_RESPONSE_FAILURE)
+      008D39 4C               [ 1]  319 	inc	a
+      008D3A 26 08            [ 1]  320 	jrne	00102$
+                                    321 ;	../src/mmcsd.c: 777: *pResp++ = 0xff;
+      008D3C A6 FF            [ 1]  322 	ld	a, #0xff
+      008D3E 90 F7            [ 1]  323 	ld	(y), a
+      008D40 1F 03            [ 2]  324 	ldw	(0x03, sp), x
+      008D42 20 06            [ 2]  325 	jra	00103$
+      008D44                        326 00102$:
+                                    327 ;	../src/mmcsd.c: 779: *pResp++ = response;
+      008D44 7B 05            [ 1]  328 	ld	a, (0x05, sp)
+      008D46 90 F7            [ 1]  329 	ld	(y), a
+      008D48 1F 03            [ 2]  330 	ldw	(0x03, sp), x
+      008D4A                        331 00103$:
+                                    332 ;	../src/mmcsd.c: 782: *pResp++ = SD_ReadByte();
+      008D4A 1E 03            [ 2]  333 	ldw	x, (0x03, sp)
+      008D4C 89               [ 2]  334 	pushw	x
+      008D4D CD 8E B6         [ 4]  335 	call	_SD_ReadByte
+      008D50 85               [ 2]  336 	popw	x
+      008D51 F7               [ 1]  337 	ld	(x), a
+      008D52 5C               [ 1]  338 	incw	x
+                                    339 ;	../src/mmcsd.c: 783: *pResp++ = SD_ReadByte();
+      008D53 1F 03            [ 2]  340 	ldw	(0x03, sp), x
+      008D55 89               [ 2]  341 	pushw	x
+      008D56 CD 8E B6         [ 4]  342 	call	_SD_ReadByte
+      008D59 85               [ 2]  343 	popw	x
+      008D5A F7               [ 1]  344 	ld	(x), a
+      008D5B 5C               [ 1]  345 	incw	x
+                                    346 ;	../src/mmcsd.c: 784: *pResp++ = SD_ReadByte();
+      008D5C 1F 03            [ 2]  347 	ldw	(0x03, sp), x
+      008D5E 89               [ 2]  348 	pushw	x
+      008D5F CD 8E B6         [ 4]  349 	call	_SD_ReadByte
+      008D62 85               [ 2]  350 	popw	x
+      008D63 F7               [ 1]  351 	ld	(x), a
+      008D64 5C               [ 1]  352 	incw	x
+                                    353 ;	../src/mmcsd.c: 785: *pResp++ = SD_ReadByte();
+      008D65 1F 03            [ 2]  354 	ldw	(0x03, sp), x
+      008D67 89               [ 2]  355 	pushw	x
+      008D68 CD 8E B6         [ 4]  356 	call	_SD_ReadByte
+      008D6B 85               [ 2]  357 	popw	x
+      008D6C F7               [ 1]  358 	ld	(x), a
+      008D6D 5C               [ 1]  359 	incw	x
+                                    360 ;	../src/mmcsd.c: 786: *pResp = SD_ReadByte();
+      008D6E 1F 03            [ 2]  361 	ldw	(0x03, sp), x
+      008D70 89               [ 2]  362 	pushw	x
+      008D71 CD 8E B6         [ 4]  363 	call	_SD_ReadByte
+      008D74 85               [ 2]  364 	popw	x
+      008D75 F7               [ 1]  365 	ld	(x), a
+                                    366 ;	../src/mmcsd.c: 787: }
+      008D76 81               [ 4]  367 	ret
+                                    368 ;	../src/mmcsd.c: 871: uint8_t SD_GoIdleState(void)
+                                    369 ;	-----------------------------------------
+                                    370 ;	 function SD_GoIdleState
+                                    371 ;	-----------------------------------------
+      008D77                        372 _SD_GoIdleState:
+      008D77 52 0A            [ 2]  373 	sub	sp, #10
+                                    374 ;	../src/mmcsd.c: 874: uint8_t resp[6] = {0};
+      008D79 0F 01            [ 1]  375 	clr	(0x01, sp)
+      008D7B 96               [ 1]  376 	ldw	x, sp
+      008D7C 5C               [ 1]  377 	incw	x
+      008D7D 5C               [ 1]  378 	incw	x
+      008D7E 7F               [ 1]  379 	clr	(x)
+      008D7F 96               [ 1]  380 	ldw	x, sp
+      008D80 6F 03            [ 1]  381 	clr	(3, x)
+      008D82 96               [ 1]  382 	ldw	x, sp
+      008D83 1C 00 04         [ 2]  383 	addw	x, #4
+      008D86 1F 07            [ 2]  384 	ldw	(0x07, sp), x
+      008D88 7F               [ 1]  385 	clr	(x)
+      008D89 96               [ 1]  386 	ldw	x, sp
+      008D8A 1C 00 05         [ 2]  387 	addw	x, #5
+      008D8D 1F 09            [ 2]  388 	ldw	(0x09, sp), x
+      008D8F 7F               [ 1]  389 	clr	(x)
+      008D90 96               [ 1]  390 	ldw	x, sp
+      008D91 1C 00 06         [ 2]  391 	addw	x, #6
+      008D94 7F               [ 1]  392 	clr	(x)
+                                    393 ;	../src/mmcsd.c: 876: SD_CS_LOW();
+      008D95 C6 50 0A         [ 1]  394 	ld	a, 0x500a
+      008D98 A4 EF            [ 1]  395 	and	a, #0xef
+      008D9A C7 50 0A         [ 1]  396 	ld	0x500a, a
+                                    397 ;	../src/mmcsd.c: 879: SD_SendCmd(SD_CMD_GO_IDLE_STATE, (uint32_t)0, 0x95);
+      008D9D 4B 95            [ 1]  398 	push	#0x95
+      008D9F 5F               [ 1]  399 	clrw	x
+      008DA0 89               [ 2]  400 	pushw	x
+      008DA1 5F               [ 1]  401 	clrw	x
+      008DA2 89               [ 2]  402 	pushw	x
+      008DA3 4B 00            [ 1]  403 	push	#0x00
+      008DA5 CD 8C 49         [ 4]  404 	call	_SD_SendCmd
+      008DA8 5B 06            [ 2]  405 	addw	sp, #6
+                                    406 ;	../src/mmcsd.c: 882: if (SD_GetResponse(SD_IN_IDLE_STATE))
+      008DAA 4B 01            [ 1]  407 	push	#0x01
+      008DAC CD 8C FF         [ 4]  408 	call	_SD_GetResponse
+      008DAF 5B 01            [ 2]  409 	addw	sp, #1
+      008DB1 4D               [ 1]  410 	tnz	a
+      008DB2 27 05            [ 1]  411 	jreq	00102$
+                                    412 ;	../src/mmcsd.c: 885: return SD_RESPONSE_FAILURE;
+      008DB4 A6 FF            [ 1]  413 	ld	a, #0xff
+      008DB6 CC 8E A3         [ 2]  414 	jp	00116$
+      008DB9                        415 00102$:
+                                    416 ;	../src/mmcsd.c: 888: SD_SendCmd(SD_CMD_IF_COND, (uint32_t)0x156, 0x43);
+      008DB9 4B 43            [ 1]  417 	push	#0x43
+      008DBB 4B 56            [ 1]  418 	push	#0x56
+      008DBD 4B 01            [ 1]  419 	push	#0x01
+      008DBF 5F               [ 1]  420 	clrw	x
+      008DC0 89               [ 2]  421 	pushw	x
+      008DC1 4B 08            [ 1]  422 	push	#0x08
+      008DC3 CD 8C 49         [ 4]  423 	call	_SD_SendCmd
+      008DC6 5B 06            [ 2]  424 	addw	sp, #6
+                                    425 ;	../src/mmcsd.c: 889: SD_GetResponseVal(resp,0x01);
+      008DC8 4B 01            [ 1]  426 	push	#0x01
+      008DCA 96               [ 1]  427 	ldw	x, sp
+      008DCB 5C               [ 1]  428 	incw	x
+      008DCC 5C               [ 1]  429 	incw	x
+      008DCD 89               [ 2]  430 	pushw	x
+      008DCE CD 8D 2D         [ 4]  431 	call	_SD_GetResponseVal
+      008DD1 5B 03            [ 2]  432 	addw	sp, #3
+                                    433 ;	../src/mmcsd.c: 890: if(resp[0]==0x01){
+      008DD3 7B 01            [ 1]  434 	ld	a, (0x01, sp)
+      008DD5 4A               [ 1]  435 	dec	a
+      008DD6 26 77            [ 1]  436 	jrne	00123$
+                                    437 ;	../src/mmcsd.c: 892: if ((resp[3] == 0x01)&&(resp[4] == 0x56)){
+      008DD8 1E 07            [ 2]  438 	ldw	x, (0x07, sp)
+      008DDA F6               [ 1]  439 	ld	a, (x)
+      008DDB 4A               [ 1]  440 	dec	a
+      008DDC 26 6D            [ 1]  441 	jrne	00107$
+      008DDE 1E 09            [ 2]  442 	ldw	x, (0x09, sp)
+      008DE0 F6               [ 1]  443 	ld	a, (x)
+      008DE1 A1 56            [ 1]  444 	cp	a, #0x56
+      008DE3 26 66            [ 1]  445 	jrne	00107$
+                                    446 ;	../src/mmcsd.c: 895: do{
+      008DE5                        447 00103$:
+                                    448 ;	../src/mmcsd.c: 896: SD_SendCmd(SD_CMD_55, (uint32_t)0, 0x01);
+      008DE5 4B 01            [ 1]  449 	push	#0x01
+      008DE7 5F               [ 1]  450 	clrw	x
+      008DE8 89               [ 2]  451 	pushw	x
+      008DE9 5F               [ 1]  452 	clrw	x
+      008DEA 89               [ 2]  453 	pushw	x
+      008DEB 4B 37            [ 1]  454 	push	#0x37
+      008DED CD 8C 49         [ 4]  455 	call	_SD_SendCmd
+      008DF0 5B 06            [ 2]  456 	addw	sp, #6
+                                    457 ;	../src/mmcsd.c: 897: SD_GetResponseVal(resp,0x01);
+      008DF2 4B 01            [ 1]  458 	push	#0x01
+      008DF4 96               [ 1]  459 	ldw	x, sp
+      008DF5 5C               [ 1]  460 	incw	x
+      008DF6 5C               [ 1]  461 	incw	x
+      008DF7 89               [ 2]  462 	pushw	x
+      008DF8 CD 8D 2D         [ 4]  463 	call	_SD_GetResponseVal
+      008DFB 5B 03            [ 2]  464 	addw	sp, #3
+                                    465 ;	../src/mmcsd.c: 898: dly((uint32_t)100);
+      008DFD 4B 64            [ 1]  466 	push	#0x64
+      008DFF 5F               [ 1]  467 	clrw	x
+      008E00 89               [ 2]  468 	pushw	x
+      008E01 4B 00            [ 1]  469 	push	#0x00
+      008E03 CD 84 B9         [ 4]  470 	call	_dly
+      008E06 5B 04            [ 2]  471 	addw	sp, #4
+                                    472 ;	../src/mmcsd.c: 899: SD_SendCmd(SD_ACMD_41&0x7f, (1UL<<30), 0x1);
+      008E08 4B 01            [ 1]  473 	push	#0x01
+      008E0A 5F               [ 1]  474 	clrw	x
+      008E0B 89               [ 2]  475 	pushw	x
+      008E0C 4B 00            [ 1]  476 	push	#0x00
+      008E0E 4B 40            [ 1]  477 	push	#0x40
+      008E10 4B 69            [ 1]  478 	push	#0x69
+      008E12 CD 8C 49         [ 4]  479 	call	_SD_SendCmd
+      008E15 5B 06            [ 2]  480 	addw	sp, #6
+                                    481 ;	../src/mmcsd.c: 900: dly((uint32_t)10000);
+      008E17 4B 10            [ 1]  482 	push	#0x10
+      008E19 4B 27            [ 1]  483 	push	#0x27
+      008E1B 5F               [ 1]  484 	clrw	x
+      008E1C 89               [ 2]  485 	pushw	x
+      008E1D CD 84 B9         [ 4]  486 	call	_dly
+      008E20 5B 04            [ 2]  487 	addw	sp, #4
+                                    488 ;	../src/mmcsd.c: 901: SD_GetResponseVal(resp,0x00);
+      008E22 96               [ 1]  489 	ldw	x, sp
+      008E23 5C               [ 1]  490 	incw	x
+      008E24 4B 00            [ 1]  491 	push	#0x00
+      008E26 89               [ 2]  492 	pushw	x
+      008E27 CD 8D 2D         [ 4]  493 	call	_SD_GetResponseVal
+      008E2A 5B 03            [ 2]  494 	addw	sp, #3
+                                    495 ;	../src/mmcsd.c: 902: } while(resp[0]); //until resved 0x0
+      008E2C 7B 01            [ 1]  496 	ld	a, (0x01, sp)
+      008E2E 26 B5            [ 1]  497 	jrne	00103$
+                                    498 ;	../src/mmcsd.c: 904: SD_SendCmd(SD_CMD_58, (uint32_t)0,0x01);
+      008E30 4B 01            [ 1]  499 	push	#0x01
+      008E32 5F               [ 1]  500 	clrw	x
+      008E33 89               [ 2]  501 	pushw	x
+      008E34 5F               [ 1]  502 	clrw	x
+      008E35 89               [ 2]  503 	pushw	x
+      008E36 4B 3A            [ 1]  504 	push	#0x3a
+      008E38 CD 8C 49         [ 4]  505 	call	_SD_SendCmd
+      008E3B 5B 06            [ 2]  506 	addw	sp, #6
+                                    507 ;	../src/mmcsd.c: 905: SD_GetResponseVal(resp,58);
+      008E3D 4B 3A            [ 1]  508 	push	#0x3a
+      008E3F 96               [ 1]  509 	ldw	x, sp
+      008E40 5C               [ 1]  510 	incw	x
+      008E41 5C               [ 1]  511 	incw	x
+      008E42 89               [ 2]  512 	pushw	x
+      008E43 CD 8D 2D         [ 4]  513 	call	_SD_GetResponseVal
+      008E46 5B 03            [ 2]  514 	addw	sp, #3
+                                    515 ;	../src/mmcsd.c: 906: return SD_RESPONSE_NO_ERROR;
+      008E48 4F               [ 1]  516 	clr	a
+      008E49 20 58            [ 2]  517 	jra	00116$
+      008E4B                        518 00107$:
+                                    519 ;	../src/mmcsd.c: 909: return SD_RESPONSE_FAILURE;
+      008E4B A6 FF            [ 1]  520 	ld	a, #0xff
+      008E4D 20 54            [ 2]  521 	jra	00116$
+                                    522 ;	../src/mmcsd.c: 914: do{
+      008E4F                        523 00123$:
+      008E4F                        524 00110$:
+                                    525 ;	../src/mmcsd.c: 915: SD_SendCmd(SD_CMD_55, 0, 0x01);
+      008E4F 4B 01            [ 1]  526 	push	#0x01
+      008E51 5F               [ 1]  527 	clrw	x
+      008E52 89               [ 2]  528 	pushw	x
+      008E53 5F               [ 1]  529 	clrw	x
+      008E54 89               [ 2]  530 	pushw	x
+      008E55 4B 37            [ 1]  531 	push	#0x37
+      008E57 CD 8C 49         [ 4]  532 	call	_SD_SendCmd
+      008E5A 5B 06            [ 2]  533 	addw	sp, #6
+                                    534 ;	../src/mmcsd.c: 916: SD_GetResponseVal(resp,0x01);
+      008E5C 96               [ 1]  535 	ldw	x, sp
+      008E5D 5C               [ 1]  536 	incw	x
+      008E5E 4B 01            [ 1]  537 	push	#0x01
+      008E60 89               [ 2]  538 	pushw	x
+      008E61 CD 8D 2D         [ 4]  539 	call	_SD_GetResponseVal
+      008E64 5B 03            [ 2]  540 	addw	sp, #3
+                                    541 ;	../src/mmcsd.c: 917: dly((uint32_t)10000);
+      008E66 4B 10            [ 1]  542 	push	#0x10
+      008E68 4B 27            [ 1]  543 	push	#0x27
+      008E6A 5F               [ 1]  544 	clrw	x
+      008E6B 89               [ 2]  545 	pushw	x
+      008E6C CD 84 B9         [ 4]  546 	call	_dly
+      008E6F 5B 04            [ 2]  547 	addw	sp, #4
+                                    548 ;	../src/mmcsd.c: 918: SD_SendCmd(SD_ACMD_41&0x7f, 0UL, 0x1);
+      008E71 4B 01            [ 1]  549 	push	#0x01
+      008E73 5F               [ 1]  550 	clrw	x
+      008E74 89               [ 2]  551 	pushw	x
+      008E75 5F               [ 1]  552 	clrw	x
+      008E76 89               [ 2]  553 	pushw	x
+      008E77 4B 69            [ 1]  554 	push	#0x69
+      008E79 CD 8C 49         [ 4]  555 	call	_SD_SendCmd
+      008E7C 5B 06            [ 2]  556 	addw	sp, #6
+                                    557 ;	../src/mmcsd.c: 919: SD_GetResponseVal(resp,0x00);
+      008E7E 4B 00            [ 1]  558 	push	#0x00
+      008E80 96               [ 1]  559 	ldw	x, sp
+      008E81 5C               [ 1]  560 	incw	x
+      008E82 5C               [ 1]  561 	incw	x
+      008E83 89               [ 2]  562 	pushw	x
+      008E84 CD 8D 2D         [ 4]  563 	call	_SD_GetResponseVal
+      008E87 5B 03            [ 2]  564 	addw	sp, #3
+                                    565 ;	../src/mmcsd.c: 920: dly((uint32_t)10000);
+      008E89 4B 10            [ 1]  566 	push	#0x10
+      008E8B 4B 27            [ 1]  567 	push	#0x27
+      008E8D 5F               [ 1]  568 	clrw	x
+      008E8E 89               [ 2]  569 	pushw	x
+      008E8F CD 84 B9         [ 4]  570 	call	_dly
+      008E92 5B 04            [ 2]  571 	addw	sp, #4
+                                    572 ;	../src/mmcsd.c: 921: } while(resp[0]);
+      008E94 7B 01            [ 1]  573 	ld	a, (0x01, sp)
+      008E96 26 B7            [ 1]  574 	jrne	00110$
+                                    575 ;	../src/mmcsd.c: 926: SD_CS_HIGH();
+      008E98 72 18 50 0A      [ 1]  576 	bset	20490, #4
+                                    577 ;	../src/mmcsd.c: 929: SD_WriteByte(SD_DUMMY_BYTE);
+      008E9C 4B FF            [ 1]  578 	push	#0xff
+      008E9E CD 8E A6         [ 4]  579 	call	_SD_WriteByte
+      008EA1 84               [ 1]  580 	pop	a
+                                    581 ;	../src/mmcsd.c: 931: return SD_RESPONSE_NO_ERROR;
+      008EA2 4F               [ 1]  582 	clr	a
+      008EA3                        583 00116$:
+                                    584 ;	../src/mmcsd.c: 932: }
+      008EA3 5B 0A            [ 2]  585 	addw	sp, #10
+      008EA5 81               [ 4]  586 	ret
+                                    587 ;	../src/mmcsd.c: 941: uint8_t SD_WriteByte(uint8_t Data)
+                                    588 ;	-----------------------------------------
+                                    589 ;	 function SD_WriteByte
+                                    590 ;	-----------------------------------------
+      008EA6                        591 _SD_WriteByte:
+                                    592 ;	../src/mmcsd.c: 944: while (SPI->SR & (SPI_FLAG_TXE) == 0)
+      008EA6 C6 52 03         [ 1]  593 	ld	a, 0x5203
+                                    594 ;	../src/mmcsd.c: 948: SPI->DR = (Data);
+      008EA9 AE 52 04         [ 2]  595 	ldw	x, #0x5204
+      008EAC 7B 03            [ 1]  596 	ld	a, (0x03, sp)
+      008EAE F7               [ 1]  597 	ld	(x), a
+                                    598 ;	../src/mmcsd.c: 951: while (SPI->SR & (SPI_FLAG_RXNE) == 0)
+      008EAF C6 52 03         [ 1]  599 	ld	a, 0x5203
+                                    600 ;	../src/mmcsd.c: 955: return SPI->DR;
+      008EB2 C6 52 04         [ 1]  601 	ld	a, 0x5204
+                                    602 ;	../src/mmcsd.c: 956: }
+      008EB5 81               [ 4]  603 	ret
+                                    604 ;	../src/mmcsd.c: 963: uint8_t SD_ReadByte(void)
+                                    605 ;	-----------------------------------------
+                                    606 ;	 function SD_ReadByte
+                                    607 ;	-----------------------------------------
+      008EB6                        608 _SD_ReadByte:
+                                    609 ;	../src/mmcsd.c: 968: while (SPI->SR&(SPI_FLAG_TXE) == 0)
+      008EB6 C6 52 03         [ 1]  610 	ld	a, 0x5203
+                                    611 ;	../src/mmcsd.c: 971: SPI->DR = SD_DUMMY_BYTE;
+      008EB9 35 FF 52 04      [ 1]  612 	mov	0x5204+0, #0xff
+                                    613 ;	../src/mmcsd.c: 974: while (SPI->SR&(SPI_FLAG_RXNE) == 0)
+      008EBD C6 52 03         [ 1]  614 	ld	a, 0x5203
+                                    615 ;	../src/mmcsd.c: 977: Data = (uint8_t)SPI->DR;
+      008EC0 C6 52 04         [ 1]  616 	ld	a, 0x5204
+                                    617 ;	../src/mmcsd.c: 980: return Data;
+                                    618 ;	../src/mmcsd.c: 981: }
+      008EC3 81               [ 4]  619 	ret
+                                    620 ;	../src/mmcsd.c: 1025: void SD_LowLevel_Init(void)
+                                    621 ;	-----------------------------------------
+                                    622 ;	 function SD_LowLevel_Init
+                                    623 ;	-----------------------------------------
+      008EC4                        624 _SD_LowLevel_Init:
+                                    625 ;	../src/mmcsd.c: 1035: SPI->CR1 = SPI_FIRSTBIT_MSB | SPI_BAUDRATEPRESCALER_64|SPI_CLOCKPOLARITY_HIGH | SPI_CLOCKPHASE_2EDGE;
+      008EC4 35 2B 52 00      [ 1]  626 	mov	0x5200+0, #0x2b
+                                    627 ;	../src/mmcsd.c: 1037: SPI->CR2 = SPI_DATADIRECTION_2LINES_FULLDUPLEX|SPI_NSS_SOFT;
+      008EC8 35 02 52 01      [ 1]  628 	mov	0x5201+0, #0x02
+                                    629 ;	../src/mmcsd.c: 1038: SPI->CR2 |= SPI_CR2_SSI;
+      008ECC 72 10 52 01      [ 1]  630 	bset	20993, #0
+                                    631 ;	../src/mmcsd.c: 1040: SPI->CR1 |= SPI_MODE_MASTER;
+      008ED0 72 14 52 00      [ 1]  632 	bset	20992, #2
+                                    633 ;	../src/mmcsd.c: 1042: SPI->CRCPR = 0x07;
+      008ED4 35 07 52 05      [ 1]  634 	mov	0x5205+0, #0x07
+                                    635 ;	../src/mmcsd.c: 1045: SPI->CR1 |= SPI_CR1_SPE;
+      008ED8 72 1C 52 00      [ 1]  636 	bset	20992, #6
+                                    637 ;	../src/mmcsd.c: 1049: SD_CS_GPIO_PORT->CR2 &= (~SD_CS_PIN); //Reset corresponding bit
+      008EDC 72 19 50 0E      [ 1]  638 	bres	20494, #4
+                                    639 ;	../src/mmcsd.c: 1050: SD_CS_GPIO_PORT->ODR |= SD_CS_PIN; // high level
+      008EE0 72 18 50 0A      [ 1]  640 	bset	20490, #4
+                                    641 ;	../src/mmcsd.c: 1051: SD_CS_GPIO_PORT->DDR |= SD_CS_PIN; // output mode 
+      008EE4 72 18 50 0C      [ 1]  642 	bset	20492, #4
+                                    643 ;	../src/mmcsd.c: 1052: SD_CS_GPIO_PORT->CR1 &= ~SD_CS_PIN; //open drain here
+      008EE8 72 19 50 0D      [ 1]  644 	bres	20493, #4
+                                    645 ;	../src/mmcsd.c: 1053: }
+      008EEC 81               [ 4]  646 	ret
+                                    647 	.area CODE
+                                    648 	.area CONST
+                                    649 	.area INITIALIZER
+                                    650 	.area CABS (ABS)

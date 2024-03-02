@@ -7,123 +7,6 @@ Symbol Table
     .__.ABS.                                                    =  000000 G
     .__.CPU.                                                    =  000000 L
     .__.H$L.                                                    =  000001 L
-  9 A$stm8s_it$105                                                 000001 GR
-  9 A$stm8s_it$123                                                 000002 GR
-  9 A$stm8s_it$141                                                 000003 GR
-  9 A$stm8s_it$159                                                 000004 GR
-  9 A$stm8s_it$177                                                 000005 GR
-  9 A$stm8s_it$195                                                 000006 GR
-  9 A$stm8s_it$213                                                 000007 GR
-  9 A$stm8s_it$231                                                 000008 GR
-  9 A$stm8s_it$249                                                 000009 GR
-  9 A$stm8s_it$267                                                 00000A GR
-  9 A$stm8s_it$285                                                 00000B GR
-  9 A$stm8s_it$303                                                 00000C GR
-  9 A$stm8s_it$321                                                 00000D GR
-  9 A$stm8s_it$339                                                 00000E GR
-  9 A$stm8s_it$357                                                 00000F GR
-  9 A$stm8s_it$375                                                 000010 GR
-  9 A$stm8s_it$387                                                 000011 GR
-  9 A$stm8s_it$391                                                 000012 GR
-  9 A$stm8s_it$402                                                 000015 GR
-  9 A$stm8s_it$414                                                 000016 GR
-  9 A$stm8s_it$418                                                 000017 GR
-  9 A$stm8s_it$426                                                 00001A GR
-  9 A$stm8s_it$444                                                 00001B GR
-  9 A$stm8s_it$87                                                  000000 GR
-  9 C$stm8s_it.c$102$0_0$319                                    =  000003 GR
-  9 C$stm8s_it.c$109$0_0$321                                    =  000004 GR
-  9 C$stm8s_it.c$114$0_0$321                                    =  000004 GR
-  9 C$stm8s_it.c$121$0_0$323                                    =  000005 GR
-  9 C$stm8s_it.c$126$0_0$323                                    =  000005 GR
-  9 C$stm8s_it.c$133$0_0$325                                    =  000006 GR
-  9 C$stm8s_it.c$138$0_0$325                                    =  000006 GR
-  9 C$stm8s_it.c$145$0_0$327                                    =  000007 GR
-  9 C$stm8s_it.c$150$0_0$327                                    =  000007 GR
-  9 C$stm8s_it.c$157$0_0$329                                    =  000008 GR
-  9 C$stm8s_it.c$162$0_0$329                                    =  000008 GR
-  9 C$stm8s_it.c$208$0_0$331                                    =  000009 GR
-  9 C$stm8s_it.c$213$0_0$331                                    =  000009 GR
-  9 C$stm8s_it.c$220$0_0$333                                    =  00000A GR
-  9 C$stm8s_it.c$225$0_0$333                                    =  00000A GR
-  9 C$stm8s_it.c$232$0_0$335                                    =  00000B GR
-  9 C$stm8s_it.c$237$0_0$335                                    =  00000B GR
-  9 C$stm8s_it.c$269$0_0$337                                    =  00000C GR
-  9 C$stm8s_it.c$274$0_0$337                                    =  00000C GR
-  9 C$stm8s_it.c$281$0_0$339                                    =  00000D GR
-  9 C$stm8s_it.c$286$0_0$339                                    =  00000D GR
-  9 C$stm8s_it.c$323$0_0$341                                    =  00000E GR
-  9 C$stm8s_it.c$328$0_0$341                                    =  00000E GR
-  9 C$stm8s_it.c$335$0_0$343                                    =  00000F GR
-  9 C$stm8s_it.c$340$0_0$343                                    =  00000F GR
-  9 C$stm8s_it.c$348$0_0$345                                    =  000010 GR
-  9 C$stm8s_it.c$353$0_0$345                                    =  000010 GR
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 2.
-Hexadecimal [24-Bits]
-
-Symbol Table
-
-  9 C$stm8s_it.c$428$0_0$346                                    =  000011 GR
-  9 C$stm8s_it.c$430$1_0$346                                    =  000012 GR
-  9 C$stm8s_it.c$434$1_0$346                                    =  000015 GR
-  9 C$stm8s_it.c$436$1_0$346                                    =  000015 GR
-  9 C$stm8s_it.c$457$1_0$347                                    =  000016 GR
-  9 C$stm8s_it.c$462$1_0$347                                    =  000017 GR
-  9 C$stm8s_it.c$463$1_0$347                                    =  00001A GR
-  9 C$stm8s_it.c$471$1_0$349                                    =  00001B GR
-  9 C$stm8s_it.c$476$1_0$349                                    =  00001B GR
-  9 C$stm8s_it.c$62$0_0$313                                     =  000000 GR
-  9 C$stm8s_it.c$67$0_0$313                                     =  000000 GR
-  9 C$stm8s_it.c$73$0_0$315                                     =  000001 GR
-  9 C$stm8s_it.c$78$0_0$315                                     =  000001 GR
-  9 C$stm8s_it.c$85$0_0$317                                     =  000002 GR
-  9 C$stm8s_it.c$90$0_0$317                                     =  000002 GR
-  9 C$stm8s_it.c$97$0_0$319                                     =  000003 GR
-  9 G$ADC1_IRQHandler$0$0                                       =  000011 GR
-  9 G$AWU_IRQHandler$0$0                                        =  000002 GR
-  9 G$CLK_IRQHandler$0$0                                        =  000003 GR
-  9 G$EEPROM_EEC_IRQHandler$0$0                                 =  00001B GR
-  9 G$EXTI_PORTA_IRQHandler$0$0                                 =  000004 GR
-  9 G$EXTI_PORTB_IRQHandler$0$0                                 =  000005 GR
-  9 G$EXTI_PORTC_IRQHandler$0$0                                 =  000006 GR
-  9 G$EXTI_PORTD_IRQHandler$0$0                                 =  000007 GR
-  9 G$EXTI_PORTE_IRQHandler$0$0                                 =  000008 GR
-  9 G$I2C_IRQHandler$0$0                                        =  000010 GR
-  9 G$SPI_IRQHandler$0$0                                        =  000009 GR
-  9 G$TIM1_CAP_COM_IRQHandler$0$0                               =  00000B GR
-  9 G$TIM1_UPD_OVF_TRG_BRK_IRQHandler$0$0                       =  00000A GR
-  9 G$TIM2_CAP_COM_IRQHandler$0$0                               =  00000D GR
-  9 G$TIM2_UPD_OVF_BRK_IRQHandler$0$0                           =  00000C GR
-  9 G$TIM4_UPD_OVF_IRQHandler$0$0                               =  000016 GR
-  9 G$TLI_IRQHandler$0$0                                        =  000001 GR
-  9 G$TRAP_IRQHandler$0$0                                       =  000000 GR
-  9 G$UART1_RX_IRQHandler$0$0                                   =  00000F GR
-  9 G$UART1_TX_IRQHandler$0$0                                   =  00000E GR
-  9 XG$ADC1_IRQHandler$0$0                                      =  000015 GR
-  9 XG$AWU_IRQHandler$0$0                                       =  000002 GR
-  9 XG$CLK_IRQHandler$0$0                                       =  000003 GR
-  9 XG$EEPROM_EEC_IRQHandler$0$0                                =  00001B GR
-  9 XG$EXTI_PORTA_IRQHandler$0$0                                =  000004 GR
-  9 XG$EXTI_PORTB_IRQHandler$0$0                                =  000005 GR
-  9 XG$EXTI_PORTC_IRQHandler$0$0                                =  000006 GR
-  9 XG$EXTI_PORTD_IRQHandler$0$0                                =  000007 GR
-  9 XG$EXTI_PORTE_IRQHandler$0$0                                =  000008 GR
-  9 XG$I2C_IRQHandler$0$0                                       =  000010 GR
-  9 XG$SPI_IRQHandler$0$0                                       =  000009 GR
-  9 XG$TIM1_CAP_COM_IRQHandler$0$0                              =  00000B GR
-  9 XG$TIM1_UPD_OVF_TRG_BRK_IRQHandler$0$0                      =  00000A GR
-  9 XG$TIM2_CAP_COM_IRQHandler$0$0                              =  00000D GR
-  9 XG$TIM2_UPD_OVF_BRK_IRQHandler$0$0                          =  00000C GR
-  9 XG$TIM4_UPD_OVF_IRQHandler$0$0                              =  00001A GR
-  9 XG$TLI_IRQHandler$0$0                                       =  000001 GR
-  9 XG$TRAP_IRQHandler$0$0                                      =  000000 GR
-  9 XG$UART1_RX_IRQHandler$0$0                                  =  00000F GR
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 3.
-Hexadecimal [24-Bits]
-
-Symbol Table
-
-  9 XG$UART1_TX_IRQHandler$0$0                                  =  00000E GR
   9 _ADC1_IRQHandler                                               000011 GR
   9 _AWU_IRQHandler                                                000002 GR
   9 _CLK_IRQHandler                                                000003 GR
@@ -148,7 +31,7 @@ Symbol Table
     _systemTickIsr                                                 ****** GX
 
 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 4.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 2.
 Hexadecimal [24-Bits]
 
 Area Table

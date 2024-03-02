@@ -23,685 +23,411 @@
                                      23 ; ram data
                                      24 ;--------------------------------------------------------
                                      25 	.area DATA
-                           000000    26 Ldiskio.disk_writep$byteLeft$1_0$355==.
-      000000                         27 _disk_writep_byteLeft_65536_355:
-      000000                         28 	.ds 4
-                                     29 ;--------------------------------------------------------
-                                     30 ; ram data
-                                     31 ;--------------------------------------------------------
-                                     32 	.area INITIALIZED
-                                     33 ;--------------------------------------------------------
-                                     34 ; absolute external ram data
-                                     35 ;--------------------------------------------------------
-                                     36 	.area DABS (ABS)
-                                     37 
-                                     38 ; default segment ordering for linker
-                                     39 	.area HOME
-                                     40 	.area GSINIT
-                                     41 	.area GSFINAL
-                                     42 	.area CONST
-                                     43 	.area INITIALIZER
-                                     44 	.area CODE
-                                     45 
-                                     46 ;--------------------------------------------------------
-                                     47 ; global & static initialisations
-                                     48 ;--------------------------------------------------------
-                                     49 	.area HOME
-                                     50 	.area GSINIT
-                                     51 	.area GSFINAL
-                                     52 	.area GSINIT
-                           000000    53 	G$disk_writep$0$0 ==.
-                           000000    54 	C$diskio.c$95$1_0$355 ==.
-                                     55 ;	../src/diskio.c: 95: static uint32_t byteLeft = 512;
-                                     56 ; genAssign
-      000000 AE 02 00         [ 2]   57 	ldw	x, #0x0200
-      000003 CFu00u02         [ 2]   58 	ldw	_disk_writep_byteLeft_65536_355+2, x
-      000006 5F               [ 1]   59 	clrw	x
-      000007 CFu00u00         [ 2]   60 	ldw	_disk_writep_byteLeft_65536_355+0, x
-                                     61 ;--------------------------------------------------------
-                                     62 ; Home
-                                     63 ;--------------------------------------------------------
-                                     64 	.area HOME
-                                     65 	.area HOME
-                                     66 ;--------------------------------------------------------
-                                     67 ; code
-                                     68 ;--------------------------------------------------------
-                                     69 	.area CODE
-                           000000    70 	G$disk_initialize$0$0 ==.
-                           000000    71 	C$diskio.c$13$0_0$341 ==.
-                                     72 ;	../src/diskio.c: 13: DSTATUS disk_initialize ()
-                                     73 ; genLabel
-                                     74 ;	-----------------------------------------
-                                     75 ;	 function disk_initialize
-                                     76 ;	-----------------------------------------
-                                     77 ;	Register assignment is optimal.
-                                     78 ;	Stack space usage: 0 bytes.
-      000000                         79 _disk_initialize:
-                           000000    80 	C$diskio.c$16$1_0$341 ==.
-                                     81 ;	../src/diskio.c: 16: if(SD_Detect() == SD_NOT_PRESENT)
-                                     82 ; genCall
-      000000 CDr00r00         [ 4]   83 	call	_SD_Detect
-                                     84 ; genIfx
-      000003 4D               [ 1]   85 	tnz	a
-      000004 27 03            [ 1]   86 	jreq	00118$
-      000006 CCr00r0E         [ 2]   87 	jp	00102$
-      000009                         88 00118$:
-                           000009    89 	C$diskio.c$17$1_0$341 ==.
-                                     90 ;	../src/diskio.c: 17: return STA_NODISK;
-                                     91 ; genReturn
-      000009 A6 02            [ 1]   92 	ld	a, #0x02
-      00000B CCr00r20         [ 2]   93 	jp	00106$
-                                     94 ; genLabel
-      00000E                         95 00102$:
-                           00000E    96 	C$diskio.c$18$1_0$341 ==.
-                                     97 ;	../src/diskio.c: 18: if(SD_Init() == SD_RESPONSE_FAILURE){
-                                     98 ; genCall
-      00000E CDr00r00         [ 4]   99 	call	_SD_Init
-                                    100 ; genCmpEQorNE
-      000011 4C               [ 1]  101 	inc	a
-      000012 26 03            [ 1]  102 	jrne	00120$
-      000014 CCr00r1A         [ 2]  103 	jp	00121$
-      000017                        104 00120$:
-      000017 CCr00r1F         [ 2]  105 	jp	00104$
-      00001A                        106 00121$:
-                                    107 ; skipping generated iCode
-                           00001A   108 	C$diskio.c$19$2_0$342 ==.
-                                    109 ;	../src/diskio.c: 19: return STA_NOINIT;
-                                    110 ; genReturn
-      00001A A6 01            [ 1]  111 	ld	a, #0x01
-      00001C CCr00r20         [ 2]  112 	jp	00106$
-                                    113 ; genLabel
-      00001F                        114 00104$:
-                           00001F   115 	C$diskio.c$21$2_0$343 ==.
-                                    116 ;	../src/diskio.c: 21: return 0;
-                                    117 ; genReturn
-      00001F 4F               [ 1]  118 	clr	a
-                                    119 ; genLabel
-      000020                        120 00106$:
-                           000020   121 	C$diskio.c$23$1_0$341 ==.
-                                    122 ;	../src/diskio.c: 23: }
-                                    123 ; genEndFunction
-                           000020   124 	C$diskio.c$23$1_0$341 ==.
-                           000020   125 	XG$disk_initialize$0$0 ==.
-      000020 81               [ 4]  126 	ret
-                           000021   127 	G$disk_readp$0$0 ==.
-                           000021   128 	C$diskio.c$31$1_0$345 ==.
-                                    129 ;	../src/diskio.c: 31: DRESULT disk_readp (
-                                    130 ; genLabel
-                                    131 ;	-----------------------------------------
-                                    132 ;	 function disk_readp
-                                    133 ;	-----------------------------------------
-                                    134 ;	Register assignment might be sub-optimal.
-                                    135 ;	Stack space usage: 12 bytes.
-      000021                        136 _disk_readp:
-      000021 52 0C            [ 2]  137 	sub	sp, #12
-                           000023   138 	C$diskio.c$38$2_0$345 ==.
-                                    139 ;	../src/diskio.c: 38: DRESULT res = RES_ERROR;
-                                    140 ; genAssign
-      000023 A6 01            [ 1]  141 	ld	a, #0x01
-      000025 6B 0B            [ 1]  142 	ld	(0x0b, sp), a
-                           000027   143 	C$diskio.c$41$1_0$345 ==.
-                                    144 ;	../src/diskio.c: 41: SD_CS_LOW();
-                                    145 ; genPointerGet
-      000027 C6 50 0A         [ 1]  146 	ld	a, 0x500a
-                                    147 ; genAnd
-      00002A A4 EF            [ 1]  148 	and	a, #0xef
-                                    149 ; genPointerSet
-      00002C C7 50 0A         [ 1]  150 	ld	0x500a, a
-                           00002F   151 	C$diskio.c$44$1_0$345 ==.
-                                    152 ;	../src/diskio.c: 44: SD_SendCmd(SD_CMD_READ_SINGLE_BLOCK, sector, 0xFF);
-                                    153 ; genIPush
-      00002F 4B FF            [ 1]  154 	push	#0xff
-                                    155 ; genIPush
-      000031 1E 14            [ 2]  156 	ldw	x, (0x14, sp)
-      000033 89               [ 2]  157 	pushw	x
-      000034 1E 14            [ 2]  158 	ldw	x, (0x14, sp)
-      000036 89               [ 2]  159 	pushw	x
-                                    160 ; genIPush
-      000037 4B 11            [ 1]  161 	push	#0x11
-                                    162 ; genCall
-      000039 CDr00r00         [ 4]  163 	call	_SD_SendCmd
-      00003C 5B 06            [ 2]  164 	addw	sp, #6
-                           00003E   165 	C$diskio.c$47$1_0$345 ==.
-                                    166 ;	../src/diskio.c: 47: if (!SD_GetResponse(SD_RESPONSE_NO_ERROR))
-                                    167 ; genIPush
-      00003E 4B 00            [ 1]  168 	push	#0x00
-                                    169 ; genCall
-      000040 CDr00r00         [ 4]  170 	call	_SD_GetResponse
-      000043 5B 01            [ 2]  171 	addw	sp, #1
-      000045 6B 0C            [ 1]  172 	ld	(0x0c, sp), a
-                                    173 ; genIfx
-      000047 0D 0C            [ 1]  174 	tnz	(0x0c, sp)
-      000049 27 03            [ 1]  175 	jreq	00162$
-      00004B CCr00rFD         [ 2]  176 	jp	00107$
-      00004E                        177 00162$:
-                           00004E   178 	C$diskio.c$50$2_0$346 ==.
-                                    179 ;	../src/diskio.c: 50: if (!SD_GetResponse(SD_START_DATA_SINGLE_BLOCK_READ))
-                                    180 ; genIPush
-      00004E 4B FE            [ 1]  181 	push	#0xfe
-                                    182 ; genCall
-      000050 CDr00r00         [ 4]  183 	call	_SD_GetResponse
-      000053 5B 01            [ 2]  184 	addw	sp, #1
-                                    185 ; genIfx
-      000055 4D               [ 1]  186 	tnz	a
-      000056 27 03            [ 1]  187 	jreq	00163$
-      000058 CCr00rFD         [ 2]  188 	jp	00107$
-      00005B                        189 00163$:
-                           00005B   190 	C$diskio.c$53$4_0$348 ==.
-                                    191 ;	../src/diskio.c: 53: for(i = 0; i < offset; i++){
-                                    192 ; genAssign
-      00005B 5F               [ 1]  193 	clrw	x
-      00005C 90 5F            [ 1]  194 	clrw	y
-                                    195 ; genAssign
-      00005E 1F 0B            [ 2]  196 	ldw	(0x0b, sp), x
-      000060 17 09            [ 2]  197 	ldw	(0x09, sp), y
-                                    198 ; genLabel
-      000062                        199 00109$:
-                                    200 ; genCast
-                                    201 ; genAssign
-      000062 16 15            [ 2]  202 	ldw	y, (0x15, sp)
-      000064 17 07            [ 2]  203 	ldw	(0x07, sp), y
-      000066 0F 06            [ 1]  204 	clr	(0x06, sp)
-      000068 0F 05            [ 1]  205 	clr	(0x05, sp)
-                                    206 ; genCmp
-                                    207 ; genCmpTop
-      00006A 1E 0B            [ 2]  208 	ldw	x, (0x0b, sp)
-      00006C 13 07            [ 2]  209 	cpw	x, (0x07, sp)
-      00006E 7B 0A            [ 1]  210 	ld	a, (0x0a, sp)
-      000070 12 06            [ 1]  211 	sbc	a, (0x06, sp)
-      000072 7B 09            [ 1]  212 	ld	a, (0x09, sp)
-      000074 12 05            [ 1]  213 	sbc	a, (0x05, sp)
-      000076 25 03            [ 1]  214 	jrc	00164$
-      000078 CCr00r8D         [ 2]  215 	jp	00127$
-      00007B                        216 00164$:
-                                    217 ; skipping generated iCode
-                           00007B   218 	C$diskio.c$54$5_0$349 ==.
-                                    219 ;	../src/diskio.c: 54: SD_ReadByte();
-                                    220 ; genCall
-      00007B CDr00r00         [ 4]  221 	call	_SD_ReadByte
-                           00007E   222 	C$diskio.c$53$4_0$348 ==.
-                                    223 ;	../src/diskio.c: 53: for(i = 0; i < offset; i++){
-                                    224 ; genPlus
-      00007E 1E 0B            [ 2]  225 	ldw	x, (0x0b, sp)
-      000080 5C               [ 1]  226 	incw	x
-      000081 1F 0B            [ 2]  227 	ldw	(0x0b, sp), x
-      000083 26 05            [ 1]  228 	jrne	00165$
-      000085 1E 09            [ 2]  229 	ldw	x, (0x09, sp)
-      000087 5C               [ 1]  230 	incw	x
-      000088 1F 09            [ 2]  231 	ldw	(0x09, sp), x
-      00008A                        232 00165$:
-                                    233 ; genGoto
-      00008A CCr00r62         [ 2]  234 	jp	00109$
-                                    235 ; genLabel
-      00008D                        236 00127$:
-                                    237 ; genAssign
-      00008D 1E 0B            [ 2]  238 	ldw	x, (0x0b, sp)
-                                    239 ; genPlus
-      00008F 16 15            [ 2]  240 	ldw	y, (0x15, sp)
-      000091 72 F9 17         [ 2]  241 	addw	y, (0x17, sp)
-      000094 17 01            [ 2]  242 	ldw	(0x01, sp), y
-                                    243 ; genAssign
-      000096 16 0F            [ 2]  244 	ldw	y, (0x0f, sp)
-      000098 17 07            [ 2]  245 	ldw	(0x07, sp), y
-                                    246 ; genAssign
-      00009A 1F 0B            [ 2]  247 	ldw	(0x0b, sp), x
-      00009C 16 09            [ 2]  248 	ldw	y, (0x09, sp)
-                                    249 ; genLabel
-      00009E                        250 00112$:
-                           00009E   251 	C$diskio.c$56$4_0$350 ==.
-                                    252 ;	../src/diskio.c: 56: for (; i < offset+count; i++)
-                                    253 ; genCast
-                                    254 ; genAssign
-      00009E 1E 01            [ 2]  255 	ldw	x, (0x01, sp)
-      0000A0 1F 05            [ 2]  256 	ldw	(0x05, sp), x
-      0000A2 0F 04            [ 1]  257 	clr	(0x04, sp)
-      0000A4 0F 03            [ 1]  258 	clr	(0x03, sp)
-                                    259 ; genCmp
-                                    260 ; genCmpTop
-      0000A6 1E 0B            [ 2]  261 	ldw	x, (0x0b, sp)
-      0000A8 13 05            [ 2]  262 	cpw	x, (0x05, sp)
-      0000AA 90 9F            [ 1]  263 	ld	a, yl
-      0000AC 12 04            [ 1]  264 	sbc	a, (0x04, sp)
-      0000AE 90 9E            [ 1]  265 	ld	a, yh
-      0000B0 12 03            [ 1]  266 	sbc	a, (0x03, sp)
-      0000B2 25 03            [ 1]  267 	jrc	00166$
-      0000B4 CCr00rD2         [ 2]  268 	jp	00128$
-      0000B7                        269 00166$:
-                                    270 ; skipping generated iCode
-                           0000B7   271 	C$diskio.c$59$5_0$351 ==.
-                                    272 ;	../src/diskio.c: 59: *buff = SD_ReadByte();
-                                    273 ; genCall
-      0000B7 90 89            [ 2]  274 	pushw	y
-      0000B9 CDr00r00         [ 4]  275 	call	_SD_ReadByte
-      0000BC 90 85            [ 2]  276 	popw	y
-                                    277 ; genPointerSet
-      0000BE 1E 07            [ 2]  278 	ldw	x, (0x07, sp)
-      0000C0 F7               [ 1]  279 	ld	(x), a
-                           0000C1   280 	C$diskio.c$62$5_0$351 ==.
-                                    281 ;	../src/diskio.c: 62: buff++;
-                                    282 ; genPlus
-      0000C1 1E 07            [ 2]  283 	ldw	x, (0x07, sp)
-      0000C3 5C               [ 1]  284 	incw	x
-      0000C4 1F 07            [ 2]  285 	ldw	(0x07, sp), x
-      0000C6                        286 00167$:
-                           0000C6   287 	C$diskio.c$56$4_0$350 ==.
-                                    288 ;	../src/diskio.c: 56: for (; i < offset+count; i++)
-                                    289 ; genPlus
-      0000C6 1E 0B            [ 2]  290 	ldw	x, (0x0b, sp)
-      0000C8 5C               [ 1]  291 	incw	x
-      0000C9 1F 0B            [ 2]  292 	ldw	(0x0b, sp), x
-      0000CB 26 02            [ 1]  293 	jrne	00168$
-      0000CD 90 5C            [ 1]  294 	incw	y
-      0000CF                        295 00168$:
-                                    296 ; genGoto
-      0000CF CCr00r9E         [ 2]  297 	jp	00112$
-                                    298 ; genLabel
-      0000D2                        299 00128$:
-                                    300 ; genAssign
-      0000D2 1E 0B            [ 2]  301 	ldw	x, (0x0b, sp)
-                                    302 ; genAssign
-                                    303 ; genLabel
-      0000D4                        304 00115$:
-                           0000D4   305 	C$diskio.c$64$4_0$352 ==.
-                                    306 ;	../src/diskio.c: 64: for(;i < 512; i++){
-                                    307 ; genCmp
-                                    308 ; genCmpTop
-      0000D4 A3 02 00         [ 2]  309 	cpw	x, #0x0200
-      0000D7 90 9F            [ 1]  310 	ld	a, yl
-      0000D9 A2 00            [ 1]  311 	sbc	a, #0x00
-      0000DB 90 9E            [ 1]  312 	ld	a, yh
-      0000DD A2 00            [ 1]  313 	sbc	a, #0x00
-      0000DF 25 03            [ 1]  314 	jrc	00169$
-      0000E1 CCr00rF5         [ 2]  315 	jp	00103$
-      0000E4                        316 00169$:
-                                    317 ; skipping generated iCode
-                           0000E4   318 	C$diskio.c$65$5_0$353 ==.
-                                    319 ;	../src/diskio.c: 65: SD_ReadByte();
-                                    320 ; genCall
-      0000E4 89               [ 2]  321 	pushw	x
-      0000E5 90 89            [ 2]  322 	pushw	y
-      0000E7 CDr00r00         [ 4]  323 	call	_SD_ReadByte
-      0000EA 90 85            [ 2]  324 	popw	y
-      0000EC 85               [ 2]  325 	popw	x
-                           0000ED   326 	C$diskio.c$64$4_0$352 ==.
-                                    327 ;	../src/diskio.c: 64: for(;i < 512; i++){
-                                    328 ; genPlus
-      0000ED 5C               [ 1]  329 	incw	x
-      0000EE 26 02            [ 1]  330 	jrne	00170$
-      0000F0 90 5C            [ 1]  331 	incw	y
-      0000F2                        332 00170$:
-                                    333 ; genGoto
-      0000F2 CCr00rD4         [ 2]  334 	jp	00115$
-                                    335 ; genLabel
-      0000F5                        336 00103$:
-                           0000F5   337 	C$diskio.c$68$3_0$347 ==.
-                                    338 ;	../src/diskio.c: 68: SD_ReadByte();
-                                    339 ; genCall
-      0000F5 CDr00r00         [ 4]  340 	call	_SD_ReadByte
-                           0000F8   341 	C$diskio.c$69$3_0$347 ==.
-                                    342 ;	../src/diskio.c: 69: SD_ReadByte();
-                                    343 ; genCall
-      0000F8 CDr00r00         [ 4]  344 	call	_SD_ReadByte
-                           0000FB   345 	C$diskio.c$71$3_0$347 ==.
-                                    346 ;	../src/diskio.c: 71: res = RES_OK;
-                                    347 ; genAssign
-      0000FB 0F 0B            [ 1]  348 	clr	(0x0b, sp)
-                                    349 ; genLabel
-      0000FD                        350 00107$:
-                           0000FD   351 	C$diskio.c$75$1_0$345 ==.
-                                    352 ;	../src/diskio.c: 75: SD_CS_HIGH();
-                                    353 ; genPointerGet
-      0000FD C6 50 0A         [ 1]  354 	ld	a, 0x500a
-                                    355 ; genOr
-      000100 AA 10            [ 1]  356 	or	a, #0x10
-                                    357 ; genPointerSet
-      000102 C7 50 0A         [ 1]  358 	ld	0x500a, a
-                           000105   359 	C$diskio.c$78$1_0$345 ==.
-                                    360 ;	../src/diskio.c: 78: SD_WriteByte(SD_DUMMY_BYTE);
-                                    361 ; genIPush
-      000105 4B FF            [ 1]  362 	push	#0xff
-                                    363 ; genCall
-      000107 CDr00r00         [ 4]  364 	call	_SD_WriteByte
-      00010A 84               [ 1]  365 	pop	a
-                           00010B   366 	C$diskio.c$81$1_0$345 ==.
-                                    367 ;	../src/diskio.c: 81: return res;
-                                    368 ; genReturn
-      00010B 7B 0B            [ 1]  369 	ld	a, (0x0b, sp)
-                                    370 ; genLabel
-      00010D                        371 00117$:
-                           00010D   372 	C$diskio.c$82$1_0$345 ==.
-                                    373 ;	../src/diskio.c: 82: }
-                                    374 ; genEndFunction
-      00010D 5B 0C            [ 2]  375 	addw	sp, #12
-                           00010F   376 	C$diskio.c$82$1_0$345 ==.
-                           00010F   377 	XG$disk_readp$0$0 ==.
-      00010F 81               [ 4]  378 	ret
-                           000110   379 	G$disk_writep$0$0 ==.
-                           000110   380 	C$diskio.c$90$1_0$355 ==.
-                                    381 ;	../src/diskio.c: 90: DRESULT disk_writep (
-                                    382 ; genLabel
-                                    383 ;	-----------------------------------------
-                                    384 ;	 function disk_writep
-                                    385 ;	-----------------------------------------
-                                    386 ;	Register assignment might be sub-optimal.
-                                    387 ;	Stack space usage: 6 bytes.
-      000110                        388 _disk_writep:
-      000110 52 06            [ 2]  389 	sub	sp, #6
-                           000112   390 	C$diskio.c$97$2_0$355 ==.
-                                    391 ;	../src/diskio.c: 97: DRESULT res = RES_ERROR;
-                                    392 ; genAssign
-      000112 A6 01            [ 1]  393 	ld	a, #0x01
-      000114 6B 02            [ 1]  394 	ld	(0x02, sp), a
-                           000116   395 	C$diskio.c$99$1_0$355 ==.
-                                    396 ;	../src/diskio.c: 99: if (!buff) {
-                                    397 ; genIfx
-      000116 1E 09            [ 2]  398 	ldw	x, (0x09, sp)
-      000118 27 03            [ 1]  399 	jreq	00193$
-      00011A CCr02r16         [ 2]  400 	jp	00139$
-      00011D                        401 00193$:
-                           00011D   402 	C$diskio.c$100$2_0$356 ==.
-                                    403 ;	../src/diskio.c: 100: if (sc) {
-                                    404 ; genIfx
-      00011D 1E 0D            [ 2]  405 	ldw	x, (0x0d, sp)
-      00011F 26 07            [ 1]  406 	jrne	00194$
-      000121 1E 0B            [ 2]  407 	ldw	x, (0x0b, sp)
-      000123 26 03            [ 1]  408 	jrne	00194$
-      000125 CCr01r67         [ 2]  409 	jp	00103$
-      000128                        410 00194$:
-                           000128   411 	C$diskio.c$102$3_0$357 ==.
-                                    412 ;	../src/diskio.c: 102: SD_CS_LOW();
-                                    413 ; genPointerGet
-      000128 C6 50 0A         [ 1]  414 	ld	a, 0x500a
-                                    415 ; genAnd
-      00012B A4 EF            [ 1]  416 	and	a, #0xef
-                                    417 ; genPointerSet
-      00012D C7 50 0A         [ 1]  418 	ld	0x500a, a
-                           000130   419 	C$diskio.c$104$3_0$357 ==.
-                                    420 ;	../src/diskio.c: 104: SD_SendCmd(SD_CMD_WRITE_SINGLE_BLOCK, sc, 0xFF);
-                                    421 ; genIPush
-      000130 4B FF            [ 1]  422 	push	#0xff
-                                    423 ; genIPush
-      000132 1E 0E            [ 2]  424 	ldw	x, (0x0e, sp)
-      000134 89               [ 2]  425 	pushw	x
-      000135 1E 0E            [ 2]  426 	ldw	x, (0x0e, sp)
-      000137 89               [ 2]  427 	pushw	x
-                                    428 ; genIPush
-      000138 4B 18            [ 1]  429 	push	#0x18
-                                    430 ; genCall
-      00013A CDr00r00         [ 4]  431 	call	_SD_SendCmd
-      00013D 5B 06            [ 2]  432 	addw	sp, #6
-                           00013F   433 	C$diskio.c$107$3_0$357 ==.
-                                    434 ;	../src/diskio.c: 107: if (!SD_GetResponse(SD_RESPONSE_NO_ERROR))
-                                    435 ; genIPush
-      00013F 4B 00            [ 1]  436 	push	#0x00
-                                    437 ; genCall
-      000141 CDr00r00         [ 4]  438 	call	_SD_GetResponse
-      000144 5B 01            [ 2]  439 	addw	sp, #1
-                                    440 ; genIfx
-      000146 4D               [ 1]  441 	tnz	a
-      000147 27 03            [ 1]  442 	jreq	00195$
-      000149 CCr02r6F         [ 2]  443 	jp	00120$
-      00014C                        444 00195$:
-                           00014C   445 	C$diskio.c$110$4_0$358 ==.
-                                    446 ;	../src/diskio.c: 110: SD_WriteByte(SD_DUMMY_BYTE);
-                                    447 ; genIPush
-      00014C 4B FF            [ 1]  448 	push	#0xff
-                                    449 ; genCall
-      00014E CDr00r00         [ 4]  450 	call	_SD_WriteByte
-      000151 84               [ 1]  451 	pop	a
-                           000152   452 	C$diskio.c$112$4_0$358 ==.
-                                    453 ;	../src/diskio.c: 112: SD_WriteByte(0xFE);
-                                    454 ; genIPush
-      000152 4B FE            [ 1]  455 	push	#0xfe
-                                    456 ; genCall
-      000154 CDr00r00         [ 4]  457 	call	_SD_WriteByte
-      000157 84               [ 1]  458 	pop	a
-                           000158   459 	C$diskio.c$113$4_0$358 ==.
-                                    460 ;	../src/diskio.c: 113: byteLeft = 512;
-                                    461 ; genAssign
-      000158 AE 02 00         [ 2]  462 	ldw	x, #0x0200
-      00015B CFu00u02         [ 2]  463 	ldw	_disk_writep_byteLeft_65536_355+2, x
-      00015E 5F               [ 1]  464 	clrw	x
-      00015F CFu00u00         [ 2]  465 	ldw	_disk_writep_byteLeft_65536_355+0, x
-                           000162   466 	C$diskio.c$114$4_0$358 ==.
-                                    467 ;	../src/diskio.c: 114: res =  RES_OK;
-                                    468 ; genAssign
-      000162 0F 02            [ 1]  469 	clr	(0x02, sp)
-                                    470 ; genGoto
-      000164 CCr02r6F         [ 2]  471 	jp	00120$
-                           000167   472 	C$diskio.c$118$3_0$359 ==.
-                                    473 ;	../src/diskio.c: 118: while((byteLeft--)) {
-                                    474 ; genLabel
-      000167                        475 00103$:
-                                    476 ; genAssign
-      000167 CEu00u02         [ 2]  477 	ldw	x, _disk_writep_byteLeft_65536_355+2
-      00016A 1F 05            [ 2]  478 	ldw	(0x05, sp), x
-      00016C CEu00u00         [ 2]  479 	ldw	x, _disk_writep_byteLeft_65536_355+0
-      00016F 1F 03            [ 2]  480 	ldw	(0x03, sp), x
-                                    481 ; genMinus
-      000171 CEu00u02         [ 2]  482 	ldw	x, _disk_writep_byteLeft_65536_355+2
-      000174 1D 00 01         [ 2]  483 	subw	x, #0x0001
-      000177 90 CEu00u00      [ 2]  484 	ldw	y, _disk_writep_byteLeft_65536_355+0
-      00017B 24 02            [ 1]  485 	jrnc	00196$
-      00017D 90 5A            [ 2]  486 	decw	y
-      00017F                        487 00196$:
-                                    488 ; genAssign
-      00017F CFu00u02         [ 2]  489 	ldw	_disk_writep_byteLeft_65536_355+2, x
-      000182 90 CFu00u00      [ 2]  490 	ldw	_disk_writep_byteLeft_65536_355+0, y
-                                    491 ; genIfx
-      000186 1E 05            [ 2]  492 	ldw	x, (0x05, sp)
-      000188 26 07            [ 1]  493 	jrne	00197$
-      00018A 1E 03            [ 2]  494 	ldw	x, (0x03, sp)
-      00018C 26 03            [ 1]  495 	jrne	00197$
-      00018E CCr01r9A         [ 2]  496 	jp	00105$
-      000191                        497 00197$:
-                           000191   498 	C$diskio.c$119$4_0$360 ==.
-                                    499 ;	../src/diskio.c: 119: SD_WriteByte(0);
-                                    500 ; genIPush
-      000191 4B 00            [ 1]  501 	push	#0x00
-                                    502 ; genCall
-      000193 CDr00r00         [ 4]  503 	call	_SD_WriteByte
-      000196 84               [ 1]  504 	pop	a
-                                    505 ; genGoto
-      000197 CCr01r67         [ 2]  506 	jp	00103$
-                                    507 ; genLabel
-      00019A                        508 00105$:
-                           00019A   509 	C$diskio.c$122$3_0$359 ==.
-                                    510 ;	../src/diskio.c: 122: SD_WriteByte(0);
-                                    511 ; genIPush
-      00019A 4B 00            [ 1]  512 	push	#0x00
-                                    513 ; genCall
-      00019C CDr00r00         [ 4]  514 	call	_SD_WriteByte
-      00019F 84               [ 1]  515 	pop	a
-                           0001A0   516 	C$diskio.c$123$3_0$359 ==.
-                                    517 ;	../src/diskio.c: 123: SD_WriteByte(0);
-                                    518 ; genIPush
-      0001A0 4B 00            [ 1]  519 	push	#0x00
-                                    520 ; genCall
-      0001A2 CDr00r00         [ 4]  521 	call	_SD_WriteByte
-      0001A5 84               [ 1]  522 	pop	a
-                           0001A6   523 	C$diskio.c$126$3_0$359 ==.
-                                    524 ;	../src/diskio.c: 126: if (SD_GetDataResponse() == SD_DATA_OK){
-                                    525 ; genCall
-      0001A6 CDr00r00         [ 4]  526 	call	_SD_GetDataResponse
-                                    527 ; genCmpEQorNE
-      0001A9 A1 05            [ 1]  528 	cp	a, #0x05
-      0001AB 26 03            [ 1]  529 	jrne	00199$
-      0001AD CCr01rB3         [ 2]  530 	jp	00200$
-      0001B0                        531 00199$:
-      0001B0 CCr02r05         [ 2]  532 	jp	00110$
-      0001B3                        533 00200$:
-                                    534 ; skipping generated iCode
-                           0001B3   535 	C$diskio.c$127$5_0$362 ==.
-                                    536 ;	../src/diskio.c: 127: for (byteLeft = 5000;
-                                    537 ; genAssign
-      0001B3 AE 13 88         [ 2]  538 	ldw	x, #0x1388
-      0001B6 CFu00u02         [ 2]  539 	ldw	_disk_writep_byteLeft_65536_355+2, x
-      0001B9 5F               [ 1]  540 	clrw	x
-      0001BA CFu00u00         [ 2]  541 	ldw	_disk_writep_byteLeft_65536_355+0, x
-                                    542 ; genLabel
-      0001BD                        543 00123$:
-                           0001BD   544 	C$diskio.c$128$5_0$362 ==.
-                                    545 ;	../src/diskio.c: 128: (SD_ReadByte() != 0xFF) && byteLeft;
-                                    546 ; genCall
-      0001BD CDr00r00         [ 4]  547 	call	_SD_ReadByte
-                                    548 ; genCmpEQorNE
-      0001C0 4C               [ 1]  549 	inc	a
-      0001C1 26 03            [ 1]  550 	jrne	00202$
-      0001C3 CCr01rF6         [ 2]  551 	jp	00106$
-      0001C6                        552 00202$:
-                                    553 ; skipping generated iCode
-                                    554 ; genIfx
-      0001C6 CEu00u02         [ 2]  555 	ldw	x, _disk_writep_byteLeft_65536_355+2
-      0001C9 26 08            [ 1]  556 	jrne	00204$
-      0001CB CEu00u00         [ 2]  557 	ldw	x, _disk_writep_byteLeft_65536_355+0
-      0001CE 26 03            [ 1]  558 	jrne	00204$
-      0001D0 CCr01rF6         [ 2]  559 	jp	00106$
-      0001D3                        560 00204$:
-                           0001D3   561 	C$diskio.c$130$6_0$363 ==.
-                                    562 ;	../src/diskio.c: 130: dly(1);
-                                    563 ; genIPush
-      0001D3 4B 01            [ 1]  564 	push	#0x01
-      0001D5 5F               [ 1]  565 	clrw	x
-      0001D6 89               [ 2]  566 	pushw	x
-      0001D7 4B 00            [ 1]  567 	push	#0x00
-                                    568 ; genCall
-      0001D9 CDr00r00         [ 4]  569 	call	_dly
-      0001DC 5B 04            [ 2]  570 	addw	sp, #4
-                           0001DE   571 	C$diskio.c$129$5_0$362 ==.
-                                    572 ;	../src/diskio.c: 129: byteLeft--) {	/* Wait for ready */
-                                    573 ; genMinus
-      0001DE CEu00u02         [ 2]  574 	ldw	x, _disk_writep_byteLeft_65536_355+2
-      0001E1 1D 00 01         [ 2]  575 	subw	x, #0x0001
-      0001E4 90 CEu00u00      [ 2]  576 	ldw	y, _disk_writep_byteLeft_65536_355+0
-      0001E8 24 02            [ 1]  577 	jrnc	00205$
-      0001EA 90 5A            [ 2]  578 	decw	y
-      0001EC                        579 00205$:
-                                    580 ; genAssign
-      0001EC CFu00u02         [ 2]  581 	ldw	_disk_writep_byteLeft_65536_355+2, x
-      0001EF 90 CFu00u00      [ 2]  582 	ldw	_disk_writep_byteLeft_65536_355+0, y
-                                    583 ; genGoto
-      0001F3 CCr01rBD         [ 2]  584 	jp	00123$
-                                    585 ; genLabel
-      0001F6                        586 00106$:
-                           0001F6   587 	C$diskio.c$132$4_0$361 ==.
-                                    588 ;	../src/diskio.c: 132: if(byteLeft) res = RES_OK;
-                                    589 ; genIfx
-      0001F6 CEu00u02         [ 2]  590 	ldw	x, _disk_writep_byteLeft_65536_355+2
-      0001F9 26 08            [ 1]  591 	jrne	00206$
-      0001FB CEu00u00         [ 2]  592 	ldw	x, _disk_writep_byteLeft_65536_355+0
-      0001FE 26 03            [ 1]  593 	jrne	00206$
-      000200 CCr02r05         [ 2]  594 	jp	00110$
-      000203                        595 00206$:
-                                    596 ; genAssign
-      000203 0F 02            [ 1]  597 	clr	(0x02, sp)
-                                    598 ; genLabel
-      000205                        599 00110$:
-                           000205   600 	C$diskio.c$136$3_0$359 ==.
-                                    601 ;	../src/diskio.c: 136: SD_CS_HIGH();
-                                    602 ; genPointerGet
-      000205 C6 50 0A         [ 1]  603 	ld	a, 0x500a
-                                    604 ; genOr
-      000208 AA 10            [ 1]  605 	or	a, #0x10
-                                    606 ; genPointerSet
-      00020A C7 50 0A         [ 1]  607 	ld	0x500a, a
-                           00020D   608 	C$diskio.c$138$3_0$359 ==.
-                                    609 ;	../src/diskio.c: 138: SD_WriteByte(SD_DUMMY_BYTE);
-                                    610 ; genIPush
-      00020D 4B FF            [ 1]  611 	push	#0xff
-                                    612 ; genCall
-      00020F CDr00r00         [ 4]  613 	call	_SD_WriteByte
-      000212 84               [ 1]  614 	pop	a
-                                    615 ; genGoto
-      000213 CCr02r6F         [ 2]  616 	jp	00120$
-                           000216   617 	C$diskio.c$143$1_0$355 ==.
-                                    618 ;	../src/diskio.c: 143: while((byteLeft)&&(sc))
-                                    619 ; genLabel
-      000216                        620 00139$:
-                                    621 ; genAssign
-      000216 16 09            [ 2]  622 	ldw	y, (0x09, sp)
-      000218 17 01            [ 2]  623 	ldw	(0x01, sp), y
-                                    624 ; genAssign
-      00021A 16 0D            [ 2]  625 	ldw	y, (0x0d, sp)
-      00021C 17 05            [ 2]  626 	ldw	(0x05, sp), y
-      00021E 16 0B            [ 2]  627 	ldw	y, (0x0b, sp)
-      000220 17 03            [ 2]  628 	ldw	(0x03, sp), y
-                                    629 ; genLabel
-      000222                        630 00115$:
-                                    631 ; genIfx
-      000222 CEu00u02         [ 2]  632 	ldw	x, _disk_writep_byteLeft_65536_355+2
-      000225 26 08            [ 1]  633 	jrne	00207$
-      000227 CEu00u00         [ 2]  634 	ldw	x, _disk_writep_byteLeft_65536_355+0
-      00022A 26 03            [ 1]  635 	jrne	00207$
-      00022C CCr02r6D         [ 2]  636 	jp	00117$
-      00022F                        637 00207$:
-                                    638 ; genIfx
-      00022F 1E 05            [ 2]  639 	ldw	x, (0x05, sp)
-      000231 26 07            [ 1]  640 	jrne	00208$
-      000233 1E 03            [ 2]  641 	ldw	x, (0x03, sp)
-      000235 26 03            [ 1]  642 	jrne	00208$
-      000237 CCr02r6D         [ 2]  643 	jp	00117$
-      00023A                        644 00208$:
-                           00023A   645 	C$diskio.c$146$3_0$365 ==.
-                                    646 ;	../src/diskio.c: 146: SD_WriteByte(*buff);
-                                    647 ; genPointerGet
-      00023A 1E 01            [ 2]  648 	ldw	x, (0x01, sp)
-      00023C F6               [ 1]  649 	ld	a, (x)
-                                    650 ; genIPush
-      00023D 88               [ 1]  651 	push	a
-                                    652 ; genCall
-      00023E CDr00r00         [ 4]  653 	call	_SD_WriteByte
-      000241 84               [ 1]  654 	pop	a
-                           000242   655 	C$diskio.c$148$3_0$365 ==.
-                                    656 ;	../src/diskio.c: 148: buff++;byteLeft--;sc--;
-                                    657 ; genPlus
-      000242 1E 01            [ 2]  658 	ldw	x, (0x01, sp)
-      000244 5C               [ 1]  659 	incw	x
-      000245 1F 01            [ 2]  660 	ldw	(0x01, sp), x
-      000247                        661 00209$:
-                                    662 ; genMinus
-      000247 CEu00u02         [ 2]  663 	ldw	x, _disk_writep_byteLeft_65536_355+2
-      00024A 1D 00 01         [ 2]  664 	subw	x, #0x0001
-      00024D 90 CEu00u00      [ 2]  665 	ldw	y, _disk_writep_byteLeft_65536_355+0
-      000251 24 02            [ 1]  666 	jrnc	00210$
-      000253 90 5A            [ 2]  667 	decw	y
-      000255                        668 00210$:
-                                    669 ; genAssign
-      000255 CFu00u02         [ 2]  670 	ldw	_disk_writep_byteLeft_65536_355+2, x
-      000258 90 CFu00u00      [ 2]  671 	ldw	_disk_writep_byteLeft_65536_355+0, y
-                                    672 ; genMinus
-      00025C 1E 05            [ 2]  673 	ldw	x, (0x05, sp)
-      00025E 1D 00 01         [ 2]  674 	subw	x, #0x0001
-      000261 1F 05            [ 2]  675 	ldw	(0x05, sp), x
-      000263 1E 03            [ 2]  676 	ldw	x, (0x03, sp)
-      000265 24 01            [ 1]  677 	jrnc	00211$
-      000267 5A               [ 2]  678 	decw	x
-      000268                        679 00211$:
-      000268 1F 03            [ 2]  680 	ldw	(0x03, sp), x
-                                    681 ; genGoto
-      00026A CCr02r22         [ 2]  682 	jp	00115$
-                                    683 ; genLabel
-      00026D                        684 00117$:
-                           00026D   685 	C$diskio.c$150$2_0$364 ==.
-                                    686 ;	../src/diskio.c: 150: res = RES_OK;
-                                    687 ; genAssign
-      00026D 0F 02            [ 1]  688 	clr	(0x02, sp)
-                                    689 ; genLabel
-      00026F                        690 00120$:
-                           00026F   691 	C$diskio.c$153$1_0$355 ==.
-                                    692 ;	../src/diskio.c: 153: return res;
-                                    693 ; genReturn
-      00026F 7B 02            [ 1]  694 	ld	a, (0x02, sp)
-                                    695 ; genLabel
-      000271                        696 00125$:
-                           000271   697 	C$diskio.c$154$1_0$355 ==.
-                                    698 ;	../src/diskio.c: 154: }
-                                    699 ; genEndFunction
-      000271 5B 06            [ 2]  700 	addw	sp, #6
-                           000273   701 	C$diskio.c$154$1_0$355 ==.
-                           000273   702 	XG$disk_writep$0$0 ==.
-      000273 81               [ 4]  703 	ret
-                                    704 	.area CODE
-                                    705 	.area CONST
-                                    706 	.area INITIALIZER
-                                    707 	.area CABS (ABS)
+      000000                         26 _disk_writep_byteLeft_65536_355:
+      000000                         27 	.ds 4
+                                     28 ;--------------------------------------------------------
+                                     29 ; ram data
+                                     30 ;--------------------------------------------------------
+                                     31 	.area INITIALIZED
+                                     32 ;--------------------------------------------------------
+                                     33 ; absolute external ram data
+                                     34 ;--------------------------------------------------------
+                                     35 	.area DABS (ABS)
+                                     36 
+                                     37 ; default segment ordering for linker
+                                     38 	.area HOME
+                                     39 	.area GSINIT
+                                     40 	.area GSFINAL
+                                     41 	.area CONST
+                                     42 	.area INITIALIZER
+                                     43 	.area CODE
+                                     44 
+                                     45 ;--------------------------------------------------------
+                                     46 ; global & static initialisations
+                                     47 ;--------------------------------------------------------
+                                     48 	.area HOME
+                                     49 	.area GSINIT
+                                     50 	.area GSFINAL
+                                     51 	.area GSINIT
+                                     52 ;	../src/diskio.c: 95: static uint32_t byteLeft = 512;
+      000000 AE 02 00         [ 2]   53 	ldw	x, #0x0200
+      000003 CFu00u02         [ 2]   54 	ldw	_disk_writep_byteLeft_65536_355+2, x
+      000006 5F               [ 1]   55 	clrw	x
+      000007 CFu00u00         [ 2]   56 	ldw	_disk_writep_byteLeft_65536_355+0, x
+                                     57 ;--------------------------------------------------------
+                                     58 ; Home
+                                     59 ;--------------------------------------------------------
+                                     60 	.area HOME
+                                     61 	.area HOME
+                                     62 ;--------------------------------------------------------
+                                     63 ; code
+                                     64 ;--------------------------------------------------------
+                                     65 	.area CODE
+                                     66 ;	../src/diskio.c: 13: DSTATUS disk_initialize ()
+                                     67 ;	-----------------------------------------
+                                     68 ;	 function disk_initialize
+                                     69 ;	-----------------------------------------
+      000000                         70 _disk_initialize:
+                                     71 ;	../src/diskio.c: 16: if(SD_Detect() == SD_NOT_PRESENT)
+      000000 CDr00r00         [ 4]   72 	call	_SD_Detect
+      000003 4D               [ 1]   73 	tnz	a
+      000004 26 03            [ 1]   74 	jrne	00102$
+                                     75 ;	../src/diskio.c: 17: return STA_NODISK;
+      000006 A6 02            [ 1]   76 	ld	a, #0x02
+      000008 81               [ 4]   77 	ret
+      000009                         78 00102$:
+                                     79 ;	../src/diskio.c: 18: if(SD_Init() == SD_RESPONSE_FAILURE){
+      000009 CDr00r00         [ 4]   80 	call	_SD_Init
+      00000C 4C               [ 1]   81 	inc	a
+      00000D 26 03            [ 1]   82 	jrne	00104$
+                                     83 ;	../src/diskio.c: 19: return STA_NOINIT;
+      00000F A6 01            [ 1]   84 	ld	a, #0x01
+      000011 81               [ 4]   85 	ret
+      000012                         86 00104$:
+                                     87 ;	../src/diskio.c: 21: return 0;
+      000012 4F               [ 1]   88 	clr	a
+                                     89 ;	../src/diskio.c: 23: }
+      000013 81               [ 4]   90 	ret
+                                     91 ;	../src/diskio.c: 31: DRESULT disk_readp (
+                                     92 ;	-----------------------------------------
+                                     93 ;	 function disk_readp
+                                     94 ;	-----------------------------------------
+      000014                         95 _disk_readp:
+      000014 52 0C            [ 2]   96 	sub	sp, #12
+                                     97 ;	../src/diskio.c: 38: DRESULT res = RES_ERROR;
+      000016 A6 01            [ 1]   98 	ld	a, #0x01
+      000018 6B 0B            [ 1]   99 	ld	(0x0b, sp), a
+                                    100 ;	../src/diskio.c: 41: SD_CS_LOW();
+      00001A C6 50 0A         [ 1]  101 	ld	a, 0x500a
+      00001D A4 EF            [ 1]  102 	and	a, #0xef
+      00001F C7 50 0A         [ 1]  103 	ld	0x500a, a
+                                    104 ;	../src/diskio.c: 44: SD_SendCmd(SD_CMD_READ_SINGLE_BLOCK, sector, 0xFF);
+      000022 4B FF            [ 1]  105 	push	#0xff
+      000024 1E 14            [ 2]  106 	ldw	x, (0x14, sp)
+      000026 89               [ 2]  107 	pushw	x
+      000027 1E 14            [ 2]  108 	ldw	x, (0x14, sp)
+      000029 89               [ 2]  109 	pushw	x
+      00002A 4B 11            [ 1]  110 	push	#0x11
+      00002C CDr00r00         [ 4]  111 	call	_SD_SendCmd
+      00002F 5B 06            [ 2]  112 	addw	sp, #6
+                                    113 ;	../src/diskio.c: 47: if (!SD_GetResponse(SD_RESPONSE_NO_ERROR))
+      000031 4B 00            [ 1]  114 	push	#0x00
+      000033 CDr00r00         [ 4]  115 	call	_SD_GetResponse
+      000036 5B 01            [ 2]  116 	addw	sp, #1
+      000038 6B 0C            [ 1]  117 	ld	(0x0c, sp), a
+      00003A 27 03            [ 1]  118 	jreq	00162$
+      00003C CCr00rDA         [ 2]  119 	jp	00107$
+      00003F                        120 00162$:
+                                    121 ;	../src/diskio.c: 50: if (!SD_GetResponse(SD_START_DATA_SINGLE_BLOCK_READ))
+      00003F 4B FE            [ 1]  122 	push	#0xfe
+      000041 CDr00r00         [ 4]  123 	call	_SD_GetResponse
+      000044 5B 01            [ 2]  124 	addw	sp, #1
+      000046 4D               [ 1]  125 	tnz	a
+      000047 27 03            [ 1]  126 	jreq	00163$
+      000049 CCr00rDA         [ 2]  127 	jp	00107$
+      00004C                        128 00163$:
+                                    129 ;	../src/diskio.c: 53: for(i = 0; i < offset; i++){
+      00004C 5F               [ 1]  130 	clrw	x
+      00004D 1F 0B            [ 2]  131 	ldw	(0x0b, sp), x
+      00004F 1F 09            [ 2]  132 	ldw	(0x09, sp), x
+      000051                        133 00109$:
+      000051 16 15            [ 2]  134 	ldw	y, (0x15, sp)
+      000053 17 07            [ 2]  135 	ldw	(0x07, sp), y
+      000055 0F 06            [ 1]  136 	clr	(0x06, sp)
+      000057 0F 05            [ 1]  137 	clr	(0x05, sp)
+      000059 1E 0B            [ 2]  138 	ldw	x, (0x0b, sp)
+      00005B 13 07            [ 2]  139 	cpw	x, (0x07, sp)
+      00005D 7B 0A            [ 1]  140 	ld	a, (0x0a, sp)
+      00005F 12 06            [ 1]  141 	sbc	a, (0x06, sp)
+      000061 7B 09            [ 1]  142 	ld	a, (0x09, sp)
+      000063 12 05            [ 1]  143 	sbc	a, (0x05, sp)
+      000065 24 11            [ 1]  144 	jrnc	00124$
+                                    145 ;	../src/diskio.c: 54: SD_ReadByte();
+      000067 CDr00r00         [ 4]  146 	call	_SD_ReadByte
+                                    147 ;	../src/diskio.c: 53: for(i = 0; i < offset; i++){
+      00006A 1E 0B            [ 2]  148 	ldw	x, (0x0b, sp)
+      00006C 5C               [ 1]  149 	incw	x
+      00006D 1F 0B            [ 2]  150 	ldw	(0x0b, sp), x
+      00006F 26 E0            [ 1]  151 	jrne	00109$
+      000071 1E 09            [ 2]  152 	ldw	x, (0x09, sp)
+      000073 5C               [ 1]  153 	incw	x
+      000074 1F 09            [ 2]  154 	ldw	(0x09, sp), x
+      000076 20 D9            [ 2]  155 	jra	00109$
+      000078                        156 00124$:
+      000078 1E 15            [ 2]  157 	ldw	x, (0x15, sp)
+      00007A 72 FB 17         [ 2]  158 	addw	x, (0x17, sp)
+      00007D 1F 05            [ 2]  159 	ldw	(0x05, sp), x
+      00007F 16 0F            [ 2]  160 	ldw	y, (0x0f, sp)
+      000081 17 07            [ 2]  161 	ldw	(0x07, sp), y
+      000083                        162 00112$:
+                                    163 ;	../src/diskio.c: 56: for (; i < offset+count; i++)
+      000083 16 05            [ 2]  164 	ldw	y, (0x05, sp)
+      000085 17 03            [ 2]  165 	ldw	(0x03, sp), y
+      000087 0F 02            [ 1]  166 	clr	(0x02, sp)
+      000089 0F 01            [ 1]  167 	clr	(0x01, sp)
+      00008B 1E 0B            [ 2]  168 	ldw	x, (0x0b, sp)
+      00008D 13 03            [ 2]  169 	cpw	x, (0x03, sp)
+      00008F 7B 0A            [ 1]  170 	ld	a, (0x0a, sp)
+      000091 12 02            [ 1]  171 	sbc	a, (0x02, sp)
+      000093 7B 09            [ 1]  172 	ld	a, (0x09, sp)
+      000095 12 01            [ 1]  173 	sbc	a, (0x01, sp)
+      000097 24 19            [ 1]  174 	jrnc	00126$
+                                    175 ;	../src/diskio.c: 59: *buff = SD_ReadByte();
+      000099 CDr00r00         [ 4]  176 	call	_SD_ReadByte
+      00009C 1E 07            [ 2]  177 	ldw	x, (0x07, sp)
+      00009E F7               [ 1]  178 	ld	(x), a
+                                    179 ;	../src/diskio.c: 62: buff++;
+      00009F 1E 07            [ 2]  180 	ldw	x, (0x07, sp)
+      0000A1 5C               [ 1]  181 	incw	x
+      0000A2 1F 07            [ 2]  182 	ldw	(0x07, sp), x
+                                    183 ;	../src/diskio.c: 56: for (; i < offset+count; i++)
+      0000A4 1E 0B            [ 2]  184 	ldw	x, (0x0b, sp)
+      0000A6 5C               [ 1]  185 	incw	x
+      0000A7 1F 0B            [ 2]  186 	ldw	(0x0b, sp), x
+      0000A9 26 D8            [ 1]  187 	jrne	00112$
+      0000AB 1E 09            [ 2]  188 	ldw	x, (0x09, sp)
+      0000AD 5C               [ 1]  189 	incw	x
+      0000AE 1F 09            [ 2]  190 	ldw	(0x09, sp), x
+      0000B0 20 D1            [ 2]  191 	jra	00112$
+      0000B2                        192 00126$:
+      0000B2 16 0B            [ 2]  193 	ldw	y, (0x0b, sp)
+      0000B4 1E 09            [ 2]  194 	ldw	x, (0x09, sp)
+      0000B6                        195 00115$:
+                                    196 ;	../src/diskio.c: 64: for(;i < 512; i++){
+      0000B6 90 A3 02 00      [ 2]  197 	cpw	y, #0x0200
+      0000BA 9F               [ 1]  198 	ld	a, xl
+      0000BB A2 00            [ 1]  199 	sbc	a, #0x00
+      0000BD 9E               [ 1]  200 	ld	a, xh
+      0000BE A2 00            [ 1]  201 	sbc	a, #0x00
+      0000C0 24 10            [ 1]  202 	jrnc	00103$
+                                    203 ;	../src/diskio.c: 65: SD_ReadByte();
+      0000C2 89               [ 2]  204 	pushw	x
+      0000C3 90 89            [ 2]  205 	pushw	y
+      0000C5 CDr00r00         [ 4]  206 	call	_SD_ReadByte
+      0000C8 90 85            [ 2]  207 	popw	y
+      0000CA 85               [ 2]  208 	popw	x
+                                    209 ;	../src/diskio.c: 64: for(;i < 512; i++){
+      0000CB 90 5C            [ 1]  210 	incw	y
+      0000CD 26 E7            [ 1]  211 	jrne	00115$
+      0000CF 5C               [ 1]  212 	incw	x
+      0000D0 20 E4            [ 2]  213 	jra	00115$
+      0000D2                        214 00103$:
+                                    215 ;	../src/diskio.c: 68: SD_ReadByte();
+      0000D2 CDr00r00         [ 4]  216 	call	_SD_ReadByte
+                                    217 ;	../src/diskio.c: 69: SD_ReadByte();
+      0000D5 CDr00r00         [ 4]  218 	call	_SD_ReadByte
+                                    219 ;	../src/diskio.c: 71: res = RES_OK;
+      0000D8 0F 0B            [ 1]  220 	clr	(0x0b, sp)
+      0000DA                        221 00107$:
+                                    222 ;	../src/diskio.c: 75: SD_CS_HIGH();
+      0000DA 72 18 50 0A      [ 1]  223 	bset	20490, #4
+                                    224 ;	../src/diskio.c: 78: SD_WriteByte(SD_DUMMY_BYTE);
+      0000DE 4B FF            [ 1]  225 	push	#0xff
+      0000E0 CDr00r00         [ 4]  226 	call	_SD_WriteByte
+      0000E3 84               [ 1]  227 	pop	a
+                                    228 ;	../src/diskio.c: 81: return res;
+      0000E4 7B 0B            [ 1]  229 	ld	a, (0x0b, sp)
+                                    230 ;	../src/diskio.c: 82: }
+      0000E6 5B 0C            [ 2]  231 	addw	sp, #12
+      0000E8 81               [ 4]  232 	ret
+                                    233 ;	../src/diskio.c: 90: DRESULT disk_writep (
+                                    234 ;	-----------------------------------------
+                                    235 ;	 function disk_writep
+                                    236 ;	-----------------------------------------
+      0000E9                        237 _disk_writep:
+      0000E9 52 06            [ 2]  238 	sub	sp, #6
+                                    239 ;	../src/diskio.c: 97: DRESULT res = RES_ERROR;
+      0000EB A6 01            [ 1]  240 	ld	a, #0x01
+      0000ED 6B 02            [ 1]  241 	ld	(0x02, sp), a
+                                    242 ;	../src/diskio.c: 99: if (!buff) {
+      0000EF 1E 09            [ 2]  243 	ldw	x, (0x09, sp)
+      0000F1 27 03            [ 1]  244 	jreq	00193$
+      0000F3 CCr01rD3         [ 2]  245 	jp	00139$
+      0000F6                        246 00193$:
+                                    247 ;	../src/diskio.c: 100: if (sc) {
+      0000F6 1E 0D            [ 2]  248 	ldw	x, (0x0d, sp)
+      0000F8 26 04            [ 1]  249 	jrne	00194$
+      0000FA 1E 0B            [ 2]  250 	ldw	x, (0x0b, sp)
+      0000FC 27 3F            [ 1]  251 	jreq	00103$
+      0000FE                        252 00194$:
+                                    253 ;	../src/diskio.c: 102: SD_CS_LOW();
+      0000FE C6 50 0A         [ 1]  254 	ld	a, 0x500a
+      000101 A4 EF            [ 1]  255 	and	a, #0xef
+      000103 C7 50 0A         [ 1]  256 	ld	0x500a, a
+                                    257 ;	../src/diskio.c: 104: SD_SendCmd(SD_CMD_WRITE_SINGLE_BLOCK, sc, 0xFF);
+      000106 4B FF            [ 1]  258 	push	#0xff
+      000108 1E 0E            [ 2]  259 	ldw	x, (0x0e, sp)
+      00010A 89               [ 2]  260 	pushw	x
+      00010B 1E 0E            [ 2]  261 	ldw	x, (0x0e, sp)
+      00010D 89               [ 2]  262 	pushw	x
+      00010E 4B 18            [ 1]  263 	push	#0x18
+      000110 CDr00r00         [ 4]  264 	call	_SD_SendCmd
+      000113 5B 06            [ 2]  265 	addw	sp, #6
+                                    266 ;	../src/diskio.c: 107: if (!SD_GetResponse(SD_RESPONSE_NO_ERROR))
+      000115 4B 00            [ 1]  267 	push	#0x00
+      000117 CDr00r00         [ 4]  268 	call	_SD_GetResponse
+      00011A 5B 01            [ 2]  269 	addw	sp, #1
+      00011C 4D               [ 1]  270 	tnz	a
+      00011D 27 03            [ 1]  271 	jreq	00195$
+      00011F CCr02r25         [ 2]  272 	jp	00120$
+      000122                        273 00195$:
+                                    274 ;	../src/diskio.c: 110: SD_WriteByte(SD_DUMMY_BYTE);
+      000122 4B FF            [ 1]  275 	push	#0xff
+      000124 CDr00r00         [ 4]  276 	call	_SD_WriteByte
+      000127 84               [ 1]  277 	pop	a
+                                    278 ;	../src/diskio.c: 112: SD_WriteByte(0xFE);
+      000128 4B FE            [ 1]  279 	push	#0xfe
+      00012A CDr00r00         [ 4]  280 	call	_SD_WriteByte
+      00012D 84               [ 1]  281 	pop	a
+                                    282 ;	../src/diskio.c: 113: byteLeft = 512;
+      00012E AE 02 00         [ 2]  283 	ldw	x, #0x0200
+      000131 CFu00u02         [ 2]  284 	ldw	_disk_writep_byteLeft_65536_355+2, x
+      000134 5F               [ 1]  285 	clrw	x
+      000135 CFu00u00         [ 2]  286 	ldw	_disk_writep_byteLeft_65536_355+0, x
+                                    287 ;	../src/diskio.c: 114: res =  RES_OK;
+      000138 0F 02            [ 1]  288 	clr	(0x02, sp)
+      00013A CCr02r25         [ 2]  289 	jp	00120$
+                                    290 ;	../src/diskio.c: 118: while((byteLeft--)) {
+      00013D                        291 00103$:
+      00013D CEu00u02         [ 2]  292 	ldw	x, _disk_writep_byteLeft_65536_355+2
+      000140 1F 05            [ 2]  293 	ldw	(0x05, sp), x
+      000142 CEu00u00         [ 2]  294 	ldw	x, _disk_writep_byteLeft_65536_355+0
+      000145 1F 03            [ 2]  295 	ldw	(0x03, sp), x
+      000147 CEu00u02         [ 2]  296 	ldw	x, _disk_writep_byteLeft_65536_355+2
+      00014A 1D 00 01         [ 2]  297 	subw	x, #0x0001
+      00014D 90 CEu00u00      [ 2]  298 	ldw	y, _disk_writep_byteLeft_65536_355+0
+      000151 24 02            [ 1]  299 	jrnc	00196$
+      000153 90 5A            [ 2]  300 	decw	y
+      000155                        301 00196$:
+      000155 CFu00u02         [ 2]  302 	ldw	_disk_writep_byteLeft_65536_355+2, x
+      000158 90 CFu00u00      [ 2]  303 	ldw	_disk_writep_byteLeft_65536_355+0, y
+      00015C 1E 05            [ 2]  304 	ldw	x, (0x05, sp)
+      00015E 26 04            [ 1]  305 	jrne	00197$
+      000160 1E 03            [ 2]  306 	ldw	x, (0x03, sp)
+      000162 27 08            [ 1]  307 	jreq	00105$
+      000164                        308 00197$:
+                                    309 ;	../src/diskio.c: 119: SD_WriteByte(0);
+      000164 4B 00            [ 1]  310 	push	#0x00
+      000166 CDr00r00         [ 4]  311 	call	_SD_WriteByte
+      000169 84               [ 1]  312 	pop	a
+      00016A 20 D1            [ 2]  313 	jra	00103$
+      00016C                        314 00105$:
+                                    315 ;	../src/diskio.c: 122: SD_WriteByte(0);
+      00016C 4B 00            [ 1]  316 	push	#0x00
+      00016E CDr00r00         [ 4]  317 	call	_SD_WriteByte
+      000171 84               [ 1]  318 	pop	a
+                                    319 ;	../src/diskio.c: 123: SD_WriteByte(0);
+      000172 4B 00            [ 1]  320 	push	#0x00
+      000174 CDr00r00         [ 4]  321 	call	_SD_WriteByte
+      000177 84               [ 1]  322 	pop	a
+                                    323 ;	../src/diskio.c: 126: if (SD_GetDataResponse() == SD_DATA_OK){
+      000178 CDr00r00         [ 4]  324 	call	_SD_GetDataResponse
+      00017B A1 05            [ 1]  325 	cp	a, #0x05
+      00017D 26 48            [ 1]  326 	jrne	00110$
+                                    327 ;	../src/diskio.c: 127: for (byteLeft = 5000;
+      00017F AE 13 88         [ 2]  328 	ldw	x, #0x1388
+      000182 CFu00u02         [ 2]  329 	ldw	_disk_writep_byteLeft_65536_355+2, x
+      000185 5F               [ 1]  330 	clrw	x
+      000186 CFu00u00         [ 2]  331 	ldw	_disk_writep_byteLeft_65536_355+0, x
+      000189                        332 00123$:
+                                    333 ;	../src/diskio.c: 128: (SD_ReadByte() != 0xFF) && byteLeft;
+      000189 CDr00r00         [ 4]  334 	call	_SD_ReadByte
+      00018C 4C               [ 1]  335 	inc	a
+      00018D 27 2C            [ 1]  336 	jreq	00106$
+      00018F CEu00u02         [ 2]  337 	ldw	x, _disk_writep_byteLeft_65536_355+2
+      000192 26 05            [ 1]  338 	jrne	00204$
+      000194 CEu00u00         [ 2]  339 	ldw	x, _disk_writep_byteLeft_65536_355+0
+      000197 27 22            [ 1]  340 	jreq	00106$
+      000199                        341 00204$:
+                                    342 ;	../src/diskio.c: 130: dly(10);
+      000199 4B 0A            [ 1]  343 	push	#0x0a
+      00019B 5F               [ 1]  344 	clrw	x
+      00019C 89               [ 2]  345 	pushw	x
+      00019D 4B 00            [ 1]  346 	push	#0x00
+      00019F CDr00r00         [ 4]  347 	call	_dly
+      0001A2 5B 04            [ 2]  348 	addw	sp, #4
+                                    349 ;	../src/diskio.c: 129: byteLeft--) {	/* Wait for ready */
+      0001A4 CEu00u02         [ 2]  350 	ldw	x, _disk_writep_byteLeft_65536_355+2
+      0001A7 1D 00 01         [ 2]  351 	subw	x, #0x0001
+      0001AA 90 CEu00u00      [ 2]  352 	ldw	y, _disk_writep_byteLeft_65536_355+0
+      0001AE 24 02            [ 1]  353 	jrnc	00205$
+      0001B0 90 5A            [ 2]  354 	decw	y
+      0001B2                        355 00205$:
+      0001B2 CFu00u02         [ 2]  356 	ldw	_disk_writep_byteLeft_65536_355+2, x
+      0001B5 90 CFu00u00      [ 2]  357 	ldw	_disk_writep_byteLeft_65536_355+0, y
+      0001B9 20 CE            [ 2]  358 	jra	00123$
+      0001BB                        359 00106$:
+                                    360 ;	../src/diskio.c: 132: if(byteLeft) res = RES_OK;
+      0001BB CEu00u02         [ 2]  361 	ldw	x, _disk_writep_byteLeft_65536_355+2
+      0001BE 26 05            [ 1]  362 	jrne	00206$
+      0001C0 CEu00u00         [ 2]  363 	ldw	x, _disk_writep_byteLeft_65536_355+0
+      0001C3 27 02            [ 1]  364 	jreq	00110$
+      0001C5                        365 00206$:
+      0001C5 0F 02            [ 1]  366 	clr	(0x02, sp)
+      0001C7                        367 00110$:
+                                    368 ;	../src/diskio.c: 136: SD_CS_HIGH();
+      0001C7 72 18 50 0A      [ 1]  369 	bset	20490, #4
+                                    370 ;	../src/diskio.c: 138: SD_WriteByte(SD_DUMMY_BYTE);
+      0001CB 4B FF            [ 1]  371 	push	#0xff
+      0001CD CDr00r00         [ 4]  372 	call	_SD_WriteByte
+      0001D0 84               [ 1]  373 	pop	a
+      0001D1 20 52            [ 2]  374 	jra	00120$
+                                    375 ;	../src/diskio.c: 143: while((byteLeft)&&(sc))
+      0001D3                        376 00139$:
+      0001D3 16 09            [ 2]  377 	ldw	y, (0x09, sp)
+      0001D5 17 01            [ 2]  378 	ldw	(0x01, sp), y
+      0001D7 16 0D            [ 2]  379 	ldw	y, (0x0d, sp)
+      0001D9 17 05            [ 2]  380 	ldw	(0x05, sp), y
+      0001DB 16 0B            [ 2]  381 	ldw	y, (0x0b, sp)
+      0001DD 17 03            [ 2]  382 	ldw	(0x03, sp), y
+      0001DF                        383 00115$:
+      0001DF CEu00u02         [ 2]  384 	ldw	x, _disk_writep_byteLeft_65536_355+2
+      0001E2 26 05            [ 1]  385 	jrne	00207$
+      0001E4 CEu00u00         [ 2]  386 	ldw	x, _disk_writep_byteLeft_65536_355+0
+      0001E7 27 3A            [ 1]  387 	jreq	00117$
+      0001E9                        388 00207$:
+      0001E9 1E 05            [ 2]  389 	ldw	x, (0x05, sp)
+      0001EB 26 04            [ 1]  390 	jrne	00208$
+      0001ED 1E 03            [ 2]  391 	ldw	x, (0x03, sp)
+      0001EF 27 32            [ 1]  392 	jreq	00117$
+      0001F1                        393 00208$:
+                                    394 ;	../src/diskio.c: 146: SD_WriteByte(*buff);
+      0001F1 1E 01            [ 2]  395 	ldw	x, (0x01, sp)
+      0001F3 F6               [ 1]  396 	ld	a, (x)
+      0001F4 88               [ 1]  397 	push	a
+      0001F5 CDr00r00         [ 4]  398 	call	_SD_WriteByte
+      0001F8 84               [ 1]  399 	pop	a
+                                    400 ;	../src/diskio.c: 148: buff++;byteLeft--;sc--;
+      0001F9 1E 01            [ 2]  401 	ldw	x, (0x01, sp)
+      0001FB 5C               [ 1]  402 	incw	x
+      0001FC 1F 01            [ 2]  403 	ldw	(0x01, sp), x
+      0001FE CEu00u02         [ 2]  404 	ldw	x, _disk_writep_byteLeft_65536_355+2
+      000201 1D 00 01         [ 2]  405 	subw	x, #0x0001
+      000204 90 CEu00u00      [ 2]  406 	ldw	y, _disk_writep_byteLeft_65536_355+0
+      000208 24 02            [ 1]  407 	jrnc	00210$
+      00020A 90 5A            [ 2]  408 	decw	y
+      00020C                        409 00210$:
+      00020C CFu00u02         [ 2]  410 	ldw	_disk_writep_byteLeft_65536_355+2, x
+      00020F 90 CFu00u00      [ 2]  411 	ldw	_disk_writep_byteLeft_65536_355+0, y
+      000213 1E 05            [ 2]  412 	ldw	x, (0x05, sp)
+      000215 1D 00 01         [ 2]  413 	subw	x, #0x0001
+      000218 1F 05            [ 2]  414 	ldw	(0x05, sp), x
+      00021A 1E 03            [ 2]  415 	ldw	x, (0x03, sp)
+      00021C 24 01            [ 1]  416 	jrnc	00211$
+      00021E 5A               [ 2]  417 	decw	x
+      00021F                        418 00211$:
+      00021F 1F 03            [ 2]  419 	ldw	(0x03, sp), x
+      000221 20 BC            [ 2]  420 	jra	00115$
+      000223                        421 00117$:
+                                    422 ;	../src/diskio.c: 150: res = RES_OK;
+      000223 0F 02            [ 1]  423 	clr	(0x02, sp)
+      000225                        424 00120$:
+                                    425 ;	../src/diskio.c: 153: return res;
+      000225 7B 02            [ 1]  426 	ld	a, (0x02, sp)
+                                    427 ;	../src/diskio.c: 154: }
+      000227 5B 06            [ 2]  428 	addw	sp, #6
+      000229 81               [ 4]  429 	ret
+                                    430 	.area CODE
+                                    431 	.area CONST
+                                    432 	.area INITIALIZER
+                                    433 	.area CABS (ABS)

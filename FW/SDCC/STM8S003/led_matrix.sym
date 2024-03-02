@@ -7,284 +7,18 @@ Symbol Table
     .__.ABS.                                                    =  000000 G
     .__.CPU.                                                    =  000000 L
     .__.H$L.                                                    =  000001 L
-  9 A$led_matrix$103                                               00000F GR
-  9 A$led_matrix$110                                               000012 GR
-  9 A$led_matrix$111                                               000014 GR
-  9 A$led_matrix$112                                               000016 GR
-  9 A$led_matrix$113                                               000018 GR
-  9 A$led_matrix$117                                               00001B GR
-  9 A$led_matrix$123                                               00001E GR
-  9 A$led_matrix$124                                               000020 GR
-  9 A$led_matrix$125                                               000022 GR
-  9 A$led_matrix$126                                               000024 GR
-  9 A$led_matrix$130                                               000027 GR
-  9 A$led_matrix$131                                               000029 GR
-  9 A$led_matrix$132                                               00002A GR
-  9 A$led_matrix$133                                               00002C GR
-  9 A$led_matrix$137                                               00002F GR
-  9 A$led_matrix$138                                               000031 GR
-  9 A$led_matrix$139                                               000033 GR
-  9 A$led_matrix$140                                               000035 GR
-  9 A$led_matrix$144                                               000038 GR
-  9 A$led_matrix$145                                               00003A GR
-  9 A$led_matrix$146                                               00003C GR
-  9 A$led_matrix$147                                               00003E GR
-  9 A$led_matrix$149                                               000041 GR
-  9 A$led_matrix$159                                               000044 GR
-  9 A$led_matrix$160                                               000045 GR
-  9 A$led_matrix$161                                               000047 GR
-  9 A$led_matrix$162                                               000048 GR
-  9 A$led_matrix$163                                               000049 GR
-  9 A$led_matrix$165                                               00004A GR
-  9 A$led_matrix$167                                               00004D GR
-  9 A$led_matrix$168                                               00004F GR
-  9 A$led_matrix$169                                               000051 GR
-  9 A$led_matrix$171                                               000052 GR
-  9 A$led_matrix$172                                               000054 GR
-  9 A$led_matrix$174                                               000055 GR
-  9 A$led_matrix$175                                               000057 GR
-  9 A$led_matrix$177                                               000058 GR
-  9 A$led_matrix$178                                               00005B GR
-  9 A$led_matrix$180                                               00005C GR
-  9 A$led_matrix$188                                               00005F GR
-  9 A$led_matrix$189                                               000062 GR
-  9 A$led_matrix$190                                               000065 GR
-  9 A$led_matrix$191                                               000069 GR
-  9 A$led_matrix$192                                               00006B GR
-  9 A$led_matrix$195                                               00006D GR
-  9 A$led_matrix$196                                               00006F GR
-  9 A$led_matrix$200                                               000071 GR
-  9 A$led_matrix$201                                               000073 GR
-  9 A$led_matrix$202                                               000075 GR
-  9 A$led_matrix$203                                               000077 GR
-  9 A$led_matrix$204                                               000079 GR
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 2.
-Hexadecimal [24-Bits]
-
-Symbol Table
-
-  9 A$led_matrix$207                                               00007C GR
-  9 A$led_matrix$208                                               00007F GR
-  9 A$led_matrix$209                                               000081 GR
-  9 A$led_matrix$210                                               000082 GR
-  9 A$led_matrix$212                                               000084 GR
-  9 A$led_matrix$218                                               000087 GR
-  9 A$led_matrix$219                                               000089 GR
-  9 A$led_matrix$220                                               00008A GR
-  9 A$led_matrix$221                                               00008C GR
-  9 A$led_matrix$225                                               00008F GR
-  9 A$led_matrix$226                                               000091 GR
-  9 A$led_matrix$227                                               000094 GR
-  9 A$led_matrix$228                                               000096 GR
-  9 A$led_matrix$229                                               000098 GR
-  9 A$led_matrix$232                                               00009A GR
-  9 A$led_matrix$233                                               00009C GR
-  9 A$led_matrix$235                                               00009E GR
-  9 A$led_matrix$249                                               0000A1 GR
-  9 A$led_matrix$250                                               0000A2 GR
-  9 A$led_matrix$251                                               0000A4 GR
-  9 A$led_matrix$252                                               0000A5 GR
-  9 A$led_matrix$253                                               0000A6 GR
-  9 A$led_matrix$255                                               0000A7 GR
-  9 A$led_matrix$257                                               0000AA GR
-  9 A$led_matrix$258                                               0000AC GR
-  9 A$led_matrix$259                                               0000AE GR
-  9 A$led_matrix$260                                               0000B0 GR
-  9 A$led_matrix$262                                               0000B1 GR
-  9 A$led_matrix$270                                               0000B4 GR
-  9 A$led_matrix$271                                               0000B7 GR
-  9 A$led_matrix$272                                               0000BA GR
-  9 A$led_matrix$273                                               0000BE GR
-  9 A$led_matrix$274                                               0000C0 GR
-  9 A$led_matrix$277                                               0000C2 GR
-  9 A$led_matrix$278                                               0000C4 GR
-  9 A$led_matrix$282                                               0000C6 GR
-  9 A$led_matrix$283                                               0000C8 GR
-  9 A$led_matrix$284                                               0000C9 GR
-  9 A$led_matrix$285                                               0000CB GR
-  9 A$led_matrix$289                                               0000CE GR
-  9 A$led_matrix$290                                               0000D0 GR
-  9 A$led_matrix$291                                               0000D2 GR
-  9 A$led_matrix$292                                               0000D4 GR
-  9 A$led_matrix$294                                               0000D6 GR
-  9 A$led_matrix$298                                               0000D9 GR
-  9 A$led_matrix$299                                               0000DB GR
-  9 A$led_matrix$300                                               0000DE GR
-  9 A$led_matrix$301                                               0000E0 GR
-  9 A$led_matrix$302                                               0000E2 GR
-  9 A$led_matrix$303                                               0000E4 GR
-  9 A$led_matrix$306                                               0000E5 GR
-  9 A$led_matrix$310                                               0000E7 GR
-  9 A$led_matrix$316                                               0000E9 GR
-  9 A$led_matrix$317                                               0000EA GR
-  9 A$led_matrix$318                                               0000EC GR
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 3.
-Hexadecimal [24-Bits]
-
-Symbol Table
-
-  9 A$led_matrix$319                                               0000ED GR
-  9 A$led_matrix$320                                               0000EE GR
-  9 A$led_matrix$322                                               0000EF GR
-  9 A$led_matrix$324                                               0000F2 GR
-  9 A$led_matrix$325                                               0000F4 GR
-  9 A$led_matrix$326                                               0000F6 GR
-  9 A$led_matrix$334                                               0000F7 GR
-  9 A$led_matrix$337                                               0000F9 GR
-  9 A$led_matrix$348                                               0000FA GR
-  9 A$led_matrix$352                                               0000FC GR
-  9 A$led_matrix$360                                               0000FE GR
-  9 A$led_matrix$361                                               0000FF GR
-  9 A$led_matrix$362                                               000101 GR
-  9 A$led_matrix$363                                               000102 GR
-  9 A$led_matrix$364                                               000103 GR
-  9 A$led_matrix$366                                               000104 GR
-  9 A$led_matrix$368                                               000107 GR
-  9 A$led_matrix$369                                               000109 GR
-  9 A$led_matrix$370                                               00010C GR
-  9 A$led_matrix$372                                               00010D GR
-  9 A$led_matrix$373                                               00010F GR
-  9 A$led_matrix$377                                               000111 GR
-  9 A$led_matrix$378                                               000113 GR
-  9 A$led_matrix$379                                               000115 GR
-  9 A$led_matrix$380                                               000117 GR
-  9 A$led_matrix$381                                               000119 GR
-  9 A$led_matrix$384                                               00011C GR
-  9 A$led_matrix$385                                               00011E GR
-  9 A$led_matrix$386                                               000121 GR
-  9 A$led_matrix$387                                               000123 GR
-  9 A$led_matrix$388                                               000125 GR
-  9 A$led_matrix$389                                               000128 GR
-  9 A$led_matrix$390                                               00012A GR
-  9 A$led_matrix$392                                               00012D GR
-  9 A$led_matrix$399                                               000130 GR
-  9 A$led_matrix$400                                               000131 GR
-  9 A$led_matrix$401                                               000133 GR
-  9 A$led_matrix$402                                               000134 GR
-  9 A$led_matrix$403                                               000135 GR
-  9 A$led_matrix$405                                               000136 GR
-  9 A$led_matrix$406                                               000139 GR
-  9 A$led_matrix$408                                               00013B GR
-  9 A$led_matrix$409                                               00013D GR
-  9 A$led_matrix$410                                               00013F GR
-  9 A$led_matrix$411                                               000142 GR
-  9 A$led_matrix$412                                               000144 GR
-  9 A$led_matrix$413                                               000145 GR
-  9 A$led_matrix$415                                               000147 GR
-  9 A$led_matrix$416                                               000149 GR
-  9 A$led_matrix$417                                               00014A GR
-  9 A$led_matrix$418                                               00014C GR
-  9 A$led_matrix$422                                               00014F GR
-  9 A$led_matrix$423                                               000152 GR
-  9 A$led_matrix$425                                               000154 GR
-  9 A$led_matrix$429                                               000157 GR
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 4.
-Hexadecimal [24-Bits]
-
-Symbol Table
-
-  9 A$led_matrix$430                                               00015A GR
-  9 A$led_matrix$434                                               00015C GR
-  9 A$led_matrix$435                                               00015E GR
-  9 A$led_matrix$436                                               000160 GR
-  9 A$led_matrix$437                                               000162 GR
-  9 A$led_matrix$438                                               000163 GR
-  9 A$led_matrix$439                                               000164 GR
-  9 A$led_matrix$440                                               000166 GR
-  9 A$led_matrix$441                                               000168 GR
-  9 A$led_matrix$443                                               00016A GR
-  9 A$led_matrix$444                                               00016C GR
-  9 A$led_matrix$445                                               00016F GR
-  9 A$led_matrix$446                                               000171 GR
-  9 A$led_matrix$447                                               000173 GR
-  9 A$led_matrix$448                                               000175 GR
-  9 A$led_matrix$449                                               000177 GR
-  9 A$led_matrix$450                                               000179 GR
-  9 A$led_matrix$451                                               00017B GR
-  9 A$led_matrix$453                                               00017D GR
-  9 A$led_matrix$454                                               00017F GR
-  9 A$led_matrix$455                                               000181 GR
-  9 A$led_matrix$456                                               000183 GR
-  9 A$led_matrix$457                                               000185 GR
-  9 A$led_matrix$461                                               000186 GR
-  9 A$led_matrix$462                                               000188 GR
-  9 A$led_matrix$464                                               000189 GR
-  9 A$led_matrix$465                                               00018C GR
-  9 A$led_matrix$467                                               00018E GR
-  9 A$led_matrix$468                                               000190 GR
-  9 A$led_matrix$469                                               000191 GR
-  9 A$led_matrix$473                                               000192 GR
-  9 A$led_matrix$475                                               000193 GR
-  9 A$led_matrix$476                                               000195 GR
-  9 A$led_matrix$478                                               000196 GR
-  9 A$led_matrix$479                                               000199 GR
-  9 A$led_matrix$485                                               00019A GR
-  9 A$led_matrix$488                                               00019C GR
-  9 A$led_matrix$489                                               00019E GR
-  9 A$led_matrix$490                                               0001A0 GR
-  9 A$led_matrix$491                                               0001A2 GR
-  9 A$led_matrix$497                                               0001A5 GR
-  9 A$led_matrix$498                                               0001A7 GR
-  9 A$led_matrix$504                                               0001AA GR
-  9 A$led_matrix$507                                               0001AC GR
-  9 A$led_matrix$72                                                000000 GR
-  9 A$led_matrix$80                                                000003 GR
-  9 A$led_matrix$91                                                000004 GR
-  9 A$led_matrix$96                                                000006 GR
-  9 A$led_matrix$97                                                000008 GR
-  9 A$led_matrix$98                                                00000A GR
-  9 A$led_matrix$99                                                00000C GR
-  9 C$led_matrix.c$100$2_0$325                                  =  00019A GR
-  9 C$led_matrix.c$101$3_0$326                                  =  0000FE GR
-  9 C$led_matrix.c$102$3_0$326                                  =  000111 GR
-  9 C$led_matrix.c$103$4_0$327                                  =  000130 GR
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 5.
-Hexadecimal [24-Bits]
-
-Symbol Table
-
-  9 C$led_matrix.c$104$4_0$327                                  =  000186 GR
-  9 C$led_matrix.c$108$1_0$324                                  =  0001A5 GR
-  9 C$led_matrix.c$109$1_0$324                                  =  0001AC GR
-  9 C$led_matrix.c$52$0_0$320                                   =  000000 GR
-  9 C$led_matrix.c$54$1_0$320                                   =  000000 GR
-  9 C$led_matrix.c$55$1_0$320                                   =  000003 GR
-  9 C$led_matrix.c$71$1_0$322                                   =  000004 GR
-  9 C$led_matrix.c$75$1_0$322                                   =  000006 GR
-  9 C$led_matrix.c$76$1_0$322                                   =  000012 GR
-  9 C$led_matrix.c$78$1_0$322                                   =  00001E GR
-  9 C$led_matrix.c$80$2_0$323                                   =  000044 GR
-  9 C$led_matrix.c$81$2_0$323                                   =  00005F GR
-  9 C$led_matrix.c$82$2_0$323                                   =  00005F GR
-  9 C$led_matrix.c$83$2_0$323                                   =  000071 GR
-  9 C$led_matrix.c$84$2_0$323                                   =  000087 GR
-  9 C$led_matrix.c$85$2_0$323                                   =  0000A1 GR
-  9 C$led_matrix.c$86$2_0$323                                   =  0000B4 GR
-  9 C$led_matrix.c$87$2_0$323                                   =  0000B4 GR
-  9 C$led_matrix.c$88$2_0$323                                   =  0000C6 GR
-  9 C$led_matrix.c$89$2_0$323                                   =  0000E9 GR
-  9 C$led_matrix.c$90$1_0$322                                   =  0000F7 GR
-  9 C$led_matrix.c$91$1_0$322                                   =  0000F9 GR
-  9 C$led_matrix.c$95$1_0$324                                   =  0000FA GR
-  9 G$LedMatrixInit$0$0                                         =  000000 GR
-  9 G$SetLedMode$0$0                                            =  000004 GR
-  9 G$UpdateLeds$0$0                                            =  0000FA GR
-  1 G$led_ticks$0_0$0                                           =  000000 GR
-  9 XG$LedMatrixInit$0$0                                        =  000003 GR
-  9 XG$SetLedMode$0$0                                           =  0000F9 GR
-  9 XG$UpdateLeds$0$0                                           =  0001AC GR
     _GetLedState                                                   ****** GX
   9 _LedMatrixInit                                                 000000 GR
     _LedsInit                                                      ****** GX
-  9 _SetLedMode                                                    000004 GR
+  9 _SetLedMode                                                    000003 GR
     _SetLedState                                                   ****** GX
     _UpdateLedState                                                ****** GX
-  9 _UpdateLeds                                                    0000FA GR
+  9 _UpdateLeds                                                    0000D8 GR
   1 _led_ticks                                                     000000 GR
     _sysTick                                                       ****** GX
 
 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 6.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 2.
 Hexadecimal [24-Bits]
 
 Area Table
@@ -298,6 +32,6 @@ Area Table
    6 GSFINAL                                    size      0   flags    0
    7 CONST                                      size      0   flags    0
    8 INITIALIZER                                size      0   flags    0
-   9 CODE                                       size    1AD   flags    0
+   9 CODE                                       size    160   flags    0
    A CABS                                       size      0   flags    8
 

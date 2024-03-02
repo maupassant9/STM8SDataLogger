@@ -17,630 +17,317 @@
                                      17 ; ram data
                                      18 ;--------------------------------------------------------
                                      19 	.area DATA
-                           000000    20 G$buffer_rdy$0_0$0==.
-      000000                         21 _buffer_rdy::
-      000000                         22 	.ds 1
-                           000001    23 G$adcBuffer0$0_0$0==.
-      000001                         24 _adcBuffer0::
-      000001                         25 	.ds 256
-                           000101    26 G$adcBuffer1$0_0$0==.
-      000101                         27 _adcBuffer1::
-      000101                         28 	.ds 256
-                           000201    29 Fadc$cnter$0_0$0==.
-      000201                         30 _cnter:
-      000201                         31 	.ds 2
-                           000203    32 Fadc$pCurrBuffer$0_0$0==.
-      000203                         33 _pCurrBuffer:
-      000203                         34 	.ds 2
-                           000205    35 Fadc$pCurrByte$0_0$0==.
-      000205                         36 _pCurrByte:
-      000205                         37 	.ds 2
-                           000207    38 Ladc.NextChannel$cntForChannel$1_0$329==.
-      000207                         39 _NextChannel_cntForChannel_65536_329:
-      000207                         40 	.ds 1
-                                     41 ;--------------------------------------------------------
-                                     42 ; ram data
-                                     43 ;--------------------------------------------------------
-                                     44 	.area INITIALIZED
-                                     45 ;--------------------------------------------------------
-                                     46 ; absolute external ram data
-                                     47 ;--------------------------------------------------------
-                                     48 	.area DABS (ABS)
-                                     49 
-                                     50 ; default segment ordering for linker
-                                     51 	.area HOME
-                                     52 	.area GSINIT
-                                     53 	.area GSFINAL
-                                     54 	.area CONST
-                                     55 	.area INITIALIZER
-                                     56 	.area CODE
-                                     57 
-                                     58 ;--------------------------------------------------------
-                                     59 ; global & static initialisations
+      000000                         20 _buffer_rdy::
+      000000                         21 	.ds 1
+      000001                         22 _adcBuffer0::
+      000001                         23 	.ds 256
+      000101                         24 _adcBuffer1::
+      000101                         25 	.ds 256
+      000201                         26 _cnter:
+      000201                         27 	.ds 2
+      000203                         28 _pCurrBuffer:
+      000203                         29 	.ds 2
+      000205                         30 _pCurrByte:
+      000205                         31 	.ds 2
+      000207                         32 _NextChannel_cntForChannel_65536_329:
+      000207                         33 	.ds 1
+                                     34 ;--------------------------------------------------------
+                                     35 ; ram data
+                                     36 ;--------------------------------------------------------
+                                     37 	.area INITIALIZED
+                                     38 ;--------------------------------------------------------
+                                     39 ; absolute external ram data
+                                     40 ;--------------------------------------------------------
+                                     41 	.area DABS (ABS)
+                                     42 
+                                     43 ; default segment ordering for linker
+                                     44 	.area HOME
+                                     45 	.area GSINIT
+                                     46 	.area GSFINAL
+                                     47 	.area CONST
+                                     48 	.area INITIALIZER
+                                     49 	.area CODE
+                                     50 
+                                     51 ;--------------------------------------------------------
+                                     52 ; global & static initialisations
+                                     53 ;--------------------------------------------------------
+                                     54 	.area HOME
+                                     55 	.area GSINIT
+                                     56 	.area GSFINAL
+                                     57 	.area GSINIT
+                                     58 ;	../src/adc.c: 157: static uint8_t cntForChannel = 8;
+      000000 35 08u02u07      [ 1]   59 	mov	_NextChannel_cntForChannel_65536_329+0, #0x08
                                      60 ;--------------------------------------------------------
-                                     61 	.area HOME
-                                     62 	.area GSINIT
-                                     63 	.area GSFINAL
-                                     64 	.area GSINIT
-                           000000    65 	Fadc$NextChannel$0$0 ==.
-                           000000    66 	C$adc.c$157$2_0$330 ==.
-                                     67 ;	../src/adc.c: 157: static uint8_t cntForChannel = 8;
-                                     68 ; genAssign
-      000000 35 08u02u07      [ 1]   69 	mov	_NextChannel_cntForChannel_65536_329+0, #0x08
-                                     70 ;--------------------------------------------------------
-                                     71 ; Home
-                                     72 ;--------------------------------------------------------
-                                     73 	.area HOME
-                                     74 	.area HOME
-                                     75 ;--------------------------------------------------------
-                                     76 ; code
-                                     77 ;--------------------------------------------------------
-                                     78 	.area CODE
-                           000000    79 	Fadc$tim1Init$0$0 ==.
-                           000000    80 	C$adc.c$65$0_0$320 ==.
-                                     81 ;	../src/adc.c: 65: static void tim1Init( void )
-                                     82 ; genLabel
-                                     83 ;	-----------------------------------------
-                                     84 ;	 function tim1Init
-                                     85 ;	-----------------------------------------
-                                     86 ;	Register assignment might be sub-optimal.
-                                     87 ;	Stack space usage: 4 bytes.
-      000000                         88 _tim1Init:
-      000000 52 04            [ 2]   89 	sub	sp, #4
-                           000002    90 	C$adc.c$69$1_0$320 ==.
-                                     91 ;	../src/adc.c: 69: TIM1->CR1 = (TIM1_CR1_ARPE|TIM1_CR1_URS);
-                                     92 ; genPointerSet
-      000002 35 84 52 50      [ 1]   93 	mov	0x5250+0, #0x84
-                           000006    94 	C$adc.c$70$1_0$320 ==.
-                                     95 ;	../src/adc.c: 70: TIM1->CR2 = 0x20;
-                                     96 ; genPointerSet
-      000006 35 20 52 51      [ 1]   97 	mov	0x5251+0, #0x20
-                           00000A    98 	C$adc.c$74$1_0$320 ==.
-                                     99 ;	../src/adc.c: 74: period = ((((uint32_t)INPUT_FREQ_TIM1_FOR_ADC)/loggerCfg.sampFreq)/GetChannelNo());
-                                    100 ; skipping iCode since result will be rematerialized
-                                    101 ; genPointerGet
-      00000A CEu00u00         [ 2]  102 	ldw	x, _loggerCfg+0
-                                    103 ; genCast
-                                    104 ; genAssign
-      00000D 90 5F            [ 1]  105 	clrw	y
-                                    106 ; genIPush
-      00000F 89               [ 2]  107 	pushw	x
-      000010 90 89            [ 2]  108 	pushw	y
-                                    109 ; genIPush
-      000012 4B 00            [ 1]  110 	push	#0x00
-      000014 4B 24            [ 1]  111 	push	#0x24
-      000016 4B F4            [ 1]  112 	push	#0xf4
-      000018 4B 00            [ 1]  113 	push	#0x00
-                                    114 ; genCall
-      00001A CDr00r00         [ 4]  115 	call	__divulong
-      00001D 5B 08            [ 2]  116 	addw	sp, #8
-      00001F 1F 03            [ 2]  117 	ldw	(0x03, sp), x
-      000021 17 01            [ 2]  118 	ldw	(0x01, sp), y
-                                    119 ; genCall
-      000023 CDr01r40         [ 4]  120 	call	_GetChannelNo
-                                    121 ; genCast
-                                    122 ; genAssign
-      000026 5F               [ 1]  123 	clrw	x
-      000027 97               [ 1]  124 	ld	xl, a
-      000028 90 5F            [ 1]  125 	clrw	y
-                                    126 ; genIPush
-      00002A 89               [ 2]  127 	pushw	x
-      00002B 90 89            [ 2]  128 	pushw	y
-                                    129 ; genIPush
-      00002D 1E 07            [ 2]  130 	ldw	x, (0x07, sp)
-      00002F 89               [ 2]  131 	pushw	x
-      000030 1E 07            [ 2]  132 	ldw	x, (0x07, sp)
-      000032 89               [ 2]  133 	pushw	x
-                                    134 ; genCall
-      000033 CDr00r00         [ 4]  135 	call	__divulong
-      000036 5B 08            [ 2]  136 	addw	sp, #8
-                                    137 ; genAssign
-      000038 1F 03            [ 2]  138 	ldw	(0x03, sp), x
-                           00003A   139 	C$adc.c$75$1_0$320 ==.
-                                    140 ;	../src/adc.c: 75: TIM1->ARRH = (uint8_t)((period&0xff00)>>8);
-                                    141 ; genCast
-                                    142 ; genAssign
-      00003A 1E 03            [ 2]  143 	ldw	x, (0x03, sp)
-                                    144 ; genAnd
-      00003C 4F               [ 1]  145 	clr	a
-      00003D 97               [ 1]  146 	ld	xl, a
-      00003E 9E               [ 1]  147 	ld	a, xh
-                                    148 ; genRightShiftLiteral
-      00003F 5F               [ 1]  149 	clrw	x
-                                    150 ; genCast
-                                    151 ; genAssign
-                                    152 ; genPointerSet
-      000040 C7 52 62         [ 1]  153 	ld	0x5262, a
-                           000043   154 	C$adc.c$76$1_0$320 ==.
-                                    155 ;	../src/adc.c: 76: TIM1->ARRL = (uint8_t)(period&0xff);
-                                    156 ; genCast
-                                    157 ; genAssign
-      000043 7B 04            [ 1]  158 	ld	a, (0x04, sp)
-                                    159 ; genPointerSet
-      000045 C7 52 63         [ 1]  160 	ld	0x5263, a
-                           000048   161 	C$adc.c$77$1_0$320 ==.
-                                    162 ;	../src/adc.c: 77: TIM1->EGR |= TIM1_EGR_UG;
-                                    163 ; genPointerGet
-      000048 C6 52 57         [ 1]  164 	ld	a, 0x5257
-                                    165 ; genOr
-      00004B AA 01            [ 1]  166 	or	a, #0x01
-                                    167 ; genPointerSet
-      00004D C7 52 57         [ 1]  168 	ld	0x5257, a
-                           000050   169 	C$adc.c$78$1_0$320 ==.
-                                    170 ;	../src/adc.c: 78: TIM1->CR1 |= TIM1_CR1_CEN;
-                                    171 ; genPointerGet
-      000050 C6 52 50         [ 1]  172 	ld	a, 0x5250
-                                    173 ; genOr
-      000053 AA 01            [ 1]  174 	or	a, #0x01
-                                    175 ; genPointerSet
-      000055 C7 52 50         [ 1]  176 	ld	0x5250, a
-                                    177 ; genLabel
-      000058                        178 00101$:
-                           000058   179 	C$adc.c$79$1_0$320 ==.
-                                    180 ;	../src/adc.c: 79: }
-                                    181 ; genEndFunction
-      000058 5B 04            [ 2]  182 	addw	sp, #4
-                           00005A   183 	C$adc.c$79$1_0$320 ==.
-                           00005A   184 	XFadc$tim1Init$0$0 ==.
-      00005A 81               [ 4]  185 	ret
-                           00005B   186 	G$adcInit$0$0 ==.
-                           00005B   187 	C$adc.c$90$1_0$322 ==.
-                                    188 ;	../src/adc.c: 90: void adcInit( void )
-                                    189 ; genLabel
-                                    190 ;	-----------------------------------------
-                                    191 ;	 function adcInit
-                                    192 ;	-----------------------------------------
-                                    193 ;	Register assignment might be sub-optimal.
-                                    194 ;	Stack space usage: 0 bytes.
-      00005B                        195 _adcInit:
-                           00005B   196 	C$adc.c$92$1_0$322 ==.
-                                    197 ;	../src/adc.c: 92: cnter = 0x00;
-                                    198 ; genAssign
-      00005B 5F               [ 1]  199 	clrw	x
-      00005C CFu02u01         [ 2]  200 	ldw	_cnter+0, x
-                           00005F   201 	C$adc.c$93$1_0$322 ==.
-                                    202 ;	../src/adc.c: 93: pCurrBuffer = (uint8_t *)adcBuffer0;
-                                    203 ; skipping iCode since result will be rematerialized
-                                    204 ; skipping iCode since result will be rematerialized
-                                    205 ; genAssign
-      00005F AEr00r01         [ 2]  206 	ldw	x, #(_adcBuffer0+0)
-      000062 CFu02u03         [ 2]  207 	ldw	_pCurrBuffer+0, x
-                           000065   208 	C$adc.c$94$1_0$322 ==.
-                                    209 ;	../src/adc.c: 94: pCurrByte = (uint8_t *)adcBuffer0;
-                                    210 ; skipping iCode since result will be rematerialized
-                                    211 ; skipping iCode since result will be rematerialized
-                                    212 ; genAssign
-      000065 AEr00r01         [ 2]  213 	ldw	x, #(_adcBuffer0+0)
-      000068 CFu02u05         [ 2]  214 	ldw	_pCurrByte+0, x
-                           00006B   215 	C$adc.c$95$1_0$322 ==.
-                                    216 ;	../src/adc.c: 95: buffer_rdy = 0x00; //nenhum buffers are ready
-                                    217 ; genAssign
-      00006B 72 5Fu00u00      [ 1]  218 	clr	_buffer_rdy+0
-                           00006F   219 	C$adc.c$97$1_0$322 ==.
-                                    220 ;	../src/adc.c: 97: ADC1->CR1 = 0x20;
-                                    221 ; genPointerSet
-      00006F 35 20 54 01      [ 1]  222 	mov	0x5401+0, #0x20
-                           000073   223 	C$adc.c$100$1_0$322 ==.
-                                    224 ;	../src/adc.c: 100: ADC1->CSR = NextChannel()|ADC1_CSR_EOCIE;
-                                    225 ; genCall
-      000073 CDr00rFA         [ 4]  226 	call	_NextChannel
-                                    227 ; genOr
-      000076 AA 20            [ 1]  228 	or	a, #0x20
-                                    229 ; genPointerSet
-      000078 C7 54 00         [ 1]  230 	ld	0x5400, a
-                           00007B   231 	C$adc.c$102$1_0$322 ==.
-                                    232 ;	../src/adc.c: 102: ADC1->CR2 = (loggerCfg.isFullResultion<<3)|ADC1_CR2_EXTTRIG;//(ADC1_CR2_EXTTRIG | ADC1_CR2_ALIGN);
-                                    233 ; skipping iCode since result will be rematerialized
-                                    234 ; genPointerGet
-      00007B C6u00u0E         [ 1]  235 	ld	a, _loggerCfg+14
-                                    236 ; genCast
-                                    237 ; genAssign
-                                    238 ; genLeftShiftLiteral
-      00007E 48               [ 1]  239 	sll	a
-      00007F 48               [ 1]  240 	sll	a
-      000080 48               [ 1]  241 	sll	a
-                                    242 ; genOr
-      000081 AA 40            [ 1]  243 	or	a, #0x40
-                                    244 ; genPointerSet
-      000083 C7 54 02         [ 1]  245 	ld	0x5402, a
-                           000086   246 	C$adc.c$104$1_0$322 ==.
-                                    247 ;	../src/adc.c: 104: ADC1->CR3 = ADC1_CR3_DBUF;
-                                    248 ; genPointerSet
-      000086 35 80 54 03      [ 1]  249 	mov	0x5403+0, #0x80
-                           00008A   250 	C$adc.c$106$1_0$322 ==.
-                                    251 ;	../src/adc.c: 106: ADC1->TDRL = 0x1f;
-                                    252 ; genPointerSet
-      00008A 35 1F 54 07      [ 1]  253 	mov	0x5407+0, #0x1f
-                           00008E   254 	C$adc.c$108$1_0$322 ==.
-                                    255 ;	../src/adc.c: 108: ADC1->CR1 |= ADC1_CR1_ADON;
-                                    256 ; genPointerGet
-      00008E C6 54 01         [ 1]  257 	ld	a, 0x5401
-                                    258 ; genOr
-      000091 AA 01            [ 1]  259 	or	a, #0x01
-                                    260 ; genPointerSet
-      000093 C7 54 01         [ 1]  261 	ld	0x5401, a
-                           000096   262 	C$adc.c$110$1_0$322 ==.
-                                    263 ;	../src/adc.c: 110: tim1Init();
-                                    264 ; genCall
-      000096 CCr00r00         [ 2]  265 	jp	_tim1Init
-                                    266 ; genLabel
-      000099                        267 00101$:
-                           000099   268 	C$adc.c$111$1_0$322 ==.
-                                    269 ;	../src/adc.c: 111: }
-                                    270 ; genEndFunction
-                           000099   271 	C$adc.c$111$1_0$322 ==.
-                           000099   272 	XG$adcInit$0$0 ==.
-      000099 81               [ 4]  273 	ret
-                           00009A   274 	Fadc$NextByte$0$0 ==.
-                           00009A   275 	C$adc.c$124$1_0$323 ==.
-                                    276 ;	../src/adc.c: 124: static void NextByte()
-                                    277 ; genLabel
-                                    278 ;	-----------------------------------------
-                                    279 ;	 function NextByte
-                                    280 ;	-----------------------------------------
-                                    281 ;	Register assignment might be sub-optimal.
-                                    282 ;	Stack space usage: 0 bytes.
-      00009A                        283 _NextByte:
-                           00009A   284 	C$adc.c$126$1_0$323 ==.
-                                    285 ;	../src/adc.c: 126: INC(cnter);
-                                    286 ; genCmpEQorNE
-      00009A CEu02u01         [ 2]  287 	ldw	x, _cnter+0
-      00009D A3 00 FF         [ 2]  288 	cpw	x, #0x00ff
-      0000A0 26 03            [ 1]  289 	jrne	00127$
-      0000A2 CCr00rA8         [ 2]  290 	jp	00128$
-      0000A5                        291 00127$:
-      0000A5 CCr00rAC         [ 2]  292 	jp	00109$
-      0000A8                        293 00128$:
-                                    294 ; skipping generated iCode
-                                    295 ; genAssign
-      0000A8 5F               [ 1]  296 	clrw	x
-                                    297 ; genGoto
-      0000A9 CCr00rB0         [ 2]  298 	jp	00110$
-                                    299 ; genLabel
-      0000AC                        300 00109$:
-                                    301 ; genCast
-                                    302 ; genAssign
-      0000AC CEu02u01         [ 2]  303 	ldw	x, _cnter+0
-                                    304 ; genPlus
-      0000AF 5C               [ 1]  305 	incw	x
-                                    306 ; genAssign
-                                    307 ; genLabel
-      0000B0                        308 00110$:
-                                    309 ; genCast
-                                    310 ; genAssign
-                                    311 ; genAssign
-      0000B0 CFu02u01         [ 2]  312 	ldw	_cnter+0, x
-                           0000B3   313 	C$adc.c$128$1_0$323 ==.
-                                    314 ;	../src/adc.c: 128: if(cnter == 0){ //an overflow occurred
-                                    315 ; genIfx
-      0000B3 CEu02u01         [ 2]  316 	ldw	x, _cnter+0
-      0000B6 27 03            [ 1]  317 	jreq	00129$
-      0000B8 CCr00rEF         [ 2]  318 	jp	00105$
-      0000BB                        319 00129$:
-                           0000BB   320 	C$adc.c$130$2_0$324 ==.
-                                    321 ;	../src/adc.c: 130: if(pCurrBuffer == (uint8_t *)adcBuffer0) {
-                                    322 ; genAddrOf
-      0000BB AEr00r01         [ 2]  323 	ldw	x, #_adcBuffer0+0
-                                    324 ; genCast
-                                    325 ; genAssign
-                                    326 ; genCast
-                                    327 ; genAssign
-                                    328 ; genCmpEQorNE
-      0000BE C3u02u03         [ 2]  329 	cpw	x, _pCurrBuffer+0
-      0000C1 26 03            [ 1]  330 	jrne	00131$
-      0000C3 CCr00rC9         [ 2]  331 	jp	00132$
-      0000C6                        332 00131$:
-      0000C6 CCr00rDC         [ 2]  333 	jp	00102$
-      0000C9                        334 00132$:
-                                    335 ; skipping generated iCode
-                           0000C9   336 	C$adc.c$131$3_0$325 ==.
-                                    337 ;	../src/adc.c: 131: RELEASE_BUFF_FOR_RD(0);
-                                    338 ; genOr
-      0000C9 72 10u00u00      [ 1]  339 	bset	_buffer_rdy+0, #0
-                           0000CD   340 	C$adc.c$132$3_0$325 ==.
-                                    341 ;	../src/adc.c: 132: pCurrBuffer = (uint8_t *)adcBuffer1;
-                                    342 ; skipping iCode since result will be rematerialized
-                                    343 ; skipping iCode since result will be rematerialized
-                                    344 ; genAssign
-      0000CD AEr01r01         [ 2]  345 	ldw	x, #(_adcBuffer1+0)
-      0000D0 CFu02u03         [ 2]  346 	ldw	_pCurrBuffer+0, x
-                           0000D3   347 	C$adc.c$133$3_0$325 ==.
-                                    348 ;	../src/adc.c: 133: pCurrByte = (uint8_t *)adcBuffer1;
-                                    349 ; skipping iCode since result will be rematerialized
-                                    350 ; skipping iCode since result will be rematerialized
-                                    351 ; genAssign
-      0000D3 AEr01r01         [ 2]  352 	ldw	x, #(_adcBuffer1+0)
-      0000D6 CFu02u05         [ 2]  353 	ldw	_pCurrByte+0, x
-                                    354 ; genGoto
-      0000D9 CCr00rF9         [ 2]  355 	jp	00107$
-                                    356 ; genLabel
-      0000DC                        357 00102$:
-                           0000DC   358 	C$adc.c$135$3_0$326 ==.
-                                    359 ;	../src/adc.c: 135: RELEASE_BUFF_FOR_RD(1);
-                                    360 ; genOr
-      0000DC 72 12u00u00      [ 1]  361 	bset	_buffer_rdy+0, #1
-                           0000E0   362 	C$adc.c$136$3_0$326 ==.
-                                    363 ;	../src/adc.c: 136: pCurrBuffer = (uint8_t *)adcBuffer0;
-                                    364 ; skipping iCode since result will be rematerialized
-                                    365 ; skipping iCode since result will be rematerialized
-                                    366 ; genAssign
-      0000E0 AEr00r01         [ 2]  367 	ldw	x, #(_adcBuffer0+0)
-      0000E3 CFu02u03         [ 2]  368 	ldw	_pCurrBuffer+0, x
-                           0000E6   369 	C$adc.c$137$3_0$326 ==.
-                                    370 ;	../src/adc.c: 137: pCurrByte =  (uint8_t *)adcBuffer0;
-                                    371 ; skipping iCode since result will be rematerialized
-                                    372 ; skipping iCode since result will be rematerialized
-                                    373 ; genAssign
-      0000E6 AEr00r01         [ 2]  374 	ldw	x, #(_adcBuffer0+0)
-      0000E9 CFu02u05         [ 2]  375 	ldw	_pCurrByte+0, x
-                                    376 ; genGoto
-      0000EC CCr00rF9         [ 2]  377 	jp	00107$
-                                    378 ; genLabel
-      0000EF                        379 00105$:
-                           0000EF   380 	C$adc.c$140$2_0$327 ==.
-                                    381 ;	../src/adc.c: 140: pCurrByte = &pCurrBuffer[cnter];
-                                    382 ; genPlus
-      0000EF CEu02u03         [ 2]  383 	ldw	x, _pCurrBuffer+0
-      0000F2 72 BBu02u01      [ 2]  384 	addw	x, _cnter+0
-                                    385 ; genAssign
-      0000F6 CFu02u05         [ 2]  386 	ldw	_pCurrByte+0, x
-                                    387 ; genLabel
-      0000F9                        388 00107$:
-                           0000F9   389 	C$adc.c$142$1_0$323 ==.
-                                    390 ;	../src/adc.c: 142: }
-                                    391 ; genEndFunction
-                           0000F9   392 	C$adc.c$142$1_0$323 ==.
-                           0000F9   393 	XFadc$NextByte$0$0 ==.
-      0000F9 81               [ 4]  394 	ret
-                           0000FA   395 	Fadc$NextChannel$0$0 ==.
-                           0000FA   396 	C$adc.c$156$1_0$330 ==.
-                                    397 ;	../src/adc.c: 156: static uint8_t NextChannel(void){
-                                    398 ; genLabel
-                                    399 ;	-----------------------------------------
-                                    400 ;	 function NextChannel
-                                    401 ;	-----------------------------------------
-                                    402 ;	Register assignment might be sub-optimal.
-                                    403 ;	Stack space usage: 2 bytes.
-      0000FA                        404 _NextChannel:
-      0000FA 89               [ 2]  405 	pushw	x
-                                    406 ; skipping iCode since result will be rematerialized
-                                    407 ; genLabel
-      0000FB                        408 00104$:
-                           0000FB   409 	C$adc.c$160$3_0$331 ==.
-                                    410 ;	../src/adc.c: 160: cntForChannel = ((8==cntForChannel)?0:(cntForChannel+1));
-                                    411 ; genCmpEQorNE
-      0000FB C6u02u07         [ 1]  412 	ld	a, _NextChannel_cntForChannel_65536_329+0
-      0000FE A1 08            [ 1]  413 	cp	a, #0x08
-      000100 26 03            [ 1]  414 	jrne	00126$
-      000102 CCr01r08         [ 2]  415 	jp	00127$
-      000105                        416 00126$:
-      000105 CCr01r0D         [ 2]  417 	jp	00108$
-      000108                        418 00127$:
-                                    419 ; skipping generated iCode
-                                    420 ; genAssign
-      000108 4F               [ 1]  421 	clr	a
-      000109 5F               [ 1]  422 	clrw	x
-                                    423 ; genGoto
-      00010A CCr01r18         [ 2]  424 	jp	00109$
-                                    425 ; genLabel
-      00010D                        426 00108$:
-                                    427 ; genCast
-                                    428 ; genAssign
-      00010D C6u02u07         [ 1]  429 	ld	a, _NextChannel_cntForChannel_65536_329+0
-                                    430 ; genPlus
-      000110 4C               [ 1]  431 	inc	a
-                                    432 ; genCast
-      000111 88               [ 1]  433 	push	a
-      000112 49               [ 1]  434 	rlc	a
-      000113 4F               [ 1]  435 	clr	a
-      000114 A2 00            [ 1]  436 	sbc	a, #0x00
-      000116 97               [ 1]  437 	ld	xl, a
-      000117 84               [ 1]  438 	pop	a
-                                    439 ; genAssign
-                                    440 ; genLabel
-      000118                        441 00109$:
-                                    442 ; genCast
-                                    443 ; genAssign
-      000118 C7u02u07         [ 1]  444 	ld	_NextChannel_cntForChannel_65536_329+0, a
-                           00011B   445 	C$adc.c$161$3_0$331 ==.
-                                    446 ;	../src/adc.c: 161: if((0x01 << cntForChannel) & loggerCfg.channel){
-                                    447 ; genAssign
-      00011B C6u02u07         [ 1]  448 	ld	a, _NextChannel_cntForChannel_65536_329+0
-                                    449 ; genLeftShift
-      00011E 5F               [ 1]  450 	clrw	x
-      00011F 5C               [ 1]  451 	incw	x
-      000120 4D               [ 1]  452 	tnz	a
-      000121 27 04            [ 1]  453 	jreq	00129$
-      000123                        454 00128$:
-      000123 58               [ 2]  455 	sllw	x
-      000124 4A               [ 1]  456 	dec	a
-      000125 26 FC            [ 1]  457 	jrne	00128$
-      000127                        458 00129$:
-                                    459 ; genPointerGet
-      000127 C6u00u0D         [ 1]  460 	ld	a, _loggerCfg+13
-                                    461 ; genCast
-                                    462 ; genAssign
-      00012A 0F 01            [ 1]  463 	clr	(0x01, sp)
-                                    464 ; genAnd
-      00012C 89               [ 2]  465 	pushw	x
-      00012D 14 02            [ 1]  466 	and	a, (2, sp)
-      00012F 85               [ 2]  467 	popw	x
-      000130 97               [ 1]  468 	ld	xl, a
-      000131 9E               [ 1]  469 	ld	a, xh
-      000132 14 01            [ 1]  470 	and	a, (0x01, sp)
-      000134 95               [ 1]  471 	ld	xh, a
-                                    472 ; genIfx
-      000135 5D               [ 2]  473 	tnzw	x
-      000136 26 03            [ 1]  474 	jrne	00130$
-      000138 CCr00rFB         [ 2]  475 	jp	00104$
-      00013B                        476 00130$:
-                           00013B   477 	C$adc.c$163$4_0$332 ==.
-                                    478 ;	../src/adc.c: 163: return cntForChannel;
-                                    479 ; genReturn
-      00013B C6u02u07         [ 1]  480 	ld	a, _NextChannel_cntForChannel_65536_329+0
-                                    481 ; genLabel
-      00013E                        482 00106$:
-                           00013E   483 	C$adc.c$166$2_0$330 ==.
-                                    484 ;	../src/adc.c: 166: }
-                                    485 ; genEndFunction
-      00013E 85               [ 2]  486 	popw	x
-                           00013F   487 	C$adc.c$166$2_0$330 ==.
-                           00013F   488 	XFadc$NextChannel$0$0 ==.
-      00013F 81               [ 4]  489 	ret
-                           000140   490 	Fadc$GetChannelNo$0$0 ==.
-                           000140   491 	C$adc.c$179$2_0$334 ==.
-                                    492 ;	../src/adc.c: 179: static uint8_t GetChannelNo(void){
-                                    493 ; genLabel
-                                    494 ;	-----------------------------------------
-                                    495 ;	 function GetChannelNo
-                                    496 ;	-----------------------------------------
-                                    497 ;	Register assignment might be sub-optimal.
-                                    498 ;	Stack space usage: 4 bytes.
-      000140                        499 _GetChannelNo:
-      000140 52 04            [ 2]  500 	sub	sp, #4
-                           000142   501 	C$adc.c$180$2_0$334 ==.
-                                    502 ;	../src/adc.c: 180: uint8_t cnt, chNo = 0;
-                                    503 ; genAssign
-      000142 0F 03            [ 1]  504 	clr	(0x03, sp)
-                           000144   505 	C$adc.c$182$2_0$335 ==.
-                                    506 ;	../src/adc.c: 182: for(cnt = 0; cnt < 8; cnt++){
-                                    507 ; genAssign
-      000144 0F 04            [ 1]  508 	clr	(0x04, sp)
-                                    509 ; skipping iCode since result will be rematerialized
-                                    510 ; genLabel
-      000146                        511 00104$:
-                           000146   512 	C$adc.c$183$3_0$336 ==.
-                                    513 ;	../src/adc.c: 183: if((0x01 << cnt) & loggerCfg.channel){
-                                    514 ; genLeftShift
-      000146 5F               [ 1]  515 	clrw	x
-      000147 5C               [ 1]  516 	incw	x
-      000148 7B 04            [ 1]  517 	ld	a, (0x04, sp)
-      00014A 27 04            [ 1]  518 	jreq	00125$
-      00014C                        519 00124$:
-      00014C 58               [ 2]  520 	sllw	x
-      00014D 4A               [ 1]  521 	dec	a
-      00014E 26 FC            [ 1]  522 	jrne	00124$
-      000150                        523 00125$:
-                                    524 ; genPointerGet
-      000150 C6u00u0D         [ 1]  525 	ld	a, _loggerCfg+13
-                                    526 ; genCast
-                                    527 ; genAssign
-      000153 0F 01            [ 1]  528 	clr	(0x01, sp)
-                                    529 ; genAnd
-      000155 89               [ 2]  530 	pushw	x
-      000156 14 02            [ 1]  531 	and	a, (2, sp)
-      000158 85               [ 2]  532 	popw	x
-      000159 97               [ 1]  533 	ld	xl, a
-      00015A 9E               [ 1]  534 	ld	a, xh
-      00015B 14 01            [ 1]  535 	and	a, (0x01, sp)
-      00015D 95               [ 1]  536 	ld	xh, a
-                                    537 ; genIfx
-      00015E 5D               [ 2]  538 	tnzw	x
-      00015F 26 03            [ 1]  539 	jrne	00126$
-      000161 CCr01r66         [ 2]  540 	jp	00105$
-      000164                        541 00126$:
-                           000164   542 	C$adc.c$184$4_0$337 ==.
-                                    543 ;	../src/adc.c: 184: chNo++;
-                                    544 ; genPlus
-      000164 0C 03            [ 1]  545 	inc	(0x03, sp)
-                                    546 ; genLabel
-      000166                        547 00105$:
-                           000166   548 	C$adc.c$182$2_0$335 ==.
-                                    549 ;	../src/adc.c: 182: for(cnt = 0; cnt < 8; cnt++){
-                                    550 ; genPlus
-      000166 0C 04            [ 1]  551 	inc	(0x04, sp)
-                                    552 ; genCmp
-                                    553 ; genCmpTop
-      000168 7B 04            [ 1]  554 	ld	a, (0x04, sp)
-      00016A A1 08            [ 1]  555 	cp	a, #0x08
-      00016C 24 03            [ 1]  556 	jrnc	00127$
-      00016E CCr01r46         [ 2]  557 	jp	00104$
-      000171                        558 00127$:
-                                    559 ; skipping generated iCode
-                           000171   560 	C$adc.c$187$1_0$334 ==.
-                                    561 ;	../src/adc.c: 187: return chNo;
-                                    562 ; genAssign
-      000171 7B 03            [ 1]  563 	ld	a, (0x03, sp)
-                                    564 ; genReturn
-                                    565 ; genLabel
-      000173                        566 00106$:
-                           000173   567 	C$adc.c$188$1_0$334 ==.
-                                    568 ;	../src/adc.c: 188: }
-                                    569 ; genEndFunction
-      000173 5B 04            [ 2]  570 	addw	sp, #4
-                           000175   571 	C$adc.c$188$1_0$334 ==.
-                           000175   572 	XFadc$GetChannelNo$0$0 ==.
-      000175 81               [ 4]  573 	ret
-                           000176   574 	G$adcIsr$0$0 ==.
-                           000176   575 	C$adc.c$246$1_0$339 ==.
-                                    576 ;	../src/adc.c: 246: void adcIsr (void)
-                                    577 ; genLabel
-                                    578 ;	-----------------------------------------
-                                    579 ;	 function adcIsr
-                                    580 ;	-----------------------------------------
-                                    581 ;	Register assignment might be sub-optimal.
-                                    582 ;	Stack space usage: 1 bytes.
-      000176                        583 _adcIsr:
-      000176 88               [ 1]  584 	push	a
-                           000177   585 	C$adc.c$250$1_0$339 ==.
-                                    586 ;	../src/adc.c: 250: currChannel = NextChannel();
-                                    587 ; genCall
-      000177 CDr00rFA         [ 4]  588 	call	_NextChannel
-                                    589 ; genAssign
-      00017A 6B 01            [ 1]  590 	ld	(0x01, sp), a
-                           00017C   591 	C$adc.c$251$1_0$339 ==.
-                                    592 ;	../src/adc.c: 251: if(loggerCfg.isFullResultion){
-                                    593 ; skipping iCode since result will be rematerialized
-                                    594 ; genPointerGet
-      00017C C6u00u0E         [ 1]  595 	ld	a, _loggerCfg+14
-                                    596 ; genIfx
-      00017F 4D               [ 1]  597 	tnz	a
-      000180 26 03            [ 1]  598 	jrne	00110$
-      000182 CCr01r8F         [ 2]  599 	jp	00102$
-      000185                        600 00110$:
-                           000185   601 	C$adc.c$252$2_0$340 ==.
-                                    602 ;	../src/adc.c: 252: *pCurrByte = ADC1->DRL;
-                                    603 ; genAssign
-      000185 CEu02u05         [ 2]  604 	ldw	x, _pCurrByte+0
-                                    605 ; genPointerGet
-      000188 C6 54 05         [ 1]  606 	ld	a, 0x5405
-                                    607 ; genPointerSet
-      00018B F7               [ 1]  608 	ld	(x), a
-                           00018C   609 	C$adc.c$253$2_0$340 ==.
-                                    610 ;	../src/adc.c: 253: NextByte();
-                                    611 ; genCall
-      00018C CDr00r9A         [ 4]  612 	call	_NextByte
-                                    613 ; genLabel
-      00018F                        614 00102$:
-                           00018F   615 	C$adc.c$255$1_0$339 ==.
-                                    616 ;	../src/adc.c: 255: *pCurrByte = ADC1->DRH;
-                                    617 ; genAssign
-      00018F CEu02u05         [ 2]  618 	ldw	x, _pCurrByte+0
-                                    619 ; genPointerGet
-      000192 C6 54 04         [ 1]  620 	ld	a, 0x5404
-                                    621 ; genPointerSet
-      000195 F7               [ 1]  622 	ld	(x), a
-                           000196   623 	C$adc.c$256$1_0$339 ==.
-                                    624 ;	../src/adc.c: 256: NextByte();
-                                    625 ; genCall
-      000196 CDr00r9A         [ 4]  626 	call	_NextByte
-                           000199   627 	C$adc.c$260$1_0$339 ==.
-                                    628 ;	../src/adc.c: 260: ADC1->CSR = (currChannel|ADC1_CSR_EOCIE);
-                                    629 ; genOr
-      000199 7B 01            [ 1]  630 	ld	a, (0x01, sp)
-      00019B AA 20            [ 1]  631 	or	a, #0x20
-                                    632 ; genPointerSet
-      00019D C7 54 00         [ 1]  633 	ld	0x5400, a
-                                    634 ; genLabel
-      0001A0                        635 00103$:
-                           0001A0   636 	C$adc.c$262$1_0$339 ==.
-                                    637 ;	../src/adc.c: 262: }
-                                    638 ; genEndFunction
-      0001A0 84               [ 1]  639 	pop	a
-                           0001A1   640 	C$adc.c$262$1_0$339 ==.
-                           0001A1   641 	XG$adcIsr$0$0 ==.
-      0001A1 81               [ 4]  642 	ret
-                                    643 	.area CODE
-                                    644 	.area CONST
-                                    645 	.area INITIALIZER
-                                    646 	.area CABS (ABS)
+                                     61 ; Home
+                                     62 ;--------------------------------------------------------
+                                     63 	.area HOME
+                                     64 	.area HOME
+                                     65 ;--------------------------------------------------------
+                                     66 ; code
+                                     67 ;--------------------------------------------------------
+                                     68 	.area CODE
+                                     69 ;	../src/adc.c: 65: static void tim1Init( void )
+                                     70 ;	-----------------------------------------
+                                     71 ;	 function tim1Init
+                                     72 ;	-----------------------------------------
+      000000                         73 _tim1Init:
+      000000 52 04            [ 2]   74 	sub	sp, #4
+                                     75 ;	../src/adc.c: 69: TIM1->CR1 = (TIM1_CR1_ARPE|TIM1_CR1_URS);
+      000002 35 84 52 50      [ 1]   76 	mov	0x5250+0, #0x84
+                                     77 ;	../src/adc.c: 70: TIM1->CR2 = 0x20;
+      000006 35 20 52 51      [ 1]   78 	mov	0x5251+0, #0x20
+                                     79 ;	../src/adc.c: 74: period = ((((uint32_t)INPUT_FREQ_TIM1_FOR_ADC)/loggerCfg.sampFreq)/GetChannelNo());
+      00000A CEu00u00         [ 2]   80 	ldw	x, _loggerCfg+0
+      00000D 90 5F            [ 1]   81 	clrw	y
+      00000F 89               [ 2]   82 	pushw	x
+      000010 90 89            [ 2]   83 	pushw	y
+      000012 4B 00            [ 1]   84 	push	#0x00
+      000014 4B 24            [ 1]   85 	push	#0x24
+      000016 4B F4            [ 1]   86 	push	#0xf4
+      000018 4B 00            [ 1]   87 	push	#0x00
+      00001A CDr00r00         [ 4]   88 	call	__divulong
+      00001D 5B 08            [ 2]   89 	addw	sp, #8
+      00001F 1F 03            [ 2]   90 	ldw	(0x03, sp), x
+      000021 17 01            [ 2]   91 	ldw	(0x01, sp), y
+      000023 CDr01r0C         [ 4]   92 	call	_GetChannelNo
+      000026 5F               [ 1]   93 	clrw	x
+      000027 97               [ 1]   94 	ld	xl, a
+      000028 90 5F            [ 1]   95 	clrw	y
+      00002A 89               [ 2]   96 	pushw	x
+      00002B 90 89            [ 2]   97 	pushw	y
+      00002D 1E 07            [ 2]   98 	ldw	x, (0x07, sp)
+      00002F 89               [ 2]   99 	pushw	x
+      000030 1E 07            [ 2]  100 	ldw	x, (0x07, sp)
+      000032 89               [ 2]  101 	pushw	x
+      000033 CDr00r00         [ 4]  102 	call	__divulong
+      000036 5B 08            [ 2]  103 	addw	sp, #8
+                                    104 ;	../src/adc.c: 75: TIM1->ARRH = (uint8_t)((period&0xff00)>>8);
+      000038 1F 03            [ 2]  105 	ldw	(0x03, sp), x
+      00003A 4F               [ 1]  106 	clr	a
+      00003B 02               [ 1]  107 	rlwa	x
+      00003C C7 52 62         [ 1]  108 	ld	0x5262, a
+                                    109 ;	../src/adc.c: 76: TIM1->ARRL = (uint8_t)(period&0xff);
+      00003F 7B 04            [ 1]  110 	ld	a, (0x04, sp)
+      000041 C7 52 63         [ 1]  111 	ld	0x5263, a
+                                    112 ;	../src/adc.c: 77: TIM1->EGR |= TIM1_EGR_UG;
+      000044 72 10 52 57      [ 1]  113 	bset	21079, #0
+                                    114 ;	../src/adc.c: 78: TIM1->CR1 |= TIM1_CR1_CEN;
+      000048 72 10 52 50      [ 1]  115 	bset	21072, #0
+                                    116 ;	../src/adc.c: 79: }
+      00004C 5B 04            [ 2]  117 	addw	sp, #4
+      00004E 81               [ 4]  118 	ret
+                                    119 ;	../src/adc.c: 90: void adcInit( void )
+                                    120 ;	-----------------------------------------
+                                    121 ;	 function adcInit
+                                    122 ;	-----------------------------------------
+      00004F                        123 _adcInit:
+                                    124 ;	../src/adc.c: 92: cnter = 0x00;
+      00004F 5F               [ 1]  125 	clrw	x
+      000050 CFu02u01         [ 2]  126 	ldw	_cnter+0, x
+                                    127 ;	../src/adc.c: 93: pCurrBuffer = (uint8_t *)adcBuffer0;
+      000053 AEr00r01         [ 2]  128 	ldw	x, #(_adcBuffer0+0)
+      000056 CFu02u03         [ 2]  129 	ldw	_pCurrBuffer+0, x
+                                    130 ;	../src/adc.c: 94: pCurrByte = (uint8_t *)adcBuffer0;
+      000059 AEr00r01         [ 2]  131 	ldw	x, #(_adcBuffer0+0)
+      00005C CFu02u05         [ 2]  132 	ldw	_pCurrByte+0, x
+                                    133 ;	../src/adc.c: 95: buffer_rdy = 0x00; //nenhum buffers are ready
+      00005F 72 5Fu00u00      [ 1]  134 	clr	_buffer_rdy+0
+                                    135 ;	../src/adc.c: 97: ADC1->CR1 = 0x20;
+      000063 35 20 54 01      [ 1]  136 	mov	0x5401+0, #0x20
+                                    137 ;	../src/adc.c: 100: ADC1->CSR = NextChannel()|ADC1_CSR_EOCIE;
+      000067 CDr00rD6         [ 4]  138 	call	_NextChannel
+      00006A AA 20            [ 1]  139 	or	a, #0x20
+      00006C C7 54 00         [ 1]  140 	ld	0x5400, a
+                                    141 ;	../src/adc.c: 102: ADC1->CR2 = (loggerCfg.isFullResultion<<3)|ADC1_CR2_EXTTRIG;//(ADC1_CR2_EXTTRIG | ADC1_CR2_ALIGN);
+      00006F C6u00u0E         [ 1]  142 	ld	a, _loggerCfg+14
+      000072 48               [ 1]  143 	sll	a
+      000073 48               [ 1]  144 	sll	a
+      000074 48               [ 1]  145 	sll	a
+      000075 AA 40            [ 1]  146 	or	a, #0x40
+      000077 C7 54 02         [ 1]  147 	ld	0x5402, a
+                                    148 ;	../src/adc.c: 104: ADC1->CR3 = ADC1_CR3_DBUF;
+      00007A 35 80 54 03      [ 1]  149 	mov	0x5403+0, #0x80
+                                    150 ;	../src/adc.c: 106: ADC1->TDRL = 0x1f;
+      00007E 35 1F 54 07      [ 1]  151 	mov	0x5407+0, #0x1f
+                                    152 ;	../src/adc.c: 108: ADC1->CR1 |= ADC1_CR1_ADON;
+      000082 C6 54 01         [ 1]  153 	ld	a, 0x5401
+      000085 AA 01            [ 1]  154 	or	a, #0x01
+      000087 C7 54 01         [ 1]  155 	ld	0x5401, a
+                                    156 ;	../src/adc.c: 110: tim1Init();
+                                    157 ;	../src/adc.c: 111: }
+      00008A CCr00r00         [ 2]  158 	jp	_tim1Init
+                                    159 ;	../src/adc.c: 124: static void NextByte()
+                                    160 ;	-----------------------------------------
+                                    161 ;	 function NextByte
+                                    162 ;	-----------------------------------------
+      00008D                        163 _NextByte:
+                                    164 ;	../src/adc.c: 126: INC(cnter);
+      00008D CEu02u01         [ 2]  165 	ldw	x, _cnter+0
+      000090 A3 00 FF         [ 2]  166 	cpw	x, #0x00ff
+      000093 26 03            [ 1]  167 	jrne	00109$
+      000095 5F               [ 1]  168 	clrw	x
+      000096 20 04            [ 2]  169 	jra	00110$
+      000098                        170 00109$:
+      000098 CEu02u01         [ 2]  171 	ldw	x, _cnter+0
+      00009B 5C               [ 1]  172 	incw	x
+      00009C                        173 00110$:
+                                    174 ;	../src/adc.c: 128: if(cnter == 0){ //an overflow occurred
+      00009C CFu02u01         [ 2]  175 	ldw	_cnter+0, x
+      00009F 26 2A            [ 1]  176 	jrne	00105$
+                                    177 ;	../src/adc.c: 130: if(pCurrBuffer == (uint8_t *)adcBuffer0) {
+      0000A1 AEr00r01         [ 2]  178 	ldw	x, #(_adcBuffer0+0)
+      0000A4 C3u02u03         [ 2]  179 	cpw	x, _pCurrBuffer+0
+      0000A7 26 11            [ 1]  180 	jrne	00102$
+                                    181 ;	../src/adc.c: 131: RELEASE_BUFF_FOR_RD(0);
+      0000A9 72 10u00u00      [ 1]  182 	bset	_buffer_rdy+0, #0
+                                    183 ;	../src/adc.c: 132: pCurrBuffer = (uint8_t *)adcBuffer1;
+      0000AD AEr01r01         [ 2]  184 	ldw	x, #(_adcBuffer1+0)
+      0000B0 CFu02u03         [ 2]  185 	ldw	_pCurrBuffer+0, x
+                                    186 ;	../src/adc.c: 133: pCurrByte = (uint8_t *)adcBuffer1;
+      0000B3 AEr01r01         [ 2]  187 	ldw	x, #(_adcBuffer1+0)
+      0000B6 CFu02u05         [ 2]  188 	ldw	_pCurrByte+0, x
+      0000B9 81               [ 4]  189 	ret
+      0000BA                        190 00102$:
+                                    191 ;	../src/adc.c: 135: RELEASE_BUFF_FOR_RD(1);
+      0000BA 72 12u00u00      [ 1]  192 	bset	_buffer_rdy+0, #1
+                                    193 ;	../src/adc.c: 136: pCurrBuffer = (uint8_t *)adcBuffer0;
+      0000BE AEr00r01         [ 2]  194 	ldw	x, #(_adcBuffer0+0)
+      0000C1 CFu02u03         [ 2]  195 	ldw	_pCurrBuffer+0, x
+                                    196 ;	../src/adc.c: 137: pCurrByte =  (uint8_t *)adcBuffer0;
+      0000C4 AEr00r01         [ 2]  197 	ldw	x, #(_adcBuffer0+0)
+      0000C7 CFu02u05         [ 2]  198 	ldw	_pCurrByte+0, x
+      0000CA 81               [ 4]  199 	ret
+      0000CB                        200 00105$:
+                                    201 ;	../src/adc.c: 140: pCurrByte = &pCurrBuffer[cnter];
+      0000CB CEu02u03         [ 2]  202 	ldw	x, _pCurrBuffer+0
+      0000CE 72 BBu02u01      [ 2]  203 	addw	x, _cnter+0
+      0000D2 CFu02u05         [ 2]  204 	ldw	_pCurrByte+0, x
+                                    205 ;	../src/adc.c: 142: }
+      0000D5 81               [ 4]  206 	ret
+                                    207 ;	../src/adc.c: 156: static uint8_t NextChannel(void){
+                                    208 ;	-----------------------------------------
+                                    209 ;	 function NextChannel
+                                    210 ;	-----------------------------------------
+      0000D6                        211 _NextChannel:
+      0000D6 89               [ 2]  212 	pushw	x
+      0000D7                        213 00104$:
+                                    214 ;	../src/adc.c: 160: cntForChannel = ((8==cntForChannel)?0:(cntForChannel+1));
+      0000D7 C6u02u07         [ 1]  215 	ld	a, _NextChannel_cntForChannel_65536_329+0
+      0000DA A1 08            [ 1]  216 	cp	a, #0x08
+      0000DC 26 03            [ 1]  217 	jrne	00108$
+      0000DE 4F               [ 1]  218 	clr	a
+      0000DF 20 0A            [ 2]  219 	jra	00109$
+      0000E1                        220 00108$:
+      0000E1 C6u02u07         [ 1]  221 	ld	a, _NextChannel_cntForChannel_65536_329+0
+      0000E4 4C               [ 1]  222 	inc	a
+      0000E5 88               [ 1]  223 	push	a
+      0000E6 49               [ 1]  224 	rlc	a
+      0000E7 4F               [ 1]  225 	clr	a
+      0000E8 A2 00            [ 1]  226 	sbc	a, #0x00
+      0000EA 84               [ 1]  227 	pop	a
+      0000EB                        228 00109$:
+                                    229 ;	../src/adc.c: 161: if((0x01 << cntForChannel) & loggerCfg.channel){
+      0000EB C7u02u07         [ 1]  230 	ld	_NextChannel_cntForChannel_65536_329+0, a
+      0000EE 5F               [ 1]  231 	clrw	x
+      0000EF 5C               [ 1]  232 	incw	x
+      0000F0 4D               [ 1]  233 	tnz	a
+      0000F1 27 04            [ 1]  234 	jreq	00129$
+      0000F3                        235 00128$:
+      0000F3 58               [ 2]  236 	sllw	x
+      0000F4 4A               [ 1]  237 	dec	a
+      0000F5 26 FC            [ 1]  238 	jrne	00128$
+      0000F7                        239 00129$:
+      0000F7 C6u00u0D         [ 1]  240 	ld	a, _loggerCfg+13
+      0000FA 0F 01            [ 1]  241 	clr	(0x01, sp)
+      0000FC 89               [ 2]  242 	pushw	x
+      0000FD 14 02            [ 1]  243 	and	a, (2, sp)
+      0000FF 85               [ 2]  244 	popw	x
+      000100 02               [ 1]  245 	rlwa	x
+      000101 14 01            [ 1]  246 	and	a, (0x01, sp)
+      000103 95               [ 1]  247 	ld	xh, a
+      000104 5D               [ 2]  248 	tnzw	x
+      000105 27 D0            [ 1]  249 	jreq	00104$
+                                    250 ;	../src/adc.c: 163: return cntForChannel;
+      000107 C6u02u07         [ 1]  251 	ld	a, _NextChannel_cntForChannel_65536_329+0
+                                    252 ;	../src/adc.c: 166: }
+      00010A 85               [ 2]  253 	popw	x
+      00010B 81               [ 4]  254 	ret
+                                    255 ;	../src/adc.c: 179: static uint8_t GetChannelNo(void){
+                                    256 ;	-----------------------------------------
+                                    257 ;	 function GetChannelNo
+                                    258 ;	-----------------------------------------
+      00010C                        259 _GetChannelNo:
+      00010C 52 04            [ 2]  260 	sub	sp, #4
+                                    261 ;	../src/adc.c: 182: for(cnt = 0; cnt < 8; cnt++){
+      00010E 0F 03            [ 1]  262 	clr	(0x03, sp)
+      000110 0F 04            [ 1]  263 	clr	(0x04, sp)
+      000112                        264 00104$:
+                                    265 ;	../src/adc.c: 183: if((0x01 << cnt) & loggerCfg.channel){
+      000112 5F               [ 1]  266 	clrw	x
+      000113 5C               [ 1]  267 	incw	x
+      000114 7B 04            [ 1]  268 	ld	a, (0x04, sp)
+      000116 27 04            [ 1]  269 	jreq	00125$
+      000118                        270 00124$:
+      000118 58               [ 2]  271 	sllw	x
+      000119 4A               [ 1]  272 	dec	a
+      00011A 26 FC            [ 1]  273 	jrne	00124$
+      00011C                        274 00125$:
+      00011C C6u00u0D         [ 1]  275 	ld	a, _loggerCfg+13
+      00011F 0F 01            [ 1]  276 	clr	(0x01, sp)
+      000121 89               [ 2]  277 	pushw	x
+      000122 14 02            [ 1]  278 	and	a, (2, sp)
+      000124 85               [ 2]  279 	popw	x
+      000125 02               [ 1]  280 	rlwa	x
+      000126 14 01            [ 1]  281 	and	a, (0x01, sp)
+      000128 95               [ 1]  282 	ld	xh, a
+      000129 5D               [ 2]  283 	tnzw	x
+      00012A 27 02            [ 1]  284 	jreq	00105$
+                                    285 ;	../src/adc.c: 184: chNo++;
+      00012C 0C 03            [ 1]  286 	inc	(0x03, sp)
+      00012E                        287 00105$:
+                                    288 ;	../src/adc.c: 182: for(cnt = 0; cnt < 8; cnt++){
+      00012E 0C 04            [ 1]  289 	inc	(0x04, sp)
+      000130 7B 04            [ 1]  290 	ld	a, (0x04, sp)
+      000132 A1 08            [ 1]  291 	cp	a, #0x08
+      000134 25 DC            [ 1]  292 	jrc	00104$
+                                    293 ;	../src/adc.c: 187: return chNo;
+      000136 7B 03            [ 1]  294 	ld	a, (0x03, sp)
+                                    295 ;	../src/adc.c: 188: }
+      000138 5B 04            [ 2]  296 	addw	sp, #4
+      00013A 81               [ 4]  297 	ret
+                                    298 ;	../src/adc.c: 246: void adcIsr (void)
+                                    299 ;	-----------------------------------------
+                                    300 ;	 function adcIsr
+                                    301 ;	-----------------------------------------
+      00013B                        302 _adcIsr:
+      00013B 88               [ 1]  303 	push	a
+                                    304 ;	../src/adc.c: 250: currChannel = NextChannel();
+      00013C CDr00rD6         [ 4]  305 	call	_NextChannel
+      00013F 6B 01            [ 1]  306 	ld	(0x01, sp), a
+                                    307 ;	../src/adc.c: 251: if(loggerCfg.isFullResultion){
+      000141 C6u00u0E         [ 1]  308 	ld	a, _loggerCfg+14
+      000144 27 0A            [ 1]  309 	jreq	00102$
+                                    310 ;	../src/adc.c: 252: *pCurrByte = ADC1->DRL;
+      000146 CEu02u05         [ 2]  311 	ldw	x, _pCurrByte+0
+      000149 C6 54 05         [ 1]  312 	ld	a, 0x5405
+      00014C F7               [ 1]  313 	ld	(x), a
+                                    314 ;	../src/adc.c: 253: NextByte();
+      00014D CDr00r8D         [ 4]  315 	call	_NextByte
+      000150                        316 00102$:
+                                    317 ;	../src/adc.c: 255: *pCurrByte = ADC1->DRH;
+      000150 CEu02u05         [ 2]  318 	ldw	x, _pCurrByte+0
+      000153 C6 54 04         [ 1]  319 	ld	a, 0x5404
+      000156 F7               [ 1]  320 	ld	(x), a
+                                    321 ;	../src/adc.c: 256: NextByte();
+      000157 CDr00r8D         [ 4]  322 	call	_NextByte
+                                    323 ;	../src/adc.c: 260: ADC1->CSR = (currChannel|ADC1_CSR_EOCIE);
+      00015A 7B 01            [ 1]  324 	ld	a, (0x01, sp)
+      00015C AA 20            [ 1]  325 	or	a, #0x20
+      00015E C7 54 00         [ 1]  326 	ld	0x5400, a
+                                    327 ;	../src/adc.c: 262: }
+      000161 84               [ 1]  328 	pop	a
+      000162 81               [ 4]  329 	ret
+                                    330 	.area CODE
+                                    331 	.area CONST
+                                    332 	.area INITIALIZER
+                                    333 	.area CABS (ABS)

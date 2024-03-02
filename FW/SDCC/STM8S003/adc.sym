@@ -7,310 +7,15 @@ Symbol Table
     .__.ABS.                                                    =  000000 G
     .__.CPU.                                                    =  000000 L
     .__.H$L.                                                    =  000001 L
-  9 A$adc$102                                                      00000A GR
-  9 A$adc$105                                                      00000D GR
-  9 A$adc$107                                                      00000F GR
-  9 A$adc$108                                                      000010 GR
-  9 A$adc$110                                                      000012 GR
-  9 A$adc$111                                                      000014 GR
-  9 A$adc$112                                                      000016 GR
-  9 A$adc$113                                                      000018 GR
-  9 A$adc$115                                                      00001A GR
-  9 A$adc$116                                                      00001D GR
-  9 A$adc$117                                                      00001F GR
-  9 A$adc$118                                                      000021 GR
-  9 A$adc$120                                                      000023 GR
-  9 A$adc$123                                                      000026 GR
-  9 A$adc$124                                                      000027 GR
-  9 A$adc$125                                                      000028 GR
-  9 A$adc$127                                                      00002A GR
-  9 A$adc$128                                                      00002B GR
-  9 A$adc$130                                                      00002D GR
-  9 A$adc$131                                                      00002F GR
-  9 A$adc$132                                                      000030 GR
-  9 A$adc$133                                                      000032 GR
-  9 A$adc$135                                                      000033 GR
-  9 A$adc$136                                                      000036 GR
-  9 A$adc$138                                                      000038 GR
-  9 A$adc$143                                                      00003A GR
-  9 A$adc$145                                                      00003C GR
-  9 A$adc$146                                                      00003D GR
-  9 A$adc$147                                                      00003E GR
-  9 A$adc$149                                                      00003F GR
-  9 A$adc$153                                                      000040 GR
-  9 A$adc$158                                                      000043 GR
-  9 A$adc$160                                                      000045 GR
-  9 A$adc$164                                                      000048 GR
-  9 A$adc$166                                                      00004B GR
-  9 A$adc$168                                                      00004D GR
-  9 A$adc$172                                                      000050 GR
-  9 A$adc$174                                                      000053 GR
-  9 A$adc$176                                                      000055 GR
-  9 A$adc$182                                                      000058 GR
-  9 A$adc$185                                                      00005A GR
-  9 A$adc$199                                                      00005B GR
-  9 A$adc$200                                                      00005C GR
-  9 A$adc$206                                                      00005F GR
-  9 A$adc$207                                                      000062 GR
-  9 A$adc$213                                                      000065 GR
-  9 A$adc$214                                                      000068 GR
-  9 A$adc$218                                                      00006B GR
-  9 A$adc$222                                                      00006F GR
-  9 A$adc$226                                                      000073 GR
-  9 A$adc$228                                                      000076 GR
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 2.
-Hexadecimal [24-Bits]
-
-Symbol Table
-
-  9 A$adc$230                                                      000078 GR
-  9 A$adc$235                                                      00007B GR
-  9 A$adc$239                                                      00007E GR
-  9 A$adc$240                                                      00007F GR
-  9 A$adc$241                                                      000080 GR
-  9 A$adc$243                                                      000081 GR
-  9 A$adc$245                                                      000083 GR
-  9 A$adc$249                                                      000086 GR
-  9 A$adc$253                                                      00008A GR
-  9 A$adc$257                                                      00008E GR
-  9 A$adc$259                                                      000091 GR
-  9 A$adc$261                                                      000093 GR
-  9 A$adc$265                                                      000096 GR
-  9 A$adc$273                                                      000099 GR
-  9 A$adc$287                                                      00009A GR
-  9 A$adc$288                                                      00009D GR
-  9 A$adc$289                                                      0000A0 GR
-  9 A$adc$290                                                      0000A2 GR
-  9 A$adc$292                                                      0000A5 GR
-  9 A$adc$296                                                      0000A8 GR
-  9 A$adc$298                                                      0000A9 GR
-  9 A$adc$303                                                      0000AC GR
-  9 A$adc$305                                                      0000AF GR
-  9 A$adc$312                                                      0000B0 GR
-  9 A$adc$316                                                      0000B3 GR
-  9 A$adc$317                                                      0000B6 GR
-  9 A$adc$318                                                      0000B8 GR
-  9 A$adc$323                                                      0000BB GR
-  9 A$adc$329                                                      0000BE GR
-  9 A$adc$330                                                      0000C1 GR
-  9 A$adc$331                                                      0000C3 GR
-  9 A$adc$333                                                      0000C6 GR
-  9 A$adc$339                                                      0000C9 GR
-  9 A$adc$345                                                      0000CD GR
-  9 A$adc$346                                                      0000D0 GR
-  9 A$adc$352                                                      0000D3 GR
-  9 A$adc$353                                                      0000D6 GR
-  9 A$adc$355                                                      0000D9 GR
-  9 A$adc$361                                                      0000DC GR
-  9 A$adc$367                                                      0000E0 GR
-  9 A$adc$368                                                      0000E3 GR
-  9 A$adc$374                                                      0000E6 GR
-  9 A$adc$375                                                      0000E9 GR
-  9 A$adc$377                                                      0000EC GR
-  9 A$adc$383                                                      0000EF GR
-  9 A$adc$384                                                      0000F2 GR
-  9 A$adc$386                                                      0000F6 GR
-  9 A$adc$394                                                      0000F9 GR
-  9 A$adc$405                                                      0000FA GR
-  9 A$adc$412                                                      0000FB GR
-  9 A$adc$413                                                      0000FE GR
-  9 A$adc$414                                                      000100 GR
-  9 A$adc$415                                                      000102 GR
-  9 A$adc$417                                                      000105 GR
-  9 A$adc$421                                                      000108 GR
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 3.
-Hexadecimal [24-Bits]
-
-Symbol Table
-
-  9 A$adc$422                                                      000109 GR
-  9 A$adc$424                                                      00010A GR
-  9 A$adc$429                                                      00010D GR
-  9 A$adc$431                                                      000110 GR
-  9 A$adc$433                                                      000111 GR
-  9 A$adc$434                                                      000112 GR
-  9 A$adc$435                                                      000113 GR
-  9 A$adc$436                                                      000114 GR
-  9 A$adc$437                                                      000116 GR
-  9 A$adc$438                                                      000117 GR
-  9 A$adc$444                                                      000118 GR
-  9 A$adc$448                                                      00011B GR
-  9 A$adc$450                                                      00011E GR
-  9 A$adc$451                                                      00011F GR
-  9 A$adc$452                                                      000120 GR
-  9 A$adc$453                                                      000121 GR
-  9 A$adc$455                                                      000123 GR
-  9 A$adc$456                                                      000124 GR
-  9 A$adc$457                                                      000125 GR
-  9 A$adc$460                                                      000127 GR
-  9 A$adc$463                                                      00012A GR
-  9 A$adc$465                                                      00012C GR
-  9 A$adc$466                                                      00012D GR
-  9 A$adc$467                                                      00012F GR
-  9 A$adc$468                                                      000130 GR
-  9 A$adc$469                                                      000131 GR
-  9 A$adc$470                                                      000132 GR
-  9 A$adc$471                                                      000134 GR
-  9 A$adc$473                                                      000135 GR
-  9 A$adc$474                                                      000136 GR
-  9 A$adc$475                                                      000138 GR
-  9 A$adc$480                                                      00013B GR
-  9 A$adc$486                                                      00013E GR
-  9 A$adc$489                                                      00013F GR
-  9 A$adc$500                                                      000140 GR
-  9 A$adc$504                                                      000142 GR
-  9 A$adc$508                                                      000144 GR
-  9 A$adc$515                                                      000146 GR
-  9 A$adc$516                                                      000147 GR
-  9 A$adc$517                                                      000148 GR
-  9 A$adc$518                                                      00014A GR
-  9 A$adc$520                                                      00014C GR
-  9 A$adc$521                                                      00014D GR
-  9 A$adc$522                                                      00014E GR
-  9 A$adc$525                                                      000150 GR
-  9 A$adc$528                                                      000153 GR
-  9 A$adc$530                                                      000155 GR
-  9 A$adc$531                                                      000156 GR
-  9 A$adc$532                                                      000158 GR
-  9 A$adc$533                                                      000159 GR
-  9 A$adc$534                                                      00015A GR
-  9 A$adc$535                                                      00015B GR
-  9 A$adc$536                                                      00015D GR
-  9 A$adc$538                                                      00015E GR
-  9 A$adc$539                                                      00015F GR
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 4.
-Hexadecimal [24-Bits]
-
-Symbol Table
-
-  9 A$adc$540                                                      000161 GR
-  9 A$adc$545                                                      000164 GR
-  9 A$adc$551                                                      000166 GR
-  9 A$adc$554                                                      000168 GR
-  9 A$adc$555                                                      00016A GR
-  9 A$adc$556                                                      00016C GR
-  9 A$adc$557                                                      00016E GR
-  9 A$adc$563                                                      000171 GR
-  9 A$adc$570                                                      000173 GR
-  9 A$adc$573                                                      000175 GR
-  9 A$adc$584                                                      000176 GR
-  9 A$adc$588                                                      000177 GR
-  9 A$adc$590                                                      00017A GR
-  9 A$adc$595                                                      00017C GR
-  9 A$adc$597                                                      00017F GR
-  9 A$adc$598                                                      000180 GR
-  9 A$adc$599                                                      000182 GR
-  9 A$adc$604                                                      000185 GR
-  9 A$adc$606                                                      000188 GR
-  9 A$adc$608                                                      00018B GR
-  9 A$adc$612                                                      00018C GR
-  9 A$adc$618                                                      00018F GR
-  9 A$adc$620                                                      000192 GR
-  9 A$adc$622                                                      000195 GR
-  9 A$adc$626                                                      000196 GR
-  9 A$adc$630                                                      000199 GR
-  9 A$adc$631                                                      00019B GR
-  9 A$adc$633                                                      00019D GR
-  9 A$adc$639                                                      0001A0 GR
-  9 A$adc$642                                                      0001A1 GR
-  5 A$adc$69                                                       000000 GR
-  9 A$adc$89                                                       000000 GR
-  9 A$adc$93                                                       000002 GR
-  9 A$adc$97                                                       000006 GR
-  9 C$adc.c$100$1_0$322                                         =  000073 GR
-  9 C$adc.c$102$1_0$322                                         =  00007B GR
-  9 C$adc.c$104$1_0$322                                         =  000086 GR
-  9 C$adc.c$106$1_0$322                                         =  00008A GR
-  9 C$adc.c$108$1_0$322                                         =  00008E GR
-  9 C$adc.c$110$1_0$322                                         =  000096 GR
-  9 C$adc.c$111$1_0$322                                         =  000099 GR
-  9 C$adc.c$124$1_0$323                                         =  00009A GR
-  9 C$adc.c$126$1_0$323                                         =  00009A GR
-  9 C$adc.c$128$1_0$323                                         =  0000B3 GR
-  9 C$adc.c$130$2_0$324                                         =  0000BB GR
-  9 C$adc.c$131$3_0$325                                         =  0000C9 GR
-  9 C$adc.c$132$3_0$325                                         =  0000CD GR
-  9 C$adc.c$133$3_0$325                                         =  0000D3 GR
-  9 C$adc.c$135$3_0$326                                         =  0000DC GR
-  9 C$adc.c$136$3_0$326                                         =  0000E0 GR
-  9 C$adc.c$137$3_0$326                                         =  0000E6 GR
-  9 C$adc.c$140$2_0$327                                         =  0000EF GR
-  9 C$adc.c$142$1_0$323                                         =  0000F9 GR
-  9 C$adc.c$156$1_0$330                                         =  0000FA GR
-  5 C$adc.c$157$2_0$330                                         =  000000 GR
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 5.
-Hexadecimal [24-Bits]
-
-Symbol Table
-
-  9 C$adc.c$160$3_0$331                                         =  0000FB GR
-  9 C$adc.c$161$3_0$331                                         =  00011B GR
-  9 C$adc.c$163$4_0$332                                         =  00013B GR
-  9 C$adc.c$166$2_0$330                                         =  00013F GR
-  9 C$adc.c$179$2_0$334                                         =  000140 GR
-  9 C$adc.c$180$2_0$334                                         =  000142 GR
-  9 C$adc.c$182$2_0$335                                         =  000166 GR
-  9 C$adc.c$183$3_0$336                                         =  000146 GR
-  9 C$adc.c$184$4_0$337                                         =  000164 GR
-  9 C$adc.c$187$1_0$334                                         =  000171 GR
-  9 C$adc.c$188$1_0$334                                         =  000175 GR
-  9 C$adc.c$246$1_0$339                                         =  000176 GR
-  9 C$adc.c$250$1_0$339                                         =  000177 GR
-  9 C$adc.c$251$1_0$339                                         =  00017C GR
-  9 C$adc.c$252$2_0$340                                         =  000185 GR
-  9 C$adc.c$253$2_0$340                                         =  00018C GR
-  9 C$adc.c$255$1_0$339                                         =  00018F GR
-  9 C$adc.c$256$1_0$339                                         =  000196 GR
-  9 C$adc.c$260$1_0$339                                         =  000199 GR
-  9 C$adc.c$262$1_0$339                                         =  0001A1 GR
-  9 C$adc.c$65$0_0$320                                          =  000000 GR
-  9 C$adc.c$69$1_0$320                                          =  000002 GR
-  9 C$adc.c$70$1_0$320                                          =  000006 GR
-  9 C$adc.c$74$1_0$320                                          =  00000A GR
-  9 C$adc.c$75$1_0$320                                          =  00003A GR
-  9 C$adc.c$76$1_0$320                                          =  000043 GR
-  9 C$adc.c$77$1_0$320                                          =  000048 GR
-  9 C$adc.c$78$1_0$320                                          =  000050 GR
-  9 C$adc.c$79$1_0$320                                          =  00005A GR
-  9 C$adc.c$90$1_0$322                                          =  00005B GR
-  9 C$adc.c$92$1_0$322                                          =  00005B GR
-  9 C$adc.c$93$1_0$322                                          =  00005F GR
-  9 C$adc.c$94$1_0$322                                          =  000065 GR
-  9 C$adc.c$95$1_0$322                                          =  00006B GR
-  9 C$adc.c$97$1_0$322                                          =  00006F GR
-  9 Fadc$GetChannelNo$0$0                                       =  000140 GR
-  9 Fadc$NextByte$0$0                                           =  00009A GR
-  9 Fadc$NextChannel$0$0                                        =  0000FA GR
-  1 Fadc$cnter$0_0$0                                            =  000201 GR
-  1 Fadc$pCurrBuffer$0_0$0                                      =  000203 GR
-  1 Fadc$pCurrByte$0_0$0                                        =  000205 GR
-  9 Fadc$tim1Init$0$0                                           =  000000 GR
-  1 G$adcBuffer0$0_0$0                                          =  000001 GR
-  1 G$adcBuffer1$0_0$0                                          =  000101 GR
-  9 G$adcInit$0$0                                               =  00005B GR
-  9 G$adcIsr$0$0                                                =  000176 GR
-  1 G$buffer_rdy$0_0$0                                          =  000000 GR
-  1 Ladc.NextChannel$cntForChannel$1_0$329                      =  000207 GR
-  9 XFadc$GetChannelNo$0$0                                      =  000175 GR
-  9 XFadc$NextByte$0$0                                          =  0000F9 GR
-  9 XFadc$NextChannel$0$0                                       =  00013F GR
-  9 XFadc$tim1Init$0$0                                          =  00005A GR
-  9 XG$adcInit$0$0                                              =  000099 GR
-  9 XG$adcIsr$0$0                                               =  0001A1 GR
-  9 _GetChannelNo                                                  000140 R
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 6.
-Hexadecimal [24-Bits]
-
-Symbol Table
-
-  9 _NextByte                                                      00009A R
-  9 _NextChannel                                                   0000FA R
+  9 _GetChannelNo                                                  00010C R
+  9 _NextByte                                                      00008D R
+  9 _NextChannel                                                   0000D6 R
   1 _NextChannel_cntForChannel_65536_329                           000207 R
     __divulong                                                     ****** GX
   1 _adcBuffer0                                                    000001 GR
   1 _adcBuffer1                                                    000101 GR
-  9 _adcInit                                                       00005B GR
-  9 _adcIsr                                                        000176 GR
+  9 _adcInit                                                       00004F GR
+  9 _adcIsr                                                        00013B GR
   1 _buffer_rdy                                                    000000 GR
   1 _cnter                                                         000201 R
     _loggerCfg                                                     ****** GX
@@ -319,7 +24,7 @@ Symbol Table
   9 _tim1Init                                                      000000 R
 
 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 7.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (STMicroelectronics STM8), page 2.
 Hexadecimal [24-Bits]
 
 Area Table
@@ -333,6 +38,6 @@ Area Table
    6 GSFINAL                                    size      0   flags    0
    7 CONST                                      size      0   flags    0
    8 INITIALIZER                                size      0   flags    0
-   9 CODE                                       size    1A2   flags    0
+   9 CODE                                       size    163   flags    0
    A CABS                                       size      0   flags    8
 

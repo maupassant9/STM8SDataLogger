@@ -17,195 +17,113 @@
                                      17 ; ram data
                                      18 ;--------------------------------------------------------
                                      19 	.area DATA
-                           000000    20 G$sysTick$0_0$0==.
-      000000                         21 _sysTick::
-      000000                         22 	.ds 4
-                                     23 ;--------------------------------------------------------
-                                     24 ; ram data
-                                     25 ;--------------------------------------------------------
-                                     26 	.area INITIALIZED
-                                     27 ;--------------------------------------------------------
-                                     28 ; absolute external ram data
-                                     29 ;--------------------------------------------------------
-                                     30 	.area DABS (ABS)
-                                     31 
-                                     32 ; default segment ordering for linker
-                                     33 	.area HOME
-                                     34 	.area GSINIT
-                                     35 	.area GSFINAL
-                                     36 	.area CONST
-                                     37 	.area INITIALIZER
-                                     38 	.area CODE
-                                     39 
-                                     40 ;--------------------------------------------------------
-                                     41 ; global & static initialisations
-                                     42 ;--------------------------------------------------------
-                                     43 	.area HOME
-                                     44 	.area GSINIT
-                                     45 	.area GSFINAL
-                                     46 	.area GSINIT
-                                     47 ;--------------------------------------------------------
-                                     48 ; Home
-                                     49 ;--------------------------------------------------------
+      000000                         20 _sysTick::
+      000000                         21 	.ds 4
+                                     22 ;--------------------------------------------------------
+                                     23 ; ram data
+                                     24 ;--------------------------------------------------------
+                                     25 	.area INITIALIZED
+                                     26 ;--------------------------------------------------------
+                                     27 ; absolute external ram data
+                                     28 ;--------------------------------------------------------
+                                     29 	.area DABS (ABS)
+                                     30 
+                                     31 ; default segment ordering for linker
+                                     32 	.area HOME
+                                     33 	.area GSINIT
+                                     34 	.area GSFINAL
+                                     35 	.area CONST
+                                     36 	.area INITIALIZER
+                                     37 	.area CODE
+                                     38 
+                                     39 ;--------------------------------------------------------
+                                     40 ; global & static initialisations
+                                     41 ;--------------------------------------------------------
+                                     42 	.area HOME
+                                     43 	.area GSINIT
+                                     44 	.area GSFINAL
+                                     45 	.area GSINIT
+                                     46 ;--------------------------------------------------------
+                                     47 ; Home
+                                     48 ;--------------------------------------------------------
+                                     49 	.area HOME
                                      50 	.area HOME
-                                     51 	.area HOME
-                                     52 ;--------------------------------------------------------
-                                     53 ; code
-                                     54 ;--------------------------------------------------------
-                                     55 	.area CODE
-                           000000    56 	G$sysTickInit$0$0 ==.
-                           000000    57 	C$dly.c$44$0_0$321 ==.
-                                     58 ;	../src/dly.c: 44: void sysTickInit( void )
-                                     59 ; genLabel
-                                     60 ;	-----------------------------------------
-                                     61 ;	 function sysTickInit
-                                     62 ;	-----------------------------------------
-                                     63 ;	Register assignment is optimal.
-                                     64 ;	Stack space usage: 0 bytes.
-      000000                         65 _sysTickInit:
-                           000000    66 	C$dly.c$46$1_0$321 ==.
-                                     67 ;	../src/dly.c: 46: sysTick = 0;
-                                     68 ; genAssign
-      000000 5F               [ 1]   69 	clrw	x
-      000001 CFu00u02         [ 2]   70 	ldw	_sysTick+2, x
-      000004 CFu00u00         [ 2]   71 	ldw	_sysTick+0, x
-                           000007    72 	C$dly.c$47$1_0$321 ==.
-                                     73 ;	../src/dly.c: 47: tim4Init();
-                                     74 ; genCall
-      000007 CCr00r0B         [ 2]   75 	jp	_tim4Init
-                                     76 ; genLabel
-      00000A                         77 00101$:
-                           00000A    78 	C$dly.c$48$1_0$321 ==.
-                                     79 ;	../src/dly.c: 48: }
-                                     80 ; genEndFunction
-                           00000A    81 	C$dly.c$48$1_0$321 ==.
-                           00000A    82 	XG$sysTickInit$0$0 ==.
-      00000A 81               [ 4]   83 	ret
-                           00000B    84 	Fdly$tim4Init$0$0 ==.
-                           00000B    85 	C$dly.c$59$1_0$323 ==.
-                                     86 ;	../src/dly.c: 59: static void tim4Init( void )
-                                     87 ; genLabel
-                                     88 ;	-----------------------------------------
-                                     89 ;	 function tim4Init
-                                     90 ;	-----------------------------------------
-                                     91 ;	Register assignment is optimal.
-                                     92 ;	Stack space usage: 0 bytes.
-      00000B                         93 _tim4Init:
-                           00000B    94 	C$dly.c$61$1_0$323 ==.
-                                     95 ;	../src/dly.c: 61: TIM4->PSCR = TIM4_PRESCALER_64; //tim_clk = 250K, time_resolution = 4us
-                                     96 ; genPointerSet
-      00000B 35 06 53 47      [ 1]   97 	mov	0x5347+0, #0x06
-                           00000F    98 	C$dly.c$62$1_0$323 ==.
-                                     99 ;	../src/dly.c: 62: TIM4->CR1 = (TIM4_CR1_ARPE);
-                                    100 ; genPointerSet
-      00000F 35 80 53 40      [ 1]  101 	mov	0x5340+0, #0x80
-                           000013   102 	C$dly.c$63$1_0$323 ==.
-                                    103 ;	../src/dly.c: 63: TIM4->IER = TIM4_IER_UIE;
-                                    104 ; genPointerSet
-      000013 35 01 53 43      [ 1]  105 	mov	0x5343+0, #0x01
-                           000017   106 	C$dly.c$64$1_0$323 ==.
-                                    107 ;	../src/dly.c: 64: TIM4->ARR = TIMER_VALUE_FOR_SYSTICK;
-                                    108 ; genPointerSet
-      000017 35 FA 53 48      [ 1]  109 	mov	0x5348+0, #0xfa
-                           00001B   110 	C$dly.c$65$1_0$323 ==.
-                                    111 ;	../src/dly.c: 65: TIM4->CR1 |= TIM4_CR1_CEN;
-                                    112 ; genPointerGet
-      00001B C6 53 40         [ 1]  113 	ld	a, 0x5340
-                                    114 ; genOr
-      00001E AA 01            [ 1]  115 	or	a, #0x01
-                                    116 ; genPointerSet
-      000020 C7 53 40         [ 1]  117 	ld	0x5340, a
-                                    118 ; genLabel
-      000023                        119 00101$:
-                           000023   120 	C$dly.c$66$1_0$323 ==.
-                                    121 ;	../src/dly.c: 66: }
-                                    122 ; genEndFunction
-                           000023   123 	C$dly.c$66$1_0$323 ==.
-                           000023   124 	XFdly$tim4Init$0$0 ==.
-      000023 81               [ 4]  125 	ret
-                           000024   126 	G$dly$0$0 ==.
-                           000024   127 	C$dly.c$79$1_0$325 ==.
-                                    128 ;	../src/dly.c: 79: void dly(uint32_t dt)
-                                    129 ; genLabel
-                                    130 ;	-----------------------------------------
-                                    131 ;	 function dly
-                                    132 ;	-----------------------------------------
-                                    133 ;	Register assignment might be sub-optimal.
-                                    134 ;	Stack space usage: 0 bytes.
-      000024                        135 _dly:
-                           000024   136 	C$dly.c$81$1_0$325 ==.
-                                    137 ;	../src/dly.c: 81: uint32_t destSysTick = sysTick+dt;
-                                    138 ; genPlus
-      000024 90 CEu00u02      [ 2]  139 	ldw	y, _sysTick+2
-      000028 72 F9 05         [ 2]  140 	addw	y, (0x05, sp)
-      00002B CEu00u00         [ 2]  141 	ldw	x, _sysTick+0
-      00002E 24 01            [ 1]  142 	jrnc	00111$
-      000030 5C               [ 1]  143 	incw	x
-      000031                        144 00111$:
-      000031 72 FB 03         [ 2]  145 	addw	x, (0x03, sp)
-                                    146 ; genAssign
-                           000034   147 	C$dly.c$82$1_0$325 ==.
-                                    148 ;	../src/dly.c: 82: while(destSysTick!=sysTick);
-                                    149 ; genLabel
-      000034                        150 00101$:
-                                    151 ; genCmpEQorNE
-      000034 90 C3u00u02      [ 2]  152 	cpw	y, _sysTick+2
-      000038 26 08            [ 1]  153 	jrne	00113$
-      00003A C3u00u00         [ 2]  154 	cpw	x, _sysTick+0
-      00003D 26 03            [ 1]  155 	jrne	00113$
-      00003F CCr00r45         [ 2]  156 	jp	00114$
-      000042                        157 00113$:
-      000042 CCr00r34         [ 2]  158 	jp	00101$
-      000045                        159 00114$:
-                                    160 ; skipping generated iCode
-                                    161 ; genLabel
-      000045                        162 00104$:
-                           000045   163 	C$dly.c$83$1_0$325 ==.
-                                    164 ;	../src/dly.c: 83: }
-                                    165 ; genEndFunction
-                           000045   166 	C$dly.c$83$1_0$325 ==.
-                           000045   167 	XG$dly$0$0 ==.
-      000045 81               [ 4]  168 	ret
-                           000046   169 	G$systemTickIsr$0$0 ==.
-                           000046   170 	C$dly.c$97$1_0$327 ==.
-                                    171 ;	../src/dly.c: 97: void systemTickIsr (void)
-                                    172 ; genLabel
-                                    173 ;	-----------------------------------------
-                                    174 ;	 function systemTickIsr
-                                    175 ;	-----------------------------------------
-                                    176 ;	Register assignment might be sub-optimal.
-                                    177 ;	Stack space usage: 0 bytes.
-      000046                        178 _systemTickIsr:
-                           000046   179 	C$dly.c$99$1_0$327 ==.
-                                    180 ;	../src/dly.c: 99: sysTick++;
-                                    181 ; genAssign
-      000046 CEu00u02         [ 2]  182 	ldw	x, _sysTick+2
-      000049 90 CEu00u00      [ 2]  183 	ldw	y, _sysTick+0
-                                    184 ; genPlus
-      00004D 5C               [ 1]  185 	incw	x
-      00004E 26 02            [ 1]  186 	jrne	00103$
-      000050 90 5C            [ 1]  187 	incw	y
-      000052                        188 00103$:
-                                    189 ; genAssign
-      000052 CFu00u02         [ 2]  190 	ldw	_sysTick+2, x
-      000055 90 CFu00u00      [ 2]  191 	ldw	_sysTick+0, y
-                           000059   192 	C$dly.c$100$1_0$327 ==.
-                                    193 ;	../src/dly.c: 100: TIM4->SR1 = ~TIM4_SR1_UIF;
-                                    194 ; genPointerSet
-      000059 35 FE 53 44      [ 1]  195 	mov	0x5344+0, #0xfe
-                           00005D   196 	C$dly.c$101$1_0$327 ==.
-                                    197 ;	../src/dly.c: 101: UpdateLeds();
-                                    198 ; genCall
-      00005D CCr00r00         [ 2]  199 	jp	_UpdateLeds
-                                    200 ; genLabel
-      000060                        201 00101$:
-                           000060   202 	C$dly.c$102$1_0$327 ==.
-                                    203 ;	../src/dly.c: 102: }
-                                    204 ; genEndFunction
-                           000060   205 	C$dly.c$102$1_0$327 ==.
-                           000060   206 	XG$systemTickIsr$0$0 ==.
-      000060 81               [ 4]  207 	ret
-                                    208 	.area CODE
-                                    209 	.area CONST
-                                    210 	.area INITIALIZER
-                                    211 	.area CABS (ABS)
+                                     51 ;--------------------------------------------------------
+                                     52 ; code
+                                     53 ;--------------------------------------------------------
+                                     54 	.area CODE
+                                     55 ;	../src/dly.c: 44: void sysTickInit( void )
+                                     56 ;	-----------------------------------------
+                                     57 ;	 function sysTickInit
+                                     58 ;	-----------------------------------------
+      000000                         59 _sysTickInit:
+                                     60 ;	../src/dly.c: 46: sysTick = 0;
+      000000 5F               [ 1]   61 	clrw	x
+      000001 CFu00u02         [ 2]   62 	ldw	_sysTick+2, x
+      000004 CFu00u00         [ 2]   63 	ldw	_sysTick+0, x
+                                     64 ;	../src/dly.c: 47: tim4Init();
+                                     65 ;	../src/dly.c: 48: }
+      000007 CCr00r0A         [ 2]   66 	jp	_tim4Init
+                                     67 ;	../src/dly.c: 59: static void tim4Init( void )
+                                     68 ;	-----------------------------------------
+                                     69 ;	 function tim4Init
+                                     70 ;	-----------------------------------------
+      00000A                         71 _tim4Init:
+                                     72 ;	../src/dly.c: 61: TIM4->PSCR = TIM4_PRESCALER_64; //tim_clk = 250K, time_resolution = 4us
+      00000A 35 06 53 47      [ 1]   73 	mov	0x5347+0, #0x06
+                                     74 ;	../src/dly.c: 62: TIM4->CR1 = (TIM4_CR1_ARPE);
+      00000E 35 80 53 40      [ 1]   75 	mov	0x5340+0, #0x80
+                                     76 ;	../src/dly.c: 63: TIM4->IER = TIM4_IER_UIE;
+      000012 35 01 53 43      [ 1]   77 	mov	0x5343+0, #0x01
+                                     78 ;	../src/dly.c: 64: TIM4->ARR = TIMER_VALUE_FOR_SYSTICK;
+      000016 35 19 53 48      [ 1]   79 	mov	0x5348+0, #0x19
+                                     80 ;	../src/dly.c: 65: TIM4->CR1 |= TIM4_CR1_CEN;
+      00001A 72 10 53 40      [ 1]   81 	bset	21312, #0
+                                     82 ;	../src/dly.c: 66: }
+      00001E 81               [ 4]   83 	ret
+                                     84 ;	../src/dly.c: 79: void dly(uint32_t dt)
+                                     85 ;	-----------------------------------------
+                                     86 ;	 function dly
+                                     87 ;	-----------------------------------------
+      00001F                         88 _dly:
+                                     89 ;	../src/dly.c: 81: uint32_t destSysTick = sysTick+dt;
+      00001F 90 CEu00u02      [ 2]   90 	ldw	y, _sysTick+2
+      000023 72 F9 05         [ 2]   91 	addw	y, (0x05, sp)
+      000026 CEu00u00         [ 2]   92 	ldw	x, _sysTick+0
+      000029 24 01            [ 1]   93 	jrnc	00111$
+      00002B 5C               [ 1]   94 	incw	x
+      00002C                         95 00111$:
+      00002C 72 FB 03         [ 2]   96 	addw	x, (0x03, sp)
+                                     97 ;	../src/dly.c: 82: while(destSysTick!=sysTick);
+      00002F                         98 00101$:
+      00002F 90 C3u00u02      [ 2]   99 	cpw	y, _sysTick+2
+      000033 26 FA            [ 1]  100 	jrne	00101$
+      000035 C3u00u00         [ 2]  101 	cpw	x, _sysTick+0
+      000038 26 F5            [ 1]  102 	jrne	00101$
+      00003A 81               [ 4]  103 	ret
+      00003B 20 F2            [ 2]  104 	jra	00101$
+                                    105 ;	../src/dly.c: 83: }
+      00003D 81               [ 4]  106 	ret
+                                    107 ;	../src/dly.c: 97: void systemTickIsr (void)
+                                    108 ;	-----------------------------------------
+                                    109 ;	 function systemTickIsr
+                                    110 ;	-----------------------------------------
+      00003E                        111 _systemTickIsr:
+                                    112 ;	../src/dly.c: 99: sysTick++;
+      00003E CEu00u02         [ 2]  113 	ldw	x, _sysTick+2
+      000041 90 CEu00u00      [ 2]  114 	ldw	y, _sysTick+0
+      000045 5C               [ 1]  115 	incw	x
+      000046 26 02            [ 1]  116 	jrne	00103$
+      000048 90 5C            [ 1]  117 	incw	y
+      00004A                        118 00103$:
+      00004A CFu00u02         [ 2]  119 	ldw	_sysTick+2, x
+      00004D 90 CFu00u00      [ 2]  120 	ldw	_sysTick+0, y
+                                    121 ;	../src/dly.c: 100: TIM4->SR1 = ~TIM4_SR1_UIF;
+      000051 35 FE 53 44      [ 1]  122 	mov	0x5344+0, #0xfe
+                                    123 ;	../src/dly.c: 101: UpdateLeds();
+                                    124 ;	../src/dly.c: 102: }
+      000055 CCr00r00         [ 2]  125 	jp	_UpdateLeds
+                                    126 	.area CODE
+                                    127 	.area CONST
+                                    128 	.area INITIALIZER
+                                    129 	.area CABS (ABS)
