@@ -959,23 +959,30 @@ _IsValidCfgBuf:
 _clkInit:
 ;	../src/main.c: 442: CLK->CKDIVR = 0;//(CLK_PRESCALER_HSIDIV1|CLK_PRESCALER_CPUDIV1);
 	mov	0x50c6+0, #0x00
-;	../src/main.c: 450: CLK->PCKENR1 |= (CLK_PCKENR1_TIM4|CLK_PCKENR1_SPI|CLK_PCKENR1_UART1);
+;	../src/main.c: 443: CLK->ECKR |= CLK_ECKR_HSEEN;
+	bset	20673, #0
+;	../src/main.c: 444: while(!(CLK->ECKR & CLK_ECKR_HSERDY));
+00101$:
+	ld	a, 0x50c1
+	bcp	a, #0x02
+	jreq	00101$
+;	../src/main.c: 451: CLK->PCKENR1 |= (CLK_PCKENR1_TIM4|CLK_PCKENR1_SPI|CLK_PCKENR1_UART1);
 	ld	a, 0x50c7
 	or	a, #0x16
 	ld	0x50c7, a
-;	../src/main.c: 451: CLK->PCKENR2 |= (CLK_PCKENR2_ADC);
+;	../src/main.c: 452: CLK->PCKENR2 |= (CLK_PCKENR2_ADC);
 	bset	20682, #3
-;	../src/main.c: 452: }
+;	../src/main.c: 453: }
 	ret
-;	../src/main.c: 467: void assert_failed(uint8_t* file, uint32_t line)
+;	../src/main.c: 468: void assert_failed(uint8_t* file, uint32_t line)
 ;	-----------------------------------------
 ;	 function assert_failed
 ;	-----------------------------------------
 _assert_failed:
-;	../src/main.c: 473: while (1)
+;	../src/main.c: 474: while (1)
 00102$:
 	jra	00102$
-;	../src/main.c: 476: }
+;	../src/main.c: 477: }
 	ret
 	.area CODE
 	.area CONST

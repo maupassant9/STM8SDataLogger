@@ -47,7 +47,7 @@ Symbol Table
     _adcBuffer0                                                    ****** GX
     _adcBuffer1                                                    ****** GX
     _adcInit                                                       ****** GX
-  A _assert_failed                                                 000482 GR
+  A _assert_failed                                                 00048D GR
   2 _blkCnt                                                        000000 R
     _buffer_rdy                                                    ****** GX
   1 _cfg                                                           000000 R
@@ -90,6 +90,6 @@ Area Table
    7 GSFINAL                                    size      3   flags    0
    8 CONST                                      size      4   flags    0
    9 INITIALIZER                                size      7   flags    0
-   A CODE                                       size    485   flags    0
+   A CODE                                       size    490   flags    0
    B CABS                                       size      0   flags    8
 

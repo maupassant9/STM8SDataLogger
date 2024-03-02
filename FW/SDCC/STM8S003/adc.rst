@@ -85,7 +85,7 @@
       00812C 4B 24            [ 1]   85 	push	#0x24
       00812E 4B F4            [ 1]   86 	push	#0xf4
       008130 4B 00            [ 1]   87 	push	#0x00
-      008132 CD 9D 80         [ 4]   88 	call	__divulong
+      008132 CD 9D 8B         [ 4]   88 	call	__divulong
       008135 5B 08            [ 2]   89 	addw	sp, #8
       008137 1F 03            [ 2]   90 	ldw	(0x03, sp), x
       008139 17 01            [ 2]   91 	ldw	(0x01, sp), y
@@ -99,7 +99,7 @@
       008147 89               [ 2]   99 	pushw	x
       008148 1E 07            [ 2]  100 	ldw	x, (0x07, sp)
       00814A 89               [ 2]  101 	pushw	x
-      00814B CD 9D 80         [ 4]  102 	call	__divulong
+      00814B CD 9D 8B         [ 4]  102 	call	__divulong
       00814E 5B 08            [ 2]  103 	addw	sp, #8
                                     104 ;	../src/adc.c: 75: TIM1->ARRH = (uint8_t)((period&0xff00)>>8);
       008150 1F 03            [ 2]  105 	ldw	(0x03, sp), x

@@ -43,8 +43,8 @@
                                      43 ; Stack segment in internal ram 
                                      44 ;--------------------------------------------------------
                                      45 	.area	SSEG
-      009E56                         46 __start__stack:
-      009E56                         47 	.ds	1
+      009E61                         46 __start__stack:
+      009E61                         47 	.ds	1
                                      48 
                                      49 ;--------------------------------------------------------
                                      50 ; absolute external ram data
@@ -65,32 +65,32 @@
                                      65 	.area HOME
       008000                         66 __interrupt_vect:
       008000 82 00 80 6F             67 	int s_GSINIT ; reset
-      008004 82 00 9D 4B             68 	int _TRAP_IRQHandler ; trap
-      008008 82 00 9D 4C             69 	int _TLI_IRQHandler ; int0
-      00800C 82 00 9D 4D             70 	int _AWU_IRQHandler ; int1
-      008010 82 00 9D 4E             71 	int _CLK_IRQHandler ; int2
-      008014 82 00 9D 4F             72 	int _EXTI_PORTA_IRQHandler ; int3
-      008018 82 00 9D 50             73 	int _EXTI_PORTB_IRQHandler ; int4
-      00801C 82 00 9D 51             74 	int _EXTI_PORTC_IRQHandler ; int5
-      008020 82 00 9D 52             75 	int _EXTI_PORTD_IRQHandler ; int6
-      008024 82 00 9D 53             76 	int _EXTI_PORTE_IRQHandler ; int7
+      008004 82 00 9D 56             68 	int _TRAP_IRQHandler ; trap
+      008008 82 00 9D 57             69 	int _TLI_IRQHandler ; int0
+      00800C 82 00 9D 58             70 	int _AWU_IRQHandler ; int1
+      008010 82 00 9D 59             71 	int _CLK_IRQHandler ; int2
+      008014 82 00 9D 5A             72 	int _EXTI_PORTA_IRQHandler ; int3
+      008018 82 00 9D 5B             73 	int _EXTI_PORTB_IRQHandler ; int4
+      00801C 82 00 9D 5C             74 	int _EXTI_PORTC_IRQHandler ; int5
+      008020 82 00 9D 5D             75 	int _EXTI_PORTD_IRQHandler ; int6
+      008024 82 00 9D 5E             76 	int _EXTI_PORTE_IRQHandler ; int7
       008028 82 00 00 00             77 	int 0x000000 ; int8
       00802C 82 00 00 00             78 	int 0x000000 ; int9
-      008030 82 00 9D 54             79 	int _SPI_IRQHandler ; int10
-      008034 82 00 9D 55             80 	int _TIM1_UPD_OVF_TRG_BRK_IRQHandler ; int11
-      008038 82 00 9D 56             81 	int _TIM1_CAP_COM_IRQHandler ; int12
-      00803C 82 00 9D 57             82 	int _TIM2_UPD_OVF_BRK_IRQHandler ; int13
-      008040 82 00 9D 58             83 	int _TIM2_CAP_COM_IRQHandler ; int14
+      008030 82 00 9D 5F             79 	int _SPI_IRQHandler ; int10
+      008034 82 00 9D 60             80 	int _TIM1_UPD_OVF_TRG_BRK_IRQHandler ; int11
+      008038 82 00 9D 61             81 	int _TIM1_CAP_COM_IRQHandler ; int12
+      00803C 82 00 9D 62             82 	int _TIM2_UPD_OVF_BRK_IRQHandler ; int13
+      008040 82 00 9D 63             83 	int _TIM2_CAP_COM_IRQHandler ; int14
       008044 82 00 00 00             84 	int 0x000000 ; int15
       008048 82 00 00 00             85 	int 0x000000 ; int16
-      00804C 82 00 9D 59             86 	int _UART1_TX_IRQHandler ; int17
-      008050 82 00 9D 5A             87 	int _UART1_RX_IRQHandler ; int18
-      008054 82 00 9D 5B             88 	int _I2C_IRQHandler ; int19
+      00804C 82 00 9D 64             86 	int _UART1_TX_IRQHandler ; int17
+      008050 82 00 9D 65             87 	int _UART1_RX_IRQHandler ; int18
+      008054 82 00 9D 66             88 	int _I2C_IRQHandler ; int19
       008058 82 00 00 00             89 	int 0x000000 ; int20
       00805C 82 00 00 00             90 	int 0x000000 ; int21
-      008060 82 00 9D 5C             91 	int _ADC1_IRQHandler ; int22
-      008064 82 00 9D 61             92 	int _TIM4_UPD_OVF_IRQHandler ; int23
-      008068 82 00 9D 66             93 	int _EEPROM_EEC_IRQHandler ; int24
+      008060 82 00 9D 67             91 	int _ADC1_IRQHandler ; int22
+      008064 82 00 9D 6C             92 	int _TIM4_UPD_OVF_IRQHandler ; int23
+      008068 82 00 9D 71             93 	int _EEPROM_EEC_IRQHandler ; int24
                                      94 ;--------------------------------------------------------
                                      95 ; global & static initialisations
                                      96 ;--------------------------------------------------------
@@ -177,13 +177,13 @@
       0088F1 96               [ 1]  177 	ldw	x, sp
       0088F2 1C 00 03         [ 2]  178 	addw	x, #3
       0088F5 89               [ 2]  179 	pushw	x
-      0088F6 CD 96 0F         [ 4]  180 	call	_pf_mount
+      0088F6 CD 96 1A         [ 4]  180 	call	_pf_mount
       0088F9 85               [ 2]  181 	popw	x
       0088FA 6B 34            [ 1]  182 	ld	(0x34, sp), a
                                     183 ;	../src/main.c: 131: res |= pf_open("CFG");
       0088FC 4B 0D            [ 1]  184 	push	#<(___str_0+0)
       0088FE 4B 81            [ 1]  185 	push	#((___str_0+0) >> 8)
-      008900 CD 98 5D         [ 4]  186 	call	_pf_open
+      008900 CD 98 68         [ 4]  186 	call	_pf_open
       008903 85               [ 2]  187 	popw	x
       008904 1A 34            [ 1]  188 	or	a, (0x34, sp)
       008906 6B 34            [ 1]  189 	ld	(0x34, sp), a
@@ -195,7 +195,7 @@
       00890D 4B 00            [ 1]  195 	push	#0x00
       00890F 4B 4B            [ 1]  196 	push	#<(_cfg+0)
       008911 4B 02            [ 1]  197 	push	#((_cfg+0) >> 8)
-      008913 CD 98 EE         [ 4]  198 	call	_pf_read
+      008913 CD 98 F9         [ 4]  198 	call	_pf_read
       008916 5B 06            [ 2]  199 	addw	sp, #6
       008918 1A 34            [ 1]  200 	or	a, (0x34, sp)
       00891A 6B 34            [ 1]  201 	ld	(0x34, sp), a
@@ -231,7 +231,7 @@
                                     231 ;	../src/main.c: 141: res |= pf_open(loggerCfg.firstFileName);
       008951 1E 33            [ 2]  232 	ldw	x, (0x33, sp)
       008953 89               [ 2]  233 	pushw	x
-      008954 CD 98 5D         [ 4]  234 	call	_pf_open
+      008954 CD 98 68         [ 4]  234 	call	_pf_open
       008957 85               [ 2]  235 	popw	x
                                     236 ;	../src/main.c: 143: if(FR_OK == res){
       008958 1A 30            [ 1]  237 	or	a, (0x30, sp)
@@ -365,7 +365,7 @@
                                     365 ;	../src/main.c: 202: res = pf_open(loggerCfg.firstFileName);
       008A02 1E 33            [ 2]  366 	ldw	x, (0x33, sp)
       008A04 89               [ 2]  367 	pushw	x
-      008A05 CD 98 5D         [ 4]  368 	call	_pf_open
+      008A05 CD 98 68         [ 4]  368 	call	_pf_open
       008A08 85               [ 2]  369 	popw	x
                                     370 ;	../src/main.c: 203: if( FR_OK != res ){
       008A09 4D               [ 1]  371 	tnz	a
@@ -463,7 +463,7 @@
       008A76 4B 00            [ 1]  463 	push	#0x00
       008A78 4B 01            [ 1]  464 	push	#0x01
       008A7A 90 89            [ 2]  465 	pushw	y
-      008A7C CD 9A DC         [ 4]  466 	call	_pf_write
+      008A7C CD 9A E7         [ 4]  466 	call	_pf_write
       008A7F 5B 06            [ 2]  467 	addw	sp, #6
                                     468 ;	../src/main.c: 266: pfsm->error = ERR_WR_DATA;
       008A81 1E 03            [ 2]  469 	ldw	x, (0x03, sp)
@@ -498,7 +498,7 @@
       008AA8 89               [ 2]  498 	pushw	x
       008AA9 5F               [ 1]  499 	clrw	x
       008AAA 89               [ 2]  500 	pushw	x
-      008AAB CD 9A DC         [ 4]  501 	call	_pf_write
+      008AAB CD 9A E7         [ 4]  501 	call	_pf_write
       008AAE 5B 06            [ 2]  502 	addw	sp, #6
                                     503 ;	../src/main.c: 277: if(FR_OK != res){
       008AB0 4D               [ 1]  504 	tnz	a
@@ -695,7 +695,7 @@
       008B9F 89               [ 2]  695 	pushw	x
       008BA0 4B E8            [ 1]  696 	push	#0xe8
       008BA2 4B 03            [ 1]  697 	push	#0x03
-      008BA4 CD 9D 67         [ 4]  698 	call	__mulint
+      008BA4 CD 9D 72         [ 4]  698 	call	__mulint
       008BA7 5B 04            [ 2]  699 	addw	sp, #4
       008BA9 50               [ 2]  700 	negw	x
       008BAA 72 FB 03         [ 2]  701 	addw	x, (0x03, sp)
@@ -714,7 +714,7 @@
       008BBF 89               [ 2]  714 	pushw	x
       008BC0 4B 64            [ 1]  715 	push	#0x64
       008BC2 4B 00            [ 1]  716 	push	#0x00
-      008BC4 CD 9D 67         [ 4]  717 	call	__mulint
+      008BC4 CD 9D 72         [ 4]  717 	call	__mulint
       008BC7 5B 04            [ 2]  718 	addw	sp, #4
       008BC9 50               [ 2]  719 	negw	x
       008BCA 72 FB 03         [ 2]  720 	addw	x, (0x03, sp)
@@ -959,36 +959,43 @@
       008D29                        959 _clkInit:
                                     960 ;	../src/main.c: 442: CLK->CKDIVR = 0;//(CLK_PRESCALER_HSIDIV1|CLK_PRESCALER_CPUDIV1);
       008D29 35 00 50 C6      [ 1]  961 	mov	0x50c6+0, #0x00
-                                    962 ;	../src/main.c: 450: CLK->PCKENR1 |= (CLK_PCKENR1_TIM4|CLK_PCKENR1_SPI|CLK_PCKENR1_UART1);
-      008D2D C6 50 C7         [ 1]  963 	ld	a, 0x50c7
-      008D30 AA 16            [ 1]  964 	or	a, #0x16
-      008D32 C7 50 C7         [ 1]  965 	ld	0x50c7, a
-                                    966 ;	../src/main.c: 451: CLK->PCKENR2 |= (CLK_PCKENR2_ADC);
-      008D35 72 16 50 CA      [ 1]  967 	bset	20682, #3
-                                    968 ;	../src/main.c: 452: }
-      008D39 81               [ 4]  969 	ret
-                                    970 ;	../src/main.c: 467: void assert_failed(uint8_t* file, uint32_t line)
-                                    971 ;	-----------------------------------------
-                                    972 ;	 function assert_failed
-                                    973 ;	-----------------------------------------
-      008D3A                        974 _assert_failed:
-                                    975 ;	../src/main.c: 473: while (1)
-      008D3A                        976 00102$:
-      008D3A 20 FE            [ 2]  977 	jra	00102$
-                                    978 ;	../src/main.c: 476: }
-      008D3C 81               [ 4]  979 	ret
-                                    980 	.area CODE
-                                    981 	.area CONST
-                                    982 	.area CONST
-      00810D                        983 ___str_0:
-      00810D 43 46 47               984 	.ascii "CFG"
-      008110 00                     985 	.db 0x00
-                                    986 	.area CODE
-                                    987 	.area INITIALIZER
-      008111                        988 __xinit__blkCnt:
-      008111 00                     989 	.db #0x00	; 0
-      008112                        990 __xinit__fileBlkCnt:
-      008112 00 00 00 00            991 	.byte #0x00, #0x00, #0x00, #0x00	; 0
-      008116                        992 __xinit__fileNoCnt:
-      008116 00 00                  993 	.dw #0x0000
-                                    994 	.area CABS (ABS)
+                                    962 ;	../src/main.c: 443: CLK->ECKR |= CLK_ECKR_HSEEN;
+      008D2D 72 10 50 C1      [ 1]  963 	bset	20673, #0
+                                    964 ;	../src/main.c: 444: while(!(CLK->ECKR & CLK_ECKR_HSERDY));
+      008D31                        965 00101$:
+      008D31 C6 50 C1         [ 1]  966 	ld	a, 0x50c1
+      008D34 A5 02            [ 1]  967 	bcp	a, #0x02
+      008D36 27 F9            [ 1]  968 	jreq	00101$
+                                    969 ;	../src/main.c: 451: CLK->PCKENR1 |= (CLK_PCKENR1_TIM4|CLK_PCKENR1_SPI|CLK_PCKENR1_UART1);
+      008D38 C6 50 C7         [ 1]  970 	ld	a, 0x50c7
+      008D3B AA 16            [ 1]  971 	or	a, #0x16
+      008D3D C7 50 C7         [ 1]  972 	ld	0x50c7, a
+                                    973 ;	../src/main.c: 452: CLK->PCKENR2 |= (CLK_PCKENR2_ADC);
+      008D40 72 16 50 CA      [ 1]  974 	bset	20682, #3
+                                    975 ;	../src/main.c: 453: }
+      008D44 81               [ 4]  976 	ret
+                                    977 ;	../src/main.c: 468: void assert_failed(uint8_t* file, uint32_t line)
+                                    978 ;	-----------------------------------------
+                                    979 ;	 function assert_failed
+                                    980 ;	-----------------------------------------
+      008D45                        981 _assert_failed:
+                                    982 ;	../src/main.c: 474: while (1)
+      008D45                        983 00102$:
+      008D45 20 FE            [ 2]  984 	jra	00102$
+                                    985 ;	../src/main.c: 477: }
+      008D47 81               [ 4]  986 	ret
+                                    987 	.area CODE
+                                    988 	.area CONST
+                                    989 	.area CONST
+      00810D                        990 ___str_0:
+      00810D 43 46 47               991 	.ascii "CFG"
+      008110 00                     992 	.db 0x00
+                                    993 	.area CODE
+                                    994 	.area INITIALIZER
+      008111                        995 __xinit__blkCnt:
+      008111 00                     996 	.db #0x00	; 0
+      008112                        997 __xinit__fileBlkCnt:
+      008112 00 00 00 00            998 	.byte #0x00, #0x00, #0x00, #0x00	; 0
+      008116                        999 __xinit__fileNoCnt:
+      008116 00 00                 1000 	.dw #0x0000
+                                   1001 	.area CABS (ABS)

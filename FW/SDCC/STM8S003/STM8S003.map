@@ -24,14 +24,14 @@ Area                                    Addr        Size        Decimal Bytes (A
      0000006F  l_HOME                          
      00000268  l_DATA                          
      00000269  s_INITIALIZED                   
-     00001D3E  l_CODE                          
+     00001D49  l_CODE                          
      00008000  s_HOME                          
      0000806F  s_GSINIT                        
      000080AA  s_GSFINAL                       
      000080AD  s_CONST                         
      00008111  s_INITIALIZER                   
      00008118  s_CODE                          
-     00009E56  s_SSEG                          
+     00009E61  s_SSEG                          
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
 Hexadecimal  [32-Bits]
@@ -112,7 +112,7 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CODE                                00008118    00001D3E =        7486. bytes (REL,CON)
+CODE                                00008118    00001D49 =        7497. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -136,60 +136,60 @@ CODE                                00008118    00001D3E =        7486. bytes (R
      00008871  _GetLedState                       leds
      0000888E  _SetLedState                       leds
      000088B8  _main                              main
-     00008D3A  _assert_failed                     main
-     00008D3D  _SD_Init                           mmcsd
-     00008D7D  _SD_Detect                         mmcsd
-     00008D85  _SD_SendCmd                        mmcsd
-     00008DE1  _SD_GetDataResponse                mmcsd
-     00008E3B  _SD_GetResponse                    mmcsd
-     00008E69  _SD_GetResponseVal                 mmcsd
-     00008EB3  _SD_GoIdleState                    mmcsd
-     00008FE2  _SD_WriteByte                      mmcsd
-     00008FF9  _SD_ReadByte                       mmcsd
-     0000900E  _SD_LowLevel_Init                  mmcsd
-     0000960F  _pf_mount                          pff
-     0000985D  _pf_open                           pff
-     000098EE  _pf_read                           pff
-     00009ADC  _pf_write                          pff
-     00009D4B  _TRAP_IRQHandler                   stm8s_it
-     00009D4C  _TLI_IRQHandler                    stm8s_it
-     00009D4D  _AWU_IRQHandler                    stm8s_it
-     00009D4E  _CLK_IRQHandler                    stm8s_it
-     00009D4F  _EXTI_PORTA_IRQHandler             stm8s_it
-     00009D50  _EXTI_PORTB_IRQHandler             stm8s_it
-     00009D51  _EXTI_PORTC_IRQHandler             stm8s_it
-     00009D52  _EXTI_PORTD_IRQHandler             stm8s_it
-     00009D53  _EXTI_PORTE_IRQHandler             stm8s_it
-     00009D54  _SPI_IRQHandler                    stm8s_it
-     00009D55  _TIM1_UPD_OVF_TRG_BRK_IRQHandler   stm8s_it
-     00009D56  _TIM1_CAP_COM_IRQHandler           stm8s_it
-     00009D57  _TIM2_UPD_OVF_BRK_IRQHandler       stm8s_it
-     00009D58  _TIM2_CAP_COM_IRQHandler           stm8s_it
-     00009D59  _UART1_TX_IRQHandler               stm8s_it
+     00008D45  _assert_failed                     main
+     00008D48  _SD_Init                           mmcsd
+     00008D88  _SD_Detect                         mmcsd
+     00008D90  _SD_SendCmd                        mmcsd
+     00008DEC  _SD_GetDataResponse                mmcsd
+     00008E46  _SD_GetResponse                    mmcsd
+     00008E74  _SD_GetResponseVal                 mmcsd
+     00008EBE  _SD_GoIdleState                    mmcsd
+     00008FED  _SD_WriteByte                      mmcsd
+     00009004  _SD_ReadByte                       mmcsd
+     00009019  _SD_LowLevel_Init                  mmcsd
+     0000961A  _pf_mount                          pff
+     00009868  _pf_open                           pff
+     000098F9  _pf_read                           pff
+     00009AE7  _pf_write                          pff
+     00009D56  _TRAP_IRQHandler                   stm8s_it
+     00009D57  _TLI_IRQHandler                    stm8s_it
+     00009D58  _AWU_IRQHandler                    stm8s_it
+     00009D59  _CLK_IRQHandler                    stm8s_it
+     00009D5A  _EXTI_PORTA_IRQHandler             stm8s_it
+     00009D5B  _EXTI_PORTB_IRQHandler             stm8s_it
+     00009D5C  _EXTI_PORTC_IRQHandler             stm8s_it
+     00009D5D  _EXTI_PORTD_IRQHandler             stm8s_it
+     00009D5E  _EXTI_PORTE_IRQHandler             stm8s_it
+     00009D5F  _SPI_IRQHandler                    stm8s_it
+     00009D60  _TIM1_UPD_OVF_TRG_BRK_IRQHandler   stm8s_it
+     00009D61  _TIM1_CAP_COM_IRQHandler           stm8s_it
+     00009D62  _TIM2_UPD_OVF_BRK_IRQHandler       stm8s_it
+     00009D63  _TIM2_CAP_COM_IRQHandler           stm8s_it
+     00009D64  _UART1_TX_IRQHandler               stm8s_it
 ASxxxx Linker V03.00 + NoICE + sdld,  page 10.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CODE                                00008118    00001D3E =        7486. bytes (REL,CON)
+CODE                                00008118    00001D49 =        7497. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00009D5A  _UART1_RX_IRQHandler               stm8s_it
-     00009D5B  _I2C_IRQHandler                    stm8s_it
-     00009D5C  _ADC1_IRQHandler                   stm8s_it
-     00009D61  _TIM4_UPD_OVF_IRQHandler           stm8s_it
-     00009D66  _EEPROM_EEC_IRQHandler             stm8s_it
-     00009D67  __mulint                           
-     00009D80  __divulong                         
-     00009DDA  __mullong                          
+     00009D65  _UART1_RX_IRQHandler               stm8s_it
+     00009D66  _I2C_IRQHandler                    stm8s_it
+     00009D67  _ADC1_IRQHandler                   stm8s_it
+     00009D6C  _TIM4_UPD_OVF_IRQHandler           stm8s_it
+     00009D71  _EEPROM_EEC_IRQHandler             stm8s_it
+     00009D72  __mulint                           
+     00009D8B  __divulong                         
+     00009DE5  __mullong                          
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 11.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-SSEG                                00009E56    00000001 =           1. bytes (REL,CON)
+SSEG                                00009E61    00000001 =           1. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------

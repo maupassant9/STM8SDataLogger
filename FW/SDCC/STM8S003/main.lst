@@ -959,36 +959,43 @@
       000471                        959 _clkInit:
                                     960 ;	../src/main.c: 442: CLK->CKDIVR = 0;//(CLK_PRESCALER_HSIDIV1|CLK_PRESCALER_CPUDIV1);
       000471 35 00 50 C6      [ 1]  961 	mov	0x50c6+0, #0x00
-                                    962 ;	../src/main.c: 450: CLK->PCKENR1 |= (CLK_PCKENR1_TIM4|CLK_PCKENR1_SPI|CLK_PCKENR1_UART1);
-      000475 C6 50 C7         [ 1]  963 	ld	a, 0x50c7
-      000478 AA 16            [ 1]  964 	or	a, #0x16
-      00047A C7 50 C7         [ 1]  965 	ld	0x50c7, a
-                                    966 ;	../src/main.c: 451: CLK->PCKENR2 |= (CLK_PCKENR2_ADC);
-      00047D 72 16 50 CA      [ 1]  967 	bset	20682, #3
-                                    968 ;	../src/main.c: 452: }
-      000481 81               [ 4]  969 	ret
-                                    970 ;	../src/main.c: 467: void assert_failed(uint8_t* file, uint32_t line)
-                                    971 ;	-----------------------------------------
-                                    972 ;	 function assert_failed
-                                    973 ;	-----------------------------------------
-      000482                        974 _assert_failed:
-                                    975 ;	../src/main.c: 473: while (1)
-      000482                        976 00102$:
-      000482 20 FE            [ 2]  977 	jra	00102$
-                                    978 ;	../src/main.c: 476: }
-      000484 81               [ 4]  979 	ret
-                                    980 	.area CODE
-                                    981 	.area CONST
-                                    982 	.area CONST
-      000000                        983 ___str_0:
-      000000 43 46 47               984 	.ascii "CFG"
-      000003 00                     985 	.db 0x00
-                                    986 	.area CODE
-                                    987 	.area INITIALIZER
-      000000                        988 __xinit__blkCnt:
-      000000 00                     989 	.db #0x00	; 0
-      000001                        990 __xinit__fileBlkCnt:
-      000001 00 00 00 00            991 	.byte #0x00, #0x00, #0x00, #0x00	; 0
-      000005                        992 __xinit__fileNoCnt:
-      000005 00 00                  993 	.dw #0x0000
-                                    994 	.area CABS (ABS)
+                                    962 ;	../src/main.c: 443: CLK->ECKR |= CLK_ECKR_HSEEN;
+      000475 72 10 50 C1      [ 1]  963 	bset	20673, #0
+                                    964 ;	../src/main.c: 444: while(!(CLK->ECKR & CLK_ECKR_HSERDY));
+      000479                        965 00101$:
+      000479 C6 50 C1         [ 1]  966 	ld	a, 0x50c1
+      00047C A5 02            [ 1]  967 	bcp	a, #0x02
+      00047E 27 F9            [ 1]  968 	jreq	00101$
+                                    969 ;	../src/main.c: 451: CLK->PCKENR1 |= (CLK_PCKENR1_TIM4|CLK_PCKENR1_SPI|CLK_PCKENR1_UART1);
+      000480 C6 50 C7         [ 1]  970 	ld	a, 0x50c7
+      000483 AA 16            [ 1]  971 	or	a, #0x16
+      000485 C7 50 C7         [ 1]  972 	ld	0x50c7, a
+                                    973 ;	../src/main.c: 452: CLK->PCKENR2 |= (CLK_PCKENR2_ADC);
+      000488 72 16 50 CA      [ 1]  974 	bset	20682, #3
+                                    975 ;	../src/main.c: 453: }
+      00048C 81               [ 4]  976 	ret
+                                    977 ;	../src/main.c: 468: void assert_failed(uint8_t* file, uint32_t line)
+                                    978 ;	-----------------------------------------
+                                    979 ;	 function assert_failed
+                                    980 ;	-----------------------------------------
+      00048D                        981 _assert_failed:
+                                    982 ;	../src/main.c: 474: while (1)
+      00048D                        983 00102$:
+      00048D 20 FE            [ 2]  984 	jra	00102$
+                                    985 ;	../src/main.c: 477: }
+      00048F 81               [ 4]  986 	ret
+                                    987 	.area CODE
+                                    988 	.area CONST
+                                    989 	.area CONST
+      000000                        990 ___str_0:
+      000000 43 46 47               991 	.ascii "CFG"
+      000003 00                     992 	.db 0x00
+                                    993 	.area CODE
+                                    994 	.area INITIALIZER
+      000000                        995 __xinit__blkCnt:
+      000000 00                     996 	.db #0x00	; 0
+      000001                        997 __xinit__fileBlkCnt:
+      000001 00 00 00 00            998 	.byte #0x00, #0x00, #0x00, #0x00	; 0
+      000005                        999 __xinit__fileNoCnt:
+      000005 00 00                 1000 	.dw #0x0000
+                                   1001 	.area CABS (ABS)
