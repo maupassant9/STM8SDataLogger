@@ -34,7 +34,10 @@ public class PetitFileGenerator {
                         if(str.equalsIgnoreCase("YES")) isFullResolution = true;
                         if(str.equalsIgnoreCase("NO")) isFullResolution = false;
                     }
-                    if(idx == 0x05) channel = Integer.parseInt(str);
+                    if(idx == 0x05) {
+                        channel = Integer.parseInt(str)&0xf;
+                        channel = channel << 3;
+                    }
                     break;
                 } else {
                     System.out.println("Input error!!! Check your input value");
@@ -78,7 +81,7 @@ public class PetitFileGenerator {
             case 3: str = "** Enter Sampling Freq (100-10000Hz)      **";break;
             case 4: str = "** Full resolution? (10Bits)YES/(8bits)NO **";break;
             case 5: str = "** Select Channel:                        **\n"+
-                          "** XXXX XXXX (1: select) LSB=CH1, MSB=CH8 **";break;   
+                          "** ---- XXXX (1: select) LSB=CH1, MSB=CH4 **";break;   
         }
 
         System.out.println("********************************************");
@@ -154,6 +157,7 @@ public class PetitFileGenerator {
         if(i == 0x05){
             try{
                 Integer.parseInt(str);
+
                 return true;
             }catch (Exception e){
                 return false;
